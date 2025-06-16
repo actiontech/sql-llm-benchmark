@@ -1,68 +1,68 @@
-简体中文 | [English](./README_en.md)
+English | [简体中文](./README_zh.md)
 
-# 大模型 SQL 能力测评系统
+# Large Language Model SQL Capability Evaluation System
 
-## 简介
+## Introduction
 
-本项目是一个测评大模型 SQL 能力的脚本工具和排行榜列表，旨在评估大型语言模型 (LLM) 在 SQL 相关任务方面的能力。它支持对 LLM 的 SQL 理解、方言转换和 SQL 优化能力进行深入测评，并最终生成详细的测评报告，通过前端界面直观展示。
+This project provides a script tool and a leaderboard for evaluating the SQL capabilities of Large Language Models (LLMs). It aims to assess LLMs' proficiency in SQL understanding, dialect conversion, and SQL optimization. The system generates detailed evaluation reports and presents them intuitively through a frontend interface.
 
-## 特性
+## Features
 
-- **多维度评估**: 支持 SQL 理解、方言转换和 SQL 优化三大核心能力。
-- **灵活的数据集**: 允许用户自定义和扩展测评数据集。
-- **可配置的 LLM**: 支持集成多种大模型作为被测对象和裁判模型。
-- **自动化报告生成**: 自动生成详细的测评报告，包括总分、案例详情和交互日志。
-- **直观的前端展示**: 提供排行榜列表和详细报告页面，方便用户查看和分析结果。
-- **可扩展架构**: 易于添加新的 LLM 接口、HTTP 接口和测试用例。
+- **Multi-dimensional Evaluation**: Supports three core capabilities: SQL understanding, dialect conversion, and SQL optimization.
+- **Flexible Datasets**: Allows users to customize and extend evaluation datasets.
+- **Configurable LLMs**: Supports integrating various LLMs as target models and judge models.
+- **Automated Report Generation**: Automatically generates detailed evaluation reports, including overall scores, case details, and interaction logs.
+- **Intuitive Frontend Display**: Provides a leaderboard and detailed report pages for easy viewing and analysis of results.
+- **Extensible Architecture**: Easy to add new LLM interfaces, HTTP interfaces, and test cases.
 
-## 项目结构
+## Project Structure
 
-本项目分为 LLM 测评脚本 (evaluator) 和排行榜 UI (leaderboard) 两部分。
+This project consists of two main parts: the LLM Evaluation Script (`evaluator`) and the Leaderboard UI (`leaderboard`).
 
-### LLM 测评脚本 (evaluator)
+### LLM Evaluation Script (`evaluator`)
 
-LLM 测评脚本负责核心的测评逻辑、数据处理和报告生成。
+The LLM evaluation script is responsible for the core evaluation logic, data processing, and report generation.
 
 ```
 evaluator/
-├── application.py          # HTTP 接口，用于支持其他应用的测评（如 SQLFlash SQL 优化）
-├── evaluator.py            # 核心测评逻辑
-├── llm_interface.py        # LLM 接口定义，用于集成不同的大模型 API
-├── main.py                 # 测评脚本主入口，运行测评脚本
-├── utils.py                # 辅助工具函数
+├── application.py          # HTTP interface to support evaluation for other applications (e.g., SQLFlash SQL Optimization)
+├── evaluator.py            # Core evaluation logic
+├── llm_interface.py        # LLM interface definitions for integrating different LLM APIs
+├── main.py                 # Main entry point for the evaluation script
+├── utils.py                # Auxiliary utility functions
 ├── config/
-│   ├── dataset_config.py   # 数据集配置，包含提示词和指标/案例权重
-│   └── llm_config.py       # LLM 配置，用于设置目标模型和裁判模型
-├── dataset/                # 测评数据集
-│   ├── dialect_conversion/ # 方言转换能力数据集
+│   ├── dataset_config.py   # Dataset configuration, including prompts and metric/case weights
+│   └── llm_config.py       # LLM configuration for setting up target models and judge models
+├── dataset/                # Evaluation datasets
+│   ├── dialect_conversion/ # Dataset for SQL dialect conversion capability
 │   │   ├── logical_equivalence.jsonl
 │   │   └── syntax_error_detection.jsonl
-│   ├── sql_optimization/   # SQL 优化能力数据集
+│   ├── sql_optimization/   # Dataset for SQL optimization capability
 │   │   ├── logical_equivalence.jsonl
 │   │   ├── optimization_depth.jsonl
 │   │   └── syntax_error_detection.jsonl
-│   └── sql_understanding/  # SQL 理解能力数据集
+│   └── sql_understanding/  # Dataset for SQL understanding capability
 │       ├── execution_accuracy.jsonl
 │       ├── explain_detection.jsonl
 │       ├── sql_identification.jsonl
 │       └── syntax_error_detection.jsonl
-├── outputs/                # 测评结果输出目录
-│   ├── eval_reports/       # 测评模型得分报告 (排行榜列表数据)
-│   ├── evaluation_case_reports/ # 模型对每个测试案例的详细测评结果
-│   └── evaluation_process_detail_logs/ # 测评流程日志，包含与模型的每次对话
-└── reports/                # 报告生成模块
+├── outputs/                # Evaluation results output directory
+│   ├── eval_reports/       # Evaluation model score reports (leaderboard data)
+│   ├── evaluation_case_reports/ # Detailed evaluation results for each test case by models
+│   └── evaluation_process_detail_logs/ # Evaluation process logs, including each conversation with the model
+└── reports/                # Report generation module
     ├── case_reporting.py
     ├── process_log_reporting.py
     └── reporting.py
 ```
 
-### 排行榜 UI (leaderboard)
+### Leaderboard UI (`leaderboard`)
 
-排行榜 UI 负责展示测评报告、排行榜和详细信息。
+The Leaderboard UI is responsible for displaying evaluation reports, the leaderboard, and detailed information.
 
 ```
 leaderboard/
-├── components/             # React 组件
+├── components/             # React components
 │   ├── BarChart.tsx
 │   ├── constants.ts
 │   ├── Footer.tsx
@@ -70,156 +70,156 @@ leaderboard/
 │   ├── MatrixRain.tsx
 │   └── RadarChart.tsx
 ├── lib/
-│   └── i18n.ts             # 国际化配置
-├── pages/                  # Next.js 页面
+│   └── i18n.ts             # Internationalization configuration
+├── pages/                  # Next.js pages
 │   ├── _app.tsx
 │   ├── _document.tsx
-│   ├── models/[date]/[id].tsx # 模型详细报告页面
-│   └── ranking/[month].tsx # 排行榜页面
-├── public/                 # 静态资源和数据
-│   ├── data/               # 测评报告数据 (默认读取报告的路径)
+│   ├── models/[date]/[id].tsx # Model detailed report page
+│   └── ranking/[month].tsx # Leaderboard page
+├── public/                 # Static assets and data
+│   ├── data/               # Evaluation report data (default path for reading reports)
 │   │   ├── eval_reports/
 │   │   ├── evaluation_case_reports/
 │   │   └── evaluation_process_detail_logs/
-│   ├── locales/            # 国际化语言文件
+│   ├── locales/            # Internationalization language files
 │   │   ├── en/
 │   │   └── zh/
-│   ├── logos/              # 模型 Logo
+│   ├── logos/              # Model Logos
 │   └── favicon.ico
-├── styles/                 # CSS 样式
+├── styles/                 # CSS styles
 │   ├── Container.module.css
 │   └── globals.css
 ├── next-env.d.ts
 ├── next.config.js
-├── package.json            # 项目依赖
+├── package.json            # Project dependencies
 └── pnpm-lock.yaml
 ```
 
-## 快速开始
+## Quick Start
 
-### evaluator 设置与运行
+### `evaluator` Setup and Run
 
-1.  **环境要求**:
+1.  **Environment Requirements**:
 
     - Python 3.10+
-    - 安装必要的 Python 库:
+    - Install necessary Python libraries:
       ```bash
       pip install requests openai
       ```
 
-2.  **配置**:
+2.  **Configuration**:
 
-    - 编辑 [`evaluator/config/llm_config.py`](evaluator/config/llm_config.py) 配置您要测评的目标 LLM 和裁判 LLM 的 API 密钥、模型名称等信息。
-    - 编辑 [`evaluator/config/dataset_config.py`](evaluator/config/dataset_config.py) 配置数据集的提示词以及指标或案例的权重。
+    - Edit [`evaluator/config/llm_config.py`](evaluator/config/llm_config.py) to configure API keys, model names, and other information for your target LLM and judge LLM.
+    - Edit [`evaluator/config/dataset_config.py`](evaluator/config/dataset_config.py) to configure dataset prompts and weights for metrics or cases.
 
-3.  **运行测评**:
-    在 `evaluator` 目录下运行 `main.py` 脚本：
+3.  **Run Evaluation**:
+    Navigate to the `evaluator` directory and run the `main.py` script:
     ```bash
     cd evaluator
     python main.py
     ```
-    测评完成后，报告将默认保存到 `leaderboard/public/data/` 目录下，供页面展示。报告类型包括：
-    - `eval_reports`: 测评模型得分报告，用于榜单列表。
-    - `evaluation_case_reports`: 模型对每个测试案例的详细测评结果。
-    - `evaluation_process_detail_logs`: 测评流程日志，包含与模型的每次对话。
+    After the evaluation is complete, reports will be saved by default to the `leaderboard/public/data/` directory for display on the frontend. Report types include:
+    - `eval_reports`: Evaluation model score reports, used for the leaderboard.
+    - `evaluation_case_reports`: Detailed evaluation results for each test case by models.
+    - `evaluation_process_detail_logs`: Evaluation process logs, including each conversation with the model.
 
-### leaderboard 设置与运行
+### `leaderboard` Setup and Run
 
-1.  **环境要求**:
+1.  **Environment Requirements**:
 
-    - Node.js 18.18 或更高版本
+    - Node.js 18.18 or higher
 
-2.  **安装依赖**:
-    在 `leaderboard` 目录下安装项目依赖：
+2.  **Install Dependencies**:
+    Navigate to the `leaderboard` directory and install project dependencies:
 
     ```bash
     cd leaderboard
-    pnpm install # 或者 npm install
+    pnpm install # or npm install
     ```
 
-3.  **启动开发服务器**:
+3.  **Start Development Server**:
 
     ```bash
-    pnpm dev # 或者 npm run dev
+    pnpm dev # or npm run dev
     ```
 
-    这将启动一个开发服务器，通常在 `http://localhost:3000`。
+    This will start a development server, usually at `http://localhost:3000`.
 
-4.  **部署**:
-    - **静态导出 (SSG)**:
+4.  **Deployment**:
+    - **Static Export (SSG)**:
       ```bash
-      next build # 或者 npm run build
+      next build # or npm run build
       ```
-      导出的静态资源位于 `leaderboard/out/` 目录下您可以将此目录下的内容部署到任何静态文件服务器。
-    - **服务器端渲染 (SSR)**:
+      The exported static assets will be located in the `leaderboard/out/` directory. You can deploy the contents of this directory to any static file server.
+    - **Server-Side Rendering (SSR)**:
       ```bash
-      next start # 或者 npm start
+      next start # or npm start
       ```
-      这将启动一个 Next.js 服务器，支持服务器端渲染。
+      This will start a Next.js server, supporting server-side rendering.
 
-## 评估方法与得分计算
+## Evaluation Methodology and Score Calculation
 
-### 评估方式说明
+### Evaluation Methods
 
-- **客观测评 (Objective Evaluation)**: 基于预定义答案的自动化验证。适用于有明确标准答案的场景。
-- **主观测评 (Subjective Evaluation)**: 集成 LLM-as-a-judge 评估模式。在没有唯一标准答案的案例中，通过裁判模型根据多条带有权重的规则命中情况来计算分数。
-- **混合评估 (Hybrid Evaluation)**: 结合客观测评和 LLM-as-a-judge 验证。
+- **Objective Evaluation**: Automated verification based on predefined answers. Suitable for scenarios with clear correct answers.
+- **Subjective Evaluation**: Integrates the LLM-as-a-judge evaluation mode. In cases without a single correct answer, scores are calculated by a judge model based on the hit rate of multiple weighted rules.
+- **Hybrid Evaluation**: Combines objective evaluation with LLM-as-a-judge verification.
 
-### 得分计算说明
+### Score Calculation
 
-**能力得分 = (∑(指标得分 × 指标权重) / 理论最大总分) × 100**
+**Capability Score = (∑(Metric Score × Metric Weight) / Theoretical Maximum Total Score) × 100**
 
-**能力得分计算逻辑**:
+**Capability Score Calculation Logic**:
 
-1.  **基础元素**:
+1.  **Basic Elements**:
 
-    - 每个能力包含多个评估指标 (例如：SQL 理解能力包含执行准确性、解释检测等)。
-    - 每个指标包含多个测试用例 (case)。
-    - 每个用例有难度等级 (1-3 级)。
+    - Each capability includes multiple evaluation metrics (e.g., SQL understanding includes execution accuracy, explanation detection, etc.).
+    - Each metric contains multiple test cases.
+    - Each test case has a difficulty level (Level 1-3).
 
-2.  **权重设置**:
+2.  **Weight Settings**:
 
-    - **指标权重**: 反映指标的重要性 (值越高越重要)。
-    - **难度权重**: 反映题目难度 (1 级 = 1 分, 2 级 = 2 分, 3 级 = 3 分)。
+    - **Metric Weight**: Reflects the importance of the metric (higher value means more important).
+    - **Difficulty Weight**: Reflects the difficulty of the question (Level 1 = 1 point, Level 2 = 2 points, Level 3 = 3 points).
 
-3.  **得分计算**:
+3.  **Score Calculation**:
 
-    - **用例得分** = 难度权重 × 正确与否 (正确 = 1, 错误 = 0)。
-    - **指标得分** = 该指标下所有用例得分之和。
-    - **能力总分** = ∑(指标得分 × 指标权重)。
-    - **理论满分** = ∑(指标下所有用例的难度权重之和 × 指标权重)。
-    - **最终能力得分** = (能力总分 ÷ 理论满分) × 100。
+    - **Case Score** = Difficulty Weight × Correctness (Correct = 1, Incorrect = 0).
+    - **Metric Score** = Sum of all case scores under that metric.
+    - **Total Capability Score** = ∑(Metric Score × Metric Weight).
+    - **Theoretical Full Score** = ∑(Sum of difficulty weights of all cases under the metric × Metric Weight).
+    - **Final Capability Score** = (Total Capability Score ÷ Theoretical Full Score) × 100.
 
-4.  **特殊情况**:
+4.  **Special Cases**:
 
-    - 若能力下无测试用例，得分为 0。
-    - 若某指标权重未配置，该指标不计分。
+    - If there are no test cases under a capability, the score is 0.
+    - If a metric weight is not configured, that metric is not scored.
 
-5.  **示例**:
-    - **指标 A (权重 4)**: 3 个用例 (难度 1/2/3 各 1 个) 全正确 → 指标得分 = (1×1) + (2×1) + (3×1) = 6
-    - **指标 B (权重 2)**: 2 个用例 (难度 2/3 各 1 个) 全正确 → 指标得分 = (2×1) + (3×1) = 5
-    - **能力总分** = (6 × 4) + (5 × 2) = 24 + 10 = 34
-    - **理论满分** = (1+2+3) × 4 + (2+3) × 2 = 6 × 4 + 5 × 2 = 24 + 10 = 34
-    - **最终得分** = (34 ÷ 34) × 100 = 100 分
+5.  **Example**:
+    - **Metric A (Weight 4)**: 3 cases (1 each of difficulty 1/2/3) all correct → Metric Score = (1×1) + (2×1) + (3×1) = 6
+    - **Metric B (Weight 2)**: 2 cases (1 each of difficulty 2/3) all correct → Metric Score = (2×1) + (3×1) = 5
+    - **Total Capability Score** = (6 × 4) + (5 × 2) = 24 + 10 = 34
+    - **Theoretical Full Score** = (1+2+3) × 4 + (2+3) × 2 = 6 × 4 + 5 × 2 = 24 + 10 = 34
+    - **Final Score** = (34 ÷ 34) × 100 = 100 points
 
-## 扩展性
+## Extensibility
 
-本项目设计为高度可扩展，方便用户根据需求进行定制。
+This project is designed to be highly extensible, allowing users to customize it according to their needs.
 
-- **添加新的 LLM 接口**: 修改 [`evaluator/llm_interface.py`](evaluator/llm_interface.py) 以支持新的 LLM API。
-- **添加新的 HTTP 接口**: 修改 [`evaluator/application.py`](evaluator/application.py) 以支持新的其他应用测评（例如：SQLFlash SQL 优化）。
-- **添加新的测试用例**: 在 [`evaluator/dataset/`](evaluator/dataset/) 目录下按照现有格式创建或修改 JSON 文件。
+- **Add New LLM Interfaces**: Modify [`evaluator/llm_interface.py`](evaluator/llm_interface.py) to support new LLM APIs.
+- **Add New HTTP Interfaces**: Modify [`evaluator/application.py`](evaluator/application.py) to support evaluation for other applications (e.g., SQLFlash SQL Optimization).
+- **Add New Test Cases**: Create or modify JSON files in the [`evaluator/dataset/`](evaluator/dataset/) directory following the existing format.
 
-## 注意事项
+## Important Notes
 
-- **API 密钥安全**: 确保您的 API 密钥安全，不要直接提交到版本控制系统中。强烈建议使用环境变量或其他密钥管理方法来存储和访问敏感信息。
-- **报告输出路径**: 排行榜默认从 `leaderboard/public/data/` 读取测评报告。如果您修改了 evaluator 报告的输出路径，请确保 leaderboard 也相应更新。
+- **API Key Security**: Ensure your API keys are secure and not committed directly to version control. It is strongly recommended to use environment variables or other secret management methods to store and access sensitive information.
+- **Report Output Path**: The leaderboard defaults to reading evaluation reports from `leaderboard/public/data/`. If you modify the output path of the `evaluator` reports, please ensure the `leaderboard` is updated accordingly.
 
-## 贡献
+## Contributions
 
-我们欢迎社区的贡献！如果您有任何改进建议、新功能或 Bug 修复，请随时提交 Pull Request 或创建 Issue。
-也欢迎提交您的模型的测评报告，请务必提交完整的测评报告给我们，我们会将其展示在排行榜列表中。
+We welcome contributions from the community! If you have any suggestions for improvements, new features, or bug fixes, please feel free to submit a Pull Request or create an Issue.
+We also welcome the submission of your model's evaluation reports. Please be sure to submit complete evaluation reports to us, and we will display them on the leaderboard.
 
-## 许可证
+## License
 
-本项目采用 MIT 许可证。详情请参阅 [`LICENSE`](LICENSE) 文件。
+This project is licensed under the MIT License. See the [`LICENSE`](LICENSE) file for details.
