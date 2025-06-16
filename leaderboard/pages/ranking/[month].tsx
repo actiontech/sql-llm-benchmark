@@ -444,12 +444,36 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
       onFilter: true,
       align: "center",
       render: (text: any) => {
+        let translatedText = text;
+        let backgroundColor = "";
+        let textColor = "#333";
+
         if (text === "Chat") {
-          return t("table.type_chat");
+          translatedText = t("table.type_chat");
+          backgroundColor = "#e6f7ff"; // 浅蓝色
+          textColor = "#1890ff"; // 蓝色文字
         } else if (text === "Application") {
-          return t("table.type_application");
+          translatedText = t("table.type_application");
+          backgroundColor = "#f6ffed"; // 浅绿色
+          textColor = "#52c41a"; // 绿色文字
         }
-        return text;
+
+        return (
+          <span
+            style={{
+              backgroundColor: backgroundColor,
+              color: textColor,
+              padding: "4px 8px",
+              borderRadius: "4px",
+              fontWeight: "bold",
+              display: "inline-block",
+              minWidth: "60px",
+              textAlign: "center",
+            }}
+          >
+            {translatedText}
+          </span>
+        );
       },
     },
     {
