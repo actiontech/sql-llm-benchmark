@@ -17,18 +17,18 @@
 
 ## 项目结构
 
-本项目分为后端 (Backend) 和前端 (Frontend) 两部分。
+本项目分为 LLM 测评脚本 (evaluation_script) 和排行榜 UI (leaderboard_ui) 两部分。
 
-### 后端 (Backend)
+### LLM 测评脚本 (evaluation_script)
 
-后端负责核心的测评逻辑、数据处理和报告生成。
+LLM 测评脚本负责核心的测评逻辑、数据处理和报告生成。
 
 ```
-backend/
+evaluation_script/
 ├── application.py          # HTTP 接口，用于支持其他应用的测评（如 SQLFlash SQL 优化）
 ├── evaluator.py            # 核心测评逻辑
 ├── llm_interface.py        # LLM 接口定义，用于集成不同的大模型 API
-├── main.py                 # 后端主入口，运行测评脚本
+├── main.py                 # 测评脚本主入口，运行测评脚本
 ├── utils.py                # 辅助工具函数
 ├── config/
 │   ├── dataset_config.py   # 数据集配置，包含提示词和指标/案例权重
@@ -47,7 +47,7 @@ backend/
 │       ├── sql_identification.jsonl
 │       └── syntax_error_detection.jsonl
 ├── outputs/                # 测评结果输出目录
-│   ├── eval_reports/       # 测评模型得分报告 (前端排行榜列表数据)
+│   ├── eval_reports/       # 测评模型得分报告 (排行榜列表数据)
 │   ├── evaluation_case_reports/ # 模型对每个测试案例的详细测评结果
 │   └── evaluation_process_detail_logs/ # 测评流程日志，包含与模型的每次对话
 └── reports/                # 报告生成模块
@@ -56,12 +56,12 @@ backend/
     └── reporting.py
 ```
 
-### 前端 (Frontend)
+### 排行榜 UI (leaderboard_ui)
 
-前端负责展示测评报告、排行榜和详细信息。
+排行榜 UI 负责展示测评报告、排行榜和详细信息。
 
 ```
-frontend/
+leaderboard_ui/
 ├── components/             # React 组件
 │   ├── BarChart.tsx
 │   ├── constants.ts
@@ -77,7 +77,7 @@ frontend/
 │   ├── models/[date]/[id].tsx # 模型详细报告页面
 │   └── ranking/[month].tsx # 排行榜页面
 ├── public/                 # 静态资源和数据
-│   ├── data/               # 测评报告数据 (前端默认读取路径)
+│   ├── data/               # 测评报告数据 (默认读取报告的路径)
 │   │   ├── eval_reports/
 │   │   ├── evaluation_case_reports/
 │   │   └── evaluation_process_detail_logs/
@@ -97,7 +97,7 @@ frontend/
 
 ## 快速开始
 
-### 后端设置与运行
+### evaluation_script 设置与运行
 
 1.  **环境要求**:
 
@@ -109,31 +109,31 @@ frontend/
 
 2.  **配置**:
 
-    - 编辑 [`backend/config/llm_config.py`](backend/config/llm_config.py) 配置您要测评的目标 LLM 和裁判 LLM 的 API 密钥、模型名称等信息。
-    - 编辑 [`backend/config/dataset_config.py`](backend/config/dataset_config.py) 配置数据集的提示词以及指标或案例的权重。
+    - 编辑 [`evaluation_script/config/llm_config.py`](evaluation_script/config/llm_config.py) 配置您要测评的目标 LLM 和裁判 LLM 的 API 密钥、模型名称等信息。
+    - 编辑 [`evaluation_script/config/dataset_config.py`](evaluation_script/config/dataset_config.py) 配置数据集的提示词以及指标或案例的权重。
 
 3.  **运行测评**:
-    在 `backend` 目录下运行 `main.py` 脚本：
+    在 `evaluation_script` 目录下运行 `main.py` 脚本：
     ```bash
-    cd backend
+    cd evaluation_script
     python main.py
     ```
-    测评完成后，报告将默认保存到 `frontend/public/data/` 目录下，供前端展示。报告类型包括：
-    - `eval_reports`: 测评模型得分报告，用于前端排行榜。
+    测评完成后，报告将默认保存到 `leaderboard_ui/public/data/` 目录下，供页面展示。报告类型包括：
+    - `eval_reports`: 测评模型得分报告，用于榜单列表。
     - `evaluation_case_reports`: 模型对每个测试案例的详细测评结果。
     - `evaluation_process_detail_logs`: 测评流程日志，包含与模型的每次对话。
 
-### 前端设置与运行
+### leaderboard_ui 设置与运行
 
 1.  **环境要求**:
 
     - Node.js 18.18 或更高版本
 
 2.  **安装依赖**:
-    在 `frontend` 目录下安装项目依赖：
+    在 `leaderboard_ui` 目录下安装项目依赖：
 
     ```bash
-    cd frontend
+    cd leaderboard_ui
     pnpm install # 或者 npm install
     ```
 
@@ -150,7 +150,7 @@ frontend/
       ```bash
       next build # 或者 npm run build
       ```
-      导出的静态资源位于 `frontend/out/` 目录下您可以将此目录下的内容部署到任何静态文件服务器。
+      导出的静态资源位于 `leaderboard_ui/out/` 目录下您可以将此目录下的内容部署到任何静态文件服务器。
     - **服务器端渲染 (SSR)**:
       ```bash
       next start # 或者 npm start
@@ -206,14 +206,14 @@ frontend/
 
 本项目设计为高度可扩展，方便用户根据需求进行定制。
 
-- **添加新的 LLM 接口**: 修改 [`backend/llm_interface.py`](backend/llm_interface.py) 以支持新的 LLM API。
-- **添加新的 HTTP 接口**: 修改 [`backend/application.py`](backend/application.py) 以支持新的其他应用测评（例如：SQLFlash SQL 优化）。
-- **添加新的测试用例**: 在 [`backend/dataset/`](backend/dataset/) 目录下按照现有格式创建或修改 JSON 文件。
+- **添加新的 LLM 接口**: 修改 [`evaluation_script/llm_interface.py`](evaluation_script/llm_interface.py) 以支持新的 LLM API。
+- **添加新的 HTTP 接口**: 修改 [`evaluation_script/application.py`](evaluation_script/application.py) 以支持新的其他应用测评（例如：SQLFlash SQL 优化）。
+- **添加新的测试用例**: 在 [`evaluation_script/dataset/`](evaluation_script/dataset/) 目录下按照现有格式创建或修改 JSON 文件。
 
 ## 注意事项
 
 - **API 密钥安全**: 确保您的 API 密钥安全，不要直接提交到版本控制系统中。强烈建议使用环境变量或其他密钥管理方法来存储和访问敏感信息。
-- **报告输出路径**: 前端默认从 `frontend/public/data/` 读取测评报告。如果您修改了后端报告的输出路径，请确保前端配置也相应更新。
+- **报告输出路径**: 排行榜默认从 `leaderboard_ui/public/data/` 读取测评报告。如果您修改了 evaluation_script 报告的输出路径，请确保 leaderboard_ui 也相应更新。
 
 ## 贡献
 
