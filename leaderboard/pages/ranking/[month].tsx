@@ -443,6 +443,14 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
       filters: true,
       onFilter: true,
       align: "center",
+      render: (text: any) => {
+        if (text === "Chat") {
+          return t("table.type_chat");
+        } else if (text === "Application") {
+          return t("table.type_application");
+        }
+        return text;
+      },
     },
     {
       title: (
