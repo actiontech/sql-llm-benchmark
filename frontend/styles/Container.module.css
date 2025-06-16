@@ -1,0 +1,158 @@
+.fullContainer {
+  width: 90vw;
+  max-width: none;
+  margin: 20px auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.tableTips {
+  margin-left: 8;
+  color: '#999';
+  font-size: 12;
+  cursor: 'help'
+}
+
+.container {
+  background-color: #f0f2f5;
+  /* 浅灰色背景 */
+  min-height: 100vh;
+  /* 确保背景覆盖整个视口 */
+  width: 100%;
+  /* 调整宽度为100% */
+  max-width: none;
+  padding: 24px;
+  /* 调整padding */
+  box-sizing: border-box;
+}
+
+.tableRowOdd {
+  background-color: #ffffff;
+  /* 白色行 */
+}
+
+.tableRowEven {
+  background-color: #f9f9f9;
+  /* 浅灰色行 */
+}
+
+.baselineRow {
+  background-color: #e6e9ff;
+  /* 蓝色背景，用于着重显示 */
+  font-weight: bold;
+}
+
+.rank1Row {
+  background-color: #fffbe6; /* 淡金色 */
+  font-weight: bold;
+  animation: highlight-row 1.5s ease-in-out infinite alternate;
+}
+
+.rank2Row {
+  background-color: #f0f2f5; /* 淡银色 */
+  font-weight: bold;
+}
+
+.rank3Row {
+  background-color: #f5f0eb; /* 淡铜色 */
+  font-weight: bold;
+}
+
+@keyframes highlight-row {
+  from {
+    box-shadow: inset 0 0 0 0 rgba(255, 215, 0, 0.3);
+  }
+  to {
+    box-shadow: inset 0 0 10px 5px rgba(255, 215, 0, 0.3);
+  }
+}
+
+.heroGlow1,
+.heroGlow2 {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(24, 144, 255, 0.3) 0%, transparent 70%);
+  filter: blur(60px);
+  opacity: 0.6;
+  animation: glow-animation 10s infinite alternate;
+  z-index: 0;
+}
+
+.heroGlow1 {
+  width: 400px;
+  height: 400px;
+  top: -50px;
+  left: -50px;
+  
+  animation-delay: 1s;
+}
+
+.heroGlow2 {
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  right: -100px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+  animation-delay: 2s;
+}
+
+@keyframes glow-animation {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+/* 排序中的列头立体显示 */
+.container :global(.ant-table-thead .ant-table-column-has-sorters.ant-table-column-sort) {
+  background-color: #e6f7ff; /* 浅蓝色背景，表示选中 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.45); /* 立体阴影效果 */
+  transition: all 0.3s ease; /* 平滑过渡 */
+}
+
+.container :global(.ant-table-thead .ant-table-column-has-sorters:hover) {
+  background-color: #e6f7ff; /* 鼠标悬停时也显示背景色 */
+}
+
+/* 表格行悬停时显示手型光标 */
+.container :global(.ant-table-tbody > tr.ant-table-row:hover) {
+  cursor: pointer;
+}
+
+/* Responsive font sizes for titles */
+@media (max-width: 1200px) {
+  .responsiveTitle1 {
+    font-size: 80px !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .responsiveTitle1 {
+    font-size: 60px !important;
+  }
+  .responsiveTitle2 {
+    font-size: 20px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .responsiveTitle1 {
+    font-size: 40px !important;
+  }
+  .responsiveTitle2 {
+    font-size: 18px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .responsiveTitle1 {
+    font-size: 30px !important;
+  }
+  .responsiveTitle2 {
+    font-size: 16px !important;
+  }
+}

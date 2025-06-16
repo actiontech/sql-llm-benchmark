@@ -1,0 +1,675 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20250605_152722_691
+Run Dimensions: sql_understanding
+Run Indicator: syntax_error_detection
+Evaluation Timestamp: 2025-06-05T15:29:22.453082
+Target LLM: gemini-2.0-flash
+Judge LLMs: Pro/deepseek-ai/DeepSeek-V3, o4-mini, gemini-2.0-flash
+-------------------------------------------------
+
+[2025-06-05 15:28:45.442211] Run Indicator: sql_understanding, Parameters size: 9068B
+[2025-06-05 15:28:45.443266] 
+--- Capability: sql_understanding Indicator syntax_error_detection.jsonl Evaluating Type: objective  ---
+[2025-06-05 15:28:45.443304] 
+--- Case: 1 ---
+[2025-06-05 15:28:45.443338] [1] Case Run 1/1
+[2025-06-05 15:28:45.443367] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT product_id, product_name FROM products WHERE category = 'Electronics';
+
+[2025-06-05 15:28:45.443482] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT product_id, product_name FROM products WHERE category = \'Electronics\';\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:28:46.673145] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:28:46.673304] [1] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:28:46.673337] [1] Objective Eval Case Results: True
+[2025-06-05 15:28:46.673365] [1] objective Eval Case Final Result: True
+[2025-06-05 15:28:46.673383] 
+--- Case: 2 ---
+[2025-06-05 15:28:46.673427] [2] Case Run 1/1
+[2025-06-05 15:28:46.673451] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+INSERT INTO users (username, email) VALUES ('john_doe', 'john.doe@example.com');
+
+[2025-06-05 15:28:46.673530] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nINSERT INTO users (username, email) VALUES (\'john_doe\', \'john.doe@example.com\');\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:28:48.176736] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:28:48.176909] [2] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:28:48.176942] [2] Objective Eval Case Results: True
+[2025-06-05 15:28:48.176972] [2] objective Eval Case Final Result: True
+[2025-06-05 15:28:48.176990] 
+--- Case: 3 ---
+[2025-06-05 15:28:48.177034] [3] Case Run 1/1
+[2025-06-05 15:28:48.177059] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+UPDATE orders SET status = 'Shipped' WHERE order_id = 500;
+
+[2025-06-05 15:28:48.177137] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nUPDATE orders SET status = \'Shipped\' WHERE order_id = 500;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:28:49.379965] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:28:49.380209] [3] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:28:49.380241] [3] Objective Eval Case Results: True
+[2025-06-05 15:28:49.380271] [3] objective Eval Case Final Result: True
+[2025-06-05 15:28:49.380291] 
+--- Case: 4 ---
+[2025-06-05 15:28:49.380344] [4] Case Run 1/1
+[2025-06-05 15:28:49.380369] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+DELETE FROM inactive_accounts WHERE last_login < '2024-01-01';
+
+[2025-06-05 15:28:49.380450] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nDELETE FROM inactive_accounts WHERE last_login < \'2024-01-01\';\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:28:50.667448] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:28:50.667610] [4] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:28:50.667638] [4] Objective Eval Case Results: True
+[2025-06-05 15:28:50.667668] [4] objective Eval Case Final Result: True
+[2025-06-05 15:28:50.667687] 
+--- Case: 5 ---
+[2025-06-05 15:28:50.667732] [5] Case Run 1/1
+[2025-06-05 15:28:50.667756] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+INSERT INTO logs (event_type, event_date) VALUS ('Login', CURRENT_DATE());
+
+[2025-06-05 15:28:50.667832] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nINSERT INTO logs (event_type, event_date) VALUS (\'Login\', CURRENT_DATE());\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:28:51.899812] [Model Answer]: ```json
+{
+  "has_syntax_error": "yes"
+}
+```
+[2025-06-05 15:28:51.899967] [5] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-06-05 15:28:51.899990] [5] Objective Eval Case Results: True
+[2025-06-05 15:28:51.900220] [5] objective Eval Case Final Result: True
+[2025-06-05 15:28:51.900294] 
+--- Case: 6 ---
+[2025-06-05 15:28:51.900337] [6] Case Run 1/1
+[2025-06-05 15:28:51.900358] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT department_id, COUNT(employee_id) AS num_employees, AVG(salary) AS avg_salary FROM employees GROUP BY department_id HAVING AVG(salary) > 60000 ORDER BY avg_salary DESC;
+
+[2025-06-05 15:28:51.900420] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT department_id, COUNT(employee_id) AS num_employees, AVG(salary) AS avg_salary FROM employees GROUP BY department_id HAVING AVG(salary) > 60000 ORDER BY avg_salary DESC;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:28:53.131325] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:28:53.131428] [6] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:28:53.131441] [6] Objective Eval Case Results: True
+[2025-06-05 15:28:53.131455] [6] objective Eval Case Final Result: True
+[2025-06-05 15:28:53.131465] 
+--- Case: 7 ---
+[2025-06-05 15:28:53.131494] [7] Case Run 1/1
+[2025-06-05 15:28:53.131506] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT customer_name, order_date FROM customers JOIN orders ON customers.customer_id = orders.customer_id WHERE order_date BETWEEN '2024-01-01' AND '2024-03-31' ORDER BY order_date ASC LIMIT 20 OFFSET 5;
+
+[2025-06-05 15:28:53.131552] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT customer_name, order_date FROM customers JOIN orders ON customers.customer_id = orders.customer_id WHERE order_date BETWEEN \'2024-01-01\' AND \'2024-03-31\' ORDER BY order_date ASC LIMIT 20 OFFSET 5;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:28:54.333896] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:28:54.334038] [7] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:28:54.334075] [7] Objective Eval Case Results: True
+[2025-06-05 15:28:54.334102] [7] objective Eval Case Final Result: True
+[2025-06-05 15:28:54.334121] 
+--- Case: 8 ---
+[2025-06-05 15:28:54.334162] [8] Case Run 1/1
+[2025-06-05 15:28:54.334186] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT product_name, price, (price * 1.08) AS price_with_tax FROM products WHERE category IN ('Books', 'Movies') AND stock_quantity > 0;
+
+[2025-06-05 15:28:54.334264] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT product_name, price, (price * 1.08) AS price_with_tax FROM products WHERE category IN (\'Books\', \'Movies\') AND stock_quantity > 0;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:28:55.496477] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:28:55.496679] [8] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:28:55.496700] [8] Objective Eval Case Results: True
+[2025-06-05 15:28:55.496718] [8] objective Eval Case Final Result: True
+[2025-06-05 15:28:55.496729] 
+--- Case: 9 ---
+[2025-06-05 15:28:55.496764] [9] Case Run 1/1
+[2025-06-05 15:28:55.496779] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT LEFT(product_code, 2) AS category_prefix, SUM(quantity) AS total_sold FROM sales_items GROUP BY category_prefix HAVING SUM(quantity) > 100 ORDER BY total_sold DESC;
+
+[2025-06-05 15:28:55.496832] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT LEFT(product_code, 2) AS category_prefix, SUM(quantity) AS total_sold FROM sales_items GROUP BY category_prefix HAVING SUM(quantity) > 100 ORDER BY total_sold DESC;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:28:56.603330] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:28:56.603439] [9] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:28:56.603455] [9] Objective Eval Case Results: True
+[2025-06-05 15:28:56.603470] [9] objective Eval Case Final Result: True
+[2025-06-05 15:28:56.603480] 
+--- Case: 10 ---
+[2025-06-05 15:28:56.603509] [10] Case Run 1/1
+[2025-06-05 15:28:56.603522] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT employee_id, CONCAT(first_name, ' ', last_name) AS full_name, DATEDIFF(CURRENT_DATE(), hire_date) AS days_employed FROM employees WHERE DATEDIFF(CURRENT_DATE(), hire_date) > 3650;
+
+[2025-06-05 15:28:56.603571] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT employee_id, CONCAT(first_name, \' \', last_name) AS full_name, DATEDIFF(CURRENT_DATE(), hire_date) AS days_employed FROM employees WHERE DATEDIFF(CURRENT_DATE(), hire_date) > 3650;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:28:57.735515] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:28:57.735631] [10] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:28:57.735646] [10] Objective Eval Case Results: True
+[2025-06-05 15:28:57.735658] [10] objective Eval Case Final Result: True
+[2025-06-05 15:28:57.735668] 
+--- Case: 11 ---
+[2025-06-05 15:28:57.735697] [11] Case Run 1/1
+[2025-06-05 15:28:57.735709] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT MAX(score), MIN(score), AVG(score) FROM student_scores WHERE subject = 'Math' AND EXISTS (SELECT 1 FROM students WHERE student_id = student_scores.student_id AND grade_level = 10);
+
+[2025-06-05 15:28:57.735754] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT MAX(score), MIN(score), AVG(score) FROM student_scores WHERE subject = \'Math\' AND EXISTS (SELECT 1 FROM students WHERE student_id = student_scores.student_id AND grade_level = 10);\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:28:59.161387] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:28:59.161565] [11] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:28:59.161593] [11] Objective Eval Case Results: True
+[2025-06-05 15:28:59.161621] [11] objective Eval Case Final Result: True
+[2025-06-05 15:28:59.161640] 
+--- Case: 12 ---
+[2025-06-05 15:28:59.161716] [12] Case Run 1/1
+[2025-06-05 15:28:59.161742] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT COUNT(DISTINCT customer_id) AS unique_customers FROM orders WHERE order_date >= '2024-01-01' GROUP BY YEAR(order_date), MONTH(order_date);
+
+[2025-06-05 15:28:59.161821] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT COUNT(DISTINCT customer_id) AS unique_customers FROM orders WHERE order_date >= \'2024-01-01\' GROUP BY YEAR(order_date), MONTH(order_date);\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:00.353747] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:00.353825] [12] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:00.353836] [12] Objective Eval Case Results: True
+[2025-06-05 15:29:00.353847] [12] objective Eval Case Final Result: True
+[2025-06-05 15:29:00.353855] 
+--- Case: 13 ---
+[2025-06-05 15:29:00.353873] [13] Case Run 1/1
+[2025-06-05 15:29:00.353883] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT customer_name, LENGTH(customer_name) FROM customers WHERE LENGTH(customer_name) > 15 ORDER BY LENGTH(customer_name) DESC;
+
+[2025-06-05 15:29:00.353915] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT customer_name, LENGTH(customer_name) FROM customers WHERE LENGTH(customer_name) > 15 ORDER BY LENGTH(customer_name) DESC;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:01.526747] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:01.526897] [13] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:01.526927] [13] Objective Eval Case Results: True
+[2025-06-05 15:29:01.526953] [13] objective Eval Case Final Result: True
+[2025-06-05 15:29:01.526972] 
+--- Case: 14 ---
+[2025-06-05 15:29:01.527014] [14] Case Run 1/1
+[2025-06-05 15:29:01.527037] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT employee_id, CASE WHEN salary >= 80000 THEN 'High' WHEN salary >= 50000 THEN 'Medium' ELSE 'Low' END AS salary_level FROM employees ORDER BY salary_level DESC;
+
+[2025-06-05 15:29:01.527115] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT employee_id, CASE WHEN salary >= 80000 THEN \'High\' WHEN salary >= 50000 THEN \'Medium\' ELSE \'Low\' END AS salary_level FROM employees ORDER BY salary_level DESC;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:02.692578] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:02.692649] [14] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:02.692660] [14] Objective Eval Case Results: True
+[2025-06-05 15:29:02.692671] [14] objective Eval Case Final Result: True
+[2025-06-05 15:29:02.692679] 
+--- Case: 15 ---
+[2025-06-05 15:29:02.692697] [15] Case Run 1/1
+[2025-06-05 15:29:02.692707] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT region, SUM(amount) FROM sales_data WHERE sale_date BETWEEN '2024-01-01' AND '2024-01-31' GROUP BY region ORDER BY SUM(amount) DESC HAVING SUM(amount) > 50000;
+
+[2025-06-05 15:29:02.692748] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT region, SUM(amount) FROM sales_data WHERE sale_date BETWEEN \'2024-01-01\' AND \'2024-01-31\' GROUP BY region ORDER BY SUM(amount) DESC HAVING SUM(amount) > 50000;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:03.889949] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:03.890130] [15] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-06-05 15:29:03.890349] [15] Objective Eval Case Results: False
+[2025-06-05 15:29:03.890388] [15] objective Eval Case Final Result: False
+[2025-06-05 15:29:03.890408] 
+--- Case: 16 ---
+[2025-06-05 15:29:03.890455] [16] Case Run 1/1
+[2025-06-05 15:29:03.890481] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT c.customer_name, o.order_id, p.product_name, oi.quantity FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = 'Electronics' AND o.order_date > '2024-01-01' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id);
+
+[2025-06-05 15:29:03.890566] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT c.customer_name, o.order_id, p.product_name, oi.quantity FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = \'Electronics\' AND o.order_date > \'2024-01-01\' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id);\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:05.307083] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:05.307211] [16] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:05.307238] [16] Objective Eval Case Results: True
+[2025-06-05 15:29:05.307264] [16] objective Eval Case Final Result: True
+[2025-06-05 15:29:05.307282] 
+--- Case: 17 ---
+[2025-06-05 15:29:05.307317] [17] Case Run 1/1
+[2025-06-05 15:29:05.307344] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+WITH EmployeeSalaries AS (SELECT employee_id, department_id, salary FROM employees), DepartmentAvg AS (SELECT department_id, AVG(salary) AS avg_dept_salary FROM employees GROUP BY department_id) SELECT es.employee_id, es.salary, da.avg_dept_salary FROM EmployeeSalaries es JOIN DepartmentAvg da ON es.department_id = da.department_id WHERE es.salary > da.avg_dept_salary;
+
+[2025-06-05 15:29:05.307417] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nWITH EmployeeSalaries AS (SELECT employee_id, department_id, salary FROM employees), DepartmentAvg AS (SELECT department_id, AVG(salary) AS avg_dept_salary FROM employees GROUP BY department_id) SELECT es.employee_id, es.salary, da.avg_dept_salary FROM EmployeeSalaries es JOIN DepartmentAvg da ON es.department_id = da.department_id WHERE es.salary > da.avg_dept_salary;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:06.544765] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:06.544890] [17] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-06-05 15:29:06.544958] [17] Objective Eval Case Results: False
+[2025-06-05 15:29:06.544985] [17] objective Eval Case Final Result: False
+[2025-06-05 15:29:06.545004] 
+--- Case: 18 ---
+[2025-06-05 15:29:06.545040] [18] Case Run 1/1
+[2025-06-05 15:29:06.545062] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+INSERT INTO sales_archive (SELECT * FROM sales WHERE sale_date < '2023-01-01' AND status = 'Completed');
+
+[2025-06-05 15:29:06.545131] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nINSERT INTO sales_archive (SELECT * FROM sales WHERE sale_date < \'2023-01-01\' AND status = \'Completed\');\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:07.775666] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:07.775756] [18] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:07.775768] [18] Objective Eval Case Results: True
+[2025-06-05 15:29:07.775781] [18] objective Eval Case Final Result: True
+[2025-06-05 15:29:07.775791] 
+--- Case: 19 ---
+[2025-06-05 15:29:07.775817] [19] Case Run 1/1
+[2025-06-05 15:29:07.775829] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT p.product_name, p.price FROM products p WHERE p.product_id IN (SELECT oi.product_id FROM order_items oi GROUP BY oi.product_id HAVING COUNT(oi.order_id) > 10) AND p.category = 'Books' OR p.product_id IN (SELECT r.product_id FROM reviews r WHERE r.rating < 3 AND r.review_date > '2024-01-01') AND p.stock > 0;
+
+[2025-06-05 15:29:07.775873] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT p.product_name, p.price FROM products p WHERE p.product_id IN (SELECT oi.product_id FROM order_items oi GROUP BY oi.product_id HAVING COUNT(oi.order_id) > 10) AND p.category = \'Books\' OR p.product_id IN (SELECT r.product_id FROM reviews r WHERE r.rating < 3 AND r.review_date > \'2024-01-01\') AND p.stock > 0;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:09.098367] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:09.098456] [19] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:09.098468] [19] Objective Eval Case Results: True
+[2025-06-05 15:29:09.098478] [19] objective Eval Case Final Result: True
+[2025-06-05 15:29:09.098485] 
+--- Case: 20 ---
+[2025-06-05 15:29:09.098506] [20] Case Run 1/1
+[2025-06-05 15:29:09.098514] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT e.first_name, e.last_name, d.department_name FROM employees e LEFT JOIN departments d ON e.department_id = d.department_id WHERE e.employee_id NOT IN (SELECT manager_id FROM projects WHERE manager_id IS NOT NULL) UNION ALL SELECT c.contact_name, NULL, 'External Partner' FROM contacts c WHERE c.company_type = 'Supplier';
+
+[2025-06-05 15:29:09.098546] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT e.first_name, e.last_name, d.department_name FROM employees e LEFT JOIN departments d ON e.department_id = d.department_id WHERE e.employee_id NOT IN (SELECT manager_id FROM projects WHERE manager_id IS NOT NULL) UNION ALL SELECT c.contact_name, NULL, \'External Partner\' FROM contacts c WHERE c.company_type = \'Supplier\';\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:10.369084] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:10.369251] [20] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:10.369281] [20] Objective Eval Case Results: True
+[2025-06-05 15:29:10.369308] [20] objective Eval Case Final Result: True
+[2025-06-05 15:29:10.369328] 
+--- Case: 21 ---
+[2025-06-05 15:29:10.369371] [21] Case Run 1/1
+[2025-06-05 15:29:10.369396] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+CREATE VIEW high_value_customers AS SELECT c.customer_id, c.customer_name, SUM(o.total_amount) AS lifetime_value FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.customer_id, c.customer_name HAVING SUM(o.total_amount) > 1000 ORDER BY lifetime_value DESC;
+
+[2025-06-05 15:29:10.369477] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nCREATE VIEW high_value_customers AS SELECT c.customer_id, c.customer_name, SUM(o.total_amount) AS lifetime_value FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.customer_id, c.customer_name HAVING SUM(o.total_amount) > 1000 ORDER BY lifetime_value DESC;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:11.503963] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:11.504119] [21] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:11.504149] [21] Objective Eval Case Results: True
+[2025-06-05 15:29:11.504176] [21] objective Eval Case Final Result: True
+[2025-06-05 15:29:11.504195] 
+--- Case: 22 ---
+[2025-06-05 15:29:11.504238] [22] Case Run 1/1
+[2025-06-05 15:29:11.504262] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT T1.colA, T1.colB FROM table1 T1 WHERE T1.colC = (SELECT MAX(T2.colD) FROM table2 T2 WHERE T2.colE = T1.colA AND T2.colF IN ('status1', 'status2'));
+
+[2025-06-05 15:29:11.504342] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT T1.colA, T1.colB FROM table1 T1 WHERE T1.colC = (SELECT MAX(T2.colD) FROM table2 T2 WHERE T2.colE = T1.colA AND T2.colF IN (\'status1\', \'status2\'));\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:12.633828] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:12.633992] [22] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:12.634021] [22] Objective Eval Case Results: True
+[2025-06-05 15:29:12.634049] [22] objective Eval Case Final Result: True
+[2025-06-05 15:29:12.634069] 
+--- Case: 23 ---
+[2025-06-05 15:29:12.634112] [23] Case Run 1/1
+[2025-06-05 15:29:12.634136] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+BEGIN TRANSACTION; UPDATE accounts SET balance = balance - 100 WHERE account_id = 101; SAVEPOINT deduct_funds; INSERT INTO transactions (account_id, amount, type) VALUES (102, 100, 'deposit'); COMMIT;
+
+[2025-06-05 15:29:12.634216] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nBEGIN TRANSACTION; UPDATE accounts SET balance = balance - 100 WHERE account_id = 101; SAVEPOINT deduct_funds; INSERT INTO transactions (account_id, amount, type) VALUES (102, 100, \'deposit\'); COMMIT;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:13.738537] [Model Answer]: ```json
+{
+  "has_syntax_error": "yes"
+}
+```
+[2025-06-05 15:29:13.738698] [23] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:13.738783] [23] Objective Eval Case Results: False
+[2025-06-05 15:29:13.738814] [23] objective Eval Case Final Result: False
+[2025-06-05 15:29:13.738833] 
+--- Case: 24 ---
+[2025-06-05 15:29:13.738876] [24] Case Run 1/1
+[2025-06-05 15:29:13.738900] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT a.artist_name, COUNT(s.song_id) AS num_songs FROM artists a JOIN songs s ON a.artist_id = s.artist_id GROUP BY a.artist_name HAVING COUNT(s.song_id) > 5 AND a.genre = 'Rock' ORDER BY num_songs DESC LIMIT 10;
+
+[2025-06-05 15:29:13.738982] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT a.artist_name, COUNT(s.song_id) AS num_songs FROM artists a JOIN songs s ON a.artist_id = s.artist_id GROUP BY a.artist_name HAVING COUNT(s.song_id) > 5 AND a.genre = \'Rock\' ORDER BY num_songs DESC LIMIT 10;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:14.841580] [Model Answer]: ```json
+{
+  "has_syntax_error": "yes"
+}
+```
+[2025-06-05 15:29:14.841737] [24] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:14.841819] [24] Objective Eval Case Results: False
+[2025-06-05 15:29:14.841851] [24] objective Eval Case Final Result: False
+[2025-06-05 15:29:14.841881] 
+--- Case: 25 ---
+[2025-06-05 15:29:14.841930] [25] Case Run 1/1
+[2025-06-05 15:29:14.841957] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+WITH MonthlySales AS (SELECT DATE_TRUNC('month', sale_date) AS sale_month, SUM(amount) AS total_monthly_sales FROM sales GROUP BY DATE_TRUNC('month', sale_date)), AvgSales AS (SELECT AVG(total_monthly_sales) FROM MonthlySales) SELECT ms.sale_month, ms.total_monthly_sales FROM MonthlySales ms WHERE ms.total_monthly_sales > (SELECT * FROM AvgSales);
+
+[2025-06-05 15:29:14.842041] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nWITH MonthlySales AS (SELECT DATE_TRUNC(\'month\', sale_date) AS sale_month, SUM(amount) AS total_monthly_sales FROM sales GROUP BY DATE_TRUNC(\'month\', sale_date)), AvgSales AS (SELECT AVG(total_monthly_sales) FROM MonthlySales) SELECT ms.sale_month, ms.total_monthly_sales FROM MonthlySales ms WHERE ms.total_monthly_sales > (SELECT * FROM AvgSales);\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:16.070112] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:16.070269] [25] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-06-05 15:29:16.070346] [25] Objective Eval Case Results: False
+[2025-06-05 15:29:16.070376] [25] objective Eval Case Final Result: False
+[2025-06-05 15:29:16.070396] 
+--- Case: 26 ---
+[2025-06-05 15:29:16.070439] [26] Case Run 1/1
+[2025-06-05 15:29:16.070463] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT c.customer_name, o.order_id, p.product_name FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = 'Books' AND o.order_date > '2023-01-01' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id AND order_date BETWEEN '2023-01-01' AND '2023-12-31';
+
+[2025-06-05 15:29:16.070542] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT c.customer_name, o.order_id, p.product_name FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = \'Books\' AND o.order_date > \'2023-01-01\' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id AND order_date BETWEEN \'2023-01-01\' AND \'2023-12-31\';\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:17.241554] [Model Answer]: ```json
+{
+  "has_syntax_error": "yes"
+}
+```
+[2025-06-05 15:29:17.241704] [26] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-06-05 15:29:17.241732] [26] Objective Eval Case Results: True
+[2025-06-05 15:29:17.241759] [26] objective Eval Case Final Result: True
+[2025-06-05 15:29:17.241777] 
+--- Case: 27 ---
+[2025-06-05 15:29:17.241819] [27] Case Run 1/1
+[2025-06-05 15:29:17.241843] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+UPDATE inventory SET stock = stock - 10 WHERE product_id IN (SELECT product_id FROM low_stock_alerts WHERE alert_date < CURRENT_DATE() AND alert_level = 'Critical') OR product_id IN (SELECT product_id FROM recent_sales WHERE sale_date > '2024-05-01' AND quantity_sold > 5 AND stock < 20);
+
+[2025-06-05 15:29:17.241921] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nUPDATE inventory SET stock = stock - 10 WHERE product_id IN (SELECT product_id FROM low_stock_alerts WHERE alert_date < CURRENT_DATE() AND alert_level = \'Critical\') OR product_id IN (SELECT product_id FROM recent_sales WHERE sale_date > \'2024-05-01\' AND quantity_sold > 5 AND stock < 20);\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:18.356510] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:18.356626] [27] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:18.356644] [27] Objective Eval Case Results: True
+[2025-06-05 15:29:18.356661] [27] objective Eval Case Final Result: True
+[2025-06-05 15:29:18.356672] 
+--- Case: 28 ---
+[2025-06-05 15:29:18.356704] [28] Case Run 1/1
+[2025-06-05 15:29:18.356719] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT emp_id, emp_name FROM employees WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = 'New York' AND dept_id NOT IN (SELECT dept_id FROM projects WHERE project_status = 'Completed' ORDER BY project_id));
+
+[2025-06-05 15:29:18.356772] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT emp_id, emp_name FROM employees WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = \'New York\' AND dept_id NOT IN (SELECT dept_id FROM projects WHERE project_status = \'Completed\' ORDER BY project_id));\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:19.846773] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:19.846878] [28] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:19.846896] [28] Objective Eval Case Results: True
+[2025-06-05 15:29:19.846913] [28] objective Eval Case Final Result: True
+[2025-06-05 15:29:19.846924] 
+--- Case: 29 ---
+[2025-06-05 15:29:19.846956] [29] Case Run 1/1
+[2025-06-05 15:29:19.846970] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+BEGIN TRANSACTION; INSERT INTO audit_log (action, timestamp) VALUES ('User login attempt', NOW()); UPDATE users SET last_login = NOW() WHERE username = 'testuser'; COMMIT TRANSACTION SELECT * FROM users WHERE username = 'testuser';
+
+[2025-06-05 15:29:19.847020] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nBEGIN TRANSACTION; INSERT INTO audit_log (action, timestamp) VALUES (\'User login attempt\', NOW()); UPDATE users SET last_login = NOW() WHERE username = \'testuser\'; COMMIT TRANSACTION SELECT * FROM users WHERE username = \'testuser\';\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:21.178783] [Model Answer]: ```json
+{
+  "has_syntax_error": "yes"
+}
+```
+[2025-06-05 15:29:21.178895] [29] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-06-05 15:29:21.178914] [29] Objective Eval Case Results: True
+[2025-06-05 15:29:21.178933] [29] objective Eval Case Final Result: True
+[2025-06-05 15:29:21.178945] 
+--- Case: 30 ---
+[2025-06-05 15:29:21.178976] [30] Case Run 1/1
+[2025-06-05 15:29:21.178992] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+CREATE VIEW popular_products_view AS SELECT p.product_id, p.product_name, SUM(oi.quantity) AS total_quantity_sold FROM products p JOIN order_items oi ON p.product_id = oi.product_id GROUP BY p.product_id, p.product_name HAVING SUM(oi.quantity) > 50 AND p.category = 'Gadgets' AND (SELECT COUNT(review_id) FROM reviews WHERE product_id = p.product_id) > 10 ORDER BY total_quantity_sold DESC;
+
+[2025-06-05 15:29:21.179047] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nCREATE VIEW popular_products_view AS SELECT p.product_id, p.product_name, SUM(oi.quantity) AS total_quantity_sold FROM products p JOIN order_items oi ON p.product_id = oi.product_id GROUP BY p.product_id, p.product_name HAVING SUM(oi.quantity) > 50 AND p.category = \'Gadgets\' AND (SELECT COUNT(review_id) FROM reviews WHERE product_id = p.product_id) > 10 ORDER BY total_quantity_sold DESC;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:22.452466] [Model Answer]: ```json
+{
+  "has_syntax_error": "no"
+}
+```
+[2025-06-05 15:29:22.452588] [30] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-06-05 15:29:22.452606] [30] Objective Eval Case Results: True
+[2025-06-05 15:29:22.452623] [30] objective Eval Case Final Result: True

@@ -1,0 +1,495 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20250605_174939_725
+Run Dimensions: sql_understanding
+Run Indicator: sql_identification
+Evaluation Timestamp: 2025-06-05T17:54:54.314618
+Target LLM: Pro/deepseek-ai/DeepSeek-V3
+Judge LLMs: Pro/deepseek-ai/DeepSeek-V3, o4-mini, gemini-2.0-flash
+-------------------------------------------------
+
+[2025-06-05 17:54:06.133968] Run Indicator: sql_understanding, Parameters size: 4760B
+[2025-06-05 17:54:06.134870] 
+--- Capability: sql_understanding Indicator sql_identification.jsonl Evaluating Type: objective  ---
+[2025-06-05 17:54:06.134887] 
+--- Case: 1 ---
+[2025-06-05 17:54:06.134905] [1] Case Run 1/1
+[2025-06-05 17:54:06.134920] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT product_name, price FROM products WHERE price > 100 AND stock_quantity IS NOT NULL;
+
+[2025-06-05 17:54:06.135000] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT product_name, price FROM products WHERE price > 100 AND stock_quantity IS NOT NULL;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:08.644108] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 17:54:08.644308] [1] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 17:54:08.644340] [1] Objective Eval Case Results: True
+[2025-06-05 17:54:08.644370] [1] objective Eval Case Final Result: True
+[2025-06-05 17:54:08.644393] 
+--- Case: 2 ---
+[2025-06-05 17:54:08.644437] [2] Case Run 1/1
+[2025-06-05 17:54:08.644467] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+INSERT INTO orders (customer_id, order_date, total_amount) VALUES (101, '2025-05-29', 249.99);
+
+[2025-06-05 17:54:08.644555] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nINSERT INTO orders (customer_id, order_date, total_amount) VALUES (101, \'2025-05-29\', 249.99);\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:10.997723] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "INSERT"
+}
+```
+[2025-06-05 17:54:10.997787] [2] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'INSERT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'INSERT'}'
+[2025-06-05 17:54:10.997798] [2] Objective Eval Case Results: True
+[2025-06-05 17:54:10.997809] [2] objective Eval Case Final Result: True
+[2025-06-05 17:54:10.997816] 
+--- Case: 3 ---
+[2025-06-05 17:54:10.997833] [3] Case Run 1/1
+[2025-06-05 17:54:10.997842] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+UPDATE employees SET department_id = 3, hire_date = '2023-01-15' WHERE employee_id = 205;
+
+[2025-06-05 17:54:10.997873] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nUPDATE employees SET department_id = 3, hire_date = \'2023-01-15\' WHERE employee_id = 205;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:13.012371] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "UPDATE"
+}
+```
+[2025-06-05 17:54:13.012760] [3] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'UPDATE'}', Expected: '{'sql_type': 'DML', 'statement_type': 'UPDATE'}'
+[2025-06-05 17:54:13.012798] [3] Objective Eval Case Results: True
+[2025-06-05 17:54:13.012820] [3] objective Eval Case Final Result: True
+[2025-06-05 17:54:13.012831] 
+--- Case: 4 ---
+[2025-06-05 17:54:13.012865] [4] Case Run 1/1
+[2025-06-05 17:54:13.012882] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+DELETE FROM sessions WHERE last_activity < NOW() - INTERVAL '30 MINUTE';
+
+[2025-06-05 17:54:13.012943] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nDELETE FROM sessions WHERE last_activity < NOW() - INTERVAL \'30 MINUTE\';\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:14.975614] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "DELETE"
+}
+```
+[2025-06-05 17:54:14.975757] [4] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'DELETE'}', Expected: '{'sql_type': 'DML', 'statement_type': 'DELETE'}'
+[2025-06-05 17:54:14.975785] [4] Objective Eval Case Results: True
+[2025-06-05 17:54:14.975818] [4] objective Eval Case Final Result: True
+[2025-06-05 17:54:14.975837] 
+--- Case: 5 ---
+[2025-06-05 17:54:14.975878] [5] Case Run 1/1
+[2025-06-05 17:54:14.975901] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT MAX(salary) AS highest_salary, MIN(salary) AS lowest_salary FROM employees WHERE department = 'Sales';
+
+[2025-06-05 17:54:14.975977] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT MAX(salary) AS highest_salary, MIN(salary) AS lowest_salary FROM employees WHERE department = \'Sales\';\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:16.881176] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 17:54:16.881335] [5] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 17:54:16.881364] [5] Objective Eval Case Results: True
+[2025-06-05 17:54:16.881403] [5] objective Eval Case Final Result: True
+[2025-06-05 17:54:16.881424] 
+--- Case: 6 ---
+[2025-06-05 17:54:16.881464] [6] Case Run 1/1
+[2025-06-05 17:54:16.881489] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT category, AVG(rating) AS average_rating FROM reviews GROUP BY category ORDER BY average_rating DESC;
+
+[2025-06-05 17:54:16.881577] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT category, AVG(rating) AS average_rating FROM reviews GROUP BY category ORDER BY average_rating DESC;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:19.176009] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 17:54:19.176160] [6] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 17:54:19.176187] [6] Objective Eval Case Results: True
+[2025-06-05 17:54:19.176214] [6] objective Eval Case Final Result: True
+[2025-06-05 17:54:19.176232] 
+--- Case: 7 ---
+[2025-06-05 17:54:19.176273] [7] Case Run 1/1
+[2025-06-05 17:54:19.176297] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT order_id, customer_id, total_amount FROM orders WHERE order_date BETWEEN '2025-01-01' AND '2025-03-31' LIMIT 50 OFFSET 100;
+
+[2025-06-05 17:54:19.176378] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT order_id, customer_id, total_amount FROM orders WHERE order_date BETWEEN \'2025-01-01\' AND \'2025-03-31\' LIMIT 50 OFFSET 100;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:22.056177] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 17:54:22.056298] [7] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 17:54:22.056333] [7] Objective Eval Case Results: True
+[2025-06-05 17:54:22.056359] [7] objective Eval Case Final Result: True
+[2025-06-05 17:54:22.056377] 
+--- Case: 8 ---
+[2025-06-05 17:54:22.056410] [8] Case Run 1/1
+[2025-06-05 17:54:22.056432] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT DISTINCT status FROM tasks WHERE completion_date IS NULL;
+
+[2025-06-05 17:54:22.056502] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT DISTINCT status FROM tasks WHERE completion_date IS NULL;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:24.622795] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 17:54:24.622863] [8] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 17:54:24.622874] [8] Objective Eval Case Results: True
+[2025-06-05 17:54:24.622885] [8] objective Eval Case Final Result: True
+[2025-06-05 17:54:24.622892] 
+--- Case: 9 ---
+[2025-06-05 17:54:24.622908] [9] Case Run 1/1
+[2025-06-05 17:54:24.622918] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+ALTER TABLE users MODIFY COLUMN username VARCHAR(150) NOT NULL UNIQUE;
+
+[2025-06-05 17:54:24.622950] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nALTER TABLE users MODIFY COLUMN username VARCHAR(150) NOT NULL UNIQUE;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:27.015383] [Model Answer]: ```json
+{
+  "sql_type": "DDL",
+  "statement_type": "ALTER"
+}
+```
+[2025-06-05 17:54:27.015491] [9] Objective Eval: Format Model Answer: '{'sql_type': 'DDL', 'statement_type': 'ALTER'}', Expected: '{'sql_type': 'DDL', 'statement_type': 'ALTER'}'
+[2025-06-05 17:54:27.015507] [9] Objective Eval Case Results: True
+[2025-06-05 17:54:27.015521] [9] objective Eval Case Final Result: True
+[2025-06-05 17:54:27.015530] 
+--- Case: 10 ---
+[2025-06-05 17:54:27.015556] [10] Case Run 1/1
+[2025-06-05 17:54:27.015569] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT c.customer_name, SUM(o.total_amount) AS total_spent FROM customers c JOIN orders o ON c.customer_id = o.customer_id WHERE o.order_date >= '2025-01-01' GROUP BY c.customer_name HAVING SUM(o.total_amount) > (SELECT AVG(total_amount) FROM orders);
+
+[2025-06-05 17:54:27.015615] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT c.customer_name, SUM(o.total_amount) AS total_spent FROM customers c JOIN orders o ON c.customer_id = o.customer_id WHERE o.order_date >= \'2025-01-01\' GROUP BY c.customer_name HAVING SUM(o.total_amount) > (SELECT AVG(total_amount) FROM orders);\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:29.022902] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 17:54:29.022999] [10] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 17:54:29.023013] [10] Objective Eval Case Results: True
+[2025-06-05 17:54:29.023027] [10] objective Eval Case Final Result: True
+[2025-06-05 17:54:29.023036] 
+--- Case: 11 ---
+[2025-06-05 17:54:29.023064] [11] Case Run 1/1
+[2025-06-05 17:54:29.023076] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT e.employee_name, d.department_name, (SELECT COUNT(*) FROM projects p WHERE p.manager_id = e.employee_id) AS managed_projects_count FROM employees e JOIN departments d ON e.department_id = d.department_id WHERE e.salary > 50000 AND e.status = 'Active';
+
+[2025-06-05 17:54:29.023119] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT e.employee_name, d.department_name, (SELECT COUNT(*) FROM projects p WHERE p.manager_id = e.employee_id) AS managed_projects_count FROM employees e JOIN departments d ON e.department_id = d.department_id WHERE e.salary > 50000 AND e.status = \'Active\';\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:31.050916] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 17:54:31.051054] [11] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 17:54:31.051076] [11] Objective Eval Case Results: True
+[2025-06-05 17:54:31.051097] [11] objective Eval Case Final Result: True
+[2025-06-05 17:54:31.051111] 
+--- Case: 12 ---
+[2025-06-05 17:54:31.051144] [12] Case Run 1/1
+[2025-06-05 17:54:31.051163] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SAVEPOINT UpdateCustomers;
+
+[2025-06-05 17:54:31.051226] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSAVEPOINT UpdateCustomers;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:33.730479] [Model Answer]: ```json
+{
+  "sql_type": "TCL",
+  "statement_type": "SAVEPOINT"
+}
+```
+[2025-06-05 17:54:33.730585] [12] Objective Eval: Format Model Answer: '{'sql_type': 'TCL', 'statement_type': 'SAVEPOINT'}', Expected: '{'sql_type': 'TCL', 'statement_type': 'SAVEPOINT'}'
+[2025-06-05 17:54:33.730602] [12] Objective Eval Case Results: True
+[2025-06-05 17:54:33.730615] [12] objective Eval Case Final Result: True
+[2025-06-05 17:54:33.730623] 
+--- Case: 13 ---
+[2025-06-05 17:54:33.730645] [13] Case Run 1/1
+[2025-06-05 17:54:33.730656] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+CREATE VIEW active_users AS SELECT user_id, username, email FROM users WHERE status = 'Active' WITH CHECK OPTION;
+
+[2025-06-05 17:54:33.730695] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nCREATE VIEW active_users AS SELECT user_id, username, email FROM users WHERE status = \'Active\' WITH CHECK OPTION;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:35.995687] [Model Answer]: ```json
+{
+  "sql_type": "DDL",
+  "statement_type": "CREATE"
+}
+```
+[2025-06-05 17:54:35.995845] [13] Objective Eval: Format Model Answer: '{'sql_type': 'DDL', 'statement_type': 'CREATE'}', Expected: '{'sql_type': 'DDL', 'statement_type': 'CREATE'}'
+[2025-06-05 17:54:35.995873] [13] Objective Eval Case Results: True
+[2025-06-05 17:54:35.995899] [13] objective Eval Case Final Result: True
+[2025-06-05 17:54:35.995917] 
+--- Case: 14 ---
+[2025-06-05 17:54:35.995956] [14] Case Run 1/1
+[2025-06-05 17:54:35.995980] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+GRANT ALL PRIVILEGES ON DATABASE inventory_db TO 'admin_user' WITH GRANT OPTION;
+
+[2025-06-05 17:54:35.996106] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nGRANT ALL PRIVILEGES ON DATABASE inventory_db TO \'admin_user\' WITH GRANT OPTION;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:39.063864] [Model Answer]: ```json
+{
+  "sql_type": "DCL",
+  "statement_type": "GRANT"
+}
+```
+[2025-06-05 17:54:39.064020] [14] Objective Eval: Format Model Answer: '{'sql_type': 'DCL', 'statement_type': 'GRANT'}', Expected: '{'sql_type': 'DCL', 'statement_type': 'GRANT'}'
+[2025-06-05 17:54:39.064049] [14] Objective Eval Case Results: True
+[2025-06-05 17:54:39.064076] [14] objective Eval Case Final Result: True
+[2025-06-05 17:54:39.064095] 
+--- Case: 15 ---
+[2025-06-05 17:54:39.064136] [15] Case Run 1/1
+[2025-06-05 17:54:39.064160] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+REVOKE DELETE ON TABLE financial_records FROM 'accountant_role';
+
+[2025-06-05 17:54:39.064236] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nREVOKE DELETE ON TABLE financial_records FROM \'accountant_role\';\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:42.211084] [Model Answer]: ```json
+{
+  "sql_type": "DCL",
+  "statement_type": "REVOKE"
+}
+```
+[2025-06-05 17:54:42.211233] [15] Objective Eval: Format Model Answer: '{'sql_type': 'DCL', 'statement_type': 'REVOKE'}', Expected: '{'sql_type': 'DCL', 'statement_type': 'REVOKE'}'
+[2025-06-05 17:54:42.211259] [15] Objective Eval Case Results: True
+[2025-06-05 17:54:42.211284] [15] objective Eval Case Final Result: True
+[2025-06-05 17:54:42.211304] 
+--- Case: 16 ---
+[2025-06-05 17:54:42.211341] [16] Case Run 1/1
+[2025-06-05 17:54:42.211365] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT product_name, price, stock_quantity, CASE WHEN stock_quantity < 10 THEN 'Low Stock' WHEN stock_quantity BETWEEN 10 AND 50 THEN 'Medium Stock' ELSE 'High Stock' END AS stock_status FROM products ORDER BY stock_status, price DESC;
+
+[2025-06-05 17:54:42.211446] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT product_name, price, stock_quantity, CASE WHEN stock_quantity < 10 THEN \'Low Stock\' WHEN stock_quantity BETWEEN 10 AND 50 THEN \'Medium Stock\' ELSE \'High Stock\' END AS stock_status FROM products ORDER BY stock_status, price DESC;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:44.916656] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 17:54:44.916850] [16] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 17:54:44.916883] [16] Objective Eval Case Results: True
+[2025-06-05 17:54:44.916917] [16] objective Eval Case Final Result: True
+[2025-06-05 17:54:44.916935] 
+--- Case: 17 ---
+[2025-06-05 17:54:44.916978] [17] Case Run 1/1
+[2025-06-05 17:54:44.917002] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+WITH RegionalSales AS (SELECT region, SUM(amount) AS total_region_sales FROM sales GROUP BY region) SELECT s.sale_id, s.product_id, s.amount, r.total_region_sales FROM sales s JOIN RegionalSales r ON s.region = r.region WHERE s.amount > r.total_region_sales / 10;
+
+[2025-06-05 17:54:44.917084] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nWITH RegionalSales AS (SELECT region, SUM(amount) AS total_region_sales FROM sales GROUP BY region) SELECT s.sale_id, s.product_id, s.amount, r.total_region_sales FROM sales s JOIN RegionalSales r ON s.region = r.region WHERE s.amount > r.total_region_sales / 10;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:47.510513] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 17:54:47.510576] [17] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 17:54:47.510604] [17] Objective Eval Case Results: True
+[2025-06-05 17:54:47.510626] [17] objective Eval Case Final Result: True
+[2025-06-05 17:54:47.510635] 
+--- Case: 18 ---
+[2025-06-05 17:54:47.510667] [18] Case Run 1/1
+[2025-06-05 17:54:47.510678] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT employee_id, employee_name, department_id, ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rn FROM employees WHERE department_id IN (1, 2, 3);
+
+[2025-06-05 17:54:47.510712] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT employee_id, employee_name, department_id, ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rn FROM employees WHERE department_id IN (1, 2, 3);\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:49.568147] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 17:54:49.568321] [18] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 17:54:49.568351] [18] Objective Eval Case Results: True
+[2025-06-05 17:54:49.568379] [18] objective Eval Case Final Result: True
+[2025-06-05 17:54:49.568400] 
+--- Case: 19 ---
+[2025-06-05 17:54:49.568449] [19] Case Run 1/1
+[2025-06-05 17:54:49.568482] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+INSERT INTO sales_archive SELECT * FROM sales WHERE sale_date < '2024-01-01' ON CONFLICT (sale_id) DO UPDATE SET archived_date = NOW();
+
+[2025-06-05 17:54:49.568556] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nINSERT INTO sales_archive SELECT * FROM sales WHERE sale_date < \'2024-01-01\' ON CONFLICT (sale_id) DO UPDATE SET archived_date = NOW();\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:52.165862] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "INSERT"
+}
+```
+[2025-06-05 17:54:52.166030] [19] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'INSERT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'INSERT'}'
+[2025-06-05 17:54:52.166061] [19] Objective Eval Case Results: True
+[2025-06-05 17:54:52.166090] [19] objective Eval Case Final Result: True
+[2025-06-05 17:54:52.166109] 
+--- Case: 20 ---
+[2025-06-05 17:54:52.166150] [20] Case Run 1/1
+[2025-06-05 17:54:52.166175] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+TRUNCATE TABLE large_log_table REUSE STORAGE;
+
+[2025-06-05 17:54:52.166255] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nTRUNCATE TABLE large_log_table REUSE STORAGE;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 17:54:54.312947] [Model Answer]: ```json
+{
+  "sql_type": "DDL",
+  "statement_type": "TRUNCATE"
+}
+```
+[2025-06-05 17:54:54.313106] [20] Objective Eval: Format Model Answer: '{'sql_type': 'DDL', 'statement_type': 'TRUNCATE'}', Expected: '{'sql_type': 'DDL', 'statement_type': 'TRUNCATE'}'
+[2025-06-05 17:54:54.313137] [20] Objective Eval Case Results: True
+[2025-06-05 17:54:54.313165] [20] objective Eval Case Final Result: True

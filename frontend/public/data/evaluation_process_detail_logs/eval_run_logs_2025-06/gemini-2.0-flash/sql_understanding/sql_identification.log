@@ -1,0 +1,495 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20250605_152722_691
+Run Dimensions: sql_understanding
+Run Indicator: sql_identification
+Evaluation Timestamp: 2025-06-05T15:29:49.000032
+Target LLM: gemini-2.0-flash
+Judge LLMs: Pro/deepseek-ai/DeepSeek-V3, o4-mini, gemini-2.0-flash
+-------------------------------------------------
+
+[2025-06-05 15:29:22.454541] Run Indicator: sql_understanding, Parameters size: 4760B
+[2025-06-05 15:29:22.455318] 
+--- Capability: sql_understanding Indicator sql_identification.jsonl Evaluating Type: objective  ---
+[2025-06-05 15:29:22.455332] 
+--- Case: 1 ---
+[2025-06-05 15:29:22.455351] [1] Case Run 1/1
+[2025-06-05 15:29:22.455369] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT product_name, price FROM products WHERE price > 100 AND stock_quantity IS NOT NULL;
+
+[2025-06-05 15:29:22.455425] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT product_name, price FROM products WHERE price > 100 AND stock_quantity IS NOT NULL;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:23.942214] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:29:23.942329] [1] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:29:23.942347] [1] Objective Eval Case Results: True
+[2025-06-05 15:29:23.942363] [1] objective Eval Case Final Result: True
+[2025-06-05 15:29:23.942373] 
+--- Case: 2 ---
+[2025-06-05 15:29:23.942403] [2] Case Run 1/1
+[2025-06-05 15:29:23.942419] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+INSERT INTO orders (customer_id, order_date, total_amount) VALUES (101, '2025-05-29', 249.99);
+
+[2025-06-05 15:29:23.942470] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nINSERT INTO orders (customer_id, order_date, total_amount) VALUES (101, \'2025-05-29\', 249.99);\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:25.245322] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "INSERT"
+}
+```
+[2025-06-05 15:29:25.245446] [2] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'INSERT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'INSERT'}'
+[2025-06-05 15:29:25.245464] [2] Objective Eval Case Results: True
+[2025-06-05 15:29:25.245483] [2] objective Eval Case Final Result: True
+[2025-06-05 15:29:25.245495] 
+--- Case: 3 ---
+[2025-06-05 15:29:25.245526] [3] Case Run 1/1
+[2025-06-05 15:29:25.245542] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+UPDATE employees SET department_id = 3, hire_date = '2023-01-15' WHERE employee_id = 205;
+
+[2025-06-05 15:29:25.245595] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nUPDATE employees SET department_id = 3, hire_date = \'2023-01-15\' WHERE employee_id = 205;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:26.438520] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "UPDATE"
+}
+```
+[2025-06-05 15:29:26.438649] [3] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'UPDATE'}', Expected: '{'sql_type': 'DML', 'statement_type': 'UPDATE'}'
+[2025-06-05 15:29:26.438669] [3] Objective Eval Case Results: True
+[2025-06-05 15:29:26.438686] [3] objective Eval Case Final Result: True
+[2025-06-05 15:29:26.438698] 
+--- Case: 4 ---
+[2025-06-05 15:29:26.438728] [4] Case Run 1/1
+[2025-06-05 15:29:26.438743] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+DELETE FROM sessions WHERE last_activity < NOW() - INTERVAL '30 MINUTE';
+
+[2025-06-05 15:29:26.438817] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nDELETE FROM sessions WHERE last_activity < NOW() - INTERVAL \'30 MINUTE\';\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:27.717877] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "DELETE"
+}
+```
+[2025-06-05 15:29:27.718007] [4] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'DELETE'}', Expected: '{'sql_type': 'DML', 'statement_type': 'DELETE'}'
+[2025-06-05 15:29:27.718026] [4] Objective Eval Case Results: True
+[2025-06-05 15:29:27.718044] [4] objective Eval Case Final Result: True
+[2025-06-05 15:29:27.718056] 
+--- Case: 5 ---
+[2025-06-05 15:29:27.718088] [5] Case Run 1/1
+[2025-06-05 15:29:27.718106] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT MAX(salary) AS highest_salary, MIN(salary) AS lowest_salary FROM employees WHERE department = 'Sales';
+
+[2025-06-05 15:29:27.718160] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT MAX(salary) AS highest_salary, MIN(salary) AS lowest_salary FROM employees WHERE department = \'Sales\';\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:29.001641] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:29:29.001731] [5] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:29:29.001742] [5] Objective Eval Case Results: True
+[2025-06-05 15:29:29.001751] [5] objective Eval Case Final Result: True
+[2025-06-05 15:29:29.001757] 
+--- Case: 6 ---
+[2025-06-05 15:29:29.001776] [6] Case Run 1/1
+[2025-06-05 15:29:29.001782] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT category, AVG(rating) AS average_rating FROM reviews GROUP BY category ORDER BY average_rating DESC;
+
+[2025-06-05 15:29:29.001811] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT category, AVG(rating) AS average_rating FROM reviews GROUP BY category ORDER BY average_rating DESC;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:30.292923] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:29:30.293042] [6] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:29:30.293060] [6] Objective Eval Case Results: True
+[2025-06-05 15:29:30.293078] [6] objective Eval Case Final Result: True
+[2025-06-05 15:29:30.293089] 
+--- Case: 7 ---
+[2025-06-05 15:29:30.293121] [7] Case Run 1/1
+[2025-06-05 15:29:30.293136] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT order_id, customer_id, total_amount FROM orders WHERE order_date BETWEEN '2025-01-01' AND '2025-03-31' LIMIT 50 OFFSET 100;
+
+[2025-06-05 15:29:30.293211] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT order_id, customer_id, total_amount FROM orders WHERE order_date BETWEEN \'2025-01-01\' AND \'2025-03-31\' LIMIT 50 OFFSET 100;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:31.932081] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:29:31.932207] [7] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:29:31.932231] [7] Objective Eval Case Results: True
+[2025-06-05 15:29:31.932250] [7] objective Eval Case Final Result: True
+[2025-06-05 15:29:31.932261] 
+--- Case: 8 ---
+[2025-06-05 15:29:31.932294] [8] Case Run 1/1
+[2025-06-05 15:29:31.932310] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT DISTINCT status FROM tasks WHERE completion_date IS NULL;
+
+[2025-06-05 15:29:31.932367] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT DISTINCT status FROM tasks WHERE completion_date IS NULL;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:33.245434] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:29:33.245591] [8] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:29:33.245612] [8] Objective Eval Case Results: True
+[2025-06-05 15:29:33.245635] [8] objective Eval Case Final Result: True
+[2025-06-05 15:29:33.245652] 
+--- Case: 9 ---
+[2025-06-05 15:29:33.245694] [9] Case Run 1/1
+[2025-06-05 15:29:33.245714] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+ALTER TABLE users MODIFY COLUMN username VARCHAR(150) NOT NULL UNIQUE;
+
+[2025-06-05 15:29:33.245778] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nALTER TABLE users MODIFY COLUMN username VARCHAR(150) NOT NULL UNIQUE;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:34.632415] [Model Answer]: ```json
+{
+  "sql_type": "DDL",
+  "statement_type": "ALTER"
+}
+```
+[2025-06-05 15:29:34.632535] [9] Objective Eval: Format Model Answer: '{'sql_type': 'DDL', 'statement_type': 'ALTER'}', Expected: '{'sql_type': 'DDL', 'statement_type': 'ALTER'}'
+[2025-06-05 15:29:34.632554] [9] Objective Eval Case Results: True
+[2025-06-05 15:29:34.632572] [9] objective Eval Case Final Result: True
+[2025-06-05 15:29:34.632584] 
+--- Case: 10 ---
+[2025-06-05 15:29:34.632615] [10] Case Run 1/1
+[2025-06-05 15:29:34.632631] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT c.customer_name, SUM(o.total_amount) AS total_spent FROM customers c JOIN orders o ON c.customer_id = o.customer_id WHERE o.order_date >= '2025-01-01' GROUP BY c.customer_name HAVING SUM(o.total_amount) > (SELECT AVG(total_amount) FROM orders);
+
+[2025-06-05 15:29:34.632686] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT c.customer_name, SUM(o.total_amount) AS total_spent FROM customers c JOIN orders o ON c.customer_id = o.customer_id WHERE o.order_date >= \'2025-01-01\' GROUP BY c.customer_name HAVING SUM(o.total_amount) > (SELECT AVG(total_amount) FROM orders);\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:35.927091] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:29:35.927249] [10] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:29:35.927279] [10] Objective Eval Case Results: True
+[2025-06-05 15:29:35.927307] [10] objective Eval Case Final Result: True
+[2025-06-05 15:29:35.927326] 
+--- Case: 11 ---
+[2025-06-05 15:29:35.927370] [11] Case Run 1/1
+[2025-06-05 15:29:35.927395] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT e.employee_name, d.department_name, (SELECT COUNT(*) FROM projects p WHERE p.manager_id = e.employee_id) AS managed_projects_count FROM employees e JOIN departments d ON e.department_id = d.department_id WHERE e.salary > 50000 AND e.status = 'Active';
+
+[2025-06-05 15:29:35.927481] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT e.employee_name, d.department_name, (SELECT COUNT(*) FROM projects p WHERE p.manager_id = e.employee_id) AS managed_projects_count FROM employees e JOIN departments d ON e.department_id = d.department_id WHERE e.salary > 50000 AND e.status = \'Active\';\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:37.261561] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:29:37.261633] [11] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:29:37.261648] [11] Objective Eval Case Results: True
+[2025-06-05 15:29:37.261660] [11] objective Eval Case Final Result: True
+[2025-06-05 15:29:37.261669] 
+--- Case: 12 ---
+[2025-06-05 15:29:37.261687] [12] Case Run 1/1
+[2025-06-05 15:29:37.261696] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SAVEPOINT UpdateCustomers;
+
+[2025-06-05 15:29:37.261735] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSAVEPOINT UpdateCustomers;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:38.453609] [Model Answer]: ```json
+{
+  "sql_type": "TCL",
+  "statement_type": "SAVEPOINT"
+}
+```
+[2025-06-05 15:29:38.453728] [12] Objective Eval: Format Model Answer: '{'sql_type': 'TCL', 'statement_type': 'SAVEPOINT'}', Expected: '{'sql_type': 'TCL', 'statement_type': 'SAVEPOINT'}'
+[2025-06-05 15:29:38.453747] [12] Objective Eval Case Results: True
+[2025-06-05 15:29:38.453763] [12] objective Eval Case Final Result: True
+[2025-06-05 15:29:38.453774] 
+--- Case: 13 ---
+[2025-06-05 15:29:38.453805] [13] Case Run 1/1
+[2025-06-05 15:29:38.453820] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+CREATE VIEW active_users AS SELECT user_id, username, email FROM users WHERE status = 'Active' WITH CHECK OPTION;
+
+[2025-06-05 15:29:38.453872] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nCREATE VIEW active_users AS SELECT user_id, username, email FROM users WHERE status = \'Active\' WITH CHECK OPTION;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:39.691591] [Model Answer]: ```json
+{
+  "sql_type": "DDL",
+  "statement_type": "CREATE"
+}
+```
+[2025-06-05 15:29:39.691704] [13] Objective Eval: Format Model Answer: '{'sql_type': 'DDL', 'statement_type': 'CREATE'}', Expected: '{'sql_type': 'DDL', 'statement_type': 'CREATE'}'
+[2025-06-05 15:29:39.691721] [13] Objective Eval Case Results: True
+[2025-06-05 15:29:39.691737] [13] objective Eval Case Final Result: True
+[2025-06-05 15:29:39.691748] 
+--- Case: 14 ---
+[2025-06-05 15:29:39.691777] [14] Case Run 1/1
+[2025-06-05 15:29:39.691792] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+GRANT ALL PRIVILEGES ON DATABASE inventory_db TO 'admin_user' WITH GRANT OPTION;
+
+[2025-06-05 15:29:39.691843] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nGRANT ALL PRIVILEGES ON DATABASE inventory_db TO \'admin_user\' WITH GRANT OPTION;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:40.908203] [Model Answer]: ```json
+{
+  "sql_type": "DCL",
+  "statement_type": "GRANT"
+}
+```
+[2025-06-05 15:29:40.908293] [14] Objective Eval: Format Model Answer: '{'sql_type': 'DCL', 'statement_type': 'GRANT'}', Expected: '{'sql_type': 'DCL', 'statement_type': 'GRANT'}'
+[2025-06-05 15:29:40.908319] [14] Objective Eval Case Results: True
+[2025-06-05 15:29:40.908333] [14] objective Eval Case Final Result: True
+[2025-06-05 15:29:40.908342] 
+--- Case: 15 ---
+[2025-06-05 15:29:40.908368] [15] Case Run 1/1
+[2025-06-05 15:29:40.908380] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+REVOKE DELETE ON TABLE financial_records FROM 'accountant_role';
+
+[2025-06-05 15:29:40.908422] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nREVOKE DELETE ON TABLE financial_records FROM \'accountant_role\';\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:42.382324] [Model Answer]: ```json
+{
+  "sql_type": "DCL",
+  "statement_type": "REVOKE"
+}
+```
+[2025-06-05 15:29:42.382447] [15] Objective Eval: Format Model Answer: '{'sql_type': 'DCL', 'statement_type': 'REVOKE'}', Expected: '{'sql_type': 'DCL', 'statement_type': 'REVOKE'}'
+[2025-06-05 15:29:42.382465] [15] Objective Eval Case Results: True
+[2025-06-05 15:29:42.382482] [15] objective Eval Case Final Result: True
+[2025-06-05 15:29:42.382494] 
+--- Case: 16 ---
+[2025-06-05 15:29:42.382524] [16] Case Run 1/1
+[2025-06-05 15:29:42.382540] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT product_name, price, stock_quantity, CASE WHEN stock_quantity < 10 THEN 'Low Stock' WHEN stock_quantity BETWEEN 10 AND 50 THEN 'Medium Stock' ELSE 'High Stock' END AS stock_status FROM products ORDER BY stock_status, price DESC;
+
+[2025-06-05 15:29:42.382594] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT product_name, price, stock_quantity, CASE WHEN stock_quantity < 10 THEN \'Low Stock\' WHEN stock_quantity BETWEEN 10 AND 50 THEN \'Medium Stock\' ELSE \'High Stock\' END AS stock_status FROM products ORDER BY stock_status, price DESC;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:43.772777] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:29:43.772854] [16] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:29:43.772868] [16] Objective Eval Case Results: True
+[2025-06-05 15:29:43.772882] [16] objective Eval Case Final Result: True
+[2025-06-05 15:29:43.772892] 
+--- Case: 17 ---
+[2025-06-05 15:29:43.772913] [17] Case Run 1/1
+[2025-06-05 15:29:43.772924] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+WITH RegionalSales AS (SELECT region, SUM(amount) AS total_region_sales FROM sales GROUP BY region) SELECT s.sale_id, s.product_id, s.amount, r.total_region_sales FROM sales s JOIN RegionalSales r ON s.region = r.region WHERE s.amount > r.total_region_sales / 10;
+
+[2025-06-05 15:29:43.772964] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nWITH RegionalSales AS (SELECT region, SUM(amount) AS total_region_sales FROM sales GROUP BY region) SELECT s.sale_id, s.product_id, s.amount, r.total_region_sales FROM sales s JOIN RegionalSales r ON s.region = r.region WHERE s.amount > r.total_region_sales / 10;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:45.131454] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:29:45.131572] [17] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:29:45.131586] [17] Objective Eval Case Results: True
+[2025-06-05 15:29:45.131599] [17] objective Eval Case Final Result: True
+[2025-06-05 15:29:45.131609] 
+--- Case: 18 ---
+[2025-06-05 15:29:45.131636] [18] Case Run 1/1
+[2025-06-05 15:29:45.131649] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT employee_id, employee_name, department_id, ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rn FROM employees WHERE department_id IN (1, 2, 3);
+
+[2025-06-05 15:29:45.131694] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT employee_id, employee_name, department_id, ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rn FROM employees WHERE department_id IN (1, 2, 3);\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:46.376581] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:29:46.376800] [18] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:29:46.376831] [18] Objective Eval Case Results: True
+[2025-06-05 15:29:46.376872] [18] objective Eval Case Final Result: True
+[2025-06-05 15:29:46.376892] 
+--- Case: 19 ---
+[2025-06-05 15:29:46.376936] [19] Case Run 1/1
+[2025-06-05 15:29:46.376960] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+INSERT INTO sales_archive SELECT * FROM sales WHERE sale_date < '2024-01-01' ON CONFLICT (sale_id) DO UPDATE SET archived_date = NOW();
+
+[2025-06-05 15:29:46.377039] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nINSERT INTO sales_archive SELECT * FROM sales WHERE sale_date < \'2024-01-01\' ON CONFLICT (sale_id) DO UPDATE SET archived_date = NOW();\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:47.698838] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "INSERT"
+}
+```
+[2025-06-05 15:29:47.699016] [19] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'INSERT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'INSERT'}'
+[2025-06-05 15:29:47.699049] [19] Objective Eval Case Results: True
+[2025-06-05 15:29:47.699078] [19] objective Eval Case Final Result: True
+[2025-06-05 15:29:47.699098] 
+--- Case: 20 ---
+[2025-06-05 15:29:47.699142] [20] Case Run 1/1
+[2025-06-05 15:29:47.699167] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+TRUNCATE TABLE large_log_table REUSE STORAGE;
+
+[2025-06-05 15:29:47.699249] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nTRUNCATE TABLE large_log_table REUSE STORAGE;\n'}], 'temperature': 0.6, 'max_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:29:48.999620] [Model Answer]: ```json
+{
+  "sql_type": "DDL",
+  "statement_type": "TRUNCATE"
+}
+```
+[2025-06-05 15:29:48.999746] [20] Objective Eval: Format Model Answer: '{'sql_type': 'DDL', 'statement_type': 'TRUNCATE'}', Expected: '{'sql_type': 'DDL', 'statement_type': 'TRUNCATE'}'
+[2025-06-05 15:29:48.999763] [20] Objective Eval Case Results: True
+[2025-06-05 15:29:48.999779] [20] objective Eval Case Final Result: True
