@@ -1,0 +1,979 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20250606_144100_791
+Run Dimensions: sql_optimization
+Run Indicator: logical_equivalence
+Evaluation Timestamp: 2025-06-06T16:07:34.230011
+Target LLM: SQLFlash
+Judge LLMs: Pro/deepseek-ai/DeepSeek-V3, o4-mini, gemini-2.0-flash
+-------------------------------------------------
+
+[2025-06-06 14:41:00.792037] ======== Starting Full SQL Capability Evaluation ========
+[2025-06-06 14:41:00.792042] Target LLM: SQLFlash
+[2025-06-06 14:41:00.792045] Run Capability: sql_optimization
+[2025-06-06 14:41:00.792146] Run Indicator: sql_optimization, Parameters size: 25879B
+[2025-06-06 14:41:00.792711] 
+--- Capability: sql_optimization Indicator logical_equivalence.jsonl Evaluating Type: hybrid  ---
+[2025-06-06 14:41:00.792714] 
+--- Case: 1 ---
+[2025-06-06 14:41:00.792719] [1] Case Run 1/1
+[2025-06-06 14:45:05.890945] [1] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 14:45:05.891032] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+Translated SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+[2025-06-06 14:45:05.891231] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n\nTranslated SQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 14:45:08.309228] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 14:45:08.309736] [1] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 14:45:08.309753] [1] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 14:45:08.309767] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+Translated SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+[2025-06-06 14:45:08.309921] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n\nTranslated SQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 14:45:16.434347] [Model Answer]: {"answer":"yes"}
+[2025-06-06 14:45:16.434539] [1] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 14:45:16.434566] [1] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 14:45:16.434588] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+Translated SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+[2025-06-06 14:45:16.434711] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n\nTranslated SQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 14:45:17.662378] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 14:45:17.662487] [1] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 14:45:17.662507] [1] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 14:45:17.662519] [1] hybrid Eval Case Final Result: True
+[2025-06-06 14:45:17.662529] 
+--- Case: 2 ---
+[2025-06-06 14:45:17.662612] [2] Case Run 1/1
+[2025-06-06 14:50:56.541873] [2] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 14:50:56.541991] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT s.teacher_id, dt_teacher.teacher_name FROM students s JOIN (     SELECT teacher_id, teacher_name      FROM (         SELECT teacher_id, teacher_name, department          FROM (             SELECT teacher_id, teacher_name, department              FROM (                  SELECT teacher_id, teacher_name, department                  FROM teachers             ) AS inner_dt1         ) AS inner_dt2     ) AS inner_dt3 ) AS dt_teacher ON s.teacher_id = dt_teacher.teacher_id WHERE dt_teacher.teacher_name LIKE 'Dr. %';
+
+Translated SQL:
+SELECT s.teacher_id, dt_teacher.teacher_name
+FROM students s
+JOIN (
+    SELECT teacher_id, teacher_name
+    FROM (
+        SELECT teacher_id, teacher_name
+        FROM (
+            SELECT teacher_id, teacher_name
+            FROM (
+                SELECT teacher_id, teacher_name
+                FROM teachers
+            ) AS inner_dt1
+        ) AS inner_dt2
+    ) AS inner_dt3
+) AS dt_teacher
+ON s.teacher_id = dt_teacher.teacher_id
+WHERE dt_teacher.teacher_name LIKE 'Dr. %';
+
+[2025-06-06 14:50:56.542203] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT s.teacher_id, dt_teacher.teacher_name FROM students s JOIN (     SELECT teacher_id, teacher_name      FROM (         SELECT teacher_id, teacher_name, department          FROM (             SELECT teacher_id, teacher_name, department              FROM (                  SELECT teacher_id, teacher_name, department                  FROM teachers             ) AS inner_dt1         ) AS inner_dt2     ) AS inner_dt3 ) AS dt_teacher ON s.teacher_id = dt_teacher.teacher_id WHERE dt_teacher.teacher_name LIKE \'Dr. %\';\n\nTranslated SQL:\nSELECT s.teacher_id, dt_teacher.teacher_name\nFROM students s\nJOIN (\n    SELECT teacher_id, teacher_name\n    FROM (\n        SELECT teacher_id, teacher_name\n        FROM (\n            SELECT teacher_id, teacher_name\n            FROM (\n                SELECT teacher_id, teacher_name\n                FROM teachers\n            ) AS inner_dt1\n        ) AS inner_dt2\n    ) AS inner_dt3\n) AS dt_teacher\nON s.teacher_id = dt_teacher.teacher_id\nWHERE dt_teacher.teacher_name LIKE \'Dr. %\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 14:50:58.341922] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 14:50:58.342058] [2] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 14:50:58.342081] [2] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 14:50:58.342101] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT s.teacher_id, dt_teacher.teacher_name FROM students s JOIN (     SELECT teacher_id, teacher_name      FROM (         SELECT teacher_id, teacher_name, department          FROM (             SELECT teacher_id, teacher_name, department              FROM (                  SELECT teacher_id, teacher_name, department                  FROM teachers             ) AS inner_dt1         ) AS inner_dt2     ) AS inner_dt3 ) AS dt_teacher ON s.teacher_id = dt_teacher.teacher_id WHERE dt_teacher.teacher_name LIKE 'Dr. %';
+
+Translated SQL:
+SELECT s.teacher_id, dt_teacher.teacher_name
+FROM students s
+JOIN (
+    SELECT teacher_id, teacher_name
+    FROM (
+        SELECT teacher_id, teacher_name
+        FROM (
+            SELECT teacher_id, teacher_name
+            FROM (
+                SELECT teacher_id, teacher_name
+                FROM teachers
+            ) AS inner_dt1
+        ) AS inner_dt2
+    ) AS inner_dt3
+) AS dt_teacher
+ON s.teacher_id = dt_teacher.teacher_id
+WHERE dt_teacher.teacher_name LIKE 'Dr. %';
+
+[2025-06-06 14:50:58.342194] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT s.teacher_id, dt_teacher.teacher_name FROM students s JOIN (     SELECT teacher_id, teacher_name      FROM (         SELECT teacher_id, teacher_name, department          FROM (             SELECT teacher_id, teacher_name, department              FROM (                  SELECT teacher_id, teacher_name, department                  FROM teachers             ) AS inner_dt1         ) AS inner_dt2     ) AS inner_dt3 ) AS dt_teacher ON s.teacher_id = dt_teacher.teacher_id WHERE dt_teacher.teacher_name LIKE \'Dr. %\';\n\nTranslated SQL:\nSELECT s.teacher_id, dt_teacher.teacher_name\nFROM students s\nJOIN (\n    SELECT teacher_id, teacher_name\n    FROM (\n        SELECT teacher_id, teacher_name\n        FROM (\n            SELECT teacher_id, teacher_name\n            FROM (\n                SELECT teacher_id, teacher_name\n                FROM teachers\n            ) AS inner_dt1\n        ) AS inner_dt2\n    ) AS inner_dt3\n) AS dt_teacher\nON s.teacher_id = dt_teacher.teacher_id\nWHERE dt_teacher.teacher_name LIKE \'Dr. %\';\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 14:51:05.598813] [Model Answer]: {"answer":"yes"}
+[2025-06-06 14:51:05.598881] [2] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 14:51:05.598889] [2] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 14:51:05.598898] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT s.teacher_id, dt_teacher.teacher_name FROM students s JOIN (     SELECT teacher_id, teacher_name      FROM (         SELECT teacher_id, teacher_name, department          FROM (             SELECT teacher_id, teacher_name, department              FROM (                  SELECT teacher_id, teacher_name, department                  FROM teachers             ) AS inner_dt1         ) AS inner_dt2     ) AS inner_dt3 ) AS dt_teacher ON s.teacher_id = dt_teacher.teacher_id WHERE dt_teacher.teacher_name LIKE 'Dr. %';
+
+Translated SQL:
+SELECT s.teacher_id, dt_teacher.teacher_name
+FROM students s
+JOIN (
+    SELECT teacher_id, teacher_name
+    FROM (
+        SELECT teacher_id, teacher_name
+        FROM (
+            SELECT teacher_id, teacher_name
+            FROM (
+                SELECT teacher_id, teacher_name
+                FROM teachers
+            ) AS inner_dt1
+        ) AS inner_dt2
+    ) AS inner_dt3
+) AS dt_teacher
+ON s.teacher_id = dt_teacher.teacher_id
+WHERE dt_teacher.teacher_name LIKE 'Dr. %';
+
+[2025-06-06 14:51:05.598949] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT s.teacher_id, dt_teacher.teacher_name FROM students s JOIN (     SELECT teacher_id, teacher_name      FROM (         SELECT teacher_id, teacher_name, department          FROM (             SELECT teacher_id, teacher_name, department              FROM (                  SELECT teacher_id, teacher_name, department                  FROM teachers             ) AS inner_dt1         ) AS inner_dt2     ) AS inner_dt3 ) AS dt_teacher ON s.teacher_id = dt_teacher.teacher_id WHERE dt_teacher.teacher_name LIKE \'Dr. %\';\n\nTranslated SQL:\nSELECT s.teacher_id, dt_teacher.teacher_name\nFROM students s\nJOIN (\n    SELECT teacher_id, teacher_name\n    FROM (\n        SELECT teacher_id, teacher_name\n        FROM (\n            SELECT teacher_id, teacher_name\n            FROM (\n                SELECT teacher_id, teacher_name\n                FROM teachers\n            ) AS inner_dt1\n        ) AS inner_dt2\n    ) AS inner_dt3\n) AS dt_teacher\nON s.teacher_id = dt_teacher.teacher_id\nWHERE dt_teacher.teacher_name LIKE \'Dr. %\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 14:51:06.854372] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 14:51:06.854439] [2] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 14:51:06.854452] [2] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 14:51:06.854461] [2] hybrid Eval Case Final Result: True
+[2025-06-06 14:51:06.854469] 
+--- Case: 4 ---
+[2025-06-06 14:51:06.854490] [4] Case Run 1/1
+[2025-06-06 15:00:21.185134] [4] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 15:00:21.185195] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'
+
+Translated SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth
+FROM students s
+JOIN (
+    SELECT student_id, gender
+    FROM (
+        SELECT student_id, gender
+        FROM (
+            SELECT student_id, gender
+            FROM (
+                SELECT student_id, gender
+                FROM students
+                ORDER BY student_id DESC
+            ) AS inner_dt3
+        ) AS inner_dt2
+        ORDER BY student_id DESC
+        LIMIT 1
+    ) AS inner_dt1
+) dt ON s.student_id = dt.student_id
+WHERE dt.gender = 'MALE'
+
+[2025-06-06 15:00:21.185347] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = \'MALE\'\n\nTranslated SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth\nFROM students s\nJOIN (\n    SELECT student_id, gender\n    FROM (\n        SELECT student_id, gender\n        FROM (\n            SELECT student_id, gender\n            FROM (\n                SELECT student_id, gender\n                FROM students\n                ORDER BY student_id DESC\n            ) AS inner_dt3\n        ) AS inner_dt2\n        ORDER BY student_id DESC\n        LIMIT 1\n    ) AS inner_dt1\n) dt ON s.student_id = dt.student_id\nWHERE dt.gender = \'MALE\'\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:00:23.283594] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 15:00:23.283663] [4] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 15:00:23.283671] [4] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 15:00:23.283680] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'
+
+Translated SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth
+FROM students s
+JOIN (
+    SELECT student_id, gender
+    FROM (
+        SELECT student_id, gender
+        FROM (
+            SELECT student_id, gender
+            FROM (
+                SELECT student_id, gender
+                FROM students
+                ORDER BY student_id DESC
+            ) AS inner_dt3
+        ) AS inner_dt2
+        ORDER BY student_id DESC
+        LIMIT 1
+    ) AS inner_dt1
+) dt ON s.student_id = dt.student_id
+WHERE dt.gender = 'MALE'
+
+[2025-06-06 15:00:23.283719] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = \'MALE\'\n\nTranslated SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth\nFROM students s\nJOIN (\n    SELECT student_id, gender\n    FROM (\n        SELECT student_id, gender\n        FROM (\n            SELECT student_id, gender\n            FROM (\n                SELECT student_id, gender\n                FROM students\n                ORDER BY student_id DESC\n            ) AS inner_dt3\n        ) AS inner_dt2\n        ORDER BY student_id DESC\n        LIMIT 1\n    ) AS inner_dt1\n) dt ON s.student_id = dt.student_id\nWHERE dt.gender = \'MALE\'\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:00:31.273310] [Model Answer]: {"answer":"yes"}
+[2025-06-06 15:00:31.273402] [4] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 15:00:31.273423] [4] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 15:00:31.273443] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'
+
+Translated SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth
+FROM students s
+JOIN (
+    SELECT student_id, gender
+    FROM (
+        SELECT student_id, gender
+        FROM (
+            SELECT student_id, gender
+            FROM (
+                SELECT student_id, gender
+                FROM students
+                ORDER BY student_id DESC
+            ) AS inner_dt3
+        ) AS inner_dt2
+        ORDER BY student_id DESC
+        LIMIT 1
+    ) AS inner_dt1
+) dt ON s.student_id = dt.student_id
+WHERE dt.gender = 'MALE'
+
+[2025-06-06 15:00:31.273542] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = \'MALE\'\n\nTranslated SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth\nFROM students s\nJOIN (\n    SELECT student_id, gender\n    FROM (\n        SELECT student_id, gender\n        FROM (\n            SELECT student_id, gender\n            FROM (\n                SELECT student_id, gender\n                FROM students\n                ORDER BY student_id DESC\n            ) AS inner_dt3\n        ) AS inner_dt2\n        ORDER BY student_id DESC\n        LIMIT 1\n    ) AS inner_dt1\n) dt ON s.student_id = dt.student_id\nWHERE dt.gender = \'MALE\'\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:00:32.544575] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 15:00:32.544643] [4] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 15:00:32.544656] [4] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 15:00:32.544666] [4] hybrid Eval Case Final Result: True
+[2025-06-06 15:00:32.544674] 
+--- Case: 5 ---
+[2025-06-06 15:00:32.544698] [5] Case Run 1/1
+[2025-06-06 15:06:18.521017] [5] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 15:06:18.521125] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = 'Female'  AND s.date_of_birth <= '2000-01-01'  AND s.student_name != 'TestName' LIMIT 10;
+
+Translated SQL:
+SELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = 'Female'  AND s.date_of_birth <= DATE '2000-01-01'  AND s.student_name != 'TestName' LIMIT 10;
+
+[2025-06-06 15:06:18.521294] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = \'Female\'  AND s.date_of_birth <= \'2000-01-01\'  AND s.student_name != \'TestName\' LIMIT 10;\n\nTranslated SQL:\nSELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = \'Female\'  AND s.date_of_birth <= DATE \'2000-01-01\'  AND s.student_name != \'TestName\' LIMIT 10;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:06:20.320732] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 15:06:20.320823] [5] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 15:06:20.320832] [5] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 15:06:20.320841] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = 'Female'  AND s.date_of_birth <= '2000-01-01'  AND s.student_name != 'TestName' LIMIT 10;
+
+Translated SQL:
+SELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = 'Female'  AND s.date_of_birth <= DATE '2000-01-01'  AND s.student_name != 'TestName' LIMIT 10;
+
+[2025-06-06 15:06:20.320891] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = \'Female\'  AND s.date_of_birth <= \'2000-01-01\'  AND s.student_name != \'TestName\' LIMIT 10;\n\nTranslated SQL:\nSELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = \'Female\'  AND s.date_of_birth <= DATE \'2000-01-01\'  AND s.student_name != \'TestName\' LIMIT 10;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:06:25.645671] [Model Answer]: {"answer":"yes"}
+[2025-06-06 15:06:25.645783] [5] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 15:06:25.645804] [5] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 15:06:25.645824] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = 'Female'  AND s.date_of_birth <= '2000-01-01'  AND s.student_name != 'TestName' LIMIT 10;
+
+Translated SQL:
+SELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = 'Female'  AND s.date_of_birth <= DATE '2000-01-01'  AND s.student_name != 'TestName' LIMIT 10;
+
+[2025-06-06 15:06:25.645940] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = \'Female\'  AND s.date_of_birth <= \'2000-01-01\'  AND s.student_name != \'TestName\' LIMIT 10;\n\nTranslated SQL:\nSELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = \'Female\'  AND s.date_of_birth <= DATE \'2000-01-01\'  AND s.student_name != \'TestName\' LIMIT 10;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:06:27.020816] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 15:06:27.020967] [5] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 15:06:27.021014] [5] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 15:06:27.021037] [5] hybrid Eval Case Final Result: True
+[2025-06-06 15:06:27.021055] 
+--- Case: 6 ---
+[2025-06-06 15:06:27.021094] [6] Case Run 1/1
+[2025-06-06 15:12:31.766257] [6] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 15:12:31.766296] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;
+
+Translated SQL:
+SELECT student_id, CONCAT("id_", student_id) as student_id2
+FROM (
+    SELECT student_id
+    FROM enrollments
+    WHERE CONCAT("id_", student_id) >= "id_1000"
+) AS dt
+LIMIT 10;
+
+[2025-06-06 15:12:31.766386] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;\n\nTranslated SQL:\nSELECT student_id, CONCAT("id_", student_id) as student_id2\nFROM (\n    SELECT student_id\n    FROM enrollments\n    WHERE CONCAT("id_", student_id) >= "id_1000"\n) AS dt\nLIMIT 10;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:12:33.543166] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 15:12:33.543266] [6] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 15:12:33.543279] [6] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 15:12:33.543299] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;
+
+Translated SQL:
+SELECT student_id, CONCAT("id_", student_id) as student_id2
+FROM (
+    SELECT student_id
+    FROM enrollments
+    WHERE CONCAT("id_", student_id) >= "id_1000"
+) AS dt
+LIMIT 10;
+
+[2025-06-06 15:12:33.543382] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;\n\nTranslated SQL:\nSELECT student_id, CONCAT("id_", student_id) as student_id2\nFROM (\n    SELECT student_id\n    FROM enrollments\n    WHERE CONCAT("id_", student_id) >= "id_1000"\n) AS dt\nLIMIT 10;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:12:39.425256] [Model Answer]: {"answer":"yes"}
+[2025-06-06 15:12:39.425431] [6] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 15:12:39.425482] [6] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 15:12:39.425509] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;
+
+Translated SQL:
+SELECT student_id, CONCAT("id_", student_id) as student_id2
+FROM (
+    SELECT student_id
+    FROM enrollments
+    WHERE CONCAT("id_", student_id) >= "id_1000"
+) AS dt
+LIMIT 10;
+
+[2025-06-06 15:12:39.425615] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;\n\nTranslated SQL:\nSELECT student_id, CONCAT("id_", student_id) as student_id2\nFROM (\n    SELECT student_id\n    FROM enrollments\n    WHERE CONCAT("id_", student_id) >= "id_1000"\n) AS dt\nLIMIT 10;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:12:40.583862] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 15:12:40.583917] [6] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 15:12:40.583929] [6] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 15:12:40.583938] [6] hybrid Eval Case Final Result: True
+[2025-06-06 15:12:40.583946] 
+--- Case: 7 ---
+[2025-06-06 15:12:40.583965] [7] Case Run 1/1
+[2025-06-06 15:23:18.956100] [7] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 15:23:18.956442] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;
+
+Translated SQL:
+SELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );
+
+[2025-06-06 15:23:18.957557] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;\n\nTranslated SQL:\nSELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:23:21.115285] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 15:23:21.115545] [7] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 15:23:21.115569] [7] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 15:23:21.115580] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;
+
+Translated SQL:
+SELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );
+
+[2025-06-06 15:23:21.115996] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;\n\nTranslated SQL:\nSELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:23:36.341564] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;\n\nTranslated SQL:\nSELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:23:53.879511] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;\n\nTranslated SQL:\nSELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:24:06.056033] [Model Answer]: {"answer":"yes"}
+[2025-06-06 15:24:06.056920] [7] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 15:24:06.057282] [7] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 15:24:06.057317] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;
+
+Translated SQL:
+SELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );
+
+[2025-06-06 15:24:06.057375] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;\n\nTranslated SQL:\nSELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:24:07.323385] [Model Answer]: {
+  "answer": "no"
+}
+[2025-06-06 15:24:07.323521] [7] Hybrid Eval Case Judge gemini-2.0-flash Results: False
+[2025-06-06 15:24:07.323574] [7] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 15:24:07.323591] [7] hybrid Eval Case Final Result: True
+[2025-06-06 15:24:07.323603] 
+--- Case: 8 ---
+[2025-06-06 15:24:07.323686] [8] Case Run 1/1
+[2025-06-06 15:29:48.466890] [8] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 15:29:48.466958] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > "1993-11-26" OR enrollment_date < "1991-11-26" GROUP BY student_id HAVING student_id = 1999
+
+Translated SQL:
+SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999
+
+[2025-06-06 15:29:48.467098] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > "1993-11-26" OR enrollment_date < "1991-11-26" GROUP BY student_id HAVING student_id = 1999\n\nTranslated SQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > \'1993-11-26\' OR enrollment_date < \'1991-11-26\' GROUP BY student_id HAVING student_id = 1999\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:29:50.568890] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 15:29:50.569173] [8] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 15:29:50.569213] [8] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 15:29:50.569245] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > "1993-11-26" OR enrollment_date < "1991-11-26" GROUP BY student_id HAVING student_id = 1999
+
+Translated SQL:
+SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999
+
+[2025-06-06 15:29:50.569440] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > "1993-11-26" OR enrollment_date < "1991-11-26" GROUP BY student_id HAVING student_id = 1999\n\nTranslated SQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > \'1993-11-26\' OR enrollment_date < \'1991-11-26\' GROUP BY student_id HAVING student_id = 1999\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:29:54.741380] [Model Answer]: {"answer":"yes"}
+[2025-06-06 15:29:54.741540] [8] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 15:29:54.741565] [8] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 15:29:54.741586] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > "1993-11-26" OR enrollment_date < "1991-11-26" GROUP BY student_id HAVING student_id = 1999
+
+Translated SQL:
+SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999
+
+[2025-06-06 15:29:54.741690] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > "1993-11-26" OR enrollment_date < "1991-11-26" GROUP BY student_id HAVING student_id = 1999\n\nTranslated SQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > \'1993-11-26\' OR enrollment_date < \'1991-11-26\' GROUP BY student_id HAVING student_id = 1999\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:29:55.887329] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 15:29:55.887416] [8] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 15:29:55.887433] [8] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 15:29:55.887446] [8] hybrid Eval Case Final Result: True
+[2025-06-06 15:29:55.887457] 
+--- Case: 9 ---
+[2025-06-06 15:29:55.887482] [9] Case Run 1/1
+[2025-06-06 15:34:03.537818] [9] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 15:34:03.537866] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ORDER BY COUNT(namespace) ) AS t1 ) AS t2 ) AS t3;
+
+Translated SQL:
+SELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ) AS t1 ) AS t2 ) AS t3;
+
+[2025-06-06 15:34:03.537974] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ORDER BY COUNT(namespace) ) AS t1 ) AS t2 ) AS t3;\n\nTranslated SQL:\nSELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ) AS t1 ) AS t2 ) AS t3;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:34:05.226922] [Model Answer]: {
+  "answer": "no"
+}
+[2025-06-06 15:34:05.227137] [9] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: False
+[2025-06-06 15:34:05.227166] [9] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 15:34:05.227190] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ORDER BY COUNT(namespace) ) AS t1 ) AS t2 ) AS t3;
+
+Translated SQL:
+SELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ) AS t1 ) AS t2 ) AS t3;
+
+[2025-06-06 15:34:05.227288] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ORDER BY COUNT(namespace) ) AS t1 ) AS t2 ) AS t3;\n\nTranslated SQL:\nSELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ) AS t1 ) AS t2 ) AS t3;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:34:12.272858] [Model Answer]: {"answer":"no"}
+[2025-06-06 15:34:12.273018] [9] Hybrid Eval Case Judge o4-mini Results: False
+[2025-06-06 15:34:12.273042] [9] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 15:34:12.273064] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ORDER BY COUNT(namespace) ) AS t1 ) AS t2 ) AS t3;
+
+Translated SQL:
+SELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ) AS t1 ) AS t2 ) AS t3;
+
+[2025-06-06 15:34:12.273164] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ORDER BY COUNT(namespace) ) AS t1 ) AS t2 ) AS t3;\n\nTranslated SQL:\nSELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ) AS t1 ) AS t2 ) AS t3;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:34:13.534897] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 15:34:13.535160] [9] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 15:34:13.535240] [9] Hybrid Eval Case Judge Final Results: False
+[2025-06-06 15:34:13.535269] [9] hybrid Eval Case Final Result: False
+[2025-06-06 15:34:13.535289] 
+--- Case: 10 ---
+[2025-06-06 15:34:13.535339] [10] Case Run 1/1
+[2025-06-06 15:38:19.778064] [10] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 15:38:19.778182] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );
+
+Translated SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );
+
+[2025-06-06 15:38:19.778428] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );\n\nTranslated SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:38:21.600455] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 15:38:21.600565] [10] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 15:38:21.600576] [10] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 15:38:21.600586] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );
+
+Translated SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );
+
+[2025-06-06 15:38:21.600629] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );\n\nTranslated SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:38:33.040803] [Model Answer]: {"answer":"yes"}
+[2025-06-06 15:38:33.040916] [10] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 15:38:33.040936] [10] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 15:38:33.040956] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );
+
+Translated SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );
+
+[2025-06-06 15:38:33.041042] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );\n\nTranslated SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:38:34.434265] [Model Answer]: {
+  "answer": "no"
+}
+[2025-06-06 15:38:34.434405] [10] Hybrid Eval Case Judge gemini-2.0-flash Results: False
+[2025-06-06 15:38:34.434439] [10] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 15:38:34.434463] [10] hybrid Eval Case Final Result: True
+[2025-06-06 15:38:34.434483] 
+--- Case: 11 ---
+[2025-06-06 15:38:34.434531] [11] Case Run 1/1
+[2025-06-06 15:45:40.414393] [11] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 15:45:40.414479] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+Translated SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+[2025-06-06 15:45:40.414692] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n\nTranslated SQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:45:42.981792] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 15:45:42.981995] [11] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 15:45:42.982022] [11] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 15:45:42.982044] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+Translated SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+[2025-06-06 15:45:42.982145] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n\nTranslated SQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:45:45.840524] [Model Answer]: {"answer":"yes"}
+[2025-06-06 15:45:45.840683] [11] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 15:45:45.840708] [11] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 15:45:45.840731] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+Translated SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+[2025-06-06 15:45:45.840837] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n\nTranslated SQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:45:47.069996] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 15:45:47.070151] [11] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 15:45:47.070187] [11] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 15:45:47.070214] [11] hybrid Eval Case Final Result: True
+[2025-06-06 15:45:47.070233] 
+--- Case: 12 ---
+[2025-06-06 15:45:47.070285] [12] Case Run 1/1
+[2025-06-06 15:54:54.196332] [12] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 15:54:54.196449] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM students WHERE student_name LIKE 'John%' UNION SELECT * FROM students WHERE student_name LIKE 'Jane%';
+
+Translated SQL:
+SELECT * 
+FROM students 
+WHERE student_name >= 'John' AND student_name < 'Joho'
+UNION
+SELECT * 
+FROM students 
+WHERE student_name >= 'Jane' AND student_name < 'Janf';
+
+[2025-06-06 15:54:54.196718] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE student_name LIKE \'John%\' UNION SELECT * FROM students WHERE student_name LIKE \'Jane%\';\n\nTranslated SQL:\nSELECT * \nFROM students \nWHERE student_name >= \'John\' AND student_name < \'Joho\'\nUNION\nSELECT * \nFROM students \nWHERE student_name >= \'Jane\' AND student_name < \'Janf\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:54:56.088313] [Model Answer]: {
+  "answer": "no"
+}
+[2025-06-06 15:54:56.088474] [12] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: False
+[2025-06-06 15:54:56.088490] [12] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 15:54:56.088502] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM students WHERE student_name LIKE 'John%' UNION SELECT * FROM students WHERE student_name LIKE 'Jane%';
+
+Translated SQL:
+SELECT * 
+FROM students 
+WHERE student_name >= 'John' AND student_name < 'Joho'
+UNION
+SELECT * 
+FROM students 
+WHERE student_name >= 'Jane' AND student_name < 'Janf';
+
+[2025-06-06 15:54:56.088574] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE student_name LIKE \'John%\' UNION SELECT * FROM students WHERE student_name LIKE \'Jane%\';\n\nTranslated SQL:\nSELECT * \nFROM students \nWHERE student_name >= \'John\' AND student_name < \'Joho\'\nUNION\nSELECT * \nFROM students \nWHERE student_name >= \'Jane\' AND student_name < \'Janf\';\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:55:21.850882] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE student_name LIKE \'John%\' UNION SELECT * FROM students WHERE student_name LIKE \'Jane%\';\n\nTranslated SQL:\nSELECT * \nFROM students \nWHERE student_name >= \'John\' AND student_name < \'Joho\'\nUNION\nSELECT * \nFROM students \nWHERE student_name >= \'Jane\' AND student_name < \'Janf\';\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:55:45.744905] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE student_name LIKE \'John%\' UNION SELECT * FROM students WHERE student_name LIKE \'Jane%\';\n\nTranslated SQL:\nSELECT * \nFROM students \nWHERE student_name >= \'John\' AND student_name < \'Joho\'\nUNION\nSELECT * \nFROM students \nWHERE student_name >= \'Jane\' AND student_name < \'Janf\';\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:56:07.672262] [Model Answer]: {"answer":"yes"}
+[2025-06-06 15:56:07.672336] [12] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 15:56:07.672346] [12] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 15:56:07.672355] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM students WHERE student_name LIKE 'John%' UNION SELECT * FROM students WHERE student_name LIKE 'Jane%';
+
+Translated SQL:
+SELECT * 
+FROM students 
+WHERE student_name >= 'John' AND student_name < 'Joho'
+UNION
+SELECT * 
+FROM students 
+WHERE student_name >= 'Jane' AND student_name < 'Janf';
+
+[2025-06-06 15:56:07.672399] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE student_name LIKE \'John%\' UNION SELECT * FROM students WHERE student_name LIKE \'Jane%\';\n\nTranslated SQL:\nSELECT * \nFROM students \nWHERE student_name >= \'John\' AND student_name < \'Joho\'\nUNION\nSELECT * \nFROM students \nWHERE student_name >= \'Jane\' AND student_name < \'Janf\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 15:56:08.956131] [Model Answer]: {
+  "answer": "no"
+}
+[2025-06-06 15:56:08.956287] [12] Hybrid Eval Case Judge gemini-2.0-flash Results: False
+[2025-06-06 15:56:08.956324] [12] Hybrid Eval Case Judge Final Results: False
+[2025-06-06 15:56:08.956348] [12] hybrid Eval Case Final Result: False
+[2025-06-06 15:56:08.956368] 
+--- Case: 13 ---
+[2025-06-06 15:56:08.956417] [13] Case Run 1/1
+[2025-06-06 16:02:43.617473] [13] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 16:02:43.617570] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;
+
+Translated SQL:
+SELECT * FROM (  (SELECT name FROM users)  UNION  (SELECT title FROM articles) ) AS mixed  ORDER BY name LIMIT 5;
+
+[2025-06-06 16:02:43.617809] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;\n\nTranslated SQL:\nSELECT * FROM (  (SELECT name FROM users)  UNION  (SELECT title FROM articles) ) AS mixed  ORDER BY name LIMIT 5;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:02:45.554715] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:02:45.554874] [13] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 16:02:45.554896] [13] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 16:02:45.554915] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;
+
+Translated SQL:
+SELECT * FROM (  (SELECT name FROM users)  UNION  (SELECT title FROM articles) ) AS mixed  ORDER BY name LIMIT 5;
+
+[2025-06-06 16:02:45.554995] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;\n\nTranslated SQL:\nSELECT * FROM (  (SELECT name FROM users)  UNION  (SELECT title FROM articles) ) AS mixed  ORDER BY name LIMIT 5;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:02:52.629962] [Model Answer]: {"answer":"yes"}
+[2025-06-06 16:02:52.630111] [13] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 16:02:52.630132] [13] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 16:02:52.630154] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;
+
+Translated SQL:
+SELECT * FROM (  (SELECT name FROM users)  UNION  (SELECT title FROM articles) ) AS mixed  ORDER BY name LIMIT 5;
+
+[2025-06-06 16:02:52.630264] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;\n\nTranslated SQL:\nSELECT * FROM (  (SELECT name FROM users)  UNION  (SELECT title FROM articles) ) AS mixed  ORDER BY name LIMIT 5;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:02:53.951405] [Model Answer]: {
+  "answer": "no"
+}
+[2025-06-06 16:02:53.951518] [13] Hybrid Eval Case Judge gemini-2.0-flash Results: False
+[2025-06-06 16:02:53.951539] [13] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 16:02:53.951551] [13] hybrid Eval Case Final Result: True
+[2025-06-06 16:02:53.951562] 
+--- Case: 14 ---
+[2025-06-06 16:02:53.951597] [14] Case Run 1/1
+[2025-06-06 16:07:27.261563] [14] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 16:07:27.261688] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );
+
+Translated SQL:
+SELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );
+
+[2025-06-06 16:07:27.261959] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );\n\nTranslated SQL:\nSELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:07:29.157393] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:07:29.157589] [14] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 16:07:29.157612] [14] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 16:07:29.157634] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );
+
+Translated SQL:
+SELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );
+
+[2025-06-06 16:07:29.157729] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );\n\nTranslated SQL:\nSELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:07:32.708455] [Model Answer]: {"answer":"yes"}
+[2025-06-06 16:07:32.708607] [14] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 16:07:32.708632] [14] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 16:07:32.708654] [Model Prompt]: You are a database expert. Assess whether these two SQL statements
+are logically equivalent—that is, they produce the same results on any valid data set.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+Original SQL:
+SELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );
+
+Translated SQL:
+SELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );
+
+[2025-06-06 16:07:32.708757] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Assess whether these two SQL statements\nare logically equivalent—that is, they produce the same results on any valid data set.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nOriginal SQL:\nSELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );\n\nTranslated SQL:\nSELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:07:34.226201] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:07:34.226351] [14] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 16:07:34.226414] [14] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 16:07:34.226440] [14] hybrid Eval Case Final Result: True

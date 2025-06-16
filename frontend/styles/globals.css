@@ -1,0 +1,113 @@
+@font-face {
+  font-family: 'Share Tech Mono';
+  src: url('/fonts/ShareTechMono-Regular.woff2') format('woff2'),
+    url('/fonts/ShareTechMono-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll; /* 强制显示垂直滚动条 */
+  box-sizing: border-box; /* 确保padding不会增加总宽度 */
+  /* 隐藏水平滚动条 */
+}
+
+#root, /* For React apps */
+#_next { /* For Next.js apps */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  box-sizing: border-box; /* 确保padding不会增加总宽度 */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Ant Design Progress Bar Transition */
+.ant-progress-inner,
+.ant-progress-bg {
+  transition: all 0.3s ease-in-out;
+}
+
+/* ProTable Customizations */
+.ant-pro-table-container {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ant-pro-table-list-toolbar {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.ant-pro-table-list-toolbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.ant-pro-table-list-toolbar-left {
+  flex-grow: 1;
+}
+
+.ant-pro-table-list-toolbar-right {
+  display: flex;
+  gap: 16px;
+}
+
+.ant-pro-table-body table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.ant-pro-table-body .ant-table-thead > tr > th {
+  background-color: #e9eef4; /* 恢复表头背景色 */
+  font-weight: bold;
+  color: #333;
+  padding: 16px 24px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.ant-pro-table-body .ant-table-tbody > tr > td {
+  padding: 14px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-pro-table-body .ant-table-tbody > tr:last-child > td {
+  border-bottom: none;
+}
+
+.ant-pro-table-body .ant-table-tbody > tr.ant-table-row:hover > td {
+  background-color: #e6f7ff; /* 悬停背景色 */
+}
+
+.ant-pro-table-body .ant-table-tbody > tr.ant-table-row-selected > td {
+  background-color: #bae7ff; /* 选中行背景色 */
+}
+
+/* 排名图标动画 */
+.ant-table-cell .anticon-trophy-filled {
+  transition: transform 0.3s ease-in-out;
+}
+
+.ant-table-cell .anticon-trophy-filled:hover {
+  transform: scale(1.2);
+}

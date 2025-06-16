@@ -1,0 +1,157 @@
+{
+  "seo": {
+    "title": "SQL Capability Leaderboard for LLMs",
+    "description": "SCALE - SQL Capability Leaderboard for LLMs, evaluating and comparing the performance of mainstream large models in SQL capabilities.",
+    "keywords": "SCALE, SQL, Large Language Models, Leaderboard, Evaluation, AI, LLM, Dataset",
+    "ranking_page": {
+      "title": "SCALE - SQL LLM Leaderboard - {{month}}",
+      "description": "SCALE - View the SQL LLM capability leaderboard for {{month}}, evaluating and comparing the performance of mainstream large models in SQL capabilities.",
+      "keywords": "SCALE, SQL LLM, Large Language Models, Leaderboard, Evaluation, AI, LLM, {{month}}"
+    },
+    "model_detail_page": {
+      "title": "SCALE - {{modelName}} - SQL LLM Details",
+      "description": "SCALE - Detailed evaluation report on {{modelName}}'s SQL capabilities, including SQL optimization, dialect conversion, and SQL understanding.",
+      "keywords": "SCALE, {{modelName}}, SQL LLM, Details, Evaluation, SQL Optimization, Dialect Conversion, SQL Understanding"
+    }
+  },
+  "ranking": {
+    "title": "SCALE",
+    "description_part1": "Check out our ",
+    "description_part2": " for more details",
+    "full_description": "The Large Model SQL Capability Leaderboard (SCALE) reveals the true proficiency of large models in SQL. SCALE comprehensively evaluates Large Language Models' (LLMs) core SQL capabilities through scientific, rigorous assessment, focusing on three critical dimensions: SQL Optimization (enhancing query efficiency and performance), Dialect Conversion (enabling seamless cross-database platform migration), and Deep SQL Comprehension (accurately parsing complex logic and user intent). To authentically reflect real-world database operation performance, we established a multi-dimensional, multi-metric evaluation system employing strict testing with real-world cases across varying difficulty levels. Each test case carries scientifically calibrated weights based on technical complexity and practical value (higher difficulty = greater weight), ensuring final scores precisely measure models' comprehensive performance in high-value, high-challenge tasks. Through rigorous testing and weighted scoring, SCALE provides developers, database administrators, and enterprise technology decision-makers with authoritative, objective benchmarks, clearly delineating models' relative strengths in SQL processing to advance intelligent database application development and implementation."
+  },
+  "table": {
+    "rank": "Rank",
+    "creator": "Creator",
+    "model": "Model",
+    "releaseDate": "Release Date",
+    "type": "Type",
+    "parameters": "Parameters",
+    "dialect_conversion": "Dialect Conversion",
+    "sql_optimization": "SQL Optimization",
+    "sql_understanding": "SQL Understanding",
+    "organization": "Organization",
+    "website": "Website",
+    "details": "Details",
+    "view_details": "detail",
+    "model_score": "model score"
+  },
+  "indicator": {
+    "execution_accuracy.jsonl": "Execution Accuracy",
+    "explain_detection.jsonl": "Explain Detection",
+    "sql_identification.jsonl": "Type Identification",
+    "syntax_error_detection.jsonl": "Syntax Error Detection",
+    "logical_equivalence.jsonl": "Logical Equivalence",
+    "optimization_depth.jsonl": "Optimization Depth",
+    "rule_adherence.jsonl": "Rule Adherence"
+  },
+  "detail": {
+    "abilityScores": "Ability Scores"
+  },
+  "evaluation_cases": {
+    "title": "Evaluation Case Report",
+    "formula_button": "Ranking Rules",
+    "select_dimension": "Select Ability Dimension",
+    "no_data_found": "No evaluation case data found for this dimension.",
+    "indicator_name": "Indicator Name",
+    "indicator_weight":"Indicator Weight",
+    "evaluation_type":"Evaluation Type",
+    "total_cases": "Total Cases",
+    "passed_cases": "Passed Cases",
+    "failed_cases": "Failed Cases",
+    "pass_rate": "Pass Rate",
+    "average_score": "Average Score",
+    "details": "Case Details",
+    "view_cases": "View Cases",
+    "case_details": "Case Details",
+    "case_id": "Case ID",
+    "case_description": "Case Description",
+    "case_weight":"Case Weight",
+    "case_content":"Case Content",
+    "model_answers":"Model Answers",
+    "mode_question":"Mode Question",
+    "expected_output": "Expected Output",
+    "actual_output": "Actual Output",
+    "evaluation_result": "Evaluation Result",
+    "score": "Score",
+    "reason": "Reason",
+    "formula_tip": {
+      "title": "Ability Score Calculation Logic",
+      "basic_elements": {
+        "title": "Basic Elements",
+        "item1": "Each ability contains multiple evaluation indicators",
+        "item2": "Each indicator contains multiple test cases",
+        "item3": "Each case has a difficulty level (1-3)"
+      },
+      "weight_settings": {
+        "title": "Weight Settings",
+        "item1": "Indicator Weight: Reflects importance (higher = more important)",
+        "item2": "Difficulty Weight: Level 1=1pt, Level 2=2pt, Level 3=3pt"
+      },
+      "scoring_steps": {
+        "title": "Scoring Steps",
+        "item1": "Case Score = Difficulty Weight × Correctness (1 for correct, 0 for wrong)",
+        "item2": "Indicator Score = Sum of all case scores in the indicator",
+        "item3": "Total Ability Score = ∑(Indicator Score × Indicator Weight)",
+        "item4": "Max Possible Score = ∑(Sum of case difficulty weights per indicator × Indicator Weight)",
+        "item5": "Final Ability Score = (Total Ability Score ÷ Max Possible Score) × 100"
+      },
+      "special_cases": {
+        "title": "Special Cases",
+        "item1": "Score=0 if no test cases",
+        "item2": "Indicators without configured weights are excluded"
+      },
+      "example": {
+        "title": "Example",
+        "item1": "Indicator A (weight 4): 3 cases (difficulty 1/2/3 all correct) → Indicator Score= 1×1 + 2×1 + 3×1 = 6",
+        "item2": "Indicator B (weight 2): 2 cases (difficulty 2/3 all correct) → Indicator Score= 2×1 + 3×1 = 5",
+        "item3": "Total Score = 6×4 + 5×2 = 34",
+        "item4": "Max Score = (1+2+3)×4 + (2+3)×2 = 34",
+        "item5": "Final Score = 34/34×100 = 100 points"
+      }
+    },
+    "rule_id": "Rule ID"
+  },
+  "actions": {
+    "zh": "Chinese Eval",
+    "en": "English Eval",
+    "searchPlaceholder": "Search model name",
+    "export": "Export",
+    "back": "Back to List",
+    "toggle_language":"English",
+    "expand":"View All",
+    "collapse":"Collapse"
+  },
+  "footer": {
+    "copyright": "© Copyright 2025 Shanghai Action Information Technology Co., Ltd. All rights reserved.",
+    "beian": "沪ICP备12003970号-5"
+  },
+  "config": {
+    "language": "🌐 Language"
+  },
+  "log_info": {
+    "title": "Evaluation Process",
+    "select_file": "Select Log File",
+    "no_logs_found": "No log files found for this dimension.",
+    "no_logs_for_dimension": "No evaluation process log data found for this dimension.",
+    "logContent": "Log Content"
+  },
+  "log_file": {
+    "dialect_conversion": {
+      "logical_equivalence": "Logical Equivalence",
+      "syntax_error_detection": "Syntax Error Detection"
+    },
+    "sql_optimization": {
+      "logical_equivalence": "Logical Equivalence",
+      "optimization_depth": "Optimization Depth",
+      "rule_adherence": "Rule Adherence",
+      "syntax_error_detection": "Syntax Error Detection"
+    },
+    "sql_understanding": {
+      "execution_accuracy": "Execution Accuracy",
+      "explain_detection": "Explain Detection",
+      "sql_identification": "Type Identification",
+      "syntax_error_detection": "Syntax Error Detection"
+    }
+  }
+}

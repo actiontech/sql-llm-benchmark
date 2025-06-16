@@ -1,0 +1,485 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20250605_153216_806
+Run Dimensions: sql_understanding
+Run Indicator: sql_identification
+Evaluation Timestamp: 2025-06-05T15:35:59.219982
+Target LLM: gpt-4o
+Judge LLMs: Pro/deepseek-ai/DeepSeek-V3, o4-mini, gemini-2.0-flash
+-------------------------------------------------
+
+[2025-06-05 15:35:17.746094] Run Indicator: sql_understanding, Parameters size: 4760B
+[2025-06-05 15:35:17.746523] 
+--- Capability: sql_understanding Indicator sql_identification.jsonl Evaluating Type: objective  ---
+[2025-06-05 15:35:17.746536] 
+--- Case: 1 ---
+[2025-06-05 15:35:17.746550] [1] Case Run 1/1
+[2025-06-05 15:35:17.746562] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT product_name, price FROM products WHERE price > 100 AND stock_quantity IS NOT NULL;
+
+[2025-06-05 15:35:17.746600] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT product_name, price FROM products WHERE price > 100 AND stock_quantity IS NOT NULL;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:19.682481] [Model Answer]: {
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+[2025-06-05 15:35:19.682602] [1] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:35:19.682621] [1] Objective Eval Case Results: True
+[2025-06-05 15:35:19.682637] [1] objective Eval Case Final Result: True
+[2025-06-05 15:35:19.682646] 
+--- Case: 2 ---
+[2025-06-05 15:35:19.682677] [2] Case Run 1/1
+[2025-06-05 15:35:19.682690] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+INSERT INTO orders (customer_id, order_date, total_amount) VALUES (101, '2025-05-29', 249.99);
+
+[2025-06-05 15:35:19.682730] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nINSERT INTO orders (customer_id, order_date, total_amount) VALUES (101, \'2025-05-29\', 249.99);\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:21.451647] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "INSERT"
+}
+```
+[2025-06-05 15:35:21.451690] [2] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'INSERT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'INSERT'}'
+[2025-06-05 15:35:21.451698] [2] Objective Eval Case Results: True
+[2025-06-05 15:35:21.451705] [2] objective Eval Case Final Result: True
+[2025-06-05 15:35:21.451710] 
+--- Case: 3 ---
+[2025-06-05 15:35:21.451721] [3] Case Run 1/1
+[2025-06-05 15:35:21.451727] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+UPDATE employees SET department_id = 3, hire_date = '2023-01-15' WHERE employee_id = 205;
+
+[2025-06-05 15:35:21.451746] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nUPDATE employees SET department_id = 3, hire_date = \'2023-01-15\' WHERE employee_id = 205;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:22.966237] [Model Answer]: {
+  "sql_type": "DML",
+  "statement_type": "UPDATE"
+}
+[2025-06-05 15:35:22.966333] [3] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'UPDATE'}', Expected: '{'sql_type': 'DML', 'statement_type': 'UPDATE'}'
+[2025-06-05 15:35:22.966346] [3] Objective Eval Case Results: True
+[2025-06-05 15:35:22.966362] [3] objective Eval Case Final Result: True
+[2025-06-05 15:35:22.966371] 
+--- Case: 4 ---
+[2025-06-05 15:35:22.966396] [4] Case Run 1/1
+[2025-06-05 15:35:22.966407] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+DELETE FROM sessions WHERE last_activity < NOW() - INTERVAL '30 MINUTE';
+
+[2025-06-05 15:35:22.966458] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nDELETE FROM sessions WHERE last_activity < NOW() - INTERVAL \'30 MINUTE\';\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:24.637776] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "DELETE"
+}
+```
+[2025-06-05 15:35:24.637924] [4] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'DELETE'}', Expected: '{'sql_type': 'DML', 'statement_type': 'DELETE'}'
+[2025-06-05 15:35:24.637947] [4] Objective Eval Case Results: True
+[2025-06-05 15:35:24.637964] [4] objective Eval Case Final Result: True
+[2025-06-05 15:35:24.637975] 
+--- Case: 5 ---
+[2025-06-05 15:35:24.638006] [5] Case Run 1/1
+[2025-06-05 15:35:24.638020] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT MAX(salary) AS highest_salary, MIN(salary) AS lowest_salary FROM employees WHERE department = 'Sales';
+
+[2025-06-05 15:35:24.638067] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT MAX(salary) AS highest_salary, MIN(salary) AS lowest_salary FROM employees WHERE department = \'Sales\';\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:26.225924] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:35:26.226054] [5] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:35:26.226074] [5] Objective Eval Case Results: True
+[2025-06-05 15:35:26.226093] [5] objective Eval Case Final Result: True
+[2025-06-05 15:35:26.226104] 
+--- Case: 6 ---
+[2025-06-05 15:35:26.226134] [6] Case Run 1/1
+[2025-06-05 15:35:26.226149] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT category, AVG(rating) AS average_rating FROM reviews GROUP BY category ORDER BY average_rating DESC;
+
+[2025-06-05 15:35:26.226194] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT category, AVG(rating) AS average_rating FROM reviews GROUP BY category ORDER BY average_rating DESC;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:28.286684] [Model Answer]: {
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+[2025-06-05 15:35:28.286769] [6] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:35:28.286780] [6] Objective Eval Case Results: True
+[2025-06-05 15:35:28.286790] [6] objective Eval Case Final Result: True
+[2025-06-05 15:35:28.286797] 
+--- Case: 7 ---
+[2025-06-05 15:35:28.286818] [7] Case Run 1/1
+[2025-06-05 15:35:28.286825] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT order_id, customer_id, total_amount FROM orders WHERE order_date BETWEEN '2025-01-01' AND '2025-03-31' LIMIT 50 OFFSET 100;
+
+[2025-06-05 15:35:28.286853] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT order_id, customer_id, total_amount FROM orders WHERE order_date BETWEEN \'2025-01-01\' AND \'2025-03-31\' LIMIT 50 OFFSET 100;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:30.534872] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:35:30.534999] [7] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:35:30.535019] [7] Objective Eval Case Results: True
+[2025-06-05 15:35:30.535037] [7] objective Eval Case Final Result: True
+[2025-06-05 15:35:30.535048] 
+--- Case: 8 ---
+[2025-06-05 15:35:30.535090] [8] Case Run 1/1
+[2025-06-05 15:35:30.535107] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT DISTINCT status FROM tasks WHERE completion_date IS NULL;
+
+[2025-06-05 15:35:30.535162] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT DISTINCT status FROM tasks WHERE completion_date IS NULL;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:32.246878] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:35:32.247097] [8] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:35:32.247141] [8] Objective Eval Case Results: True
+[2025-06-05 15:35:32.247174] [8] objective Eval Case Final Result: True
+[2025-06-05 15:35:32.247194] 
+--- Case: 9 ---
+[2025-06-05 15:35:32.247455] [9] Case Run 1/1
+[2025-06-05 15:35:32.247589] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+ALTER TABLE users MODIFY COLUMN username VARCHAR(150) NOT NULL UNIQUE;
+
+[2025-06-05 15:35:32.247674] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nALTER TABLE users MODIFY COLUMN username VARCHAR(150) NOT NULL UNIQUE;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:33.933148] [Model Answer]: {
+  "sql_type": "DDL",
+  "statement_type": "ALTER"
+}
+[2025-06-05 15:35:33.933356] [9] Objective Eval: Format Model Answer: '{'sql_type': 'DDL', 'statement_type': 'ALTER'}', Expected: '{'sql_type': 'DDL', 'statement_type': 'ALTER'}'
+[2025-06-05 15:35:33.933385] [9] Objective Eval Case Results: True
+[2025-06-05 15:35:33.933407] [9] objective Eval Case Final Result: True
+[2025-06-05 15:35:33.933420] 
+--- Case: 10 ---
+[2025-06-05 15:35:33.933456] [10] Case Run 1/1
+[2025-06-05 15:35:33.933472] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT c.customer_name, SUM(o.total_amount) AS total_spent FROM customers c JOIN orders o ON c.customer_id = o.customer_id WHERE o.order_date >= '2025-01-01' GROUP BY c.customer_name HAVING SUM(o.total_amount) > (SELECT AVG(total_amount) FROM orders);
+
+[2025-06-05 15:35:33.933521] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT c.customer_name, SUM(o.total_amount) AS total_spent FROM customers c JOIN orders o ON c.customer_id = o.customer_id WHERE o.order_date >= \'2025-01-01\' GROUP BY c.customer_name HAVING SUM(o.total_amount) > (SELECT AVG(total_amount) FROM orders);\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:35.966478] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:35:35.966584] [10] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:35:35.966611] [10] Objective Eval Case Results: True
+[2025-06-05 15:35:35.966624] [10] objective Eval Case Final Result: True
+[2025-06-05 15:35:35.966645] 
+--- Case: 11 ---
+[2025-06-05 15:35:35.966669] [11] Case Run 1/1
+[2025-06-05 15:35:35.966678] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT e.employee_name, d.department_name, (SELECT COUNT(*) FROM projects p WHERE p.manager_id = e.employee_id) AS managed_projects_count FROM employees e JOIN departments d ON e.department_id = d.department_id WHERE e.salary > 50000 AND e.status = 'Active';
+
+[2025-06-05 15:35:35.966711] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT e.employee_name, d.department_name, (SELECT COUNT(*) FROM projects p WHERE p.manager_id = e.employee_id) AS managed_projects_count FROM employees e JOIN departments d ON e.department_id = d.department_id WHERE e.salary > 50000 AND e.status = \'Active\';\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:37.742266] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:35:37.742439] [11] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:35:37.742469] [11] Objective Eval Case Results: True
+[2025-06-05 15:35:37.742498] [11] objective Eval Case Final Result: True
+[2025-06-05 15:35:37.742517] 
+--- Case: 12 ---
+[2025-06-05 15:35:37.742560] [12] Case Run 1/1
+[2025-06-05 15:35:37.742582] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SAVEPOINT UpdateCustomers;
+
+[2025-06-05 15:35:37.742656] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSAVEPOINT UpdateCustomers;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:43.755678] [Model Answer]: ```json
+{
+  "sql_type": "TCL",
+  "statement_type": "SAVEPOINT"
+}
+```
+[2025-06-05 15:35:43.755797] [12] Objective Eval: Format Model Answer: '{'sql_type': 'TCL', 'statement_type': 'SAVEPOINT'}', Expected: '{'sql_type': 'TCL', 'statement_type': 'SAVEPOINT'}'
+[2025-06-05 15:35:43.755815] [12] Objective Eval Case Results: True
+[2025-06-05 15:35:43.755832] [12] objective Eval Case Final Result: True
+[2025-06-05 15:35:43.755843] 
+--- Case: 13 ---
+[2025-06-05 15:35:43.755875] [13] Case Run 1/1
+[2025-06-05 15:35:43.755889] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+CREATE VIEW active_users AS SELECT user_id, username, email FROM users WHERE status = 'Active' WITH CHECK OPTION;
+
+[2025-06-05 15:35:43.755933] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nCREATE VIEW active_users AS SELECT user_id, username, email FROM users WHERE status = \'Active\' WITH CHECK OPTION;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:45.323435] [Model Answer]: ```json
+{
+  "sql_type": "DDL",
+  "statement_type": "CREATE"
+}
+```
+[2025-06-05 15:35:45.323561] [13] Objective Eval: Format Model Answer: '{'sql_type': 'DDL', 'statement_type': 'CREATE'}', Expected: '{'sql_type': 'DDL', 'statement_type': 'CREATE'}'
+[2025-06-05 15:35:45.323580] [13] Objective Eval Case Results: True
+[2025-06-05 15:35:45.323597] [13] objective Eval Case Final Result: True
+[2025-06-05 15:35:45.323610] 
+--- Case: 14 ---
+[2025-06-05 15:35:45.323640] [14] Case Run 1/1
+[2025-06-05 15:35:45.323654] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+GRANT ALL PRIVILEGES ON DATABASE inventory_db TO 'admin_user' WITH GRANT OPTION;
+
+[2025-06-05 15:35:45.323701] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nGRANT ALL PRIVILEGES ON DATABASE inventory_db TO \'admin_user\' WITH GRANT OPTION;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:47.079552] [Model Answer]: ```json
+{
+  "sql_type": "DCL",
+  "statement_type": "GRANT"
+}
+```
+[2025-06-05 15:35:47.079713] [14] Objective Eval: Format Model Answer: '{'sql_type': 'DCL', 'statement_type': 'GRANT'}', Expected: '{'sql_type': 'DCL', 'statement_type': 'GRANT'}'
+[2025-06-05 15:35:47.079742] [14] Objective Eval Case Results: True
+[2025-06-05 15:35:47.079770] [14] objective Eval Case Final Result: True
+[2025-06-05 15:35:47.079789] 
+--- Case: 15 ---
+[2025-06-05 15:35:47.079833] [15] Case Run 1/1
+[2025-06-05 15:35:47.079855] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+REVOKE DELETE ON TABLE financial_records FROM 'accountant_role';
+
+[2025-06-05 15:35:47.079925] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nREVOKE DELETE ON TABLE financial_records FROM \'accountant_role\';\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:49.176110] [Model Answer]: ```json
+{
+  "sql_type": "DCL",
+  "statement_type": "REVOKE"
+}
+```
+[2025-06-05 15:35:49.176275] [15] Objective Eval: Format Model Answer: '{'sql_type': 'DCL', 'statement_type': 'REVOKE'}', Expected: '{'sql_type': 'DCL', 'statement_type': 'REVOKE'}'
+[2025-06-05 15:35:49.176304] [15] Objective Eval Case Results: True
+[2025-06-05 15:35:49.176331] [15] objective Eval Case Final Result: True
+[2025-06-05 15:35:49.176355] 
+--- Case: 16 ---
+[2025-06-05 15:35:49.176399] [16] Case Run 1/1
+[2025-06-05 15:35:49.176422] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT product_name, price, stock_quantity, CASE WHEN stock_quantity < 10 THEN 'Low Stock' WHEN stock_quantity BETWEEN 10 AND 50 THEN 'Medium Stock' ELSE 'High Stock' END AS stock_status FROM products ORDER BY stock_status, price DESC;
+
+[2025-06-05 15:35:49.176502] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT product_name, price, stock_quantity, CASE WHEN stock_quantity < 10 THEN \'Low Stock\' WHEN stock_quantity BETWEEN 10 AND 50 THEN \'Medium Stock\' ELSE \'High Stock\' END AS stock_status FROM products ORDER BY stock_status, price DESC;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:51.557774] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:35:51.557849] [16] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:35:51.557860] [16] Objective Eval Case Results: True
+[2025-06-05 15:35:51.557873] [16] objective Eval Case Final Result: True
+[2025-06-05 15:35:51.557881] 
+--- Case: 17 ---
+[2025-06-05 15:35:51.557898] [17] Case Run 1/1
+[2025-06-05 15:35:51.557907] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+WITH RegionalSales AS (SELECT region, SUM(amount) AS total_region_sales FROM sales GROUP BY region) SELECT s.sale_id, s.product_id, s.amount, r.total_region_sales FROM sales s JOIN RegionalSales r ON s.region = r.region WHERE s.amount > r.total_region_sales / 10;
+
+[2025-06-05 15:35:51.557935] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nWITH RegionalSales AS (SELECT region, SUM(amount) AS total_region_sales FROM sales GROUP BY region) SELECT s.sale_id, s.product_id, s.amount, r.total_region_sales FROM sales s JOIN RegionalSales r ON s.region = r.region WHERE s.amount > r.total_region_sales / 10;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:54.003124] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:35:54.003178] [17] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:35:54.003189] [17] Objective Eval Case Results: True
+[2025-06-05 15:35:54.003199] [17] objective Eval Case Final Result: True
+[2025-06-05 15:35:54.003207] 
+--- Case: 18 ---
+[2025-06-05 15:35:54.003225] [18] Case Run 1/1
+[2025-06-05 15:35:54.003234] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+SELECT employee_id, employee_name, department_id, ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rn FROM employees WHERE department_id IN (1, 2, 3);
+
+[2025-06-05 15:35:54.003265] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nSELECT employee_id, employee_name, department_id, ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rn FROM employees WHERE department_id IN (1, 2, 3);\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:55.788115] [Model Answer]: ```json
+{
+  "sql_type": "DML",
+  "statement_type": "SELECT"
+}
+```
+[2025-06-05 15:35:55.788251] [18] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'SELECT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'SELECT'}'
+[2025-06-05 15:35:55.788272] [18] Objective Eval Case Results: True
+[2025-06-05 15:35:55.788291] [18] objective Eval Case Final Result: True
+[2025-06-05 15:35:55.788303] 
+--- Case: 19 ---
+[2025-06-05 15:35:55.788345] [19] Case Run 1/1
+[2025-06-05 15:35:55.788362] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+INSERT INTO sales_archive SELECT * FROM sales WHERE sale_date < '2024-01-01' ON CONFLICT (sale_id) DO UPDATE SET archived_date = NOW();
+
+[2025-06-05 15:35:55.788408] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nINSERT INTO sales_archive SELECT * FROM sales WHERE sale_date < \'2024-01-01\' ON CONFLICT (sale_id) DO UPDATE SET archived_date = NOW();\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:57.514504] [Model Answer]: {
+  "sql_type": "DML",
+  "statement_type": "INSERT"
+}
+[2025-06-05 15:35:57.514614] [19] Objective Eval: Format Model Answer: '{'sql_type': 'DML', 'statement_type': 'INSERT'}', Expected: '{'sql_type': 'DML', 'statement_type': 'INSERT'}'
+[2025-06-05 15:35:57.514629] [19] Objective Eval Case Results: True
+[2025-06-05 15:35:57.514645] [19] objective Eval Case Final Result: True
+[2025-06-05 15:35:57.514656] 
+--- Case: 20 ---
+[2025-06-05 15:35:57.514723] [20] Case Run 1/1
+[2025-06-05 15:35:57.514736] [Model Prompt]: 
+You are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "sql_type": "DML|DDL|DCL|TCL",
+  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
+}
+
+SQL:
+TRUNCATE TABLE large_log_table REUSE STORAGE;
+
+[2025-06-05 15:35:57.514773] Model Request Data: {'model': 'gpt-4o', 'messages': [{'role': 'user', 'content': '\nYou are a database expert in SQL analysis. Analyze the SQL statement below and respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "sql_type": "DML|DDL|DCL|TCL",\n  "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"\n}\n\nSQL:\nTRUNCATE TABLE large_log_table REUSE STORAGE;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': None}
+[2025-06-05 15:35:59.219522] [Model Answer]: ```json
+{
+  "sql_type": "DDL",
+  "statement_type": "TRUNCATE"
+}
+```
+[2025-06-05 15:35:59.219665] [20] Objective Eval: Format Model Answer: '{'sql_type': 'DDL', 'statement_type': 'TRUNCATE'}', Expected: '{'sql_type': 'DDL', 'statement_type': 'TRUNCATE'}'
+[2025-06-05 15:35:59.219691] [20] Objective Eval Case Results: True
+[2025-06-05 15:35:59.219717] [20] objective Eval Case Final Result: True

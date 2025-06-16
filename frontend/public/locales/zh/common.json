@@ -1,0 +1,157 @@
+{
+  "seo": {
+    "title": "大模型SQL能力排行榜",
+    "description": "SCALE - 大模型SQL能力排行榜，评估和比较主流大模型在SQL能力方面的表现。",
+    "keywords": "SCALE, SQL, 大模型, 排行榜, 测评, AI, LLM, 数据集",
+    "ranking_page": {
+      "title": "SCALE - 大模型SQL能力排行榜 - {{month}}月",
+      "description": "SCALE - 查看 {{month}} 月份的SQL大模型能力排行榜，评估和比较主流大模型在SQL能力方面的表现。",
+      "keywords": "SCALE, SQL LLM, 大模型, 排行榜, 测评, AI, LLM, {{month}}月"
+    },
+    "model_detail_page": {
+      "title": "SCALE - {{modelName}} - SQL LLM 详情",
+      "description": "SCALE - 关于 {{modelName}} 在SQL能力方面的详细评估报告，包括SQL优化、方言转换和SQL理解能力。",
+      "keywords": "SCALE, {{modelName}}, SQL LLM, 详情, 评估, SQL优化, 方言转换, SQL理解"
+    }
+  },
+  "ranking": {
+    "title": "SCALE",
+    "description_part1": "查看我们的 ",
+    "description_part2": " 获取更多详情",
+    "full_description": "大模型SQL能力排行榜揭示大模型在SQL领域的真实水平！ SCALE致力于通过科学、严谨的测评，全面评估大语言模型（LLM）处理SQL的核心能力。我们聚焦三大关键维度：SQL优化能力（提升查询效率与性能）、方言转换能力（实现跨数据库平台的无缝迁移）以及SQL深度理解能力（精准解析复杂查询逻辑与用户意图）。为真实反映模型在数据库操作实践中的表现，我们构建了一套多维度、多指标的综合测评体系。并采用不同难度等级的真实案例进行严格测试。每个测试案例均依据其技术复杂度与实际应用价值被赋予科学的权重（难度越高，权重越大），确保最终得分能精准衡量模型在高价值、高挑战性任务上的综合表现力。SCALE 榜单通过严格测试与科学加权评分，旨在为开发者、数据库管理员及企业技术决策者提供权威、客观的参考依据，清晰呈现各模型在SQL处理领域的相对优势，推动大模型在数据库智能化应用中的技术发展与选型落地。"
+  },
+  "table": {
+    "rank": "排名",
+    "creator": "创建者",
+    "model": "模型",
+    "releaseDate": "发布日期",
+    "type": "类型",
+    "parameters": "参数量",
+    "dialect_conversion": "方言转换",
+    "sql_optimization": "SQL优化",
+    "sql_understanding": "SQL理解",
+    "organization": "组织",
+    "website": "官网",
+    "details": "详情",
+    "view_details": "详情",
+    "model_score": "模型得分"
+  },
+  "indicator": {
+    "execution_accuracy.jsonl": "执行准确性",
+    "explain_detection.jsonl": "执行计划检测",
+    "sql_identification.jsonl": "类型识别",
+    "syntax_error_detection.jsonl": "语法错误检测",
+    "logical_equivalence.jsonl": "逻辑等价",
+    "optimization_depth.jsonl": "优化深度",
+    "rule_adherence.jsonl": "规则遵循"
+  },
+  "detail": {
+    "abilityScores": "能力维度评分"
+  },
+  "evaluation_cases": {
+    "title": "评估案例报告",
+    "formula_button": "榜单规则",
+    "select_dimension": "选择能力维度",
+    "no_data_found": "此维度下未找到评估案例数据。",
+    "indicator_name": "指标名称",
+    "indicator_weight":"指标权重",
+    "evaluation_type":"评估方式",
+    "total_cases": "总案例数",
+    "passed_cases": "通过案例数",
+    "failed_cases": "失败案例数",
+    "pass_rate": "通过率",
+    "average_score": "平均得分",
+    "details": "案例详情",
+    "view_cases": "查看案例",
+    "case_details": "案例详情",
+    "case_id": "案例ID",
+    "case_description": "案例描述",
+    "case_weight":"案例权重",
+    "case_content":"原始案例",
+    "mode_question":"模型提问",
+    "model_answers":"模型回答",
+    "expected_output": "预期输出",
+    "actual_output": "实际输出",
+    "evaluation_result": "评估结果",
+    "score": "得分",
+    "reason": "原因",
+    "formula_tip": {
+      "title": "能力得分计算逻辑",
+      "basic_elements": {
+        "title": "基础元素",
+        "item1": "每个能力包含多个评估指标(如SQL理解能力)",
+        "item2": "每个指标包含多个测试用例(case)",
+        "item3": "每个用例有难度等级(1-3级)"
+      },
+      "weight_settings": {
+        "title": "权重设置",
+        "item1": "指标权重: 反映指标重要性(值越高越重要)",
+        "item2": "难度权重: 反映题目难度(1级=1分, 2级=2分, 3级=3分)"
+      },
+      "scoring_steps": {
+        "title": "得分计算",
+        "item1": "用例得分 = 难度权重 × 正确与否(正确=1, 错误=0)",
+        "item2": "指标得分 = 该指标下所有用例得分之和",
+        "item3": "能力总分 = ∑(指标得分 × 指标权重)",
+        "item4": "理论满分 = ∑(指标下所有用例的难度权重之和 × 指标权重)",
+        "item5": "最终能力得分 = (能力总分 ÷ 理论满分) × 100"
+      },
+      "special_cases": {
+        "title": "特殊情况",
+        "item1": "若能力下无测试用例, 得分为0",
+        "item2": "若某指标权重未配置, 该指标不计分"
+      },
+      "example": {
+        "title": "示例",
+        "item1": "指标A (权重4): 3个用例 (难度1/2/3各1个) 全正确 → 指标得分= 1×1 + 2×1 + 3×1 = 6",
+        "item2": "指标B (权重2): 2个用例 (难度2/3各1个) 全正确 → 指标得分= 2×1 + 3×1 = 5",
+        "item3": "能力总分 = 6×4 + 5×2 = 34",
+        "item4": "理论满分 = (1+2+3)×4 + (2+3)×2 = 34",
+        "item5": "最终得分 = 34/34×100 = 100分"
+      }
+    },
+    "rule_id": "规则ID"
+  },
+  "actions": {
+    "zh": "中文评测",
+    "en": "英文评测",
+    "searchPlaceholder": "搜索模型名称",
+    "export": "导出",
+    "back": "返回列表",
+    "toggle_language":"切换中文",
+    "expand":"了解更多",
+    "collapse":"收起"
+  },
+  "footer": {
+    "copyright": "© Copyright 2025 上海爱可生信息技术股份有限公司 版权所有",
+    "beian": "沪ICP备12003970号-5"
+  },
+  "config": {
+    "language": "🌐 切换语言"
+  },
+  "log_info": {
+    "title": "评测流程",
+    "select_file": "选择日志文件",
+    "no_logs_found": "此维度下未找到日志文件。",
+    "no_logs_for_dimension": "此维度下未找到测评流程日志数据。",
+    "logContent": "日志内容"
+  },
+  "log_file": {
+    "dialect_conversion": {
+      "logical_equivalence": "逻辑等价",
+      "syntax_error_detection": "语法错误检测"
+    },
+    "sql_optimization": {
+      "logical_equivalence": "逻辑等价",
+      "optimization_depth": "优化深度",
+      "rule_adherence": "规则遵循",
+      "syntax_error_detection": "语法错误检测"
+    },
+    "sql_understanding": {
+      "execution_accuracy": "执行准确性",
+      "explain_detection": "执行计划检测",
+      "sql_identification": "类型识别",
+      "syntax_error_detection": "语法错误检测"
+    }
+  }
+}
