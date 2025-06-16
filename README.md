@@ -17,14 +17,14 @@
 
 ## 项目结构
 
-本项目分为 LLM 测评脚本 (evaluation_script) 和排行榜 UI (leaderboard_ui) 两部分。
+本项目分为 LLM 测评脚本 (evaluator) 和排行榜 UI (leaderboard) 两部分。
 
-### LLM 测评脚本 (evaluation_script)
+### LLM 测评脚本 (evaluator)
 
 LLM 测评脚本负责核心的测评逻辑、数据处理和报告生成。
 
 ```
-evaluation_script/
+evaluator/
 ├── application.py          # HTTP 接口，用于支持其他应用的测评（如 SQLFlash SQL 优化）
 ├── evaluator.py            # 核心测评逻辑
 ├── llm_interface.py        # LLM 接口定义，用于集成不同的大模型 API
@@ -56,12 +56,12 @@ evaluation_script/
     └── reporting.py
 ```
 
-### 排行榜 UI (leaderboard_ui)
+### 排行榜 UI (leaderboard)
 
 排行榜 UI 负责展示测评报告、排行榜和详细信息。
 
 ```
-leaderboard_ui/
+leaderboard/
 ├── components/             # React 组件
 │   ├── BarChart.tsx
 │   ├── constants.ts
@@ -97,7 +97,7 @@ leaderboard_ui/
 
 ## 快速开始
 
-### evaluation_script 设置与运行
+### evaluator 设置与运行
 
 1.  **环境要求**:
 
@@ -109,31 +109,31 @@ leaderboard_ui/
 
 2.  **配置**:
 
-    - 编辑 [`evaluation_script/config/llm_config.py`](evaluation_script/config/llm_config.py) 配置您要测评的目标 LLM 和裁判 LLM 的 API 密钥、模型名称等信息。
-    - 编辑 [`evaluation_script/config/dataset_config.py`](evaluation_script/config/dataset_config.py) 配置数据集的提示词以及指标或案例的权重。
+    - 编辑 [`evaluator/config/llm_config.py`](evaluator/config/llm_config.py) 配置您要测评的目标 LLM 和裁判 LLM 的 API 密钥、模型名称等信息。
+    - 编辑 [`evaluator/config/dataset_config.py`](evaluator/config/dataset_config.py) 配置数据集的提示词以及指标或案例的权重。
 
 3.  **运行测评**:
-    在 `evaluation_script` 目录下运行 `main.py` 脚本：
+    在 `evaluator` 目录下运行 `main.py` 脚本：
     ```bash
-    cd evaluation_script
+    cd evaluator
     python main.py
     ```
-    测评完成后，报告将默认保存到 `leaderboard_ui/public/data/` 目录下，供页面展示。报告类型包括：
+    测评完成后，报告将默认保存到 `leaderboard/public/data/` 目录下，供页面展示。报告类型包括：
     - `eval_reports`: 测评模型得分报告，用于榜单列表。
     - `evaluation_case_reports`: 模型对每个测试案例的详细测评结果。
     - `evaluation_process_detail_logs`: 测评流程日志，包含与模型的每次对话。
 
-### leaderboard_ui 设置与运行
+### leaderboard 设置与运行
 
 1.  **环境要求**:
 
     - Node.js 18.18 或更高版本
 
 2.  **安装依赖**:
-    在 `leaderboard_ui` 目录下安装项目依赖：
+    在 `leaderboard` 目录下安装项目依赖：
 
     ```bash
-    cd leaderboard_ui
+    cd leaderboard
     pnpm install # 或者 npm install
     ```
 
@@ -150,7 +150,7 @@ leaderboard_ui/
       ```bash
       next build # 或者 npm run build
       ```
-      导出的静态资源位于 `leaderboard_ui/out/` 目录下您可以将此目录下的内容部署到任何静态文件服务器。
+      导出的静态资源位于 `leaderboard/out/` 目录下您可以将此目录下的内容部署到任何静态文件服务器。
     - **服务器端渲染 (SSR)**:
       ```bash
       next start # 或者 npm start
@@ -206,14 +206,14 @@ leaderboard_ui/
 
 本项目设计为高度可扩展，方便用户根据需求进行定制。
 
-- **添加新的 LLM 接口**: 修改 [`evaluation_script/llm_interface.py`](evaluation_script/llm_interface.py) 以支持新的 LLM API。
-- **添加新的 HTTP 接口**: 修改 [`evaluation_script/application.py`](evaluation_script/application.py) 以支持新的其他应用测评（例如：SQLFlash SQL 优化）。
-- **添加新的测试用例**: 在 [`evaluation_script/dataset/`](evaluation_script/dataset/) 目录下按照现有格式创建或修改 JSON 文件。
+- **添加新的 LLM 接口**: 修改 [`evaluator/llm_interface.py`](evaluator/llm_interface.py) 以支持新的 LLM API。
+- **添加新的 HTTP 接口**: 修改 [`evaluator/application.py`](evaluator/application.py) 以支持新的其他应用测评（例如：SQLFlash SQL 优化）。
+- **添加新的测试用例**: 在 [`evaluator/dataset/`](evaluator/dataset/) 目录下按照现有格式创建或修改 JSON 文件。
 
 ## 注意事项
 
 - **API 密钥安全**: 确保您的 API 密钥安全，不要直接提交到版本控制系统中。强烈建议使用环境变量或其他密钥管理方法来存储和访问敏感信息。
-- **报告输出路径**: 排行榜默认从 `leaderboard_ui/public/data/` 读取测评报告。如果您修改了 evaluation_script 报告的输出路径，请确保 leaderboard_ui 也相应更新。
+- **报告输出路径**: 排行榜默认从 `leaderboard/public/data/` 读取测评报告。如果您修改了 evaluator 报告的输出路径，请确保 leaderboard 也相应更新。
 
 ## 贡献
 
