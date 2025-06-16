@@ -14,6 +14,7 @@ import {
   Tooltip,
   Input,
   Modal,
+  List, // 导入 List 组件
 } from "antd";
 
 import { useTranslation } from "react-i18next";
@@ -23,14 +24,17 @@ import { ActionType, ProColumns, ProTable } from "@ant-design/pro-table";
 import {
   TrophyFilled,
   EyeOutlined,
-  UpOutlined, // 重新引入 UpOutlined
-  DownOutlined, // 重新引入 DownOutlined
-  CaretUpFilled, // 引入新的实心排序图标
-  CaretDownFilled, // 引入新的实心排序图标
+  UpOutlined,
+  DownOutlined,
+  CaretUpFilled,
+  CaretDownFilled,
+  GithubOutlined, // 导入 Github 图标
+  RightOutlined,
+  FormOutlined, // 导入 FormOutlined 图标
 } from "@ant-design/icons";
 
 const { Search } = Input;
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
 
 interface Model {
   id: string;
@@ -127,11 +131,6 @@ const StyledProgressBar: React.FC<{
     </div>
   );
 };
-
-// =================================================================
-// [新] 结束：新增及修改的 UI 组件
-// =================================================================
-
 const LogoImage: React.FC<{
   organization: string;
   width: number;
@@ -191,6 +190,72 @@ const getTopModelsByCategory = (models: Model[]) => {
   return topModels;
 };
 
+const SubmissionGuideModal: React.FC<{
+  visible: boolean;
+  onClose: () => void;
+}> = ({ visible, onClose }) => {
+  const { t } = useTranslation("common");
+  const GITHUB_URL = "https://github.com/actiontech/sql-llm-benchmark";
+
+  const requirements = [
+    t("submission_guide.req1"),
+    t("submission_guide.req2"),
+    t("submission_guide.req3"),
+    t("submission_guide.req4"),
+    t("submission_guide.req5"),
+    t("submission_guide.req6"),
+  ];
+
+  return (
+    <Modal
+      open={visible}
+      onCancel={onClose}
+      footer={[
+        <Button key="close" onClick={onClose}>
+          {t("actions.close")}
+        </Button>,
+        <Button
+          key="submit"
+          type="primary"
+          icon={<GithubOutlined />}
+          href={GITHUB_URL}
+          target="_blank"
+        >
+          {t("submission_guide.cta_button")}
+        </Button>,
+      ]}
+      width="50%"
+      style={{ top: 50, maxWidth: "800px" }}
+      title={
+        <Space>
+          <GithubOutlined />
+          <Text strong>{t("submission_guide.title")}</Text>
+        </Space>
+      }
+    >
+      <Paragraph>{t("submission_guide.intro")}</Paragraph>
+      <Title level={5} style={{ marginTop: "24px" }}>
+        {t("submission_guide.req_title")}
+      </Title>
+      <List
+        bordered
+        dataSource={requirements}
+        renderItem={(item, index) => (
+          <List.Item>
+            <Text>
+              <span style={{ fontWeight: "bold", marginRight: "8px" }}>
+                {index + 1}.
+              </span>
+              {item}
+            </Text>
+          </List.Item>
+        )}
+        style={{ background: "#f9f9f9", borderRadius: "8px" }}
+      />
+    </Modal>
+  );
+};
+
 const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
   const { t, i18n } = useTranslation("common");
   const router = useRouter();
@@ -204,7 +269,9 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
   const [searchText, setSearchText] = useState<string>("");
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isFormulaModalVisible, setIsFormulaModalVisible] =
-    useState<boolean>(false); // 新增状态用于控制计算公式弹窗
+    useState<boolean>(false); // 控制计算公式弹窗
+  const [isSubmissionGuideVisible, setIsSubmissionGuideVisible] =
+    useState<boolean>(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
   const [sortedInfo, setSortedInfo] = useState<any>({
     columnKey: "sql_optimization",
@@ -313,6 +380,14 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
 
   const handleFormulaModalCancel = () => {
     setIsFormulaModalVisible(false);
+  };
+
+  const showSubmissionGuide = () => {
+    setIsSubmissionGuideVisible(true);
+  };
+
+  const handleSubmissionGuideCancel = () => {
+    setIsSubmissionGuideVisible(false);
   };
 
   useEffect(() => {
@@ -811,7 +886,23 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
                   >
                     GitHub
                   </Link>
-                  {t("ranking.description_part2")} .
+                  {t("ranking.description_part2")}{" "}
+                  <Button
+                    type="link"
+                    onClick={showSubmissionGuide}
+                    style={{
+                      padding: 0,
+                      fontSize: "18px",
+                      height: "auto",
+                      lineHeight: "inherit",
+                      color: "#1890ff",
+                      fontWeight: "bold",
+                      verticalAlign: "baseline",
+                    }}
+                  >
+                    {t("ranking.description_part3_trigger")}
+                  </Button>
+                  .
                 </Paragraph>
               </div>
 
@@ -969,12 +1060,12 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
             >
               <style jsx>{`
                 .description-wrapper {
-                  background: "rgba(255, 255, 255, 0.5)",
+                  background: rgba(255, 255, 255, 0.6);
                   border-radius: 12px;
                   padding: 24px 32px;
-                  border: 1px solid #f0f0f0;
+                  border: 1px solid rgba(0, 0, 0, 0.08);
                   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-                  text-align: center;
+                  text-align: left; /* Changed to left align */
                 }
                 .description-content {
                   overflow: hidden;
@@ -990,8 +1081,8 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
                   height: 50px;
                   background: linear-gradient(
                     to top,
-                    rgba(158, 153, 153, 0.3),
-                    rgba(255, 255, 255, 0)
+                    rgba(233, 238, 244, 1),
+                    rgba(233, 238, 244, 0)
                   );
                   pointer-events: none;
                 }
@@ -1010,7 +1101,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
                   style={{
                     maxHeight: isDescriptionExpanded
                       ? `${descriptionRef.current?.scrollHeight}px`
-                      : "100px",
+                      : "100px", // Adjusted initial height
                   }}
                 >
                   <Paragraph
@@ -1025,32 +1116,33 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
                     {t("ranking.full_description")}
                   </Paragraph>
                 </div>
-                <Button
-                  type="link"
-                  shape="round"
-                  icon={
-                    isDescriptionExpanded ? (
-                      <UpOutlined className="expand-icon" />
-                    ) : (
-                      <DownOutlined className="expand-icon" />
-                    )
-                  }
-                  onClick={() =>
-                    setIsDescriptionExpanded(!isDescriptionExpanded)
-                  }
-                  style={{
-                    marginTop: "15px",
-                    alignSelf: "flex-end", // 靠右对齐
-                    background: "rgba(24,114,255, 0.7)",
-                    color: "#fff",
-                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
-                    transition: "all 0.3s ease",
-                  }}
-                >
-                  {isDescriptionExpanded
-                    ? t("actions.collapse")
-                    : t("actions.expand")}
-                </Button>
+                <div style={{ textAlign: "center" }}>
+                  <Button
+                    type="link"
+                    shape="round"
+                    icon={
+                      isDescriptionExpanded ? (
+                        <UpOutlined className="expand-icon" />
+                      ) : (
+                        <DownOutlined className="expand-icon" />
+                      )
+                    }
+                    onClick={() =>
+                      setIsDescriptionExpanded(!isDescriptionExpanded)
+                    }
+                    style={{
+                      marginTop: "15px",
+                      background: "rgba(24,114,255, 0.1)",
+                      color: "#1890ff",
+                      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
+                      transition: "all 0.3s ease",
+                    }}
+                  >
+                    {isDescriptionExpanded
+                      ? t("actions.collapse")
+                      : t("actions.expand")}
+                  </Button>
+                </div>
               </div>
               <style jsx>{`
                 .expand-icon {
@@ -1111,24 +1203,44 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
             }}
             onChange={handleTableChange}
             headerTitle={
-              <Button
-                key="formula-button"
-                type="default"
-                onClick={showFormulaModal}
-                style={{
-                  borderColor: "#1890ff",
-                  color: "#1890ff",
-                  fontWeight: "bold",
-                  borderRadius: "4px",
-                  padding: "4px 12px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4px",
-                }}
-              >
-                {t("evaluation_cases.formula_button")}{" "}
-                <span style={{ fontSize: "12px" }}>{">"}</span>
-              </Button>
+              <Space>
+                <Button
+                  key="formula-button"
+                  type="primary"
+                  ghost
+                  onClick={showFormulaModal}
+                  icon={<FormOutlined />}
+                  style={{
+                    fontWeight: "bold",
+                    borderRadius: "4px",
+                    padding: "4px 12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                >
+                  {t("evaluation_cases.formula_button")}
+                  <RightOutlined style={{ fontSize: "12px" }} />
+                </Button>
+                <Button
+                  key="submit-guide-button"
+                  type="primary"
+                  ghost
+                  icon={<GithubOutlined />}
+                  onClick={showSubmissionGuide}
+                  style={{
+                    fontWeight: "bold",
+                    borderRadius: "4px",
+                    padding: "4px 12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                >
+                  {t("actions.submit_report")}
+                  <RightOutlined style={{ fontSize: "12px" }} />
+                </Button>
+              </Space>
             }
             pagination={false}
             scroll={{ y: "auto" }}
@@ -1167,12 +1279,21 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
         <Modal
           open={isFormulaModalVisible}
           onCancel={handleFormulaModalCancel}
-          footer={null}
+          footer={[
+            <Button key="close" onClick={handleFormulaModalCancel}>
+              {t("actions.close")}
+            </Button>,
+          ]}
           width="30%"
           style={{ top: 50 }}
         >
           {renderFormulaContent()}
         </Modal>
+
+        <SubmissionGuideModal
+          visible={isSubmissionGuideVisible}
+          onClose={handleSubmissionGuideCancel}
+        />
       </div>
     </>
   );
