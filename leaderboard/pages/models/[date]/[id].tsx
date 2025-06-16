@@ -607,7 +607,11 @@ const Detail: React.FC<DetailProps> = ({
             }} // 增加内边距
           >
             <Descriptions.Item label={t("table.type")}>
-              {model.type}
+              {model.type === "Chat"
+                ? t("table.type_chat")
+                : model.type === "Application"
+                ? t("table.type_application")
+                : model.type}
             </Descriptions.Item>
             <Descriptions.Item label={t("table.organization")}>
               {model.organization}
