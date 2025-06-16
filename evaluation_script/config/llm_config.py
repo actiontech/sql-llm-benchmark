@@ -108,7 +108,7 @@ JUDGE_LLM_CONFIGS = [
 
 
 # Output directory for evaluation reports
-OUTPUT_DIR = "../frontend/public/data"
+OUTPUT_DIR = "../leaderboard_ui/public/data"
 
 
 # API request timeout in seconds
