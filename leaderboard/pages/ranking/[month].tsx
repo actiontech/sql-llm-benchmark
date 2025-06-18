@@ -267,7 +267,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
   const actionRef = useRef<ActionType | undefined>(undefined);
   const [models, setModels] = useState<Model[]>([]); // 客户端状态管理 models
   const [searchText, setSearchText] = useState<string>("");
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(true);
   const [isFormulaModalVisible, setIsFormulaModalVisible] =
     useState<boolean>(false); // 控制计算公式弹窗
   const [isSubmissionGuideVisible, setIsSubmissionGuideVisible] =
@@ -1058,50 +1058,15 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
                 minHeight: 0,
               }}
             >
-              <style jsx>{`
-                .description-wrapper {
-                  background: rgba(255, 255, 255, 0.6);
-                  border-radius: 12px;
-                  padding: 24px 32px;
-                  border: 1px solid rgba(0, 0, 0, 0.08);
-                  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-                  text-align: left; /* Changed to left align */
-                }
-                .description-content {
-                  overflow: hidden;
-                  position: relative;
-                  transition: max-height 0.5s ease-in-out;
-                }
-                .description-content:not(.expanded)::after {
-                  content: "";
-                  position: absolute;
-                  bottom: 0;
-                  left: 0;
-                  right: 0;
-                  height: 50px;
-                  background: linear-gradient(
-                    to top,
-                    rgba(233, 238, 244, 1),
-                    rgba(233, 238, 244, 0)
-                  );
-                  pointer-events: none;
-                }
-                .description-text {
-                  font-size: 16px;
-                  color: #34495e;
-                  text-align: left;
-                }
-              `}</style>
-              <div className="description-wrapper">
+              <div className={styles.descriptionWrapper}>
                 <div
                   ref={descriptionRef}
-                  className={`description-content ${
-                    isDescriptionExpanded ? "expanded" : ""
-                  }`}
+                  className={`${styles.descriptionContent} ${isDescriptionExpanded ? styles.expanded : ""}`}
                   style={{
                     maxHeight: isDescriptionExpanded
-                      ? `${descriptionRef.current?.scrollHeight}px`
-                      : "100px", // Adjusted initial height
+                      ? `${descriptionRef.current?.scrollHeight || 'none'}px`
+                      : "120px",
+                    position: 'relative'
                   }}
                 >
                   <Paragraph
@@ -1111,47 +1076,53 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
                       lineHeight: "1.7",
                       margin: 0,
                     }}
-                    className="description-text"
+                    className={styles.descriptionText}
                   >
                     {t("ranking.full_description")}
                   </Paragraph>
+                  {!isDescriptionExpanded && (
+                    <div className={styles.descriptionMask} />
+                  )}
                 </div>
-                <div style={{ textAlign: "center" }}>
-                  <Button
-                    type="link"
-                    shape="round"
-                    icon={
-                      isDescriptionExpanded ? (
-                        <UpOutlined className="expand-icon" />
-                      ) : (
-                        <DownOutlined className="expand-icon" />
-                      )
-                    }
-                    onClick={() =>
-                      setIsDescriptionExpanded(!isDescriptionExpanded)
-                    }
-                    style={{
-                      marginTop: "15px",
-                      background: "rgba(24,114,255, 0.1)",
-                      color: "#1890ff",
-                      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
-                      transition: "all 0.3s ease",
-                    }}
-                  >
-                    {isDescriptionExpanded
-                      ? t("actions.collapse")
-                      : t("actions.expand")}
-                  </Button>
-                </div>
+                {descriptionRef.current && descriptionRef.current.scrollHeight > 120 && isDescriptionExpanded && (
+                  <div style={{ textAlign: "center" }}>
+                    <Button
+                      type="link"
+                      shape="round"
+                      icon={<UpOutlined className={styles.expandIcon} />}
+                      onClick={() => setIsDescriptionExpanded(false)}
+                      style={{
+                        marginTop: "15px",
+                        background: "rgba(24,114,255, 0.1)",
+                        color: "#1890ff",
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
+                        transition: "all 0.3s ease",
+                      }}
+                    >
+                      {t("actions.collapse")}
+                    </Button>
+                  </div>
+                )}
+                {descriptionRef.current && descriptionRef.current.scrollHeight > 120 && !isDescriptionExpanded && (
+                  <div style={{ textAlign: "center" }}>
+                    <Button
+                      type="link"
+                      shape="round"
+                      icon={<DownOutlined className={styles.expandIcon} />}
+                      onClick={() => setIsDescriptionExpanded(true)}
+                      style={{
+                        marginTop: "15px",
+                        background: "rgba(24,114,255, 0.1)",
+                        color: "#1890ff",
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
+                        transition: "all 0.3s ease",
+                      }}
+                    >
+                      {t("actions.expand")}
+                    </Button>
+                  </div>
+                )}
               </div>
-              <style jsx>{`
-                .expand-icon {
-                  transition: transform 0.3s ease;
-                }
-                .ant-btn:hover .expand-icon {
-                  transform: translateY(-2px);
-                }
-              `}</style>
             </div>
           </div>
 
