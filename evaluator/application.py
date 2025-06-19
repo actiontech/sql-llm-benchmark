@@ -49,11 +49,11 @@ class SQLFlashClient(BaseApplicationClient):
             "Content-Type": "application/json",
         }
 
-    def request_sql_optimization(self, case: Dict[str, Any]) -> str:
+    def request_sql_optimization(self, case: Dict[str, Any]) -> Any:
         """Sends an SQL optimization request and retrieves the result"""
         sql = case.get("sql")
         metadata = case.get("create_table_statements")
-        explain = case.get("explain")
+        explain = case.get("explain") or ""
         optimize_result = self.optimize_sql(sql, metadata, explain)
         if optimize_result["status"] != "success":
             return optimize_result
