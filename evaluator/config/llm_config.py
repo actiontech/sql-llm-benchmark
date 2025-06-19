@@ -5,6 +5,9 @@
 # -------------------
 
 # Model adapter configurations and parameter settings
+from pathlib import Path
+
+
 MODEL_ADAPTER_CONFIGS = {
     "OpenAI": [  # SDK for model invocation. Currently only OpenAI is supported. You can add new adapters in llm_interface.py
         {
@@ -108,7 +111,7 @@ JUDGE_LLM_CONFIGS = [
 
 
 # Output directory for evaluation reports
-OUTPUT_DIR = "../leaderboard/public/data"
+OUTPUT_DIR = (Path(__file__).resolve().parent.parent.parent / "leaderboard" / "public" / "data").resolve()
 
 
 # API request timeout in seconds
