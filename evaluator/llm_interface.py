@@ -1,4 +1,5 @@
 # llm_interface.py
+from typing import Any
 import requests
 import json
 import time
@@ -20,7 +21,7 @@ class LLMAdapter(ABC):
     """Base class for LLM adapters"""
 
     @abstractmethod
-    def prepare_request(self, prompt: str, is_judge: bool = False) -> dict:
+    def prepare_request(self, prompt: str, is_judge: bool = False, **kwargs) -> dict:
         """Prepares the request body"""
         pass
 
@@ -248,9 +249,12 @@ def call_llm_api(api_url: str, api_key: str, name: str, prompt: str, is_judge: b
                     api_key=api_key,
                     api_url=api_url,
                 )
-
+                if adapter.client is None:
+                        raise RuntimeError("OpenAI client was not initialized properly.")
+                        
                 response = adapter.client.chat.completions.create(
-                    **request_data)
+                    **request_data
+                    )
                 model_answer = adapter.parse_response(response.model_dump())
                 if not model_answer:
                     logger.error(f"Model answer empty, retry {attempt + 1}")
@@ -293,7 +297,7 @@ def call_llm_api(api_url: str, api_key: str, name: str, prompt: str, is_judge: b
 # Keep original interface functions unchanged
 
 
-def get_target_llm_response(prompt: str, llm_config: dict) -> bool:
+def get_target_llm_response(prompt: str, llm_config: dict) -> Any:
     """Retrieves the response from the target LLM"""
     try:
         return call_llm_api(

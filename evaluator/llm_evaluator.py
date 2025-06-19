@@ -20,7 +20,7 @@ from application import get_application_result
 logger = logging.getLogger(__name__)
 
 
-def load_test_cases(file_path: str) -> list:
+def load_test_cases(file_path: Path) -> list:
     """Loads test cases from a JSONL file."""
     test_cases = []
     try:
@@ -53,7 +53,7 @@ def evaluate_subjective(
     if not JUDGE_LLM_CONFIGS:
         log_process_detail(
             f"[{test_case_id}] Hybrid Eval: No judge LLMs configured. Skipping.")
-        return 0.0, []
+        return []
 
     judge_details = []
 
@@ -115,7 +115,7 @@ def majority_consensus(judges_results: List[Union[List[Any], str, Any]]) -> List
     return [val for val, cnt in counts.items() if cnt >= threshold]
 
 
-def evaluate_objective(model_answer: str, expected_answer: any, test_case_id: str) -> bool:
+def evaluate_objective(model_answer: Any, expected_answer: Any, test_case_id: str) -> bool:
     """
     Performs objective evaluation.
     Compares the model's answer with the expected answer.
@@ -146,7 +146,7 @@ def evaluate_hybrid(
     if not JUDGE_LLM_CONFIGS:
         logger.warning(
             f"[{test_case_id}] Hybrid Eval: No judge LLMs configured. Skipping.")
-        return 0.0, []
+        return False
 
     judge_details = []
 
@@ -304,19 +304,20 @@ def run_all_evaluations(run_id: str, target_llm_config: dict):
 
     parameters = 0
     scores = {}
+    base_dir = os.path.dirname(os.path.abspath(__file__))
     test_categories = {
-        "sql_understanding": "dataset/sql_understanding",
-        "dialect_conversion": "dataset/dialect_conversion",
-        "sql_optimization": "dataset/sql_optimization"
+        "sql_understanding": os.path.join(base_dir, "dataset","sql_understanding"),
+        "dialect_conversion": os.path.join(base_dir, "dataset/dialect_conversion"),
+        "sql_optimization": os.path.join(base_dir, "dataset/sql_optimization")
     }
 
     for cat_key, cat_file in test_categories.items():
         # If test dimensions are configured and the current test dimension is not included in the test case file's dimensions, skip.
-        if target_llm_config.get("test_dimension"):
-            if cat_key not in target_llm_config.get("test_dimension"):
-                logger.warning(
-                    f"Skipping {cat_key} as it is not in the test dimension.")
-                continue
+        test_dimension = target_llm_config.get("test_dimension") or []
+        if test_dimension and cat_key not in test_dimension:
+            logger.warning(
+                f"Skipping {cat_key} as it is not in the test dimension.")
+            continue
         log_process_detail(
             f"Run Capability: {cat_key}")
         all_detailed_results = {}
@@ -354,7 +355,7 @@ def run_all_evaluations(run_id: str, target_llm_config: dict):
 
 def calculate_ability_score(
     ability_name: str,
-    indicators_data: list
+    indicators_data: dict
 ) -> dict:
     log_process_detail(f"\n======== Calculate Ability Score ========")
     total_weighted_actual_score = 0.0  # Total weighted actual score

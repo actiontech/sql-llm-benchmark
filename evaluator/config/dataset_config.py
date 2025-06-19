@@ -1,6 +1,7 @@
 # dataset_config.py
 import json
 import textwrap
+from typing import Any
 
 # ======================================== SQL Understanding Capability ================================================
 
@@ -383,8 +384,8 @@ def generate_model_prompt(dir: str, file: str, case: dict) -> str:
     func = get_dataset_config(dir, file, 'target_model_prompt', '')
     return func(case)
 
+def generate_judge_model_prompt(dir: str, file: str, case: dict, model_answer: Any) -> str:
 
-def generate_judge_model_prompt(dir: str, file: str, case: dict, model_answer: str) -> str:
     func = get_dataset_config(dir, file, 'judge_model_prompt', '')
     return func(case, model_answer)
 

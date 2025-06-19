@@ -9,7 +9,7 @@ from config.dataset_config import get_dataset_config, DIFFICULTY_WEIGHTS_CONFIG
 logger = logging.getLogger(__name__)
 
 
-def generate_case_reports(target_llm_config: dict, capability: str, all_detailed_results: list):
+def generate_case_reports(target_llm_config: dict, capability: str, all_detailed_results: dict):
     now_time = datetime.now().strftime("%Y-%m")
     run_output_dir = os.path.join(OUTPUT_DIR, "evaluation_case_reports",
                                   f"eval_run_case_{now_time}", capability)
