@@ -16,7 +16,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_name FROM students WHERE student_id IN (SELECT student_id FROM students);"
+                        "model_answer": "SELECT student_name FROM students;"
                     }
                 ]
             },
@@ -37,12 +37,12 @@
                 "case_id": "4",
                 "case_weight": 1,
                 "case_content": "{\"case_id\": \"4\", \"description\": \"一个包含多层嵌套子查询的SELECT语句，子查询中存在多余的投影列，同时内层子查询有ORDER BY和LIMIT，但最外层查询仍可进行投影下推。\", \"difficulty_level\": \"1\", \"create_table_statements\": [\"CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) NOT NULL, gender ENUM('Male', 'Female', 'Other'), date_of_birth DATE );\"], \"sql\": \"SELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'\", \"explain\": \"{\\\"query_block\\\": {\\\"select_id\\\": 1, \\\"message\\\": \\\"no matching row in const table\\\", \\\"table\\\": {\\\"materialized_from_subquery\\\": {\\\"using_temporary_table\\\": true, \\\"dependent\\\": false, \\\"cacheable\\\": true, \\\"query_block\\\": {\\\"select_id\\\": 3, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"1.20\\\"}, \\\"ordering_operation\\\": {\\\"using_filesort\\\": false, \\\"table\\\": {\\\"table_name\\\": \\\"students\\\", \\\"access_type\\\": \\\"index\\\", \\\"key\\\": \\\"PRIMARY\\\", \\\"used_key_parts\\\": [\\\"student_id\\\"], \\\"key_length\\\": \\\"4\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"1.20\\\", \\\"data_read_per_join\\\": \\\"112\\\"}, \\\"used_columns\\\": [\\\"student_id\\\", \\\"gender\\\", \\\"date_of_birth\\\"]}}}}}}}\"}",
-                "case_eval_result": "Fail",
+                "case_eval_result": "Pass",
                 "mode_question": "You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) NOT NULL, gender ENUM('Male', 'Female', 'Other'), date_of_birth DATE );\n\nExplain Output in JSON:\n{\"query_block\": {\"select_id\": 1, \"message\": \"no matching row in const table\", \"table\": {\"materialized_from_subquery\": {\"using_temporary_table\": true, \"dependent\": false, \"cacheable\": true, \"query_block\": {\"select_id\": 3, \"cost_info\": {\"query_cost\": \"1.20\"}, \"ordering_operation\": {\"using_filesort\": false, \"table\": {\"table_name\": \"students\", \"access_type\": \"index\", \"key\": \"PRIMARY\", \"used_key_parts\": [\"student_id\"], \"key_length\": \"4\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"1.20\", \"data_read_per_join\": \"112\"}, \"used_columns\": [\"student_id\", \"gender\", \"date_of_birth\"]}}}}}}}\n\nOriginal SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'\n\nOptimized SQL:\n",
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT s.student_id, s.student_name, s.date_of_birth FROM students s WHERE s.gender = 'Male' ORDER BY s.student_id DESC LIMIT 1;"
+                        "model_answer": "SELECT student_id, student_name, date_of_birth FROM students WHERE student_id = (SELECT MAX(student_id) FROM students) AND gender = 'Male';"
                     }
                 ]
             },
@@ -55,7 +55,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT s.student_id FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id WHERE s.gender = 'Female' AND s.date_of_birth <= '2000-01-01' AND s.student_name != 'TestName' LIMIT 10;"
+                        "model_answer": "SELECT s.student_id FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id) AND s.gender = 'Female' AND s.date_of_birth <= '2000-01-01' AND s.student_name != 'TestName' LIMIT 10;"
                     }
                 ]
             },
@@ -94,7 +94,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE (enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26') AND student_id = 1999 GROUP BY student_id"
+                        "model_answer": "SELECT 1999 AS student_id, MAX(enrollment_date) AS latest_date FROM enrollments WHERE student_id = 1999 AND (enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26');"
                     }
                 ]
             },
@@ -102,12 +102,12 @@
                 "case_id": "9",
                 "case_weight": 1,
                 "case_content": "{\"case_id\": \"9\", \"description\": \"一个包含多层嵌套子查询的SELECT语句，最内层的GROUP BY子句是不必要的，可以被消除。\", \"difficulty_level\": \"1\", \"create_table_statements\": [\"CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100), namespace VARCHAR(50) );\"], \"sql\": \"SELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ORDER BY COUNT(namespace) ) AS t1 ) AS t2 ) AS t3;\", \"explain\": \"{\\\"query_block\\\": {\\\"select_id\\\": 1, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"10.50\\\"}, \\\"table\\\": {\\\"table_name\\\": \\\"t1\\\", \\\"access_type\\\": \\\"ALL\\\", \\\"rows_examined_per_scan\\\": 2, \\\"rows_produced_per_join\\\": 2, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"10.10\\\", \\\"eval_cost\\\": \\\"0.40\\\", \\\"prefix_cost\\\": \\\"10.50\\\", \\\"data_read_per_join\\\": \\\"336\\\"}, \\\"used_columns\\\": [\\\"student_id\\\", \\\"student_name\\\", \\\"namespace\\\"], \\\"materialized_from_subquery\\\": {\\\"using_temporary_table\\\": true, \\\"dependent\\\": false, \\\"cacheable\\\": true, \\\"query_block\\\": {\\\"select_id\\\": 4, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"1.20\\\"}, \\\"ordering_operation\\\": {\\\"using_temporary_table\\\": true, \\\"using_filesort\\\": true, \\\"grouping_operation\\\": {\\\"using_filesort\\\": false, \\\"table\\\": {\\\"table_name\\\": \\\"students\\\", \\\"access_type\\\": \\\"index\\\", \\\"possible_keys\\\": [\\\"PRIMARY\\\"], \\\"key\\\": \\\"PRIMARY\\\", \\\"used_key_parts\\\": [\\\"student_id\\\"], \\\"key_length\\\": \\\"4\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"1.20\\\", \\\"data_read_per_join\\\": \\\"160\\\"}, \\\"used_columns\\\": [\\\"student_id\\\", \\\"student_name\\\", \\\"namespace\\\"]}}}}}}}}\"}",
-                "case_eval_result": "Pass",
+                "case_eval_result": "Fail",
                 "mode_question": "You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100), namespace VARCHAR(50) );\n\nExplain Output in JSON:\n{\"query_block\": {\"select_id\": 1, \"cost_info\": {\"query_cost\": \"10.50\"}, \"table\": {\"table_name\": \"t1\", \"access_type\": \"ALL\", \"rows_examined_per_scan\": 2, \"rows_produced_per_join\": 2, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"10.10\", \"eval_cost\": \"0.40\", \"prefix_cost\": \"10.50\", \"data_read_per_join\": \"336\"}, \"used_columns\": [\"student_id\", \"student_name\", \"namespace\"], \"materialized_from_subquery\": {\"using_temporary_table\": true, \"dependent\": false, \"cacheable\": true, \"query_block\": {\"select_id\": 4, \"cost_info\": {\"query_cost\": \"1.20\"}, \"ordering_operation\": {\"using_temporary_table\": true, \"using_filesort\": true, \"grouping_operation\": {\"using_filesort\": false, \"table\": {\"table_name\": \"students\", \"access_type\": \"index\", \"possible_keys\": [\"PRIMARY\"], \"key\": \"PRIMARY\", \"used_key_parts\": [\"student_id\"], \"key_length\": \"4\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"1.20\", \"data_read_per_join\": \"160\"}, \"used_columns\": [\"student_id\", \"student_name\", \"namespace\"]}}}}}}}}\n\nOriginal SQL:\nSELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ORDER BY COUNT(namespace) ) AS t1 ) AS t2 ) AS t3;\n\nOptimized SQL:\n",
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_id, student_name, namespace FROM students GROUP BY student_id ORDER BY COUNT(namespace)"
+                        "model_answer": "SELECT student_id, student_name, namespace FROM students;"
                     }
                 ]
             },
@@ -115,12 +115,12 @@
                 "case_id": "10",
                 "case_weight": 2,
                 "case_content": "{\"case_id\": \"10\", \"description\": \"一个包含非关联子查询的SELECT语句，可以将子查询转换为关联子查询。\", \"difficulty_level\": \"2\", \"create_table_statements\": [\"CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) );\", \"CREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT );\"], \"sql\": \"SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );\", \"explain\": \"{\\\"query_block\\\": {\\\"select_id\\\": 1, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"4.80\\\"}, \\\"nested_loop\\\": [{\\\"table\\\": {\\\"table_name\\\": \\\"<subquery2>\\\", \\\"access_type\\\": \\\"ALL\\\", \\\"materialized_from_subquery\\\": {\\\"using_temporary_table\\\": true, \\\"query_block\\\": {\\\"table\\\": {\\\"table_name\\\": \\\"inner_dt\\\", \\\"access_type\\\": \\\"ALL\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"1.20\\\", \\\"data_read_per_join\\\": \\\"16\\\"}, \\\"used_columns\\\": [\\\"student_id\\\"]}}}}}, {\\\"table\\\": {\\\"table_name\\\": \\\"students\\\", \\\"access_type\\\": \\\"eq_ref\\\", \\\"possible_keys\\\": [\\\"PRIMARY\\\"], \\\"key\\\": \\\"PRIMARY\\\", \\\"used_key_parts\\\": [\\\"student_id\\\"], \\\"key_length\\\": \\\"4\\\", \\\"ref\\\": [\\\"<subquery2>.student_id\\\"], \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"4.80\\\", \\\"data_read_per_join\\\": \\\"112\\\"}, \\\"used_columns\\\": [\\\"student_id\\\", \\\"student_name\\\"]}}]}}\"}",
-                "case_eval_result": "Fail",
+                "case_eval_result": "Pass",
                 "mode_question": "You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) );\nCREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT );\n\nExplain Output in JSON:\n{\"query_block\": {\"select_id\": 1, \"cost_info\": {\"query_cost\": \"4.80\"}, \"nested_loop\": [{\"table\": {\"table_name\": \"<subquery2>\", \"access_type\": \"ALL\", \"materialized_from_subquery\": {\"using_temporary_table\": true, \"query_block\": {\"table\": {\"table_name\": \"inner_dt\", \"access_type\": \"ALL\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"1.20\", \"data_read_per_join\": \"16\"}, \"used_columns\": [\"student_id\"]}}}}}, {\"table\": {\"table_name\": \"students\", \"access_type\": \"eq_ref\", \"possible_keys\": [\"PRIMARY\"], \"key\": \"PRIMARY\", \"used_key_parts\": [\"student_id\"], \"key_length\": \"4\", \"ref\": [\"<subquery2>.student_id\"], \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"4.80\", \"data_read_per_join\": \"112\"}, \"used_columns\": [\"student_id\", \"student_name\"]}}]}}\n\nOriginal SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );\n\nOptimized SQL:\n",
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT s.* FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id;"
+                        "model_answer": "SELECT * FROM students WHERE EXISTS (SELECT 1 FROM enrollments WHERE enrollments.student_id = students.student_id);"
                     }
                 ]
             },
@@ -133,7 +133,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth LIMIT 3;"
+                        "model_answer": "SELECT student_name, date_of_birth FROM (SELECT student_name, date_of_birth, RANK() OVER (ORDER BY student_name) as name_rank, RANK() OVER (ORDER BY date_of_birth) as dob_rank FROM students) AS T WHERE T.name_rank <= 3 AND T.dob_rank <= 2 ORDER BY student_name, date_of_birth;"
                     }
                 ]
             },
@@ -146,7 +146,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_id, student_name, major FROM students WHERE student_name LIKE 'John%' OR student_name LIKE 'Jane%';"
+                        "model_answer": "SELECT * FROM students WHERE student_name LIKE 'John%' OR student_name LIKE 'Jane%';"
                     }
                 ]
             },
@@ -159,7 +159,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT name FROM (SELECT name, reg_date AS sort_col FROM users UNION SELECT title AS name, publish_time AS sort_col FROM articles) AS mixed ORDER BY sort_col DESC LIMIT 5;"
+                        "model_answer": "(SELECT name FROM users ORDER BY name LIMIT 5) UNION ALL (SELECT title AS name FROM articles ORDER BY title LIMIT 5) ORDER BY name LIMIT 5;"
                     }
                 ]
             },
@@ -167,12 +167,12 @@
                 "case_id": "14",
                 "case_weight": 0,
                 "case_content": "{\"case_id\": \"14\", \"description\": \"一个包含IN子查询的SELECT语句，但子查询的结果行数不保证小于等于1，因此不能转换为标量子查询。\", \"difficulty_level\": \"N/A\", \"create_table_statements\": [\"CREATE TABLE students ( id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) );\", \"CREATE TABLE A ( id INT PRIMARY KEY, value VARCHAR(100) );\", \"CREATE TABLE B ( id INT PRIMARY KEY, value VARCHAR(100) );\"], \"sql\": \"SELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );\", \"explain\": \"{\\\"query_block\\\": {\\\"select_id\\\": 1, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"1.20\\\"}, \\\"table\\\": {\\\"table_name\\\": \\\"students\\\", \\\"access_type\\\": \\\"ALL\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"1.20\\\", \\\"data_read_per_join\\\": \\\"112\\\"}, \\\"used_columns\\\": [\\\"id\\\", \\\"student_name\\\"], \\\"attached_condition\\\": \\\"<in_optimizer>(`test_db_case_14_1748591779`.`students`.`id`,<exists>(/* select#2 */ select 1 from (/* select#3 */ select `test_db_case_14_1748591779`.`A`.`id` AS `id` from `test_db_case_14_1748591779`.`A` limit 1) `subA` where (<cache>(`test_db_case_14_1748591779`.`students`.`id`) = NULL) union all /* select#4 */ select 1 from (/* select#5 */ select `test_db_case_14_1748591779`.`B`.`id` AS `id` from `test_db_case_14_1748591779`.`B` limit 1) `subB` where (<cache>(`test_db_case_14_1748591779`.`students`.`id`) = NULL)))\\\", \\\"attached_subqueries\\\": [{\\\"dependent\\\": true, \\\"cacheable\\\": false, \\\"query_block\\\": {\\\"union_result\\\": {\\\"using_temporary_table\\\": false, \\\"query_specifications\\\": [{\\\"dependent\\\": true, \\\"cacheable\\\": false, \\\"query_block\\\": {\\\"select_id\\\": 2, \\\"message\\\": \\\"no matching row in const table\\\", \\\"table\\\": {\\\"materialized_from_subquery\\\": {\\\"using_temporary_table\\\": true, \\\"dependent\\\": false, \\\"cacheable\\\": true, \\\"query_block\\\": {\\\"select_id\\\": 3, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"1.20\\\"}, \\\"table\\\": {\\\"table_name\\\": \\\"A\\\", \\\"access_type\\\": \\\"index\\\", \\\"key\\\": \\\"PRIMARY\\\", \\\"used_key_parts\\\": [\\\"id\\\"], \\\"key_length\\\": \\\"4\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"using_index\\\": true, \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"1.20\\\", \\\"data_read_per_join\\\": \\\"112\\\"}, \\\"used_columns\\\": [\\\"id\\\"]}}}}}}, {\\\"dependent\\\": true, \\\"cacheable\\\": false, \\\"query_block\\\": {\\\"select_id\\\": 4, \\\"message\\\": \\\"no matching row in const table\\\", \\\"table\\\": {\\\"materialized_from_subquery\\\": {\\\"using_temporary_table\\\": true, \\\"dependent\\\": false, \\\"cacheable\\\": true, \\\"query_block\\\": {\\\"select_id\\\": 5, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"1.20\\\"}, \\\"table\\\": {\\\"table_name\\\": \\\"B\\\", \\\"access_type\\\": \\\"index\\\", \\\"key\\\": \\\"PRIMARY\\\", \\\"used_key_parts\\\": [\\\"id\\\"], \\\"key_length\\\": \\\"4\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"using_index\\\": true, \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"1.20\\\", \\\"data_read_per_join\\\": \\\"112\\\"}, \\\"used_columns\\\": [\\\"id\\\"]}}}}}}]}}}}\"}",
-                "case_eval_result": "Pass",
+                "case_eval_result": "Fail",
                 "mode_question": "You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) );\nCREATE TABLE A ( id INT PRIMARY KEY, value VARCHAR(100) );\nCREATE TABLE B ( id INT PRIMARY KEY, value VARCHAR(100) );\n\nExplain Output in JSON:\n{\"query_block\": {\"select_id\": 1, \"cost_info\": {\"query_cost\": \"1.20\"}, \"table\": {\"table_name\": \"students\", \"access_type\": \"ALL\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"1.20\", \"data_read_per_join\": \"112\"}, \"used_columns\": [\"id\", \"student_name\"], \"attached_condition\": \"<in_optimizer>(`test_db_case_14_1748591779`.`students`.`id`,<exists>(/* select#2 */ select 1 from (/* select#3 */ select `test_db_case_14_1748591779`.`A`.`id` AS `id` from `test_db_case_14_1748591779`.`A` limit 1) `subA` where (<cache>(`test_db_case_14_1748591779`.`students`.`id`) = NULL) union all /* select#4 */ select 1 from (/* select#5 */ select `test_db_case_14_1748591779`.`B`.`id` AS `id` from `test_db_case_14_1748591779`.`B` limit 1) `subB` where (<cache>(`test_db_case_14_1748591779`.`students`.`id`) = NULL)))\", \"attached_subqueries\": [{\"dependent\": true, \"cacheable\": false, \"query_block\": {\"union_result\": {\"using_temporary_table\": false, \"query_specifications\": [{\"dependent\": true, \"cacheable\": false, \"query_block\": {\"select_id\": 2, \"message\": \"no matching row in const table\", \"table\": {\"materialized_from_subquery\": {\"using_temporary_table\": true, \"dependent\": false, \"cacheable\": true, \"query_block\": {\"select_id\": 3, \"cost_info\": {\"query_cost\": \"1.20\"}, \"table\": {\"table_name\": \"A\", \"access_type\": \"index\", \"key\": \"PRIMARY\", \"used_key_parts\": [\"id\"], \"key_length\": \"4\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"using_index\": true, \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"1.20\", \"data_read_per_join\": \"112\"}, \"used_columns\": [\"id\"]}}}}}}, {\"dependent\": true, \"cacheable\": false, \"query_block\": {\"select_id\": 4, \"message\": \"no matching row in const table\", \"table\": {\"materialized_from_subquery\": {\"using_temporary_table\": true, \"dependent\": false, \"cacheable\": true, \"query_block\": {\"select_id\": 5, \"cost_info\": {\"query_cost\": \"1.20\"}, \"table\": {\"table_name\": \"B\", \"access_type\": \"index\", \"key\": \"PRIMARY\", \"used_key_parts\": [\"id\"], \"key_length\": \"4\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"using_index\": true, \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"1.20\", \"data_read_per_join\": \"112\"}, \"used_columns\": [\"id\"]}}}}}}]}}}}\n\nOriginal SQL:\nSELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );\n\nOptimized SQL:\n",
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT * FROM students WHERE id IN (SELECT id FROM A LIMIT 1) OR id IN (SELECT id FROM B LIMIT 1);"
+                        "model_answer": "SELECT * FROM students WHERE id = (SELECT id FROM A LIMIT 1) OR id = (SELECT id FROM B LIMIT 1);"
                     }
                 ]
             }
@@ -182,9 +182,9 @@
         "indicator_name": "optimization_depth.jsonl",
         "indicator_weight": 4,
         "evaluation_type": "subjective",
-        "case_pass_count": 12,
-        "case_wrong_count": 17,
-        "correct_rate": 0.41,
+        "case_pass_count": 17,
+        "case_wrong_count": 12,
+        "correct_rate": 0.59,
         "case_datas": [
             {
                 "case_id": "1",
@@ -195,7 +195,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_name FROM students WHERE student_id IN (SELECT student_id FROM students);"
+                        "model_answer": "SELECT student_name FROM students;"
                     }
                 ],
                 "rule_id": "1"
@@ -209,7 +209,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT teachers.teacher_id, teachers.teacher_name FROM students INNER JOIN teachers ON students.teacher_id = teachers.teacher_id WHERE teachers.teacher_name >= 'Dr. ' AND teachers.teacher_name < 'Dr.!'"
+                        "model_answer": "SELECT t.teacher_id, t.teacher_name FROM teachers AS t JOIN students AS s ON t.teacher_id = s.teacher_id WHERE t.teacher_name >= 'Dr. ' AND t.teacher_name < 'Dr.!';"
                     }
                 ],
                 "rule_id": "1"
@@ -223,7 +223,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT teachers.teacher_id, teachers.teacher_name FROM students INNER JOIN teachers ON students.teacher_id = teachers.teacher_id WHERE teachers.teacher_name >= 'Dr. ' AND teachers.teacher_name < 'Dr.!'"
+                        "model_answer": "SELECT t.teacher_id, t.teacher_name FROM teachers AS t JOIN students AS s ON t.teacher_id = s.teacher_id WHERE t.teacher_name >= 'Dr. ' AND t.teacher_name < 'Dr.!';"
                     }
                 ],
                 "rule_id": "2"
@@ -237,7 +237,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT s.student_id, s.student_name, c.course_name, e.enrollment_date, t.teacher_name FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id INNER JOIN courses c ON e.course_id = c.course_id LEFT JOIN teachers t ON c.department_id = t.department_id LEFT JOIN departments d ON t.department_id = d.department_id WHERE s.enroll_count > 5 AND e.enrollment_year = 2024 AND e.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30' AND c.course_credits >= 3 AND c.course_name LIKE 'Advanced %' AND s.major = 'Physics' AND (t.department_id IS NULL OR d.location = 'Building A');"
+                        "model_answer": "SELECT s.student_id, s.student_name, c.course_name, e.enrollment_date, t.teacher_name FROM students s JOIN enrollments e ON s.student_id = e.student_id JOIN courses c ON e.course_id = c.course_id LEFT JOIN departments d ON c.department_id = d.department_id AND d.location = 'Building A' LEFT JOIN teachers t ON d.department_id = t.department_id WHERE s.major = 'Physics' AND s.enroll_count > 5 AND e.enrollment_year = 2024 AND e.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30' AND c.course_name LIKE 'Advanced %' AND c.course_credits >= 3;"
                     }
                 ],
                 "rule_id": "1"
@@ -251,7 +251,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT s.student_id, s.student_name, c.course_name, e.enrollment_date, t.teacher_name FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id INNER JOIN courses c ON e.course_id = c.course_id LEFT JOIN teachers t ON c.department_id = t.department_id LEFT JOIN departments d ON t.department_id = d.department_id WHERE s.enroll_count > 5 AND e.enrollment_year = 2024 AND e.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30' AND c.course_credits >= 3 AND c.course_name LIKE 'Advanced %' AND s.major = 'Physics' AND (t.department_id IS NULL OR d.location = 'Building A');"
+                        "model_answer": "SELECT s.student_id, s.student_name, c.course_name, e.enrollment_date, t.teacher_name FROM students s JOIN enrollments e ON s.student_id = e.student_id JOIN courses c ON e.course_id = c.course_id LEFT JOIN departments d ON c.department_id = d.department_id AND d.location = 'Building A' LEFT JOIN teachers t ON d.department_id = t.department_id WHERE s.major = 'Physics' AND s.enroll_count > 5 AND e.enrollment_year = 2024 AND e.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30' AND c.course_name LIKE 'Advanced %' AND c.course_credits >= 3;"
                     }
                 ],
                 "rule_id": "2"
@@ -265,7 +265,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT s.student_id, s.student_name, c.course_name, e.enrollment_date, t.teacher_name FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id INNER JOIN courses c ON e.course_id = c.course_id LEFT JOIN teachers t ON c.department_id = t.department_id LEFT JOIN departments d ON t.department_id = d.department_id WHERE s.enroll_count > 5 AND e.enrollment_year = 2024 AND e.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30' AND c.course_credits >= 3 AND c.course_name LIKE 'Advanced %' AND s.major = 'Physics' AND (t.department_id IS NULL OR d.location = 'Building A');"
+                        "model_answer": "SELECT s.student_id, s.student_name, c.course_name, e.enrollment_date, t.teacher_name FROM students s JOIN enrollments e ON s.student_id = e.student_id JOIN courses c ON e.course_id = c.course_id LEFT JOIN departments d ON c.department_id = d.department_id AND d.location = 'Building A' LEFT JOIN teachers t ON d.department_id = t.department_id WHERE s.major = 'Physics' AND s.enroll_count > 5 AND e.enrollment_year = 2024 AND e.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30' AND c.course_name LIKE 'Advanced %' AND c.course_credits >= 3;"
                     }
                 ],
                 "rule_id": "3"
@@ -274,12 +274,12 @@
                 "case_id": "4",
                 "case_weight": 1,
                 "case_content": "{\"case_id\": \"4\", \"description\": \"一个包含多层嵌套子查询的SELECT语句，子查询中存在多余的投影列，同时内层子查询有ORDER BY和LIMIT，但最外层查询仍可进行投影下推。\", \"create_table_statements\": [\"CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) NOT NULL, gender ENUM('Male', 'Female', 'Other'), date_of_birth DATE );\"], \"sql\": \"SELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'\", \"explain\": \"{\\\"query_block\\\": {\\\"select_id\\\": 1, \\\"message\\\": \\\"no matching row in const table\\\", \\\"table\\\": {\\\"materialized_from_subquery\\\": {\\\"using_temporary_table\\\": true, \\\"dependent\\\": false, \\\"cacheable\\\": true, \\\"query_block\\\": {\\\"select_id\\\": 3, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"1.20\\\"}, \\\"ordering_operation\\\": {\\\"using_filesort\\\": false, \\\"table\\\": {\\\"table_name\\\": \\\"students\\\", \\\"access_type\\\": \\\"index\\\", \\\"key\\\": \\\"PRIMARY\\\", \\\"used_key_parts\\\": [\\\"student_id\\\"], \\\"key_length\\\": \\\"4\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"1.20\\\", \\\"data_read_per_join\\\": \\\"112\\\"}, \\\"used_columns\\\": [\\\"student_id\\\", \\\"gender\\\", \\\"date_of_birth\\\"]}}}}}}}\", \"expected\": {\"optimization_rules\": [{\"rule_id\": \"1\", \"difficulty_level\": \"1\", \"rationale\": \"投影下推：子查询 `SELECT student_id, gender FROM (SELECT student_id, gender, date_of_birth FROM inner_dt2 ORDER BY student_id DESC LIMIT 1) AS inner_dt1` 返回了 `gender` 列，但外部 JOIN 仅使用了 `student_id` 进行关联。因此，`gender` 可以从 `inner_dt1` 的投影中移除。同理，更内层的子查询 `inner_dt2` 和 `inner_dt3` 中的 `date_of_birth` 列也未被外层引用，可以进行下推。虽然内层有`ORDER BY`和`LIMIT`，但并不影响投影下推的适用性。\"}, {\"rule_id\": \"2\", \"difficulty_level\": \"1\", \"rationale\": \"没有LIMIT的子查询排序消除：仅移除最内层子查询中无LIMIT却存在的ORDER BY子句, 其余层级因包含LIMIT或不含ORDER BY无需改写\"}]}}",
-                "case_eval_result": "Fail",
+                "case_eval_result": "Pass",
                 "mode_question": "You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) NOT NULL, gender ENUM('Male', 'Female', 'Other'), date_of_birth DATE );\n\nExplain Output in JSON:\n{\"query_block\": {\"select_id\": 1, \"message\": \"no matching row in const table\", \"table\": {\"materialized_from_subquery\": {\"using_temporary_table\": true, \"dependent\": false, \"cacheable\": true, \"query_block\": {\"select_id\": 3, \"cost_info\": {\"query_cost\": \"1.20\"}, \"ordering_operation\": {\"using_filesort\": false, \"table\": {\"table_name\": \"students\", \"access_type\": \"index\", \"key\": \"PRIMARY\", \"used_key_parts\": [\"student_id\"], \"key_length\": \"4\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"1.20\", \"data_read_per_join\": \"112\"}, \"used_columns\": [\"student_id\", \"gender\", \"date_of_birth\"]}}}}}}}\n\nOriginal SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'\n\nOptimized SQL:\n",
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT s.student_id, s.student_name, s.date_of_birth FROM students s WHERE s.gender = 'Male' ORDER BY s.student_id DESC LIMIT 1;"
+                        "model_answer": "SELECT student_id, student_name, date_of_birth FROM students WHERE student_id = (SELECT MAX(student_id) FROM students) AND gender = 'Male';"
                     }
                 ],
                 "rule_id": "1"
@@ -293,7 +293,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT s.student_id, s.student_name, s.date_of_birth FROM students s WHERE s.gender = 'Male' ORDER BY s.student_id DESC LIMIT 1;"
+                        "model_answer": "SELECT student_id, student_name, date_of_birth FROM students WHERE student_id = (SELECT MAX(student_id) FROM students) AND gender = 'Male';"
                     }
                 ],
                 "rule_id": "2"
@@ -307,7 +307,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT teachers.teacher_id, teachers.teacher_name FROM students INNER JOIN teachers ON students.teacher_id = teachers.teacher_id WHERE teachers.teacher_name LIKE 'Dr. %';"
+                        "model_answer": "SELECT DISTINCT t.teacher_id, t.teacher_name FROM teachers t JOIN students s ON t.teacher_id = s.teacher_id WHERE t.teacher_name LIKE 'Dr. %';"
                     }
                 ],
                 "rule_id": "1"
@@ -321,7 +321,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT teachers.teacher_id, teachers.teacher_name FROM students INNER JOIN teachers ON students.teacher_id = teachers.teacher_id WHERE teachers.teacher_name LIKE 'Dr. %';"
+                        "model_answer": "SELECT DISTINCT t.teacher_id, t.teacher_name FROM teachers t JOIN students s ON t.teacher_id = s.teacher_id WHERE t.teacher_name LIKE 'Dr. %';"
                     }
                 ],
                 "rule_id": "2"
@@ -335,7 +335,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT teachers.teacher_id, teachers.teacher_name FROM students INNER JOIN teachers ON students.teacher_id = teachers.teacher_id WHERE teachers.teacher_name LIKE 'Dr. %';"
+                        "model_answer": "SELECT DISTINCT t.teacher_id, t.teacher_name FROM teachers t JOIN students s ON t.teacher_id = s.teacher_id WHERE t.teacher_name LIKE 'Dr. %';"
                     }
                 ],
                 "rule_id": "3"
@@ -349,7 +349,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_id, CONCAT(\"id_\", student_id) AS student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;"
+                        "model_answer": "SELECT student_id, CONCAT(\"id_\", student_id) as student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;"
                     }
                 ],
                 "rule_id": "1"
@@ -363,7 +363,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT s.* FROM students s LEFT JOIN enrollments e ON s.student_id = e.student_id AND e.enrollment_id > 1000 WHERE e.enrollment_id IS NULL;"
+                        "model_answer": "SELECT * FROM students s WHERE NOT EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id AND e.enrollment_id > 1000);"
                     }
                 ],
                 "rule_id": "1"
@@ -372,12 +372,12 @@
                 "case_id": "8",
                 "case_weight": 2,
                 "case_content": "{\"case_id\": \"8\", \"description\": \"一个包含HAVING子句的SELECT语句，其中HAVING条件不依赖聚合函数，可以下推到WHERE子句。\", \"create_table_statements\": [\"CREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT, enrollment_date DATE );\"], \"sql\": \"SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999\", \"explain\": \"{\\\"query_block\\\": {\\\"select_id\\\": 1,\\\"cost_info\\\": {\\\"query_cost\\\": \\\"2.20\\\"},\\\"grouping_operation\\\": {\\\"using_temporary_table\\\": true,\\\"using_filesort\\\": true,\\\"cost_info\\\": {\\\"sort_cost\\\": \\\"1.00\\\"},\\\"table\\\": {\\\"table_name\\\": \\\"enrollments\\\",\\\"access_type\\\": \\\"ALL\\\",\\\"rows_examined_per_scan\\\": 1,\\\"rows_produced_per_join\\\": 1,\\\"filtered\\\": \\\"100.00\\\",\\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\",\\\"eval_cost\\\": \\\"0.20\\\",\\\"prefix_cost\\\": \\\"1.20\\\",\\\"data_read_per_join\\\": \\\"24\\\"},\\\"used_columns\\\": [\\\"enrollment_id\\\",\\\"student_id\\\",\\\"enrollment_date\\\"],\\\"attached_condition\\\": \\\"((`test_db_case_8_1749537373`.`enrollments`.`enrollment_date` > '1993-11-26') or (`test_db_case_8_1749537373`.`enrollments`.`enrollment_date` < '1991-11-26'))\\\"}}}}\", \"expected\": {\"optimization_rules\": [{\"rule_id\": \"1\", \"difficulty_level\": \"2\", \"rationale\": \"HAVING 条件下推：`HAVING student_id = 1999` 这个条件不依赖于任何聚合函数。将这个条件从 `HAVING` 子句移动到 `WHERE` 子句中，可以在分组和聚合操作之前过滤数据，从而减少处理的数据量，提高查询性能。\"}, {\"rule_id\": \"2\", \"difficulty_level\": \"1\", \"rationale\": \"隐式转换：WHERE子句中的 `enrollment_date > '1993-11-26'` 和 `enrollment_date < '1991-11-26'` 存在隐式类型转换，因为 `enrollment_date` 字段类型为 `DATE` 而 '1993-11-26' 和 '1991-11-26' 是字符串。这可能导致索引失效，可以通过显式转换值来解决。\"}]}}",
-                "case_eval_result": "Fail",
+                "case_eval_result": "Pass",
                 "mode_question": "You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT, enrollment_date DATE );\n\nExplain Output in JSON:\n{\"query_block\": {\"select_id\": 1,\"cost_info\": {\"query_cost\": \"2.20\"},\"grouping_operation\": {\"using_temporary_table\": true,\"using_filesort\": true,\"cost_info\": {\"sort_cost\": \"1.00\"},\"table\": {\"table_name\": \"enrollments\",\"access_type\": \"ALL\",\"rows_examined_per_scan\": 1,\"rows_produced_per_join\": 1,\"filtered\": \"100.00\",\"cost_info\": {\"read_cost\": \"1.00\",\"eval_cost\": \"0.20\",\"prefix_cost\": \"1.20\",\"data_read_per_join\": \"24\"},\"used_columns\": [\"enrollment_id\",\"student_id\",\"enrollment_date\"],\"attached_condition\": \"((`test_db_case_8_1749537373`.`enrollments`.`enrollment_date` > '1993-11-26') or (`test_db_case_8_1749537373`.`enrollments`.`enrollment_date` < '1991-11-26'))\"}}}}\n\nOriginal SQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999\n\nOptimized SQL:\n",
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999"
+                        "model_answer": "SELECT student_id, MAX(enrollment_date) AS latest_date FROM enrollments WHERE student_id = 1999 AND (enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26') GROUP BY student_id;"
                     }
                 ],
                 "rule_id": "1"
@@ -391,7 +391,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999"
+                        "model_answer": "SELECT student_id, MAX(enrollment_date) AS latest_date FROM enrollments WHERE student_id = 1999 AND (enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26') GROUP BY student_id;"
                     }
                 ],
                 "rule_id": "2"
@@ -419,7 +419,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT s.* FROM students s JOIN enrollments e ON s.student_id = e.student_id;"
+                        "model_answer": "SELECT DISTINCT s.* FROM students s JOIN enrollments e ON s.student_id = e.student_id;"
                     }
                 ],
                 "rule_id": "1"
@@ -428,12 +428,12 @@
                 "case_id": "11",
                 "case_weight": 2,
                 "case_content": "{\"case_id\": \"11\", \"description\": \"一个包含多个ROW_NUMBER()窗口函数和过滤条件的SELECT语句\", \"create_table_statements\": [\"CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100), date_of_birth DATE );\"], \"sql\": \"SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\", \"explain\": \"{\\\"query_block\\\": {\\\"select_id\\\": 1, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"2.20\\\"}, \\\"ordering_operation\\\": {\\\"using_filesort\\\": true, \\\"cost_info\\\": {\\\"sort_cost\\\": \\\"1.00\\\"}, \\\"table\\\": {\\\"table_name\\\": \\\"T1\\\", \\\"access_type\\\": \\\"ALL\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"1.20\\\", \\\"data_read_per_join\\\": \\\"112\\\"}, \\\"used_columns\\\": [\\\"student_id\\\", \\\"student_name\\\", \\\"date_of_birth\\\"], \\\"attached_condition\\\": \\\"(((/* select#2 */ select count(0) from `test_db_case_11_1748591779`.`students` `T2` where (`test_db_case_11_1748591779`.`T2`.`student_name` <= `test_db_case_11_1748591779`.`T1`.`student_name`)) <= 3) and ((/* select#3 */ select count(0) from `test_db_case_11_1748591779`.`students` `T3` where (`test_db_case_11_1748591779`.`T3`.`date_of_birth` <= `test_db_case_11_1748591779`.`T1`.`date_of_birth`)) <= 2))\\\", \\\"attached_subqueries\\\": [{\\\"dependent\\\": true, \\\"cacheable\\\": false, \\\"query_block\\\": {\\\"select_id\\\": 3, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"1.20\\\"}, \\\"table\\\": {\\\"table_name\\\": \\\"T3\\\", \\\"access_type\\\": \\\"ALL\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"1.20\\\", \\\"data_read_per_join\\\": \\\"112\\\"}, \\\"used_columns\\\": [\\\"date_of_birth\\\"], \\\"attached_condition\\\": \\\"(`test_db_case_11_1748591779`.`T3`.`date_of_birth` <= `test_db_case_11_1748591779`.`T1`.`date_of_birth`)\\\"}}}, {\\\"dependent\\\": true, \\\"cacheable\\\": false, \\\"query_block\\\": {\\\"select_id\\\": 2, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"1.20\\\"}, \\\"table\\\": {\\\"table_name\\\": \\\"T2\\\", \\\"access_type\\\": \\\"ALL\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"1.20\\\", \\\"data_read_per_join\\\": \\\"112\\\"}, \\\"used_columns\\\": [\\\"student_name\\\"], \\\"attached_condition\\\": \\\"(`test_db_case_11_1748591779`.`T2`.`student_name` <= `test_db_case_11_1748591779`.`T1`.`student_name`)\\\"}}}]}}}}\", \"expected\": {\"optimization_rules\": [{\"rule_id\": \"1\", \"difficulty_level\": \"2\", \"rationale\": \"子查询聚合改写为窗口函数：存在子查询聚合`COUNT(*)`，且存在自连接，内表和外表都是`students`表，且通过`student_name`和`date_of_birth`字段进行等值关联。这些子查询可以改写为窗口函数`COUNT(*) OVER (PARTITION BY student_name ORDER BY student_name)`和`COUNT(*) OVER (PARTITION BY date_of_birth ORDER BY date_of_birth)`，以提升查询性能。\"}]}}",
-                "case_eval_result": "Fail",
+                "case_eval_result": "Pass",
                 "mode_question": "You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100), date_of_birth DATE );\n\nExplain Output in JSON:\n{\"query_block\": {\"select_id\": 1, \"cost_info\": {\"query_cost\": \"2.20\"}, \"ordering_operation\": {\"using_filesort\": true, \"cost_info\": {\"sort_cost\": \"1.00\"}, \"table\": {\"table_name\": \"T1\", \"access_type\": \"ALL\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"1.20\", \"data_read_per_join\": \"112\"}, \"used_columns\": [\"student_id\", \"student_name\", \"date_of_birth\"], \"attached_condition\": \"(((/* select#2 */ select count(0) from `test_db_case_11_1748591779`.`students` `T2` where (`test_db_case_11_1748591779`.`T2`.`student_name` <= `test_db_case_11_1748591779`.`T1`.`student_name`)) <= 3) and ((/* select#3 */ select count(0) from `test_db_case_11_1748591779`.`students` `T3` where (`test_db_case_11_1748591779`.`T3`.`date_of_birth` <= `test_db_case_11_1748591779`.`T1`.`date_of_birth`)) <= 2))\", \"attached_subqueries\": [{\"dependent\": true, \"cacheable\": false, \"query_block\": {\"select_id\": 3, \"cost_info\": {\"query_cost\": \"1.20\"}, \"table\": {\"table_name\": \"T3\", \"access_type\": \"ALL\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"1.20\", \"data_read_per_join\": \"112\"}, \"used_columns\": [\"date_of_birth\"], \"attached_condition\": \"(`test_db_case_11_1748591779`.`T3`.`date_of_birth` <= `test_db_case_11_1748591779`.`T1`.`date_of_birth`)\"}}}, {\"dependent\": true, \"cacheable\": false, \"query_block\": {\"select_id\": 2, \"cost_info\": {\"query_cost\": \"1.20\"}, \"table\": {\"table_name\": \"T2\", \"access_type\": \"ALL\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"1.20\", \"data_read_per_join\": \"112\"}, \"used_columns\": [\"student_name\"], \"attached_condition\": \"(`test_db_case_11_1748591779`.`T2`.`student_name` <= `test_db_case_11_1748591779`.`T1`.`student_name`)\"}}}]}}}}\n\nOriginal SQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n\nOptimized SQL:\n",
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth LIMIT 3;"
+                        "model_answer": "SELECT student_name, date_of_birth FROM (SELECT student_name, date_of_birth, RANK() OVER (ORDER BY student_name) AS name_rank, RANK() OVER (ORDER BY date_of_birth) AS dob_rank FROM students) AS RankedStudents WHERE name_rank <= 3 AND dob_rank <= 2 ORDER BY student_name, date_of_birth;"
                     }
                 ],
                 "rule_id": "1"
@@ -447,7 +447,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_id, student_name, major FROM students WHERE student_name LIKE 'John%' OR student_name LIKE 'Jane%';"
+                        "model_answer": "SELECT * FROM students WHERE student_name LIKE 'John%' OR student_name LIKE 'Jane%';"
                     }
                 ],
                 "rule_id": "1"
@@ -461,7 +461,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT name FROM ( (SELECT name, reg_date AS sort_col FROM users) UNION (SELECT title AS name, publish_time AS sort_col FROM articles) ) AS mixed ORDER BY sort_col DESC LIMIT 5;"
+                        "model_answer": "(SELECT name FROM users) UNION (SELECT title FROM articles) ORDER BY name LIMIT 5;"
                     }
                 ],
                 "rule_id": "1"
@@ -526,12 +526,12 @@
                 "case_id": "16",
                 "case_weight": 2,
                 "case_content": "{\"case_id\": \"16\", \"description\": \"一个简单的LEFT JOIN查询，明确引用了主表中的列，可能存在可消除的外连接。\", \"create_table_statements\": [\"CREATE TABLE `orders` (`O_ORDERKEY` int NOT NULL,`O_CUSTKEY` int NOT NULL,`O_ORDERSTATUS` char(1) NOT NULL,`O_TOTALPRICE` decimal(15,2) NOT NULL,`O_ORDERDATE` date NOT NULL,`O_ORDERPRIORITY` char(15) NOT NULL,`O_CLERK` char(15) NOT NULL,`O_SHIPPRIORITY` int NOT NULL,`O_COMMENT` varchar(79) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;CREATE TABLE `customer` (`C_CUSTKEY` int NOT NULL,`C_NAME` varchar(25) NOT NULL,`C_ADDRESS` varchar(40) NOT NULL,`C_NATIONKEY` int NOT NULL,`C_PHONE` char(15) NOT NULL,`C_ACCTBAL` decimal(15,2) NOT NULL,`C_MKTSEGMENT` char(10) NOT NULL,`C_COMMENT` varchar(117) NOT NULL,PRIMARY KEY `PK_IDX1614428511` (`C_CUSTKEY`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\"], \"sql\": \"SELECT o.o_custkey FROM orders o LEFT JOIN customer ON c_custkey=o_custkey\", \"explain\": \"{\\\"query_block\\\": {\\\"select_id\\\": 1,\\\"cost_info\\\": {\\\"query_cost\\\": \\\"1.20\\\"},\\\"table\\\": {\\\"table_name\\\": \\\"o\\\",\\\"access_type\\\": \\\"ALL\\\",\\\"rows_examined_per_scan\\\": 1,\\\"rows_produced_per_join\\\": 1,\\\"filtered\\\": \\\"100.00\\\",\\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\",\\\"eval_cost\\\": \\\"0.20\\\",\\\"prefix_cost\\\": \\\"1.20\\\",\\\"data_read_per_join\\\": \\\"112\\\"},\\\"used_columns\\\": [\\\"O_CUSTKEY\\\",\\\"O_ORDERKEY\\\",\\\"O_ORDERSTATUS\\\",\\\"O_TOTALPRICE\\\",\\\"O_ORDERDATE\\\",\\\"O_ORDERPRIORITY\\\",\\\"O_CLERK\\\",\\\"O_SHIPPRIORITY\\\",\\\"O_COMMENT\\\"]}}}\", \"expected\": {\"optimization_rules\": [{\"rule_id\": \"1\", \"difficulty_level\": \"2\", \"rationale\": \"外连接表消除：`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。\"}]}}",
-                "case_eval_result": "Fail",
+                "case_eval_result": "Pass",
                 "mode_question": "You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE `orders` (`O_ORDERKEY` int NOT NULL,`O_CUSTKEY` int NOT NULL,`O_ORDERSTATUS` char(1) NOT NULL,`O_TOTALPRICE` decimal(15,2) NOT NULL,`O_ORDERDATE` date NOT NULL,`O_ORDERPRIORITY` char(15) NOT NULL,`O_CLERK` char(15) NOT NULL,`O_SHIPPRIORITY` int NOT NULL,`O_COMMENT` varchar(79) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;CREATE TABLE `customer` (`C_CUSTKEY` int NOT NULL,`C_NAME` varchar(25) NOT NULL,`C_ADDRESS` varchar(40) NOT NULL,`C_NATIONKEY` int NOT NULL,`C_PHONE` char(15) NOT NULL,`C_ACCTBAL` decimal(15,2) NOT NULL,`C_MKTSEGMENT` char(10) NOT NULL,`C_COMMENT` varchar(117) NOT NULL,PRIMARY KEY `PK_IDX1614428511` (`C_CUSTKEY`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\n\nExplain Output in JSON:\n{\"query_block\": {\"select_id\": 1,\"cost_info\": {\"query_cost\": \"1.20\"},\"table\": {\"table_name\": \"o\",\"access_type\": \"ALL\",\"rows_examined_per_scan\": 1,\"rows_produced_per_join\": 1,\"filtered\": \"100.00\",\"cost_info\": {\"read_cost\": \"1.00\",\"eval_cost\": \"0.20\",\"prefix_cost\": \"1.20\",\"data_read_per_join\": \"112\"},\"used_columns\": [\"O_CUSTKEY\",\"O_ORDERKEY\",\"O_ORDERSTATUS\",\"O_TOTALPRICE\",\"O_ORDERDATE\",\"O_ORDERPRIORITY\",\"O_CLERK\",\"O_SHIPPRIORITY\",\"O_COMMENT\"]}}}\n\nOriginal SQL:\nSELECT o.o_custkey FROM orders o LEFT JOIN customer ON c_custkey=o_custkey\n\nOptimized SQL:\n",
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT o.O_CUSTKEY FROM orders o WHERE EXISTS (SELECT 1 FROM customer c WHERE c.C_CUSTKEY = o.O_CUSTKEY)"
+                        "model_answer": "SELECT o.o_custkey FROM orders AS o"
                     }
                 ],
                 "rule_id": "1"
@@ -545,7 +545,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT c.* FROM customer c INNER JOIN orders o ON c.C_CUSTKEY > o.O_CUSTKEY;"
+                        "model_answer": "SELECT c.* FROM customer c WHERE c.c_custkey > (SELECT MIN(o_custkey) FROM orders)"
                     }
                 ],
                 "rule_id": "1"
@@ -559,7 +559,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT c.* FROM customer AS c INNER JOIN orders AS o ON c.C_CUSTKEY > o.O_CUSTKEY WHERE o.O_CUSTKEY IS NOT NULL;"
+                        "model_answer": "SELECT c.* FROM customer AS c LEFT JOIN orders AS o ON c.c_custkey = o.o_custkey"
                     }
                 ],
                 "rule_id": "1"
@@ -573,7 +573,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT PatientRecords.PatientID, PatientRecords.Name, MAX(TreatmentHistory.TreatmentDate) AS TreatmentDate FROM PatientRecords INNER JOIN TreatmentHistory ON PatientRecords.PatientID = TreatmentHistory.PatientID GROUP BY PatientRecords.PatientID, PatientRecords.Name ORDER BY TreatmentDate DESC"
+                        "model_answer": "SELECT p.PatientID, p.Name, t.TreatmentDate FROM PatientRecords p INNER JOIN (SELECT DISTINCT PatientID, TreatmentDate FROM TreatmentHistory) t ON p.PatientID = t.PatientID ORDER BY t.TreatmentDate DESC;"
                     }
                 ],
                 "rule_id": "1"
@@ -582,12 +582,12 @@
                 "case_id": "20",
                 "case_weight": 2,
                 "case_content": "{\"case_id\": \"20\", \"description\": \"一个简单的LEFT JOIN查询，可能存在可消除的外连接，且未引用被连接表中的任何列。\", \"create_table_statements\": [\"CREATE TABLE `customer` (`C_CUSTKEY` int NOT NULL,`C_NAME` varchar(25) NOT NULL,`C_ADDRESS` varchar(40) NOT NULL,`C_NATIONKEY` int NOT NULL,`C_PHONE` char(15) NOT NULL,`C_ACCTBAL` decimal(15,2) NOT NULL,`C_MKTSEGMENT` char(10) NOT NULL,`C_COMMENT` varchar(117) NOT NULL,PRIMARY KEY `PK_IDX1614428511` (`C_CUSTKEY`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;CREATE TABLE `orders` (`O_ORDERKEY` int NOT NULL,`O_CUSTKEY` int NOT NULL,`O_ORDERSTATUS` char(1) NOT NULL,`O_TOTALPRICE` decimal(15,2) NOT NULL,`O_ORDERDATE` date NOT NULL,`O_ORDERPRIORITY` char(15) NOT NULL,`O_CLERK` char(15) NOT NULL,`O_SHIPPRIORITY` int NOT NULL,`O_COMMENT` varchar(79) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;\"], \"sql\": \"SELECT o_custkey FROM orders LEFT JOIN customer ON c_custkey=o_custkey\", \"explain\": \"{\\\"query_block\\\": {\\\"select_id\\\": 1, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"0.70\\\"}, \\\"nested_loop\\\": [{\\\"table\\\": {\\\"table_name\\\": \\\"orders\\\", \\\"access_type\\\": \\\"ALL\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"0.25\\\", \\\"eval_cost\\\": \\\"0.10\\\", \\\"prefix_cost\\\": \\\"0.35\\\", \\\"data_read_per_join\\\": \\\"472\\\"}, \\\"used_columns\\\": [\\\"O_CUSTKEY\\\"]}}, {\\\"table\\\": {\\\"table_name\\\": \\\"customer\\\", \\\"access_type\\\": \\\"eq_ref\\\", \\\"possible_keys\\\": [\\\"PRIMARY\\\"], \\\"key\\\": \\\"PRIMARY\\\", \\\"used_key_parts\\\": [\\\"C_CUSTKEY\\\"], \\\"key_length\\\": \\\"4\\\", \\\"ref\\\": [\\\"test_db_case_10_1749728367.orders.O_CUSTKEY\\\"], \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"using_index\\\": true, \\\"cost_info\\\": {\\\"read_cost\\\": \\\"0.25\\\", \\\"eval_cost\\\": \\\"0.10\\\", \\\"prefix_cost\\\": \\\"0.70\\\", \\\"data_read_per_join\\\": \\\"848\\\"}, \\\"used_columns\\\": [\\\"C_CUSTKEY\\\"]}}]}}\", \"expected\": {\"optimization_rules\": [{\"rule_id\": \"1\", \"difficulty_level\": \"2\", \"rationale\": \"外连接表消除：与Case 5类似，`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。\"}]}}",
-                "case_eval_result": "Fail",
+                "case_eval_result": "Pass",
                 "mode_question": "You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE `customer` (`C_CUSTKEY` int NOT NULL,`C_NAME` varchar(25) NOT NULL,`C_ADDRESS` varchar(40) NOT NULL,`C_NATIONKEY` int NOT NULL,`C_PHONE` char(15) NOT NULL,`C_ACCTBAL` decimal(15,2) NOT NULL,`C_MKTSEGMENT` char(10) NOT NULL,`C_COMMENT` varchar(117) NOT NULL,PRIMARY KEY `PK_IDX1614428511` (`C_CUSTKEY`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;CREATE TABLE `orders` (`O_ORDERKEY` int NOT NULL,`O_CUSTKEY` int NOT NULL,`O_ORDERSTATUS` char(1) NOT NULL,`O_TOTALPRICE` decimal(15,2) NOT NULL,`O_ORDERDATE` date NOT NULL,`O_ORDERPRIORITY` char(15) NOT NULL,`O_CLERK` char(15) NOT NULL,`O_SHIPPRIORITY` int NOT NULL,`O_COMMENT` varchar(79) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;\n\nExplain Output in JSON:\n{\"query_block\": {\"select_id\": 1, \"cost_info\": {\"query_cost\": \"0.70\"}, \"nested_loop\": [{\"table\": {\"table_name\": \"orders\", \"access_type\": \"ALL\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"0.25\", \"eval_cost\": \"0.10\", \"prefix_cost\": \"0.35\", \"data_read_per_join\": \"472\"}, \"used_columns\": [\"O_CUSTKEY\"]}}, {\"table\": {\"table_name\": \"customer\", \"access_type\": \"eq_ref\", \"possible_keys\": [\"PRIMARY\"], \"key\": \"PRIMARY\", \"used_key_parts\": [\"C_CUSTKEY\"], \"key_length\": \"4\", \"ref\": [\"test_db_case_10_1749728367.orders.O_CUSTKEY\"], \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"using_index\": true, \"cost_info\": {\"read_cost\": \"0.25\", \"eval_cost\": \"0.10\", \"prefix_cost\": \"0.70\", \"data_read_per_join\": \"848\"}, \"used_columns\": [\"C_CUSTKEY\"]}}]}}\n\nOriginal SQL:\nSELECT o_custkey FROM orders LEFT JOIN customer ON c_custkey=o_custkey\n\nOptimized SQL:\n",
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT o_custkey FROM orders LEFT JOIN customer ON c_custkey = o_custkey;"
+                        "model_answer": "SELECT O_CUSTKEY FROM orders"
                     }
                 ],
                 "rule_id": "1"
@@ -611,7 +611,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_name FROM students WHERE student_id IN (SELECT student_id FROM students);"
+                        "model_answer": "SELECT student_name FROM students;"
                     }
                 ]
             },
@@ -637,7 +637,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT s.student_id, s.student_name, s.date_of_birth FROM students s WHERE s.gender = 'Male' ORDER BY s.student_id DESC LIMIT 1;"
+                        "model_answer": "SELECT student_id, student_name, date_of_birth FROM students WHERE student_id = (SELECT MAX(student_id) FROM students) AND gender = 'Male'"
                     }
                 ]
             },
@@ -650,7 +650,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT s.student_id FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id WHERE s.gender = 'Female' AND s.date_of_birth <= '2000-01-01' AND s.student_name != 'TestName' LIMIT 10;"
+                        "model_answer": "SELECT s.student_id FROM students s WHERE s.gender = 'Female' AND s.date_of_birth <= '2000-01-01' AND s.student_name != 'TestName' AND EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id) LIMIT 10;"
                     }
                 ]
             },
@@ -663,7 +663,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_id, CONCAT('id_', student_id) AS student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;"
+                        "model_answer": "SELECT student_id, CONCAT(\"id_\", student_id) as student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;"
                     }
                 ]
             },
@@ -689,7 +689,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999;"
+                        "model_answer": "SELECT student_id, MAX(enrollment_date) AS latest_date FROM enrollments WHERE student_id = 1999 AND (enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26') GROUP BY student_id;"
                     }
                 ]
             },
@@ -697,12 +697,12 @@
                 "case_id": "9",
                 "case_weight": 1,
                 "case_content": "{\"case_id\": \"9\", \"description\": \"一个包含多层嵌套子查询的SELECT语句，最内层的GROUP BY子句是不必要的，可以被消除。预期优化：GROUP BY 子句消除（rule0009.md）。\", \"difficulty_level\": \"1\", \"create_table_statements\": [\"CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100), namespace VARCHAR(50) );\"], \"sql\": \"SELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ORDER BY COUNT(namespace) ) AS t1 ) AS t2 ) AS t3;\", \"explain\": \"{\\\"query_block\\\": {\\\"select_id\\\": 1, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"10.50\\\"}, \\\"table\\\": {\\\"table_name\\\": \\\"t1\\\", \\\"access_type\\\": \\\"ALL\\\", \\\"rows_examined_per_scan\\\": 2, \\\"rows_produced_per_join\\\": 2, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"10.10\\\", \\\"eval_cost\\\": \\\"0.40\\\", \\\"prefix_cost\\\": \\\"10.50\\\", \\\"data_read_per_join\\\": \\\"336\\\"}, \\\"used_columns\\\": [\\\"student_id\\\", \\\"student_name\\\", \\\"namespace\\\"], \\\"materialized_from_subquery\\\": {\\\"using_temporary_table\\\": true, \\\"dependent\\\": false, \\\"cacheable\\\": true, \\\"query_block\\\": {\\\"select_id\\\": 4, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"1.20\\\"}, \\\"ordering_operation\\\": {\\\"using_temporary_table\\\": true, \\\"using_filesort\\\": true, \\\"grouping_operation\\\": {\\\"using_filesort\\\": false, \\\"table\\\": {\\\"table_name\\\": \\\"students\\\", \\\"access_type\\\": \\\"index\\\", \\\"possible_keys\\\": [\\\"PRIMARY\\\"], \\\"key\\\": \\\"PRIMARY\\\", \\\"used_key_parts\\\": [\\\"student_id\\\"], \\\"key_length\\\": \\\"4\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"1.20\\\", \\\"data_read_per_join\\\": \\\"160\\\"}, \\\"used_columns\\\": [\\\"student_id\\\", \\\"student_name\\\", \\\"namespace\\\"]}}}}}}}}\"}",
-                "case_eval_result": "Fail",
+                "case_eval_result": "Pass",
                 "mode_question": "You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100), namespace VARCHAR(50) );\n\nExplain Output in JSON:\n{\"query_block\": {\"select_id\": 1, \"cost_info\": {\"query_cost\": \"10.50\"}, \"table\": {\"table_name\": \"t1\", \"access_type\": \"ALL\", \"rows_examined_per_scan\": 2, \"rows_produced_per_join\": 2, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"10.10\", \"eval_cost\": \"0.40\", \"prefix_cost\": \"10.50\", \"data_read_per_join\": \"336\"}, \"used_columns\": [\"student_id\", \"student_name\", \"namespace\"], \"materialized_from_subquery\": {\"using_temporary_table\": true, \"dependent\": false, \"cacheable\": true, \"query_block\": {\"select_id\": 4, \"cost_info\": {\"query_cost\": \"1.20\"}, \"ordering_operation\": {\"using_temporary_table\": true, \"using_filesort\": true, \"grouping_operation\": {\"using_filesort\": false, \"table\": {\"table_name\": \"students\", \"access_type\": \"index\", \"possible_keys\": [\"PRIMARY\"], \"key\": \"PRIMARY\", \"used_key_parts\": [\"student_id\"], \"key_length\": \"4\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"1.20\", \"data_read_per_join\": \"160\"}, \"used_columns\": [\"student_id\", \"student_name\", \"namespace\"]}}}}}}}}\n\nOriginal SQL:\nSELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ORDER BY COUNT(namespace) ) AS t1 ) AS t2 ) AS t3;\n\nOptimized SQL:\n",
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_id, student_name, namespace FROM students GROUP BY student_id ORDER BY COUNT(namespace)"
+                        "model_answer": "SELECT * FROM students;"
                     }
                 ]
             },
@@ -715,7 +715,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT s.* FROM students s JOIN enrollments e ON s.student_id = e.student_id;"
+                        "model_answer": "SELECT s.* FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id);"
                     }
                 ]
             },
@@ -728,7 +728,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth LIMIT 3;"
+                        "model_answer": "WITH RankedStudents AS (SELECT student_name, date_of_birth, RANK() OVER (ORDER BY student_name) AS name_rank, RANK() OVER (ORDER BY date_of_birth) AS dob_rank FROM students) SELECT student_name, date_of_birth FROM RankedStudents WHERE name_rank <= 3 AND dob_rank <= 2 ORDER BY student_name, date_of_birth;"
                     }
                 ]
             },
@@ -741,7 +741,7 @@
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT student_id, student_name, major FROM students WHERE student_name LIKE 'John%' OR student_name LIKE 'Jane%';"
+                        "model_answer": "SELECT * FROM students WHERE student_name LIKE 'John%' OR student_name LIKE 'Jane%';"
                     }
                 ]
             },
@@ -749,12 +749,12 @@
                 "case_id": "13",
                 "case_weight": 2,
                 "case_content": "{\"case_id\": \"13\", \"description\": \"一个包含UNION的SELECT语句，外部查询包含LIMIT子句，可以下推到UNION的各个分支中。预期优化：LIMIT下推至UNION分支（rule0013.md）。\", \"difficulty_level\": \"2\", \"create_table_statements\": [\"CREATE TABLE users ( id INT PRIMARY KEY, name VARCHAR(100), reg_date DATE );\", \"CREATE TABLE articles ( id INT PRIMARY KEY, title VARCHAR(255), publish_time DATETIME );\"], \"sql\": \"SELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;\", \"explain\": \"{\\\"query_block\\\": {\\\"select_id\\\": 1, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"15.00\\\"}, \\\"ordering_operation\\\": {\\\"using_filesort\\\": true, \\\"cost_info\\\": {\\\"sort_cost\\\": \\\"4.00\\\"}, \\\"table\\\": {\\\"table_name\\\": \\\"mixed\\\", \\\"access_type\\\": \\\"ALL\\\", \\\"rows_examined_per_scan\\\": 4, \\\"rows_produced_per_join\\\": 4, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"10.20\\\", \\\"eval_cost\\\": \\\"0.80\\\", \\\"prefix_cost\\\": \\\"11.00\\\", \\\"data_read_per_join\\\": \\\"1K\\\"}, \\\"used_columns\\\": [\\\"name\\\"], \\\"materialized_from_subquery\\\": {\\\"using_temporary_table\\\": true, \\\"dependent\\\": false, \\\"cacheable\\\": true, \\\"query_block\\\": {\\\"union_result\\\": {\\\"using_temporary_table\\\": true, \\\"table_name\\\": \\\"<union2,3>\\\", \\\"access_type\\\": \\\"ALL\\\", \\\"query_specifications\\\": [{\\\"dependent\\\": false, \\\"cacheable\\\": true, \\\"query_block\\\": {\\\"select_id\\\": 2, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"1.20\\\"}, \\\"table\\\": {\\\"table_name\\\": \\\"users\\\", \\\"access_type\\\": \\\"ALL\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"1.20\\\", \\\"data_read_per_join\\\": \\\"112\\\"}, \\\"used_columns\\\": [\\\"name\\\", \\\"reg_date\\\"]}}}, {\\\"dependent\\\": false, \\\"cacheable\\\": true, \\\"query_block\\\": {\\\"select_id\\\": 3, \\\"cost_info\\\": {\\\"query_cost\\\": \\\"1.20\\\"}, \\\"table\\\": {\\\"table_name\\\": \\\"articles\\\", \\\"access_type\\\": \\\"ALL\\\", \\\"rows_examined_per_scan\\\": 1, \\\"rows_produced_per_join\\\": 1, \\\"filtered\\\": \\\"100.00\\\", \\\"cost_info\\\": {\\\"read_cost\\\": \\\"1.00\\\", \\\"eval_cost\\\": \\\"0.20\\\", \\\"prefix_cost\\\": \\\"1.20\\\", \\\"data_read_per_join\\\": \\\"272\\\"}, \\\"used_columns\\\": [\\\"title\\\", \\\"publish_time\\\"]}}}]}}}}}}\"}",
-                "case_eval_result": "Pass",
+                "case_eval_result": "Fail",
                 "mode_question": "You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE users ( id INT PRIMARY KEY, name VARCHAR(100), reg_date DATE );\nCREATE TABLE articles ( id INT PRIMARY KEY, title VARCHAR(255), publish_time DATETIME );\n\nExplain Output in JSON:\n{\"query_block\": {\"select_id\": 1, \"cost_info\": {\"query_cost\": \"15.00\"}, \"ordering_operation\": {\"using_filesort\": true, \"cost_info\": {\"sort_cost\": \"4.00\"}, \"table\": {\"table_name\": \"mixed\", \"access_type\": \"ALL\", \"rows_examined_per_scan\": 4, \"rows_produced_per_join\": 4, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"10.20\", \"eval_cost\": \"0.80\", \"prefix_cost\": \"11.00\", \"data_read_per_join\": \"1K\"}, \"used_columns\": [\"name\"], \"materialized_from_subquery\": {\"using_temporary_table\": true, \"dependent\": false, \"cacheable\": true, \"query_block\": {\"union_result\": {\"using_temporary_table\": true, \"table_name\": \"<union2,3>\", \"access_type\": \"ALL\", \"query_specifications\": [{\"dependent\": false, \"cacheable\": true, \"query_block\": {\"select_id\": 2, \"cost_info\": {\"query_cost\": \"1.20\"}, \"table\": {\"table_name\": \"users\", \"access_type\": \"ALL\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"1.20\", \"data_read_per_join\": \"112\"}, \"used_columns\": [\"name\", \"reg_date\"]}}}, {\"dependent\": false, \"cacheable\": true, \"query_block\": {\"select_id\": 3, \"cost_info\": {\"query_cost\": \"1.20\"}, \"table\": {\"table_name\": \"articles\", \"access_type\": \"ALL\", \"rows_examined_per_scan\": 1, \"rows_produced_per_join\": 1, \"filtered\": \"100.00\", \"cost_info\": {\"read_cost\": \"1.00\", \"eval_cost\": \"0.20\", \"prefix_cost\": \"1.20\", \"data_read_per_join\": \"272\"}, \"used_columns\": [\"title\", \"publish_time\"]}}}]}}}}}}\n\nOriginal SQL:\nSELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;\n\nOptimized SQL:\n",
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
-                        "model_answer": "SELECT name FROM (SELECT name, reg_date AS sort_col FROM users UNION ALL SELECT title, publish_time AS sort_col FROM articles) AS mixed ORDER BY sort_col DESC LIMIT 5;"
+                        "model_answer": "(SELECT name FROM users ORDER BY name LIMIT 5) UNION ALL (SELECT title FROM articles ORDER BY title LIMIT 5) ORDER BY name LIMIT 5;"
                     }
                 ]
             },
