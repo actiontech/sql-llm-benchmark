@@ -1,0 +1,1193 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20250619_162431_601
+Run Dimensions: sql_understanding
+Run Indicator: execution_accuracy
+Evaluation Timestamp: 2025-06-19T16:57:51.777884
+Target LLM: Pro/deepseek-ai/DeepSeek-R1
+Judge LLMs: Pro/deepseek-ai/DeepSeek-V3, o4-mini, gemini-2.0-flash
+-------------------------------------------------
+
+[2025-06-19 16:24:31.604703] ======== Starting Full SQL Capability Evaluation ========
+[2025-06-19 16:24:31.604703] Target LLM: Pro/deepseek-ai/DeepSeek-R1
+[2025-06-19 16:24:31.604703] Run Capability: sql_understanding
+[2025-06-19 16:24:31.606014] Run Indicator: sql_understanding, Parameters size: 24297B
+[2025-06-19 16:24:31.607110] 
+--- Capability: sql_understanding Indicator execution_accuracy.jsonl Evaluating Type: objective  ---
+[2025-06-19 16:24:31.607110] 
+--- Case: 1 ---
+[2025-06-19 16:24:31.607110] [1] Case Run 1/1
+[2025-06-19 16:24:31.608112] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE students (student_id INT PRIMARY KEY, name VARCHAR(50), age INT, city VARCHAR(50), enrollment_date DATE);
+
+Data:
+INSERT INTO students (student_id, name, age, city, enrollment_date) VALUES (1, 'Alice', 11, 'New York', '2023-09-01'), (2, 'Bob', 9, 'Los Angeles', '2023-09-01'), (3, 'Charlie', 12, 'New York', '2023-10-15'), (4, 'David', 10, 'Chicago', '2023-11-01'), (5, 'Eve', 11, 'Los Angeles', '2023-10-01');
+
+Query:
+SELECT name, student_id, city FROM students WHERE age > 10 AND city = 'New York';
+
+[2025-06-19 16:24:31.608112] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE students (student_id INT PRIMARY KEY, name VARCHAR(50), age INT, city VARCHAR(50), enrollment_date DATE);\n\nData:\nINSERT INTO students (student_id, name, age, city, enrollment_date) VALUES (1, \'Alice\', 11, \'New York\', \'2023-09-01\'), (2, \'Bob\', 9, \'Los Angeles\', \'2023-09-01\'), (3, \'Charlie\', 12, \'New York\', \'2023-10-15\'), (4, \'David\', 10, \'Chicago\', \'2023-11-01\'), (5, \'Eve\', 11, \'Los Angeles\', \'2023-10-01\');\n\nQuery:\nSELECT name, student_id, city FROM students WHERE age > 10 AND city = \'New York\';\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:25:11.121906] [Model Answer]: 
+{
+  "result_type": "select",
+  "columns": ["name", "student_id", "city"],
+  "rows": [
+    ["Alice", 1, "New York"],
+    ["Charlie", 3, "New York"]
+  ]
+}
+[2025-06-19 16:25:11.122923] [1] Objective Eval: Format Model Answer: '{'result_type': 'select', 'columns': ['name', 'student_id', 'city'], 'rows': [['Alice', 1, 'New York'], ['Charlie', 3, 'New York']]}', Expected: '{'result_type': 'select', 'columns': ['name', 'student_id', 'city'], 'rows': [['Alice', 1, 'New York'], ['Charlie', 3, 'New York']]}'
+[2025-06-19 16:25:11.123969] [1] Objective Eval Case Results: True
+[2025-06-19 16:25:11.123969] [1] objective Eval Case Final Result: True
+[2025-06-19 16:25:11.123969] 
+--- Case: 2 ---
+[2025-06-19 16:25:11.123969] [2] Case Run 1/1
+[2025-06-19 16:25:11.124970] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE tasks (task_id INT PRIMARY KEY, task_name VARCHAR(100), completed BOOLEAN, due_date DATE);
+
+Data:
+INSERT INTO tasks (task_id, task_name, completed, due_date) VALUES (1, 'Task A', TRUE, '2024-06-01'), (2, 'Task B', FALSE, '2024-06-10'), (3, 'Task C', TRUE, '2024-05-20'), (4, 'Task D', FALSE, '2024-06-05');
+
+Query:
+SELECT task_name, due_date FROM tasks WHERE completed = FALSE AND due_date < '2024-06-07';
+
+[2025-06-19 16:25:11.124970] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE tasks (task_id INT PRIMARY KEY, task_name VARCHAR(100), completed BOOLEAN, due_date DATE);\n\nData:\nINSERT INTO tasks (task_id, task_name, completed, due_date) VALUES (1, \'Task A\', TRUE, \'2024-06-01\'), (2, \'Task B\', FALSE, \'2024-06-10\'), (3, \'Task C\', TRUE, \'2024-05-20\'), (4, \'Task D\', FALSE, \'2024-06-05\');\n\nQuery:\nSELECT task_name, due_date FROM tasks WHERE completed = FALSE AND due_date < \'2024-06-07\';\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:25:55.954030] [Model Answer]: 
+```json
+{
+  "result_type": "select",
+  "columns": ["task_name", "due_date"],
+  "rows": [
+    ["Task D", "2024-06-05"]
+  ]
+}
+```
+[2025-06-19 16:25:55.954030] [2] Objective Eval: Format Model Answer: '{'result_type': 'select', 'columns': ['task_name', 'due_date'], 'rows': [['Task D', '2024-06-05']]}', Expected: '{'result_type': 'select', 'columns': ['task_name', 'due_date'], 'rows': [['Task D', '2024-06-05']]}'
+[2025-06-19 16:25:55.954030] [2] Objective Eval Case Results: True
+[2025-06-19 16:25:55.954030] [2] objective Eval Case Final Result: True
+[2025-06-19 16:25:55.954030] 
+--- Case: 3 ---
+[2025-06-19 16:25:55.955479] [3] Case Run 1/1
+[2025-06-19 16:25:55.955479] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE inventory (product_id INT PRIMARY KEY, stock INT, last_restock_date DATE);
+
+Data:
+INSERT INTO inventory (product_id, stock, last_restock_date) VALUES (101, 50, '2024-01-01'), (102, 0, '2024-02-15'), (103, 120, '2024-03-01');
+
+Query:
+INSERT INTO inventory (product_id, stock, last_restock_date) VALUES (104, 70, '2024-06-03'), (105, 10, '2024-06-01');
+
+[2025-06-19 16:25:55.955479] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE inventory (product_id INT PRIMARY KEY, stock INT, last_restock_date DATE);\n\nData:\nINSERT INTO inventory (product_id, stock, last_restock_date) VALUES (101, 50, \'2024-01-01\'), (102, 0, \'2024-02-15\'), (103, 120, \'2024-03-01\');\n\nQuery:\nINSERT INTO inventory (product_id, stock, last_restock_date) VALUES (104, 70, \'2024-06-03\'), (105, 10, \'2024-06-01\');\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:27:08.036545] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "table_name": "inventory",
+  "columns": ["product_id", "stock", "last_restock_date"],
+  "rows": [
+    [101, 50, "2024-01-01"],
+    [102, 0, "2024-02-15"],
+    [103, 120, "2024-03-01"],
+    [104, 70, "2024-06-03"],
+    [105, 10, "2024-06-01"]
+  ]
+}
+[2025-06-19 16:27:08.037548] [3] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'inventory', 'columns': ['product_id', 'stock', 'last_restock_date'], 'rows': [[101, 50, '2024-01-01'], [102, 0, '2024-02-15'], [103, 120, '2024-03-01'], [104, 70, '2024-06-03'], [105, 10, '2024-06-01']]}', Expected: '{'result_type': 'table_state', 'table_name': 'inventory', 'columns': ['product_id', 'stock', 'last_restock_date'], 'rows': [[101, 50, '2024-01-01'], [102, 0, '2024-02-15'], [103, 120, '2024-03-01'], [104, 70, '2024-06-03'], [105, 10, '2024-06-01']]}'
+[2025-06-19 16:27:08.037548] [3] Objective Eval Case Results: True
+[2025-06-19 16:27:08.037548] [3] objective Eval Case Final Result: True
+[2025-06-19 16:27:08.038642] 
+--- Case: 4 ---
+[2025-06-19 16:27:08.038642] [4] Case Run 1/1
+[2025-06-19 16:27:08.038642] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE customers (customer_id INT PRIMARY KEY, name VARCHAR(50), email VARCHAR(100), registration_status VARCHAR(20));
+
+Data:
+INSERT INTO customers (customer_id, name, email, registration_status) VALUES (1, 'Cust A', 'a@example.com', 'Active'), (2, 'Cust B', NULL, 'Pending'), (3, 'Cust C', 'c@example.com', 'Active');
+
+Query:
+UPDATE customers SET email = 'b@example.com', registration_status = 'Completed' WHERE customer_id = 2;
+
+[2025-06-19 16:27:08.039697] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE customers (customer_id INT PRIMARY KEY, name VARCHAR(50), email VARCHAR(100), registration_status VARCHAR(20));\n\nData:\nINSERT INTO customers (customer_id, name, email, registration_status) VALUES (1, \'Cust A\', \'a@example.com\', \'Active\'), (2, \'Cust B\', NULL, \'Pending\'), (3, \'Cust C\', \'c@example.com\', \'Active\');\n\nQuery:\nUPDATE customers SET email = \'b@example.com\', registration_status = \'Completed\' WHERE customer_id = 2;\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:29:07.244107] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "table_name": "customers",
+  "columns": ["customer_id", "name", "email", "registration_status"],
+  "rows": [
+    [1, "Cust A", "a@example.com", "Active"],
+    [2, "Cust B", "b@example.com", "Completed"],
+    [3, "Cust C", "c@example.com", "Active"]
+  ]
+}
+[2025-06-19 16:29:07.244107] [4] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'customers', 'columns': ['customer_id', 'name', 'email', 'registration_status'], 'rows': [[1, 'Cust A', 'a@example.com', 'Active'], [2, 'Cust B', 'b@example.com', 'Completed'], [3, 'Cust C', 'c@example.com', 'Active']]}', Expected: '{'result_type': 'table_state', 'table_name': 'customers', 'columns': ['customer_id', 'name', 'email', 'registration_status'], 'rows': [[1, 'Cust A', 'a@example.com', 'Active'], [2, 'Cust B', 'b@example.com', 'Completed'], [3, 'Cust C', 'c@example.com', 'Active']]}'
+[2025-06-19 16:29:07.245298] [4] Objective Eval Case Results: True
+[2025-06-19 16:29:07.245298] [4] objective Eval Case Final Result: True
+[2025-06-19 16:29:07.245298] 
+--- Case: 5 ---
+[2025-06-19 16:29:07.245298] [5] Case Run 1/1
+[2025-06-19 16:29:07.245298] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE log_entries (log_id INT PRIMARY KEY, message VARCHAR(255), log_level VARCHAR(20));
+
+Data:
+INSERT INTO log_entries (log_id, message, log_level) VALUES (1, 'Error: Something failed.', 'ERROR'), (2, 'Info: Process started.', 'INFO'), (3, 'Warning: Disk usage high.', 'WARNING'), (4, 'Error: Database connection lost.', 'ERROR');
+
+Query:
+DELETE FROM log_entries WHERE log_level = 'WARNING';
+
+[2025-06-19 16:29:07.246364] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE log_entries (log_id INT PRIMARY KEY, message VARCHAR(255), log_level VARCHAR(20));\n\nData:\nINSERT INTO log_entries (log_id, message, log_level) VALUES (1, \'Error: Something failed.\', \'ERROR\'), (2, \'Info: Process started.\', \'INFO\'), (3, \'Warning: Disk usage high.\', \'WARNING\'), (4, \'Error: Database connection lost.\', \'ERROR\');\n\nQuery:\nDELETE FROM log_entries WHERE log_level = \'WARNING\';\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:33:39.979038] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "table_name": "log_entries",
+  "columns": ["log_id", "message", "log_level"],
+  "rows": [
+    [1, "Error: Something failed.", "ERROR"],
+    [2, "Info: Process started.", "INFO"],
+    [4, "Error: Database connection lost.", "ERROR"]
+  ]
+}
+[2025-06-19 16:33:39.979038] [5] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'log_entries', 'columns': ['log_id', 'message', 'log_level'], 'rows': [[1, 'Error: Something failed.', 'ERROR'], [2, 'Info: Process started.', 'INFO'], [4, 'Error: Database connection lost.', 'ERROR']]}', Expected: '{'result_type': 'table_state', 'table_name': 'log_entries', 'columns': ['log_id', 'message', 'log_level'], 'rows': [[1, 'Error: Something failed.', 'ERROR'], [2, 'Info: Process started.', 'INFO'], [4, 'Error: Database connection lost.', 'ERROR']]}'
+[2025-06-19 16:33:39.979038] [5] Objective Eval Case Results: True
+[2025-06-19 16:33:39.980102] [5] objective Eval Case Final Result: True
+[2025-06-19 16:33:39.980102] 
+--- Case: 6 ---
+[2025-06-19 16:33:39.980102] [6] Case Run 1/1
+[2025-06-19 16:33:39.980102] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, amount DECIMAL(10, 2), order_status VARCHAR(20));
+
+Data:
+INSERT INTO orders (order_id, customer_id, amount, order_status) VALUES (1, 10, 150.00, 'Completed'), (2, 20, 50.50, 'Pending'), (3, 10, 200.00, 'Completed'), (4, 30, 300.00, 'Pending'), (5, 10, 75.00, 'Pending');
+
+Query:
+SELECT COUNT(*) AS total_pending_orders FROM orders WHERE amount > 100 AND order_status = 'Pending';
+
+[2025-06-19 16:33:39.981122] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, amount DECIMAL(10, 2), order_status VARCHAR(20));\n\nData:\nINSERT INTO orders (order_id, customer_id, amount, order_status) VALUES (1, 10, 150.00, \'Completed\'), (2, 20, 50.50, \'Pending\'), (3, 10, 200.00, \'Completed\'), (4, 30, 300.00, \'Pending\'), (5, 10, 75.00, \'Pending\');\n\nQuery:\nSELECT COUNT(*) AS total_pending_orders FROM orders WHERE amount > 100 AND order_status = \'Pending\';\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:34:17.455725] [Model Answer]: 
+```json
+{
+  "result_type": "select",
+  "columns": ["total_pending_orders"],
+  "rows": [[1]]
+}
+```
+[2025-06-19 16:34:17.455725] [6] Objective Eval: Format Model Answer: '{'result_type': 'select', 'columns': ['total_pending_orders'], 'rows': [[1]]}', Expected: '{'result_type': 'select', 'columns': ['total_pending_orders'], 'rows': [[1]]}'
+[2025-06-19 16:34:17.455725] [6] Objective Eval Case Results: True
+[2025-06-19 16:34:17.457231] [6] objective Eval Case Final Result: True
+[2025-06-19 16:34:17.457231] 
+--- Case: 7 ---
+[2025-06-19 16:34:17.457231] [7] Case Run 1/1
+[2025-06-19 16:34:17.457231] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE sales (product_id INT, sale_amount DECIMAL(10, 2), sale_date DATE);
+
+Data:
+INSERT INTO sales (product_id, sale_amount, sale_date) VALUES (1, 10.00, '2024-01-01'), (2, 20.00, '2024-01-01'), (1, 15.00, '2024-01-05'), (3, 30.00, '2024-01-05'), (2, 25.00, '2024-01-10');
+
+Query:
+SELECT product_id, SUM(sale_amount) AS total_sales, COUNT(*) AS number_of_sales FROM sales GROUP BY product_id ORDER BY total_sales DESC;
+
+[2025-06-19 16:34:17.458242] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE sales (product_id INT, sale_amount DECIMAL(10, 2), sale_date DATE);\n\nData:\nINSERT INTO sales (product_id, sale_amount, sale_date) VALUES (1, 10.00, \'2024-01-01\'), (2, 20.00, \'2024-01-01\'), (1, 15.00, \'2024-01-05\'), (3, 30.00, \'2024-01-05\'), (2, 25.00, \'2024-01-10\');\n\nQuery:\nSELECT product_id, SUM(sale_amount) AS total_sales, COUNT(*) AS number_of_sales FROM sales GROUP BY product_id ORDER BY total_sales DESC;\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:37:41.060661] [Model Answer]: 
+```json
+{
+  "result_type": "select",
+  "columns": ["product_id", "total_sales", "number_of_sales"],
+  "rows": [
+    [2, 45.00, 2],
+    [3, 30.00, 1],
+    [1, 25.00, 2]
+  ]
+}
+```
+[2025-06-19 16:37:41.060661] [7] Objective Eval: Format Model Answer: '{'result_type': 'select', 'columns': ['product_id', 'total_sales', 'number_of_sales'], 'rows': [[2, 45.0, 2], [3, 30.0, 1], [1, 25.0, 2]]}', Expected: '{'result_type': 'select', 'columns': ['product_id', 'total_sales', 'number_of_sales'], 'rows': [[2, 45.0, 2], [3, 30.0, 1], [1, 25.0, 2]]}'
+[2025-06-19 16:37:41.060661] [7] Objective Eval Case Results: True
+[2025-06-19 16:37:41.060661] [7] objective Eval Case Final Result: True
+[2025-06-19 16:37:41.060661] 
+--- Case: 8 ---
+[2025-06-19 16:37:41.061667] [8] Case Run 1/1
+[2025-06-19 16:37:41.061667] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE employees (department VARCHAR(50), salary DECIMAL(10, 2));
+
+Data:
+INSERT INTO employees (department, salary) VALUES ('Sales', 50000.00), ('IT', 70000.00), ('Sales', 55000.00), ('IT', 75000.00);
+
+Query:
+SELECT department, AVG(salary) AS avg_salary FROM employees GROUP BY department HAVING COUNT(*) > 1;
+
+[2025-06-19 16:37:41.061667] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE employees (department VARCHAR(50), salary DECIMAL(10, 2));\n\nData:\nINSERT INTO employees (department, salary) VALUES (\'Sales\', 50000.00), (\'IT\', 70000.00), (\'Sales\', 55000.00), (\'IT\', 75000.00);\n\nQuery:\nSELECT department, AVG(salary) AS avg_salary FROM employees GROUP BY department HAVING COUNT(*) > 1;\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:38:04.931783] [Model Answer]: 
+{
+  "result_type": "table",
+  "columns": ["department", "avg_salary"],
+  "rows": [
+    ["Sales", 52500.00],
+    ["IT", 72500.00]
+  ]
+}
+[2025-06-19 16:38:04.932785] [8] Objective Eval: Format Model Answer: '{'result_type': 'table', 'columns': ['department', 'avg_salary'], 'rows': [['Sales', 52500.0], ['IT', 72500.0]]}', Expected: '{'result_type': 'select', 'columns': ['department', 'avg_salary'], 'rows': [['IT', 72500.0], ['Sales', 52500.0]]}'
+[2025-06-19 16:38:04.936431] [8] Objective Eval Case Results: False
+[2025-06-19 16:38:04.936431] [8] objective Eval Case Final Result: False
+[2025-06-19 16:38:04.936431] 
+--- Case: 9 ---
+[2025-06-19 16:38:04.936431] [9] Case Run 1/1
+[2025-06-19 16:38:04.937438] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE products (product_name VARCHAR(50), price DECIMAL(6, 2), creation_date DATE);
+
+Data:
+INSERT INTO products (product_name, price, creation_date) VALUES ('A', 10.00, '2023-01-01'), ('B', 30.00, '2023-02-01'), ('C', 20.00, '2023-01-15'), ('D', 40.00, '2023-03-01'), ('E', 25.00, '2023-02-10');
+
+Query:
+SELECT product_name, price FROM products ORDER BY price DESC, creation_date ASC LIMIT 3;
+
+[2025-06-19 16:38:04.938036] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE products (product_name VARCHAR(50), price DECIMAL(6, 2), creation_date DATE);\n\nData:\nINSERT INTO products (product_name, price, creation_date) VALUES (\'A\', 10.00, \'2023-01-01\'), (\'B\', 30.00, \'2023-02-01\'), (\'C\', 20.00, \'2023-01-15\'), (\'D\', 40.00, \'2023-03-01\'), (\'E\', 25.00, \'2023-02-10\');\n\nQuery:\nSELECT product_name, price FROM products ORDER BY price DESC, creation_date ASC LIMIT 3;\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:38:33.050928] [Model Answer]: 
+{
+  "result_type": "select",
+  "columns": ["product_name", "price"],
+  "rows": [
+    ["D", 40.00],
+    ["B", 30.00],
+    ["E", 25.00]
+  ]
+}
+[2025-06-19 16:38:33.050928] [9] Objective Eval: Format Model Answer: '{'result_type': 'select', 'columns': ['product_name', 'price'], 'rows': [['D', 40.0], ['B', 30.0], ['E', 25.0]]}', Expected: '{'result_type': 'select', 'columns': ['product_name', 'price'], 'rows': [['D', 40.0], ['B', 30.0], ['E', 25.0]]}'
+[2025-06-19 16:38:33.051949] [9] Objective Eval Case Results: True
+[2025-06-19 16:38:33.051949] [9] objective Eval Case Final Result: True
+[2025-06-19 16:38:33.051949] 
+--- Case: 10 ---
+[2025-06-19 16:38:33.052952] [10] Case Run 1/1
+[2025-06-19 16:38:33.052952] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE orders_date (order_id INT, order_date DATE, customer_segment VARCHAR(20));
+
+Data:
+INSERT INTO orders_date (order_id, order_date, customer_segment) VALUES (1, '2023-01-15', 'Premium'), (2, '2023-01-20', 'Standard'), (3, '2024-02-10', 'Premium'), (4, '2023-03-01', 'Standard'), (5, '2024-02-10', 'Standard');
+
+Query:
+SELECT YEAR(order_date) AS order_year, customer_segment, COUNT(*) AS total_orders FROM orders_date GROUP BY YEAR(order_date), customer_segment ORDER BY order_year, customer_segment;
+
+[2025-06-19 16:38:33.052952] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE orders_date (order_id INT, order_date DATE, customer_segment VARCHAR(20));\n\nData:\nINSERT INTO orders_date (order_id, order_date, customer_segment) VALUES (1, \'2023-01-15\', \'Premium\'), (2, \'2023-01-20\', \'Standard\'), (3, \'2024-02-10\', \'Premium\'), (4, \'2023-03-01\', \'Standard\'), (5, \'2024-02-10\', \'Standard\');\n\nQuery:\nSELECT YEAR(order_date) AS order_year, customer_segment, COUNT(*) AS total_orders FROM orders_date GROUP BY YEAR(order_date), customer_segment ORDER BY order_year, customer_segment;\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:39:12.024503] [Model Answer]: 
+```json
+{
+  "result_type": "select",
+  "columns": ["order_year", "customer_segment", "total_orders"],
+  "rows": [
+    [2023, "Premium", 1],
+    [2023, "Standard", 2],
+    [2024, "Premium", 1],
+    [2024, "Standard", 1]
+  ]
+}
+```
+[2025-06-19 16:39:12.025514] [10] Objective Eval: Format Model Answer: '{'result_type': 'select', 'columns': ['order_year', 'customer_segment', 'total_orders'], 'rows': [[2023, 'Premium', 1], [2023, 'Standard', 2], [2024, 'Premium', 1], [2024, 'Standard', 1]]}', Expected: '{'result_type': 'select', 'columns': ['order_year', 'customer_segment', 'total_orders'], 'rows': [[2023, 'Premium', 1], [2023, 'Standard', 2], [2024, 'Premium', 1], [2024, 'Standard', 1]]}'
+[2025-06-19 16:39:12.025514] [10] Objective Eval Case Results: True
+[2025-06-19 16:39:12.025514] [10] objective Eval Case Final Result: True
+[2025-06-19 16:39:12.025514] 
+--- Case: 11 ---
+[2025-06-19 16:39:12.026517] [11] Case Run 1/1
+[2025-06-19 16:39:12.026517] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE products_stock (category VARCHAR(50), stock INT, last_updated DATE);
+
+Data:
+INSERT INTO products_stock (category, stock, last_updated) VALUES ('Electronics', 10, '2024-01-01'), ('Books', 20, '2024-01-10'), ('Electronics', 15, '2024-02-01'), ('Books', 25, '2024-02-15');
+
+Query:
+INSERT INTO products_stock (category, stock, last_updated) VALUES ('Electronics', 5, CURRENT_DATE), ('Clothes', 30, CURRENT_DATE);
+
+[2025-06-19 16:39:12.026517] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE products_stock (category VARCHAR(50), stock INT, last_updated DATE);\n\nData:\nINSERT INTO products_stock (category, stock, last_updated) VALUES (\'Electronics\', 10, \'2024-01-01\'), (\'Books\', 20, \'2024-01-10\'), (\'Electronics\', 15, \'2024-02-01\'), (\'Books\', 25, \'2024-02-15\');\n\nQuery:\nINSERT INTO products_stock (category, stock, last_updated) VALUES (\'Electronics\', 5, CURRENT_DATE), (\'Clothes\', 30, CURRENT_DATE);\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:42:49.826033] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "table_name": "products_stock",
+  "columns": ["category", "stock", "last_updated"],
+  "rows": [
+    ["Electronics", 10, "2024-01-01"],
+    ["Books", 20, "2024-01-10"],
+    ["Electronics", 15, "2024-02-01"],
+    ["Books", 25, "2024-02-15"],
+    ["Electronics", 5, "2024-04-03"],
+    ["Clothes", 30, "2024-04-03"]
+  ]
+}
+[2025-06-19 16:42:49.826033] [11] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'products_stock', 'columns': ['category', 'stock', 'last_updated'], 'rows': [['Electronics', 10, '2024-01-01'], ['Books', 20, '2024-01-10'], ['Electronics', 15, '2024-02-01'], ['Books', 25, '2024-02-15'], ['Electronics', 5, '2024-04-03'], ['Clothes', 30, '2024-04-03']]}', Expected: '{'result_type': 'table_state', 'table_name': 'products_stock', 'columns': ['category', 'stock', 'last_updated'], 'rows': [['Electronics', 10, '2024-01-01'], ['Books', 20, '2024-01-10'], ['Electronics', 15, '2024-02-01'], ['Books', 25, '2024-02-15'], ['Electronics', 5, '2025-06-03'], ['Clothes', 30, '2025-06-03']]}'
+[2025-06-19 16:42:49.827035] [11] Objective Eval Case Results: False
+[2025-06-19 16:42:49.827035] [11] objective Eval Case Final Result: False
+[2025-06-19 16:42:49.827035] 
+--- Case: 12 ---
+[2025-06-19 16:42:49.827035] [12] Case Run 1/1
+[2025-06-19 16:42:49.827035] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE orders_items (order_id INT, item_id INT, item_price DECIMAL(5, 2));
+CREATE TABLE order_quantities (order_id INT PRIMARY KEY, quantity INT, discount_percent DECIMAL(3, 2));
+
+Data:
+INSERT INTO orders_items (order_id, item_id, item_price) VALUES (1, 101, 10.00), (2, 102, 15.00), (3, 103, 20.00);
+INSERT INTO order_quantities (order_id, quantity, discount_percent) VALUES (1, 2, 0.10), (2, 3, 0.05);
+
+Query:
+INSERT INTO orders_items (order_id, item_id, item_price) SELECT oq.order_id, 104, oq.quantity * 10 * (1 - oq.discount_percent) FROM order_quantities oq WHERE oq.order_id = 2;
+
+[2025-06-19 16:42:49.828038] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE orders_items (order_id INT, item_id INT, item_price DECIMAL(5, 2));\nCREATE TABLE order_quantities (order_id INT PRIMARY KEY, quantity INT, discount_percent DECIMAL(3, 2));\n\nData:\nINSERT INTO orders_items (order_id, item_id, item_price) VALUES (1, 101, 10.00), (2, 102, 15.00), (3, 103, 20.00);\nINSERT INTO order_quantities (order_id, quantity, discount_percent) VALUES (1, 2, 0.10), (2, 3, 0.05);\n\nQuery:\nINSERT INTO orders_items (order_id, item_id, item_price) SELECT oq.order_id, 104, oq.quantity * 10 * (1 - oq.discount_percent) FROM order_quantities oq WHERE oq.order_id = 2;\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:43:38.866772] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "table_name": "orders_items",
+  "columns": ["order_id", "item_id", "item_price"],
+  "rows": [
+    [1, 101, 10.00],
+    [2, 102, 15.00],
+    [3, 103, 20.00],
+    [2, 104, 28.50]
+  ]
+}
+[2025-06-19 16:43:38.867776] [12] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'orders_items', 'columns': ['order_id', 'item_id', 'item_price'], 'rows': [[1, 101, 10.0], [2, 102, 15.0], [3, 103, 20.0], [2, 104, 28.5]]}', Expected: '{'result_type': 'table_state', 'table_name': 'orders_items', 'columns': ['order_id', 'item_id', 'item_price'], 'rows': [[1, 101, 10.0], [2, 102, 15.0], [3, 103, 20.0], [2, 104, 28.5]]}'
+[2025-06-19 16:43:38.867776] [12] Objective Eval Case Results: True
+[2025-06-19 16:43:38.867776] [12] objective Eval Case Final Result: True
+[2025-06-19 16:43:38.867776] 
+--- Case: 13 ---
+[2025-06-19 16:43:38.869027] [13] Case Run 1/1
+[2025-06-19 16:43:38.869027] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE text_values_table (id INT PRIMARY KEY, text VARCHAR(50), status VARCHAR(20));
+
+Data:
+INSERT INTO text_values_table (id, text, status) VALUES (1, 'apple', 'Active'), (2, 'Banana', 'Pending'), (3, 'ORANGE', 'Active');
+
+Query:
+UPDATE text_values_table SET text = LCASE(text), status = 'Processed' WHERE id = 2;
+
+[2025-06-19 16:43:38.869027] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE text_values_table (id INT PRIMARY KEY, text VARCHAR(50), status VARCHAR(20));\n\nData:\nINSERT INTO text_values_table (id, text, status) VALUES (1, \'apple\', \'Active\'), (2, \'Banana\', \'Pending\'), (3, \'ORANGE\', \'Active\');\n\nQuery:\nUPDATE text_values_table SET text = LCASE(text), status = \'Processed\' WHERE id = 2;\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:44:01.698771] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "table_name": "text_values_table",
+  "columns": ["id", "text", "status"],
+  "rows": [
+    [1, "apple", "Active"],
+    [2, "banana", "Processed"],
+    [3, "ORANGE", "Active"]
+  ]
+}
+[2025-06-19 16:44:01.699779] [13] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'text_values_table', 'columns': ['id', 'text', 'status'], 'rows': [[1, 'apple', 'Active'], [2, 'banana', 'Processed'], [3, 'ORANGE', 'Active']]}', Expected: '{'result_type': 'table_state', 'table_name': 'text_values_table', 'columns': ['id', 'text', 'status'], 'rows': [[1, 'apple', 'Active'], [2, 'banana', 'Processed'], [3, 'ORANGE', 'Active']]}'
+[2025-06-19 16:44:01.699779] [13] Objective Eval Case Results: True
+[2025-06-19 16:44:01.700782] [13] objective Eval Case Final Result: True
+[2025-06-19 16:44:01.700782] 
+--- Case: 14 ---
+[2025-06-19 16:44:01.700782] [14] Case Run 1/1
+[2025-06-19 16:44:01.700782] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE zip_codes (city VARCHAR(50), zip VARCHAR(10));
+
+Data:
+INSERT INTO zip_codes (city, zip) VALUES ('New York', '10001'), ('Los Angeles', '90001');
+
+Query:
+UPDATE zip_codes SET zip = SUBSTRING(zip, 1, 3) || 'xxx' WHERE city = 'New York';
+
+[2025-06-19 16:44:01.701665] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE zip_codes (city VARCHAR(50), zip VARCHAR(10));\n\nData:\nINSERT INTO zip_codes (city, zip) VALUES (\'New York\', \'10001\'), (\'Los Angeles\', \'90001\');\n\nQuery:\nUPDATE zip_codes SET zip = SUBSTRING(zip, 1, 3) || \'xxx\' WHERE city = \'New York\';\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:44:48.794262] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "table_name": "zip_codes",
+  "columns": ["city", "zip"],
+  "rows": [
+    ["New York", "100xxx"],
+    ["Los Angeles", "90001"]
+  ]
+}
+[2025-06-19 16:44:48.794262] [14] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'zip_codes', 'columns': ['city', 'zip'], 'rows': [['New York', '100xxx'], ['Los Angeles', '90001']]}', Expected: '{'result_type': 'table_state', 'table_name': 'zip_codes', 'columns': ['city', 'zip'], 'rows': [['Los Angeles', '90001'], ['New York', '1']]}'
+[2025-06-19 16:44:48.794262] [14] Objective Eval Case Results: False
+[2025-06-19 16:44:48.795272] [14] objective Eval Case Final Result: False
+[2025-06-19 16:44:48.795272] 
+--- Case: 15 ---
+[2025-06-19 16:44:48.795272] [15] Case Run 1/1
+[2025-06-19 16:44:48.795272] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE items_price (item_id INT PRIMARY KEY, price DECIMAL(5, 2), quantity INT);
+
+Data:
+INSERT INTO items_price (item_id, price, quantity) VALUES (1, 10.51, 5), (2, 20.49, 10), (3, 5.00, 20), (4, 9.99, 15);
+
+Query:
+DELETE FROM items_price WHERE price < FLOOR(10.51) AND quantity < 15;
+
+[2025-06-19 16:44:48.796306] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE items_price (item_id INT PRIMARY KEY, price DECIMAL(5, 2), quantity INT);\n\nData:\nINSERT INTO items_price (item_id, price, quantity) VALUES (1, 10.51, 5), (2, 20.49, 10), (3, 5.00, 20), (4, 9.99, 15);\n\nQuery:\nDELETE FROM items_price WHERE price < FLOOR(10.51) AND quantity < 15;\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:45:59.343131] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "table_name": "items_price",
+  "columns": ["item_id", "price", "quantity"],
+  "rows": [
+    [1, 10.51, 5],
+    [2, 20.49, 10],
+    [3, 5.00, 20],
+    [4, 9.99, 15]
+  ]
+}
+[2025-06-19 16:45:59.343657] [15] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'items_price', 'columns': ['item_id', 'price', 'quantity'], 'rows': [[1, 10.51, 5], [2, 20.49, 10], [3, 5.0, 20], [4, 9.99, 15]]}', Expected: '{'result_type': 'table_state', 'table_name': 'items_price', 'columns': ['item_id', 'price', 'quantity'], 'rows': [[1, 10.51, 5], [2, 20.49, 10], [3, 5.0, 20], [4, 9.99, 15]]}'
+[2025-06-19 16:45:59.343657] [15] Objective Eval Case Results: True
+[2025-06-19 16:45:59.343657] [15] objective Eval Case Final Result: True
+[2025-06-19 16:45:59.343657] 
+--- Case: 16 ---
+[2025-06-19 16:45:59.343657] [16] Case Run 1/1
+[2025-06-19 16:45:59.344739] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE, total_amount DECIMAL(10, 2));
+CREATE TABLE customers (customer_id INT PRIMARY KEY, customer_name VARCHAR(50));
+
+Data:
+INSERT INTO orders (order_id, customer_id, order_date, total_amount) VALUES (1, 101, '2024-01-01', 150.00), (2, 102, '2024-01-02', 50.50), (3, 101, '2024-01-03', 200.00);
+INSERT INTO customers (customer_id, customer_name) VALUES (101, 'Alice'), (102, 'Bob');
+
+Query:
+SELECT o.order_id, c.customer_name FROM orders o INNER JOIN customers c ON o.customer_id = c.customer_id WHERE o.total_amount > (SELECT AVG(total_amount) FROM orders);
+
+[2025-06-19 16:45:59.344739] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE, total_amount DECIMAL(10, 2));\nCREATE TABLE customers (customer_id INT PRIMARY KEY, customer_name VARCHAR(50));\n\nData:\nINSERT INTO orders (order_id, customer_id, order_date, total_amount) VALUES (1, 101, \'2024-01-01\', 150.00), (2, 102, \'2024-01-02\', 50.50), (3, 101, \'2024-01-03\', 200.00);\nINSERT INTO customers (customer_id, customer_name) VALUES (101, \'Alice\'), (102, \'Bob\');\n\nQuery:\nSELECT o.order_id, c.customer_name FROM orders o INNER JOIN customers c ON o.customer_id = c.customer_id WHERE o.total_amount > (SELECT AVG(total_amount) FROM orders);\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:46:35.302849] [Model Answer]: 
+{
+  "result_type": "select",
+  "columns": ["order_id", "customer_name"],
+  "rows": [
+    [1, "Alice"],
+    [3, "Alice"]
+  ]
+}
+[2025-06-19 16:46:35.303891] [16] Objective Eval: Format Model Answer: '{'result_type': 'select', 'columns': ['order_id', 'customer_name'], 'rows': [[1, 'Alice'], [3, 'Alice']]}', Expected: '{'result_type': 'select', 'columns': ['order_id', 'customer_name'], 'rows': [[1, 'Alice'], [3, 'Alice']]}'
+[2025-06-19 16:46:35.303891] [16] Objective Eval Case Results: True
+[2025-06-19 16:46:35.303891] [16] objective Eval Case Final Result: True
+[2025-06-19 16:46:35.303891] 
+--- Case: 17 ---
+[2025-06-19 16:46:35.304696] [17] Case Run 1/1
+[2025-06-19 16:46:35.304696] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(50), category VARCHAR(50));
+CREATE TABLE inventory (product_id INT PRIMARY KEY, stock INT);
+
+Data:
+INSERT INTO products (product_id, product_name, category) VALUES (1, 'Laptop', 'Electronics'), (2, 'Mouse', 'Electronics'), (3, 'Keyboard', 'Electronics');
+INSERT INTO inventory (product_id, stock) VALUES (1, 10), (3, 5);
+
+Query:
+SELECT p.product_name, i.stock FROM products p LEFT JOIN inventory i ON p.product_id = i.product_id WHERE p.category = 'Electronics' ORDER BY p.product_id;
+
+[2025-06-19 16:46:35.305201] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(50), category VARCHAR(50));\nCREATE TABLE inventory (product_id INT PRIMARY KEY, stock INT);\n\nData:\nINSERT INTO products (product_id, product_name, category) VALUES (1, \'Laptop\', \'Electronics\'), (2, \'Mouse\', \'Electronics\'), (3, \'Keyboard\', \'Electronics\');\nINSERT INTO inventory (product_id, stock) VALUES (1, 10), (3, 5);\n\nQuery:\nSELECT p.product_name, i.stock FROM products p LEFT JOIN inventory i ON p.product_id = i.product_id WHERE p.category = \'Electronics\' ORDER BY p.product_id;\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:48:17.227348] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "columns": ["product_name", "stock"],
+  "rows": [
+    ["Laptop", 10],
+    ["Mouse", null],
+    ["Keyboard", 5]
+  ]
+}
+[2025-06-19 16:48:17.228346] [17] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'columns': ['product_name', 'stock'], 'rows': [['Laptop', 10], ['Mouse', None], ['Keyboard', 5]]}', Expected: '{'result_type': 'select', 'columns': ['product_name', 'stock'], 'rows': [['Laptop', 10], ['Mouse', None], ['Keyboard', 5]]}'
+[2025-06-19 16:48:17.228346] [17] Objective Eval Case Results: False
+[2025-06-19 16:48:17.228346] [17] objective Eval Case Final Result: False
+[2025-06-19 16:48:17.228346] 
+--- Case: 18 ---
+[2025-06-19 16:48:17.228346] [18] Case Run 1/1
+[2025-06-19 16:48:17.228346] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE employees (employee_id INT PRIMARY KEY, name VARCHAR(50), dept_id INT);
+CREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(50));
+
+Data:
+INSERT INTO employees (employee_id, name, dept_id) VALUES (1, 'Alice', 10), (2, 'Bob', 20), (3, 'Charlie', 10);
+INSERT INTO departments (dept_id, dept_name) VALUES (10, 'Sales'), (20, 'IT'), (30, 'HR');
+
+Query:
+SELECT d.dept_name, COUNT(e.employee_id) AS employee_count FROM departments d LEFT JOIN employees e ON d.dept_id = e.dept_id GROUP BY d.dept_name ORDER BY d.dept_name;
+
+[2025-06-19 16:48:17.229458] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE employees (employee_id INT PRIMARY KEY, name VARCHAR(50), dept_id INT);\nCREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(50));\n\nData:\nINSERT INTO employees (employee_id, name, dept_id) VALUES (1, \'Alice\', 10), (2, \'Bob\', 20), (3, \'Charlie\', 10);\nINSERT INTO departments (dept_id, dept_name) VALUES (10, \'Sales\'), (20, \'IT\'), (30, \'HR\');\n\nQuery:\nSELECT d.dept_name, COUNT(e.employee_id) AS employee_count FROM departments d LEFT JOIN employees e ON d.dept_id = e.dept_id GROUP BY d.dept_name ORDER BY d.dept_name;\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:49:25.971251] [Model Answer]: 
+{
+  "result_type": "select",
+  "columns": ["dept_name", "employee_count"],
+  "rows": [
+    ["HR", 0],
+    ["IT", 1],
+    ["Sales", 2]
+  ]
+}
+[2025-06-19 16:49:25.971251] [18] Objective Eval: Format Model Answer: '{'result_type': 'select', 'columns': ['dept_name', 'employee_count'], 'rows': [['HR', 0], ['IT', 1], ['Sales', 2]]}', Expected: '{'result_type': 'select', 'columns': ['dept_name', 'employee_count'], 'rows': [['HR', 0], ['IT', 1], ['Sales', 2]]}'
+[2025-06-19 16:49:25.972363] [18] Objective Eval Case Results: True
+[2025-06-19 16:49:25.972363] [18] objective Eval Case Final Result: True
+[2025-06-19 16:49:25.972363] 
+--- Case: 19 ---
+[2025-06-19 16:49:25.972363] [19] Case Run 1/1
+[2025-06-19 16:49:25.972363] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_status VARCHAR(20));
+CREATE TABLE vip_customers (customer_id INT PRIMARY KEY, tier VARCHAR(10));
+
+Data:
+INSERT INTO orders (order_id, customer_id, order_status) VALUES (1, 101, 'Completed'), (2, 105, 'Pending'), (3, 101, 'Completed'), (4, 102, 'Pending');
+INSERT INTO vip_customers (customer_id, tier) VALUES (101, 'Gold'), (103, 'Silver');
+
+Query:
+SELECT order_id, order_status FROM orders WHERE customer_id IN (SELECT customer_id FROM vip_customers WHERE tier = 'Gold') AND order_status = 'Completed';
+
+[2025-06-19 16:49:25.973559] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_status VARCHAR(20));\nCREATE TABLE vip_customers (customer_id INT PRIMARY KEY, tier VARCHAR(10));\n\nData:\nINSERT INTO orders (order_id, customer_id, order_status) VALUES (1, 101, \'Completed\'), (2, 105, \'Pending\'), (3, 101, \'Completed\'), (4, 102, \'Pending\');\nINSERT INTO vip_customers (customer_id, tier) VALUES (101, \'Gold\'), (103, \'Silver\');\n\nQuery:\nSELECT order_id, order_status FROM orders WHERE customer_id IN (SELECT customer_id FROM vip_customers WHERE tier = \'Gold\') AND order_status = \'Completed\';\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:49:52.657953] [Model Answer]: 
+{
+  "result_type": "select",
+  "columns": ["order_id", "order_status"],
+  "rows": [
+    [1, "Completed"],
+    [3, "Completed"]
+  ]
+}
+[2025-06-19 16:49:52.657953] [19] Objective Eval: Format Model Answer: '{'result_type': 'select', 'columns': ['order_id', 'order_status'], 'rows': [[1, 'Completed'], [3, 'Completed']]}', Expected: '{'result_type': 'select', 'columns': ['order_id', 'order_status'], 'rows': [[1, 'Completed'], [3, 'Completed']]}'
+[2025-06-19 16:49:52.657953] [19] Objective Eval Case Results: True
+[2025-06-19 16:49:52.658958] [19] objective Eval Case Final Result: True
+[2025-06-19 16:49:52.658958] 
+--- Case: 20 ---
+[2025-06-19 16:49:52.658958] [20] Case Run 1/1
+[2025-06-19 16:49:52.658958] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(50), category VARCHAR(50));
+CREATE TABLE reviews (review_id INT PRIMARY KEY, product_id INT, rating INT, review_date DATE);
+
+Data:
+INSERT INTO products (product_id, product_name, category) VALUES (1, 'Laptop', 'Electronics'), (2, 'Mouse', 'Electronics'), (3, 'Book', 'Literature');
+INSERT INTO reviews (review_id, product_id, rating, review_date) VALUES (10, 1, 5, '2024-01-01'), (11, 1, 4, '2024-01-05'), (12, 2, 3, '2024-01-10'), (13, 3, 5, '2024-01-15');
+
+Query:
+SELECT p.product_name, p.category FROM products p WHERE EXISTS (SELECT 1 FROM reviews r WHERE r.product_id = p.product_id AND r.rating >= 4 AND r.review_date > '2023-12-31');
+
+[2025-06-19 16:49:52.658958] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(50), category VARCHAR(50));\nCREATE TABLE reviews (review_id INT PRIMARY KEY, product_id INT, rating INT, review_date DATE);\n\nData:\nINSERT INTO products (product_id, product_name, category) VALUES (1, \'Laptop\', \'Electronics\'), (2, \'Mouse\', \'Electronics\'), (3, \'Book\', \'Literature\');\nINSERT INTO reviews (review_id, product_id, rating, review_date) VALUES (10, 1, 5, \'2024-01-01\'), (11, 1, 4, \'2024-01-05\'), (12, 2, 3, \'2024-01-10\'), (13, 3, 5, \'2024-01-15\');\n\nQuery:\nSELECT p.product_name, p.category FROM products p WHERE EXISTS (SELECT 1 FROM reviews r WHERE r.product_id = p.product_id AND r.rating >= 4 AND r.review_date > \'2023-12-31\');\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:50:25.365355] [Model Answer]: 
+{
+  "result_type": "select",
+  "columns": ["product_name", "category"],
+  "rows": [
+    ["Laptop", "Electronics"],
+    ["Book", "Literature"]
+  ]
+}
+[2025-06-19 16:50:25.365640] [20] Objective Eval: Format Model Answer: '{'result_type': 'select', 'columns': ['product_name', 'category'], 'rows': [['Laptop', 'Electronics'], ['Book', 'Literature']]}', Expected: '{'result_type': 'select', 'columns': ['product_name', 'category'], 'rows': [['Laptop', 'Electronics'], ['Book', 'Literature']]}'
+[2025-06-19 16:50:25.365640] [20] Objective Eval Case Results: True
+[2025-06-19 16:50:25.366148] [20] objective Eval Case Final Result: True
+[2025-06-19 16:50:25.366148] 
+--- Case: 21 ---
+[2025-06-19 16:50:25.366148] [21] Case Run 1/1
+[2025-06-19 16:50:25.366148] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE employees (employee_id INT PRIMARY KEY, name VARCHAR(50), salary DECIMAL(10, 2), dept_id INT, hire_date DATE);
+CREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(50));
+
+Data:
+INSERT INTO employees (employee_id, name, salary, dept_id, hire_date) VALUES (1, 'Alice', 50000.00, 10, '2022-01-01'), (2, 'Bob', 70000.00, 20, '2021-06-01'), (3, 'Charlie', 55000.00, 10, '2022-03-01'), (4, 'David', 72000.00, 20, '2021-09-01'), (5, 'Eve', 60000.00, 30, '2023-01-01');
+INSERT INTO departments (dept_id, dept_name) VALUES (10, 'Sales'), (20, 'IT'), (30, 'HR');
+
+Query:
+SELECT e.name, d.dept_name, e.salary FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE e.salary > 60000 AND d.dept_name = 'IT' AND e.hire_date < '2022-01-01';
+
+[2025-06-19 16:50:25.367157] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE employees (employee_id INT PRIMARY KEY, name VARCHAR(50), salary DECIMAL(10, 2), dept_id INT, hire_date DATE);\nCREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(50));\n\nData:\nINSERT INTO employees (employee_id, name, salary, dept_id, hire_date) VALUES (1, \'Alice\', 50000.00, 10, \'2022-01-01\'), (2, \'Bob\', 70000.00, 20, \'2021-06-01\'), (3, \'Charlie\', 55000.00, 10, \'2022-03-01\'), (4, \'David\', 72000.00, 20, \'2021-09-01\'), (5, \'Eve\', 60000.00, 30, \'2023-01-01\');\nINSERT INTO departments (dept_id, dept_name) VALUES (10, \'Sales\'), (20, \'IT\'), (30, \'HR\');\n\nQuery:\nSELECT e.name, d.dept_name, e.salary FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE e.salary > 60000 AND d.dept_name = \'IT\' AND e.hire_date < \'2022-01-01\';\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:50:58.393675] [Model Answer]: 
+{
+  "result_type": "select",
+  "columns": ["name", "dept_name", "salary"],
+  "rows": [
+    ["Bob", "IT", 70000.00],
+    ["David", "IT", 72000.00]
+  ]
+}
+[2025-06-19 16:50:58.393675] [21] Objective Eval: Format Model Answer: '{'result_type': 'select', 'columns': ['name', 'dept_name', 'salary'], 'rows': [['Bob', 'IT', 70000.0], ['David', 'IT', 72000.0]]}', Expected: '{'result_type': 'select', 'columns': ['name', 'dept_name', 'salary'], 'rows': [['Bob', 'IT', 70000.0], ['David', 'IT', 72000.0]]}'
+[2025-06-19 16:50:58.393675] [21] Objective Eval Case Results: True
+[2025-06-19 16:50:58.393675] [21] objective Eval Case Final Result: True
+[2025-06-19 16:50:58.393675] 
+--- Case: 22 ---
+[2025-06-19 16:50:58.394975] [22] Case Run 1/1
+[2025-06-19 16:50:58.403809] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(50), price DECIMAL(5, 2));
+CREATE TABLE sales_items (sale_id INT PRIMARY KEY, product_id INT, quantity INT);
+
+Data:
+INSERT INTO products (product_id, product_name, price) VALUES (1, 'A', 10.00), (2, 'B', 20.00);
+INSERT INTO sales_items (sale_id, product_id, quantity) VALUES (101, 1, 5), (102, 1, 10), (103, 2, 3);
+
+Query:
+SELECT p.product_name, SUM(si.quantity) AS total_sold FROM products p JOIN sales_items si ON p.product_id = si.product_id GROUP BY p.product_name HAVING SUM(si.quantity) > 5;
+
+[2025-06-19 16:50:58.403809] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(50), price DECIMAL(5, 2));\nCREATE TABLE sales_items (sale_id INT PRIMARY KEY, product_id INT, quantity INT);\n\nData:\nINSERT INTO products (product_id, product_name, price) VALUES (1, \'A\', 10.00), (2, \'B\', 20.00);\nINSERT INTO sales_items (sale_id, product_id, quantity) VALUES (101, 1, 5), (102, 1, 10), (103, 2, 3);\n\nQuery:\nSELECT p.product_name, SUM(si.quantity) AS total_sold FROM products p JOIN sales_items si ON p.product_id = si.product_id GROUP BY p.product_name HAVING SUM(si.quantity) > 5;\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:51:17.874711] [Model Answer]: 
+{
+  "result_type": "select",
+  "columns": ["product_name", "total_sold"],
+  "rows": [
+    ["A", 15]
+  ]
+}
+[2025-06-19 16:51:17.876218] [22] Objective Eval: Format Model Answer: '{'result_type': 'select', 'columns': ['product_name', 'total_sold'], 'rows': [['A', 15]]}', Expected: '{'result_type': 'select', 'columns': ['product_name', 'total_sold'], 'rows': [['A', 15]]}'
+[2025-06-19 16:51:17.876218] [22] Objective Eval Case Results: True
+[2025-06-19 16:51:17.876218] [22] objective Eval Case Final Result: True
+[2025-06-19 16:51:17.876218] 
+--- Case: 23 ---
+[2025-06-19 16:51:17.877220] [23] Case Run 1/1
+[2025-06-19 16:51:17.877220] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT);
+CREATE TABLE customers (customer_id INT PRIMARY KEY, customer_name VARCHAR(50));
+CREATE TABLE regions (region_id INT PRIMARY KEY, region_name VARCHAR(50));
+CREATE TABLE customer_regions (customer_id INT, region_id INT);
+
+Data:
+INSERT INTO orders (order_id, customer_id) VALUES (1, 10), (2, 20);
+INSERT INTO customers (customer_id, customer_name) VALUES (10, 'Alice'), (20, 'Bob');
+INSERT INTO regions (region_id, region_name) VALUES (100, 'North'), (200, 'South');
+INSERT INTO customer_regions (customer_id, region_id) VALUES (10, 100), (20, 200);
+
+Query:
+SELECT o.order_id, c.customer_name, r.region_name FROM orders o JOIN customers c ON o.customer_id = c.customer_id JOIN customer_regions cr ON c.customer_id = cr.customer_id JOIN regions r ON cr.region_id = r.region_id;
+
+[2025-06-19 16:51:17.878303] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT);\nCREATE TABLE customers (customer_id INT PRIMARY KEY, customer_name VARCHAR(50));\nCREATE TABLE regions (region_id INT PRIMARY KEY, region_name VARCHAR(50));\nCREATE TABLE customer_regions (customer_id INT, region_id INT);\n\nData:\nINSERT INTO orders (order_id, customer_id) VALUES (1, 10), (2, 20);\nINSERT INTO customers (customer_id, customer_name) VALUES (10, \'Alice\'), (20, \'Bob\');\nINSERT INTO regions (region_id, region_name) VALUES (100, \'North\'), (200, \'South\');\nINSERT INTO customer_regions (customer_id, region_id) VALUES (10, 100), (20, 200);\n\nQuery:\nSELECT o.order_id, c.customer_name, r.region_name FROM orders o JOIN customers c ON o.customer_id = c.customer_id JOIN customer_regions cr ON c.customer_id = cr.customer_id JOIN regions r ON cr.region_id = r.region_id;\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:51:36.072440] [Model Answer]: 
+{
+  "result_type": "table",
+  "columns": ["order_id", "customer_name", "region_name"],
+  "rows": [
+    [1, "Alice", "North"],
+    [2, "Bob", "South"]
+  ]
+}
+[2025-06-19 16:51:36.072440] [23] Objective Eval: Format Model Answer: '{'result_type': 'table', 'columns': ['order_id', 'customer_name', 'region_name'], 'rows': [[1, 'Alice', 'North'], [2, 'Bob', 'South']]}', Expected: '{'result_type': 'select', 'columns': ['order_id', 'customer_name', 'region_name'], 'rows': [[1, 'Alice', 'North'], [2, 'Bob', 'South']]}'
+[2025-06-19 16:51:36.072440] [23] Objective Eval Case Results: False
+[2025-06-19 16:51:36.072440] [23] objective Eval Case Final Result: False
+[2025-06-19 16:51:36.072440] 
+--- Case: 24 ---
+[2025-06-19 16:51:36.073871] [24] Case Run 1/1
+[2025-06-19 16:51:36.073871] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE employees (employee_id INT PRIMARY KEY, department VARCHAR(50), hire_date DATE);
+CREATE TABLE salaries (employee_id INT PRIMARY KEY, salary DECIMAL(10, 2));
+
+Data:
+INSERT INTO employees (employee_id, department, hire_date) VALUES (1, 'Sales', '2020-01-01'), (2, 'IT', '2021-03-01'), (3, 'Sales', '2022-05-01');
+INSERT INTO salaries (employee_id, salary) VALUES (1, 50000.00), (2, 70000.00);
+
+Query:
+INSERT INTO salaries (employee_id, salary) SELECT employee_id, 60000.00 FROM employees WHERE department = 'Sales' AND hire_date > '2021-01-01' AND employee_id NOT IN (SELECT employee_id FROM salaries);
+
+[2025-06-19 16:51:36.073871] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE employees (employee_id INT PRIMARY KEY, department VARCHAR(50), hire_date DATE);\nCREATE TABLE salaries (employee_id INT PRIMARY KEY, salary DECIMAL(10, 2));\n\nData:\nINSERT INTO employees (employee_id, department, hire_date) VALUES (1, \'Sales\', \'2020-01-01\'), (2, \'IT\', \'2021-03-01\'), (3, \'Sales\', \'2022-05-01\');\nINSERT INTO salaries (employee_id, salary) VALUES (1, 50000.00), (2, 70000.00);\n\nQuery:\nINSERT INTO salaries (employee_id, salary) SELECT employee_id, 60000.00 FROM employees WHERE department = \'Sales\' AND hire_date > \'2021-01-01\' AND employee_id NOT IN (SELECT employee_id FROM salaries);\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:52:20.301676] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "table_name": "salaries",
+  "columns": ["employee_id", "salary"],
+  "rows": [
+    [1, 50000.00],
+    [2, 70000.00],
+    [3, 60000.00]
+  ]
+}
+[2025-06-19 16:52:20.301676] [24] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'salaries', 'columns': ['employee_id', 'salary'], 'rows': [[1, 50000.0], [2, 70000.0], [3, 60000.0]]}', Expected: '{'result_type': 'table_state', 'table_name': 'salaries', 'columns': ['employee_id', 'salary'], 'rows': [[1, 50000.0], [2, 70000.0], [3, 60000.0]]}'
+[2025-06-19 16:52:20.302678] [24] Objective Eval Case Results: True
+[2025-06-19 16:52:20.302678] [24] objective Eval Case Final Result: True
+[2025-06-19 16:52:20.302678] 
+--- Case: 25 ---
+[2025-06-19 16:52:20.302678] [25] Case Run 1/1
+[2025-06-19 16:52:20.302678] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE products (product_id INT PRIMARY KEY, price DECIMAL(10, 2), last_update DATE);
+CREATE TABLE price_updates (product_id INT PRIMARY KEY, new_price DECIMAL(10, 2), update_date DATE);
+
+Data:
+INSERT INTO products (product_id, price, last_update) VALUES (1, 10.00, '2024-01-01'), (2, 20.00, '2024-02-01'), (3, 30.00, '2024-03-01');
+INSERT INTO price_updates (product_id, new_price, update_date) VALUES (1, 12.00, '2024-05-01'), (3, 35.00, '2024-05-10');
+
+Query:
+UPDATE products SET price = (SELECT new_price FROM price_updates WHERE price_updates.product_id = products.product_id), last_update = (SELECT update_date FROM price_updates WHERE price_updates.product_id = products.product_id) WHERE product_id IN (SELECT product_id FROM price_updates WHERE update_date > '2024-04-30');
+
+[2025-06-19 16:52:20.303681] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE products (product_id INT PRIMARY KEY, price DECIMAL(10, 2), last_update DATE);\nCREATE TABLE price_updates (product_id INT PRIMARY KEY, new_price DECIMAL(10, 2), update_date DATE);\n\nData:\nINSERT INTO products (product_id, price, last_update) VALUES (1, 10.00, \'2024-01-01\'), (2, 20.00, \'2024-02-01\'), (3, 30.00, \'2024-03-01\');\nINSERT INTO price_updates (product_id, new_price, update_date) VALUES (1, 12.00, \'2024-05-01\'), (3, 35.00, \'2024-05-10\');\n\nQuery:\nUPDATE products SET price = (SELECT new_price FROM price_updates WHERE price_updates.product_id = products.product_id), last_update = (SELECT update_date FROM price_updates WHERE price_updates.product_id = products.product_id) WHERE product_id IN (SELECT product_id FROM price_updates WHERE update_date > \'2024-04-30\');\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:52:52.020548] [Model Answer]: 
+```json
+{
+  "result_type": "table_state",
+  "table_name": "products",
+  "columns": ["product_id", "price", "last_update"],
+  "rows": [
+    [1, 12.00, "2024-05-01"],
+    [2, 20.00, "2024-02-01"],
+    [3, 35.00, "2024-05-10"]
+  ]
+}
+```
+[2025-06-19 16:52:52.021551] [25] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'products', 'columns': ['product_id', 'price', 'last_update'], 'rows': [[1, 12.0, '2024-05-01'], [2, 20.0, '2024-02-01'], [3, 35.0, '2024-05-10']]}', Expected: '{'result_type': 'table_state', 'table_name': 'products', 'columns': ['product_id', 'price', 'last_update'], 'rows': [[1, 12.0, '2024-05-01'], [2, 20.0, '2024-02-01'], [3, 35.0, '2024-05-10']]}'
+[2025-06-19 16:52:52.021551] [25] Objective Eval Case Results: True
+[2025-06-19 16:52:52.021551] [25] objective Eval Case Final Result: True
+[2025-06-19 16:52:52.021551] 
+--- Case: 26 ---
+[2025-06-19 16:52:52.022636] [26] Case Run 1/1
+[2025-06-19 16:52:52.022636] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE users (user_id INT PRIMARY KEY, username VARCHAR(50), status VARCHAR(10), last_login DATE);
+CREATE TABLE status_updates_source (username VARCHAR(50), new_status VARCHAR(10), update_timestamp DATETIME);
+
+Data:
+INSERT INTO users (user_id, username, status, last_login) VALUES (1, 'alpha', 'Active', '2024-05-01'), (2, 'beta', 'Inactive', '2024-04-15'), (3, 'gamma', 'Active', '2024-05-10');
+INSERT INTO status_updates_source (username, new_status, update_timestamp) VALUES ('beta', 'Pending', '2024-05-20 10:00:00'), ('gamma', 'Blocked', '2024-05-25 11:30:00');
+
+Query:
+UPDATE users SET status = (SELECT new_status FROM status_updates_source WHERE status_updates_source.username = users.username), last_login = DATE(CURRENT_TIMESTAMP) WHERE username IN (SELECT username FROM status_updates_source WHERE update_timestamp >= '2024-05-20');
+
+[2025-06-19 16:52:52.022636] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE users (user_id INT PRIMARY KEY, username VARCHAR(50), status VARCHAR(10), last_login DATE);\nCREATE TABLE status_updates_source (username VARCHAR(50), new_status VARCHAR(10), update_timestamp DATETIME);\n\nData:\nINSERT INTO users (user_id, username, status, last_login) VALUES (1, \'alpha\', \'Active\', \'2024-05-01\'), (2, \'beta\', \'Inactive\', \'2024-04-15\'), (3, \'gamma\', \'Active\', \'2024-05-10\');\nINSERT INTO status_updates_source (username, new_status, update_timestamp) VALUES (\'beta\', \'Pending\', \'2024-05-20 10:00:00\'), (\'gamma\', \'Blocked\', \'2024-05-25 11:30:00\');\n\nQuery:\nUPDATE users SET status = (SELECT new_status FROM status_updates_source WHERE status_updates_source.username = users.username), last_login = DATE(CURRENT_TIMESTAMP) WHERE username IN (SELECT username FROM status_updates_source WHERE update_timestamp >= \'2024-05-20\');\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:55:12.947651] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "table_name": "users",
+  "columns": ["user_id", "username", "status", "last_login"],
+  "rows": [
+    [1, "alpha", "Active", "2024-05-01"],
+    [2, "beta", "Pending", "2024-05-30"],
+    [3, "gamma", "Blocked", "2024-05-30"]
+  ]
+}
+[2025-06-19 16:55:12.947651] [26] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'users', 'columns': ['user_id', 'username', 'status', 'last_login'], 'rows': [[1, 'alpha', 'Active', '2024-05-01'], [2, 'beta', 'Pending', '2024-05-30'], [3, 'gamma', 'Blocked', '2024-05-30']]}', Expected: '{'result_type': 'table_state', 'table_name': 'users', 'columns': ['user_id', 'username', 'status', 'last_login'], 'rows': [[1, 'alpha', 'Active', '2024-05-01'], [2, 'beta', 'Pending', '2025-06-03'], [3, 'gamma', 'Blocked', '2025-06-03']]}'
+[2025-06-19 16:55:12.948976] [26] Objective Eval Case Results: False
+[2025-06-19 16:55:12.948976] [26] objective Eval Case Final Result: False
+[2025-06-19 16:55:12.948976] 
+--- Case: 27 ---
+[2025-06-19 16:55:12.949979] [27] Case Run 1/1
+[2025-06-19 16:55:12.949979] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE employees (employee_id INT PRIMARY KEY, name VARCHAR(50), salary DECIMAL(10, 2), department VARCHAR(50));
+CREATE TABLE high_performers (employee_id INT PRIMARY KEY, bonus DECIMAL(10, 2), evaluation_date DATE);
+
+Data:
+INSERT INTO employees (employee_id, name, salary, department) VALUES (1, 'Alice', 50000.00, 'Sales'), (2, 'Bob', 70000.00, 'IT'), (3, 'Charlie', 55000.00, 'Sales'), (4, 'David', 60000.00, 'Marketing');
+INSERT INTO high_performers (employee_id, bonus, evaluation_date) VALUES (2, 5000.00, '2024-04-01'), (4, 3000.00, '2024-04-01');
+
+Query:
+UPDATE employees SET salary = salary + (SELECT bonus FROM high_performers WHERE high_performers.employee_id = employees.employee_id AND high_performers.evaluation_date = '2024-04-01') WHERE employee_id IN (SELECT employee_id FROM high_performers);
+
+[2025-06-19 16:55:12.949979] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE employees (employee_id INT PRIMARY KEY, name VARCHAR(50), salary DECIMAL(10, 2), department VARCHAR(50));\nCREATE TABLE high_performers (employee_id INT PRIMARY KEY, bonus DECIMAL(10, 2), evaluation_date DATE);\n\nData:\nINSERT INTO employees (employee_id, name, salary, department) VALUES (1, \'Alice\', 50000.00, \'Sales\'), (2, \'Bob\', 70000.00, \'IT\'), (3, \'Charlie\', 55000.00, \'Sales\'), (4, \'David\', 60000.00, \'Marketing\');\nINSERT INTO high_performers (employee_id, bonus, evaluation_date) VALUES (2, 5000.00, \'2024-04-01\'), (4, 3000.00, \'2024-04-01\');\n\nQuery:\nUPDATE employees SET salary = salary + (SELECT bonus FROM high_performers WHERE high_performers.employee_id = employees.employee_id AND high_performers.evaluation_date = \'2024-04-01\') WHERE employee_id IN (SELECT employee_id FROM high_performers);\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:55:58.229515] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "table_name": "employees",
+  "columns": ["employee_id", "name", "salary", "department"],
+  "rows": [
+    [1, "Alice", 50000.00, "Sales"],
+    [2, "Bob", 75000.00, "IT"],
+    [3, "Charlie", 55000.00, "Sales"],
+    [4, "David", 63000.00, "Marketing"]
+  ]
+}
+[2025-06-19 16:55:58.230031] [27] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'employees', 'columns': ['employee_id', 'name', 'salary', 'department'], 'rows': [[1, 'Alice', 50000.0, 'Sales'], [2, 'Bob', 75000.0, 'IT'], [3, 'Charlie', 55000.0, 'Sales'], [4, 'David', 63000.0, 'Marketing']]}', Expected: '{'result_type': 'table_state', 'table_name': 'employees', 'columns': ['employee_id', 'name', 'salary', 'department'], 'rows': [[1, 'Alice', 50000.0, 'Sales'], [2, 'Bob', 75000.0, 'IT'], [3, 'Charlie', 55000.0, 'Sales'], [4, 'David', 63000.0, 'Marketing']]}'
+[2025-06-19 16:55:58.230545] [27] Objective Eval Case Results: True
+[2025-06-19 16:55:58.231065] [27] objective Eval Case Final Result: True
+[2025-06-19 16:55:58.231065] 
+--- Case: 28 ---
+[2025-06-19 16:55:58.231580] [28] Case Run 1/1
+[2025-06-19 16:55:58.231580] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE customers (customer_id INT PRIMARY KEY, customer_name VARCHAR(50), registration_date DATE);
+CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE);
+
+Data:
+INSERT INTO customers (customer_id, customer_name, registration_date) VALUES (1, 'Alice', '2023-01-01'), (2, 'Bob', '2023-02-01'), (3, 'Charlie', '2023-03-01');
+INSERT INTO orders (order_id, customer_id, order_date) VALUES (101, 1, '2024-01-01'), (102, 3, '2024-02-01');
+
+Query:
+DELETE FROM customers WHERE customer_id NOT IN (SELECT customer_id FROM orders WHERE order_date >= '2024-01-01');
+
+[2025-06-19 16:55:58.232670] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE customers (customer_id INT PRIMARY KEY, customer_name VARCHAR(50), registration_date DATE);\nCREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE);\n\nData:\nINSERT INTO customers (customer_id, customer_name, registration_date) VALUES (1, \'Alice\', \'2023-01-01\'), (2, \'Bob\', \'2023-02-01\'), (3, \'Charlie\', \'2023-03-01\');\nINSERT INTO orders (order_id, customer_id, order_date) VALUES (101, 1, \'2024-01-01\'), (102, 3, \'2024-02-01\');\n\nQuery:\nDELETE FROM customers WHERE customer_id NOT IN (SELECT customer_id FROM orders WHERE order_date >= \'2024-01-01\');\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:56:29.728501] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "table_name": "customers",
+  "columns": ["customer_id", "customer_name", "registration_date"],
+  "rows": [
+    [1, "Alice", "2023-01-01"],
+    [3, "Charlie", "2023-03-01"]
+  ]
+}
+[2025-06-19 16:56:29.728501] [28] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'customers', 'columns': ['customer_id', 'customer_name', 'registration_date'], 'rows': [[1, 'Alice', '2023-01-01'], [3, 'Charlie', '2023-03-01']]}', Expected: '{'result_type': 'table_state', 'table_name': 'customers', 'columns': ['customer_id', 'customer_name', 'registration_date'], 'rows': [[1, 'Alice', '2023-01-01'], [3, 'Charlie', '2023-03-01']]}'
+[2025-06-19 16:56:29.729806] [28] Objective Eval Case Results: True
+[2025-06-19 16:56:29.729806] [28] objective Eval Case Final Result: True
+[2025-06-19 16:56:29.729806] 
+--- Case: 29 ---
+[2025-06-19 16:56:29.729806] [29] Case Run 1/1
+[2025-06-19 16:56:29.729806] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE customers (customer_id INT PRIMARY KEY, name VARCHAR(50), region VARCHAR(50), last_purchase_date DATE);
+CREATE TABLE regions_to_delete (region_name VARCHAR(50), reason VARCHAR(100));
+
+Data:
+INSERT INTO customers (customer_id, name, region, last_purchase_date) VALUES (1, 'Alice', 'North', '2024-01-01'), (2, 'Bob', 'South', '2024-02-01'), (3, 'Charlie', 'North', '2024-03-01'), (4, 'David', 'East', '2024-04-01');
+INSERT INTO regions_to_delete (region_name, reason) VALUES ('North', 'Low sales volume'), ('West', 'No activity');
+
+Query:
+DELETE FROM customers WHERE region IN (SELECT region_name FROM regions_to_delete WHERE reason = 'Low sales volume') AND last_purchase_date < '2024-03-15';
+
+[2025-06-19 16:56:29.730810] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE customers (customer_id INT PRIMARY KEY, name VARCHAR(50), region VARCHAR(50), last_purchase_date DATE);\nCREATE TABLE regions_to_delete (region_name VARCHAR(50), reason VARCHAR(100));\n\nData:\nINSERT INTO customers (customer_id, name, region, last_purchase_date) VALUES (1, \'Alice\', \'North\', \'2024-01-01\'), (2, \'Bob\', \'South\', \'2024-02-01\'), (3, \'Charlie\', \'North\', \'2024-03-01\'), (4, \'David\', \'East\', \'2024-04-01\');\nINSERT INTO regions_to_delete (region_name, reason) VALUES (\'North\', \'Low sales volume\'), (\'West\', \'No activity\');\n\nQuery:\nDELETE FROM customers WHERE region IN (SELECT region_name FROM regions_to_delete WHERE reason = \'Low sales volume\') AND last_purchase_date < \'2024-03-15\';\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:57:27.529517] [Model Answer]: 
+{
+  "result_type": "table_state",
+  "table_name": "customers",
+  "columns": ["customer_id", "name", "region", "last_purchase_date"],
+  "rows": [
+    [2, "Bob", "South", "2024-02-01"],
+    [4, "David", "East", "2024-04-01"]
+  ]
+}
+[2025-06-19 16:57:27.529517] [29] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'customers', 'columns': ['customer_id', 'name', 'region', 'last_purchase_date'], 'rows': [[2, 'Bob', 'South', '2024-02-01'], [4, 'David', 'East', '2024-04-01']]}', Expected: '{'result_type': 'table_state', 'table_name': 'customers', 'columns': ['customer_id', 'name', 'region', 'last_purchase_date'], 'rows': [[2, 'Bob', 'South', '2024-02-01'], [4, 'David', 'East', '2024-04-01']]}'
+[2025-06-19 16:57:27.529517] [29] Objective Eval Case Results: True
+[2025-06-19 16:57:27.529517] [29] objective Eval Case Final Result: True
+[2025-06-19 16:57:27.530762] 
+--- Case: 30 ---
+[2025-06-19 16:57:27.530762] [30] Case Run 1/1
+[2025-06-19 16:57:27.530762] [Model Prompt]: You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.
+Respond **only** with valid JSON matching this structure exactly (no extra fields or text):
+
+
+  {
+    "result_type": "<select|table_state|...>",
+"table_name": "<table_name>",
+"columns": ["<col1>", "<col2>", ...],
+"rows": [[<val1>, <val2>, ...], ...]
+  }
+
+---
+Schema:
+CREATE TABLE old_logs (log_id INT PRIMARY KEY);
+CREATE TABLE logs (log_id INT PRIMARY KEY, status VARCHAR(10));
+
+Data:
+INSERT INTO old_logs (log_id) VALUES (1), (2), (3);
+INSERT INTO logs (log_id, status) VALUES (2, 'Processed'), (4, 'Pending');
+
+Query:
+DELETE FROM old_logs WHERE log_id NOT IN (SELECT log_id FROM logs);
+
+[2025-06-19 16:57:27.532270] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    "result_type": "<select|table_state|...>",\n"table_name": "<table_name>",\n"columns": ["<col1>", "<col2>", ...],\n"rows": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE old_logs (log_id INT PRIMARY KEY);\nCREATE TABLE logs (log_id INT PRIMARY KEY, status VARCHAR(10));\n\nData:\nINSERT INTO old_logs (log_id) VALUES (1), (2), (3);\nINSERT INTO logs (log_id, status) VALUES (2, \'Processed\'), (4, \'Pending\');\n\nQuery:\nDELETE FROM old_logs WHERE log_id NOT IN (SELECT log_id FROM logs);\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-06-19 16:57:51.770469] [Model Answer]: 
+```json
+{
+  "result_type": "table_state",
+  "table_name": "old_logs",
+  "columns": ["log_id"],
+  "rows": [[2]]
+}
+```
+[2025-06-19 16:57:51.770469] [30] Objective Eval: Format Model Answer: '{'result_type': 'table_state', 'table_name': 'old_logs', 'columns': ['log_id'], 'rows': [[2]]}', Expected: '{'result_type': 'table_state', 'table_name': 'old_logs', 'columns': ['log_id'], 'rows': [[2]]}'
+[2025-06-19 16:57:51.770469] [30] Objective Eval Case Results: True
+[2025-06-19 16:57:51.770469] [30] objective Eval Case Final Result: True
