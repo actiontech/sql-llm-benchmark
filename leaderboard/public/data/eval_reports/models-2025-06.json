@@ -409,6 +409,66 @@
                     ]
                 }
             }
+        },
+        {
+            "id": "gemini-2.5-pro-preview-06-05",
+            "name": "gemini-2.5-pro-preview-06-05",
+            "real_model_namne": "gemini-2.5-pro-preview-06-05",
+            "type": "Chat",
+            "parameters": 202499,
+            "website": "https://deepmind.google/models/gemini/",
+            "description": "Gemini 2.5 Pro is our most advanced reasoning Gemini model, capable of solving complex problems.",
+            "organization": "Google",
+            "releaseDate": "2025/5/20",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 80.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 87.1,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 46.4,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 67.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 62.7,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 76.9,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 67.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 68.4,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 62.2,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
         }
     ]
 }
