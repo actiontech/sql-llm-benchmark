@@ -14,6 +14,8 @@ MODEL_ADAPTER_CONFIGS = {
             "TargetLLM_NAME1": {  # This key must match the 'name' field in TARGET_LLM_CONFIG
                 # Platform name, e.g., azure. If your model is not on a public cloud platform, you can remove this field.
                 "platform": "azure",
+                # API version, e.g., 2024-12-01-preview. If your model is not on a public cloud platform, you can remove this field.
+                "api_version": "2024-12-01-preview",
                 "type": "TargetLLM_TYPE1",  # Type of the model, e.g., Gemini
                 "default_max_tokens": 1500,  # Maximum tokens for the target model
                 "default_temperature": 0.6,  # Temperature for the target model

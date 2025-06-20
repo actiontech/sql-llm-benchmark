@@ -141,6 +141,7 @@ def get_adapter_config(name: str, is_judge: bool = False) -> dict:
                 return {
                     "type": provider_name,
                     "platform": config.get("platform", ""),
+                    "api_version": config.get("api_version", ""),
                     "max_tokens": config[f"{prefix}_max_tokens"],
                     "temperature": config[f"{prefix}_temperature"],
                     "model": name  # Returns the actual model name used
@@ -184,7 +185,7 @@ def get_adapter(name: str) -> LLMAdapter:
     raise ValueError(f"Unsupported adapter type: {adapter_type}")
 
 
-def build_openai_client(platform: str, api_key: str, api_url: str):
+def build_openai_client(platform: str, api_key: str, api_url: str, api_version: str):
     """
     Returns an initialized OpenAI client based on the platform.
     - platform: 'azure' or others (e.g., 'openai').
@@ -195,7 +196,7 @@ def build_openai_client(platform: str, api_key: str, api_url: str):
         return AzureOpenAI(
             api_key=api_key,
             azure_endpoint=api_url,
-            api_version="2024-12-01-preview",
+            api_version=api_version,
         )
     else:
         return OpenAI(api_key=api_key, base_url=api_url)
@@ -246,15 +247,17 @@ def call_llm_api(api_url: str, api_key: str, name: str, prompt: str, is_judge: b
             if isinstance(adapter, OpenAICompatibleAdapter):
                 adapter.client = build_openai_client(
                     platform=adapter_config.get("platform", ""),
+                    api_version=adapter_config.get("api_version", ""),
                     api_key=api_key,
                     api_url=api_url,
                 )
                 if adapter.client is None:
-                        raise RuntimeError("OpenAI client was not initialized properly.")
-                        
+                    raise RuntimeError(
+                        "OpenAI client was not initialized properly.")
+
                 response = adapter.client.chat.completions.create(
                     **request_data
-                    )
+                )
                 model_answer = adapter.parse_response(response.model_dump())
                 if not model_answer:
                     logger.error(f"Model answer empty, retry {attempt + 1}")
