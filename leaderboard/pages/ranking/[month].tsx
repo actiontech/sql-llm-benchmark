@@ -531,6 +531,10 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
           translatedText = t("table.type_application");
           backgroundColor = "#f6ffed"; // 浅绿色
           textColor = "#52c41a"; // 绿色文字
+        } else if (text === "Chat(Thinking)") {
+          translatedText = t("table.type_chat_thinking");
+          backgroundColor = "#f9f0ff"; // Light purple
+          textColor = "#722ed1"; // Purple text
         }
 
         return (
