@@ -349,6 +349,66 @@
                     ]
                 }
             }
+        },
+        {
+            "id": "gemini-2.5-flash-preview-05-20",
+            "name": "gemini-2.5-flash-preview-05-20",
+            "real_model_namne": "gemini-2.5-flash-preview-05-20",
+            "type": "Chat",
+            "parameters": 202499,
+            "website": "https://deepmind.google/models/gemini/",
+            "description": "Gemini 2.5 Flash is our first Flash model model that features thinking capabilities, which lets you see the thinking process that the model goes through when generating its response.",
+            "organization": "Google",
+            "releaseDate": "2025/5/20",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 84.7,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 90.0,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 64.3,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 80.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 78.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 78.0,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.8,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 64.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 68.4,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 55.6,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
         }
     ]
 }
