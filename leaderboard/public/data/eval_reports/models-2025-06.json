@@ -469,6 +469,66 @@
                     ]
                 }
             }
+        },
+        {
+            "id": "deepseek-r1",
+            "name": "Pro/deepseek-ai/DeepSeek-R1",
+            "real_model_namne": "DeepSeek-R1",
+            "type": "Chat",
+            "parameters": 202499,
+            "website": "https://www.deepseek.com/",
+            "description": "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning",
+            "organization": "DeepSeek",
+            "releaseDate": "2024/12/26",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 75.6,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 78.6,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 57.1,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 91.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 88.1,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 72.7,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 73.7,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 66.7,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
         }
     ]
 }
