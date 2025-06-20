@@ -611,6 +611,8 @@ const Detail: React.FC<DetailProps> = ({
                 ? t("table.type_chat")
                 : model.type === "Application"
                 ? t("table.type_application")
+                : model.type ==="Chat(Thinking)"
+                ? t("table.type_chat_thinking")
                 : model.type}
             </Descriptions.Item>
             <Descriptions.Item label={t("table.organization")}>
