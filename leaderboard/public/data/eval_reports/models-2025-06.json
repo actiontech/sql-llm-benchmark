@@ -529,6 +529,67 @@
                     ]
                 }
             }
+        },
+        {
+            "id": "o1",
+            "name": "o1",
+            "real_model_namne": "o1",
+            "type": "Chat",
+            "parameters": 202499,
+            "website": "https://openai.com/o1/",
+            "description": "OpenAI o1 is a reflective generative pre-trained transformer (GPT).",
+            "organization": "OpenAI",
+            "releaseDate": "2024/9/12",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 78.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 84.3,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 57.1,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 74.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 84.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 84.7,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 69.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 84.2,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.0,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 94.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
         }
+
     ]
 }
