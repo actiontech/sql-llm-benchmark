@@ -257,10 +257,10 @@
             }
         },
         {
-            "id": "qwen3-235b-a22b",
+            "id": "qwen3-235b-a22b(thinking)",
             "name": "Qwen/Qwen3-235B-A22B",
-            "real_model_namne": "Qwen3-235B-A22B",
-            "type": "Chat",
+            "real_model_namne": "Qwen3-235B-A22B(Thinking)",
+            "type": "Chat(Thinking)",
             "parameters": 164487,
             "website": "https://tongyi.aliyun.com/welcome",
             "description": "Qwen3全系列模型，实现思考模式和非思考模式的有效融合，可在对话中切换模式。",
@@ -589,7 +589,66 @@
                     ]
                 }
             }
+        },
+        {
+            "id": "qwen3-235b-a22b",
+            "name": "Qwen/Qwen3-235B-A22B",
+            "real_model_namne": "Qwen3-235B-A22B",
+            "type": "Chat",
+            "parameters": 202499,
+            "website": "https://tongyi.aliyun.com/welcome",
+            "description": "Qwen3全系列模型，实现思考模式和非思考模式的有效融合，可在对话中切换模式。",
+            "organization": "Alibaba",
+            "releaseDate": "2024/4/29",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 65.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 71.4,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 10.7,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 84.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 73.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 69.5,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 52.7,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 57.9,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 42.2,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 94.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
         }
-
     ]
 }
