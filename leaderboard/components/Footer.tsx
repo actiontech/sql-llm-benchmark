@@ -35,6 +35,25 @@ const Footer: React.FC = () => {
         >
           {t("footer.beian")}
         </Link>
+        <span>|</span>
+        <Link
+          href="https://beian.mps.gov.cn/#/query/webSearch?code=31011202021160"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            color: "#888",
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+          }}
+        >
+          <img
+            src="/icons/gongan.png"
+            alt="沪公网安备"
+            style={{ height: "16px" }}
+          />
+          沪公网安备31011202021160号
+        </Link>
         <span>|</span> {/* 添加分隔符 */}
         <Link
           href="https://github.com/actiontech/sql-llm-benchmark"
