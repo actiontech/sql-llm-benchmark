@@ -1,6 +1,6 @@
 简体中文 | [English](./README.md)
 
-# 大模型 SQL 能力测评系统
+# SCALE: 大模型 SQL 能力排行
 
 ## 简介
 

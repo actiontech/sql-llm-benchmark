@@ -1,6 +1,6 @@
 English | [简体中文](./README_zh.md)
 
-# Large Language Model SQL Capability Evaluation System
+# SCALE: SQL Capability Leaderboard for LLMs
 
 ## Introduction
 
