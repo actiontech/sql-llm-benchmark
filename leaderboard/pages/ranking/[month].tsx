@@ -135,24 +135,24 @@ const LogoImage: React.FC<{
   width: number;
   height: number;
   style?: React.CSSProperties;
-}> = ({ organization, width, height, style }) => {
-  const [src, setSrc] = useState(
-    `/logos/${organization.toLowerCase().replace(/\s/g, "-")}.svg`
-  );
+  logoInfo: Record<string, string>;
+}> = ({ organization, width, height, style, logoInfo }) => {
+  const orgKey = organization.toLowerCase().replace(/\s/g, "-");
+  const ext = logoInfo[orgKey];
+  const src = ext ? `/logos/${orgKey}.${ext}` : "";
 
-  useEffect(() => {
-    setSrc(`/logos/${organization.toLowerCase().replace(/\s/g, "-")}.svg`);
-  }, [organization]);
-
-  const handleError = () => {
-    setSrc(`/logos/${organization.toLowerCase().replace(/\s/g, "-")}.png`);
-  };
+  if (!src) {
+    return (
+      <span style={{ ...style, width, height }}>
+        {organization}
+      </span>
+    );
+  }
 
   return (
     <img
       src={src}
       alt={organization}
-      onError={handleError}
       style={{ width, height, objectFit: "contain", ...style }}
     />
   );
@@ -160,6 +160,7 @@ const LogoImage: React.FC<{
 
 interface RankingPageProps {
   months: string[];
+  logoInfo: Record<string, string>;
 }
 
 const getTopModelsByCategory = (models: Model[]) => {
@@ -255,7 +256,7 @@ const SubmissionGuideModal: React.FC<{
   );
 };
 
-const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
+const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
   const { t, i18n } = useTranslation("common");
   const router = useRouter();
   const { month: currentMonthParam } = router.query;
@@ -471,6 +472,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
         record.organization ? (
           <LogoImage
             organization={record.organization}
+            logoInfo={logoInfo}
             width={60}
             height={60}
             style={{ verticalAlign: "middle" }}
@@ -1001,6 +1003,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
                             {model.organization && (
                               <LogoImage
                                 organization={model.organization}
+                                logoInfo={logoInfo}
                                 width={90}
                                 height={90}
                                 style={{
@@ -1293,9 +1296,22 @@ export const getStaticProps: GetStaticProps<RankingPageProps> = async () => {
     .map((name) => name.replace("models-", "").replace(".json", ""))
     .sort((a, b) => b.localeCompare(a));
 
+  const logosDir = path.join(process.cwd(), "public", "logos");
+  const logoFiles = fs.readdirSync(logosDir);
+  const logoInfo: Record<string, string> = {};
+
+  logoFiles.forEach((file) => {
+    const name = path.parse(file).name;
+    const ext = path.parse(file).ext.substring(1);
+    if (!logoInfo[name] || ext === "svg") {
+      logoInfo[name] = ext;
+    }
+  });
+
   return {
     props: {
       months,
+      logoInfo,
     },
   };
 };
