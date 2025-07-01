@@ -2,6 +2,7 @@
 import json
 import textwrap
 from typing import Any
+from utils import SqlConverter
 
 # ======================================== SQL Understanding Capability ================================================
 
@@ -105,29 +106,6 @@ Query:
 
 
 # ======================================== Dialect Conversion Capability ================================================
-
-def prompt_for_conversion_logic(case: dict) -> str:
-    """
-    Generate the SQL dialect conversion prompt in English.
-    """
-    src = case.get("source_dialect")
-    tgt = case.get("target_dialect")
-    tables = "\n".join(case.get("create_table_statements", []))
-    sql = case.get("sql", "")
-    return f"""You are an expert in SQL dialect translation.
-Please convert the following SQL statement from {src} syntax to {tgt} syntax.
-Return **only** the translated SQL statement(no extra text, no markdown fences), with no additional commentary or text.
-
-Table Definitions:
-{tables}
-
-Source SQL:
-{sql}
-
-Translated SQL ({tgt}):
-"""
-
-
 def prompt_for_conversion(case: dict) -> str:
     """
     Generate the SQL dialect conversion prompt in English.
@@ -148,53 +126,109 @@ Translated SQL ({tgt}):
 # Judge Model Prompt
 
 
-def prompt_for_executable_judge(case: dict, model_answer: str) -> str:
+def prompt_for_executable_judge_conversion(model_name: str, case: dict, model_answer: str) -> str:
     """
-    Generate the prompt to judge executability of the translated SQL.
+    Generate a prompt to assess whether a translated SQL statement
+    is syntactically valid and fully executable in the specified SQL dialect.
     """
     tgt = case.get("target_dialect")
     translated_sql = model_answer
-    return f"""You are a database expert. Determine whether the following SQL statement
-is syntactically valid and executable in a {tgt} database.
-Do **not** execute it; just check syntax correctness.
-Return **only** JSON in this format, with no extra text:
+    return f"""You are a seasoned database engineer specializing in {tgt} SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in {tgt}.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
 
 {{
   "answer": "yes" | "no"
 }}
 
-SQL:
+SQL to validate:
 {translated_sql}
 """
 
 
+
 # Judge Model Prompt
-def prompt_for_equivalence_judge(case: dict, model_answer: str) -> str:
+def prompt_for_equivalence_judge(model_name: str, case: dict, model_answer: str) -> str:
     """
-    Generate the prompt to judge logical equivalence of two SQL statements.
+    Generate a prompt for judging whether a SQL translation is:
+      1. Logically equivalent to the original (same results on any valid dataset).
+      2. Strictly conforms to the target dialect's syntax and semantics.
+    Returns only JSON in the form {"answer": "yes" | "no"}.
     """
     src = case.get("source_dialect")
     tgt = case.get("target_dialect")
     tables = "\n".join(case.get("create_table_statements", []))
     original = case.get("sql", "")
     translated = model_answer
-    return f"""You are a database expert. Assess whether these two SQL statements
-are logically equivalent—that is, they produce the same results on any valid data set.
-Return **only** JSON in this format, with no extra text:
+    # SQLShift need to convert the original sql to procedure
+    if model_name == "SQLShift":
+        simple_converter = SqlConverter()
+        original = simple_converter.convert_to_procedure(str(src), str(original))
+        
+    return f"""You are a senior database expert with deep knowledge of SQL dialects.
+You need to verify two things:
+1. Logical equivalence: the original and translated statements yield identical results on any valid data.
+2. Dialect fidelity: the translated SQL strictly uses only the syntax, functions, and semantic rules of the {tgt} dialect.
+
+Return **only** a JSON object with this format, without any additional commentary:
 
 {{
   "answer": "yes" | "no"
 }}
 
-Table Definitions:
+-- Original Table Definitions --
 {tables}
 
-Original SQL ({src}):
+-- Original SQL ({src}) --
 {original}
 
-Translated SQL ({tgt}):
+-- Translated SQL ({tgt}) --
 {translated}
 """
+
+def prompt_for_conversion_judge(model_name: str, case: dict, model_answer: str) -> str:
+    """
+    Generate a prompt that checks both:
+      1. Whether the translated SQL is syntactically valid and executable in the target dialect.
+      2. Whether it is logically equivalent to the original SQL and strictly follows the target dialect.
+    Returns only JSON with a single key "answer": "yes" if both checks pass, otherwise "no".
+    """
+    src = case.get("source_dialect")
+    tgt = case.get("target_dialect")
+    tables = "\n".join(case.get("create_table_statements", []))
+    original_sql = case.get("sql", "")
+    translated_sql = model_answer
+    # SQLShift need to convert the original sql to procedure
+    if model_name == "SQLShift":
+        simple_converter = SqlConverter()
+        original_sql = simple_converter.convert_to_procedure(str(src), str(original_sql))
+    return f"""You are a senior database engineer specializing in {tgt} SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in {tgt}, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to {tgt} dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{{
+  "answer": "yes" | "no"
+}}
+
+-- Table Definitions --
+{tables}
+
+-- Original SQL ({src}) --
+{original_sql}
+
+-- Translated SQL ({tgt}) --
+{translated_sql}
+"""
+
 
 # ======================================== SQL Optimization Capability ================================================
 
@@ -252,7 +286,7 @@ Optimized SQL:
 """
 
 
-def prompt_for_judge_depth__rules(case: dict, model_answer: str) -> str:
+def prompt_for_judge_depth__rules(model_name: str, case: dict, model_answer: str) -> str:
     """
     Generate the prompt to judge which optimization rules were applied,
     including both the original and optimized SQL.
@@ -281,7 +315,7 @@ Optimized SQL:
 """
 
 
-def prompt_for_optimization_equivalence_judge(case: dict, model_answer: str) -> str:
+def prompt_for_optimization_equivalence_judge(model_name: str, case: dict, model_answer: str) -> str:
     """
     Generate the prompt to judge logical equivalence of two SQL statements.
     """
@@ -310,6 +344,25 @@ Translated SQL:
 {translated}
 """
 
+def prompt_for_executable_judge_optimization(model_name: str, case: dict, model_answer: str) -> str:
+    """
+    Generate the prompt to judge executability of the translated SQL.
+    """
+    tgt = case.get("target_dialect")
+    translated_sql = model_answer
+    return f"""You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a {tgt} database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{{
+  "answer": "yes" | "no"
+}}
+
+SQL:
+{translated_sql}
+"""
+
 
 DATASET_CONFIG = {
     "sql_understanding": {
@@ -336,16 +389,28 @@ DATASET_CONFIG = {
     },
     "dialect_conversion": {
         'logical_equivalence.jsonl': {
-            'target_model_prompt': prompt_for_conversion_logic,
+            'target_model_prompt': prompt_for_conversion,
             'judge_model_prompt': prompt_for_equivalence_judge,
             'evaluation_type': "hybrid",
             'indicator_ability_weights': 4
         },
         'syntax_error_detection.jsonl': {
             'target_model_prompt': prompt_for_conversion,
-            'judge_model_prompt': prompt_for_executable_judge,
+            'judge_model_prompt': prompt_for_executable_judge_conversion,
             'evaluation_type': "hybrid",
             'indicator_ability_weights': 2
+        },
+        'China-made_database.jsonl': {
+            'target_model_prompt': prompt_for_conversion,
+            'judge_model_prompt': prompt_for_conversion_judge,
+            'evaluation_type': "hybrid",
+            'indicator_ability_weights': 3
+        },
+        'big_sql_conversion.jsonl': {
+            'target_model_prompt': prompt_for_conversion,
+            'judge_model_prompt': prompt_for_conversion_judge,
+            'evaluation_type': "hybrid",
+            'indicator_ability_weights': 4
         }
     },
     "sql_optimization": {
@@ -357,7 +422,7 @@ DATASET_CONFIG = {
         },
         'syntax_error_detection.jsonl': {
             'target_model_prompt': prompt_for_optimization,
-            'judge_model_prompt': prompt_for_executable_judge,
+            'judge_model_prompt': prompt_for_executable_judge_optimization,
             'evaluation_type': "hybrid",
             'indicator_ability_weights': 2
         },
@@ -384,10 +449,10 @@ def generate_model_prompt(dir: str, file: str, case: dict) -> str:
     func = get_dataset_config(dir, file, 'target_model_prompt', '')
     return func(case)
 
-def generate_judge_model_prompt(dir: str, file: str, case: dict, model_answer: Any) -> str:
+def generate_judge_model_prompt(model_name: str, dir: str, file: str, case: dict, model_answer: Any) -> str:
 
     func = get_dataset_config(dir, file, 'judge_model_prompt', '')
-    return func(case, model_answer)
+    return func(model_name, case, model_answer)
 
 
 # Difficulty level weight configuration
