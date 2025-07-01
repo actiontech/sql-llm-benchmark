@@ -26,8 +26,7 @@ import {
   EyeOutlined,
   UpOutlined,
   DownOutlined,
-  CaretUpFilled,
-  CaretDownFilled,
+  PushpinFilled,
   GithubOutlined, // 导入 Github 图标
   RightOutlined,
   FormOutlined, // 导入 FormOutlined 图标
@@ -273,10 +272,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
   const [isSubmissionGuideVisible, setIsSubmissionGuideVisible] =
     useState<boolean>(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
-  const [sortedInfo, setSortedInfo] = useState<any>({
-    columnKey: "sql_optimization",
-    order: "descend",
-  });
+  const [sortedInfo, setSortedInfo] = useState<any>({});
 
   // 客户端数据获取函数
   const fetchModels = async (month: string) => {
@@ -321,11 +317,15 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
       newSortedInfo = sorter[0] || {};
     }
 
-    if (newSortedInfo.order) {
-      newSortedInfo.order =
-        newSortedInfo.order === "ascend" ? "descend" : "ascend";
+    if (!newSortedInfo.order) {
+      // 当用户取消排序时，恢复默认视觉状态（但数据仍是最后一次排序的状态）
+      setSortedInfo({});
+    } else {
+      setSortedInfo({
+        columnKey: newSortedInfo.columnKey,
+        order: newSortedInfo.order,
+      });
     }
-    setSortedInfo(newSortedInfo);
   };
 
   const topModelsByCategory = useMemo(
@@ -356,14 +356,38 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
   }, [models]);
 
   const filteredModels = useMemo(() => {
-    let data = models;
+    let data = [...models];
+
+    if (sortedInfo.columnKey && sortedInfo.order) {
+      data.sort((a, b) => {
+        const { columnKey, order } = sortedInfo;
+
+        if (columnKey === "real_model_namne") {
+          const valA = a.real_model_namne;
+          const valB = b.real_model_namne;
+          const compare = valA.localeCompare(valB);
+          return order === "ascend" ? compare : -compare;
+        }
+
+        if (columnKey === "releaseDate") {
+          const valA = new Date(a.releaseDate).getTime();
+          const valB = new Date(b.releaseDate).getTime();
+          return order === "ascend" ? valA - valB : valB - valA;
+        }
+
+        const scoreA = a.scores?.[columnKey]?.ability_score ?? -1;
+        const scoreB = b.scores?.[columnKey]?.ability_score ?? -1;
+
+        return order === "ascend" ? scoreA - scoreB : scoreB - scoreA;
+      });
+    }
 
     const filteredData = data.filter((m: Model) =>
       m.real_model_namne.toLowerCase().includes(searchText.toLowerCase())
     );
 
     return filteredData;
-  }, [models, searchText]);
+  }, [models, searchText, sortedInfo]);
 
   const handleMonthChange = (newMonth: string) => {
     router.push(`/ranking/${newMonth}`);
@@ -460,55 +484,39 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
       title: (
         <span>
           {t("table.model")}
-          {sortedInfo.columnKey === "real_model_namne" &&
-            sortedInfo.order === "descend" && (
-              <CaretUpFilled
-                style={{ marginLeft: 4, fontSize: "16px", color: "#FF4D4F" }}
-              />
-            )}
-          {sortedInfo.columnKey === "real_model_namne" &&
-            sortedInfo.order === "ascend" && (
-              <CaretDownFilled
-                style={{ marginLeft: 4, fontSize: "16px", color: "#FF4D4F" }}
-              />
-            )}
+          {sortedInfo.columnKey === "real_model_namne" && (
+            <PushpinFilled
+              style={{ marginLeft: 4, fontSize: "16px", color: "#1890ff" }}
+            />
+          )}
         </span>
       ),
       dataIndex: "real_model_namne",
       key: "real_model_namne",
       align: "center",
       render: (text) => text,
-      sorter: (a, b) => {
-        return a.real_model_namne.localeCompare(b.real_model_namne);
-      },
+      sorter: true,
+      sortOrder:
+        sortedInfo.columnKey === "real_model_namne" ? sortedInfo.order : false,
       showSorterTooltip: false,
     },
     {
       title: (
         <span>
           {t("table.releaseDate")}
-          {sortedInfo.columnKey === "releaseDate" &&
-            sortedInfo.order === "descend" && (
-              <CaretUpFilled
-                style={{ marginLeft: 4, fontSize: "16px", color: "#FF4D4F" }}
-              />
-            )}
-          {sortedInfo.columnKey === "releaseDate" &&
-            sortedInfo.order === "ascend" && (
-              <CaretDownFilled
-                style={{ marginLeft: 4, fontSize: "16px", color: "#FF4D4F" }}
-              />
-            )}
+          {sortedInfo.columnKey === "releaseDate" && (
+            <PushpinFilled
+              style={{ marginLeft: 4, fontSize: "16px", color: "#1890ff" }}
+            />
+          )}
         </span>
       ),
       dataIndex: "releaseDate",
       key: "releaseDate",
       align: "center",
-      sorter: (a, b) => {
-        return (
-          new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime()
-        );
-      },
+      sorter: true,
+      sortOrder:
+        sortedInfo.columnKey === "releaseDate" ? sortedInfo.order : false,
       showSorterTooltip: false,
     },
     {
@@ -559,29 +567,27 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
       title: (
         <span>
           {t("table.sql_optimization")}
-          {sortedInfo.columnKey === "sql_optimization" &&
-            sortedInfo.order === "descend" && (
-              <CaretUpFilled
-                style={{ marginLeft: 4, fontSize: "16px", color: "#FF4D4F" }}
+          {(Object.keys(sortedInfo).length === 0 ||
+            sortedInfo.columnKey === "sql_optimization") && (
+            <Tooltip
+              title={
+                Object.keys(sortedInfo).length === 0 ? "默认排序" : ""
+              }
+            >
+              <PushpinFilled
+                style={{ marginLeft: 4, fontSize: "16px", color: "#1890ff" }}
               />
-            )}
-          {sortedInfo.columnKey === "sql_optimization" &&
-            sortedInfo.order === "ascend" && (
-              <CaretDownFilled
-                style={{ marginLeft: 4, fontSize: "16px", color: "#FF4D4F" }}
-              />
-            )}
+            </Tooltip>
+          )}
         </span>
       ),
       dataIndex: ["scores", "sql_optimization", "ability_score"],
       key: "sql_optimization",
-      sorter: (a, b) => {
-        const scoreA = a.scores?.sql_optimization?.ability_score ?? 0;
-        const scoreB = b.scores?.sql_optimization?.ability_score ?? 0;
-        return scoreB - scoreA;
-      },
+      sorter: true,
       showSorterTooltip: false,
       align: "center",
+      sortOrder:
+        sortedInfo.columnKey === "sql_optimization" ? sortedInfo.order : false,
       render: (text, record) => {
         const score = typeof text === "number" ? text : undefined;
         if (score === undefined) return "--";
@@ -594,30 +600,22 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
       title: (
         <span>
           {t("table.dialect_conversion")}
-          {sortedInfo.columnKey === "dialect_conversion" &&
-            sortedInfo.order === "descend" && (
-              <CaretUpFilled
-                style={{ marginLeft: 4, fontSize: "16px", color: "#FF4D4F" }}
-              />
-            )}
-          {sortedInfo.columnKey === "dialect_conversion" &&
-            sortedInfo.order === "ascend" && (
-              <CaretDownFilled
-                style={{ marginLeft: 4, fontSize: "16px", color: "#FF4D4F" }}
-              />
-            )}
+          {sortedInfo.columnKey === "dialect_conversion" && (
+            <PushpinFilled
+              style={{ marginLeft: 4, fontSize: "16px", color: "#1890ff" }}
+            />
+          )}
         </span>
       ),
       dataIndex: ["scores", "dialect_conversion", "ability_score"],
       key: "dialect_conversion",
-      sorter: (a, b) => {
-        return (
-          (b.scores?.dialect_conversion?.ability_score ?? 0) -
-          (a.scores?.dialect_conversion?.ability_score ?? 0)
-        );
-      },
+      sorter: true,
       showSorterTooltip: false,
       align: "center",
+      sortOrder:
+        sortedInfo.columnKey === "dialect_conversion"
+          ? sortedInfo.order
+          : false,
       render: (text, record) => {
         const score = typeof text === "number" ? text : undefined;
         if (score === undefined) return "--";
@@ -630,30 +628,22 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
       title: (
         <span>
           {t("table.sql_understanding")}
-          {sortedInfo.columnKey === "sql_understanding" &&
-            sortedInfo.order === "descend" && (
-              <CaretUpFilled
-                style={{ marginLeft: 4, fontSize: "16px", color: "#FF4D4F" }}
-              />
-            )}
-          {sortedInfo.columnKey === "sql_understanding" &&
-            sortedInfo.order === "ascend" && (
-              <CaretDownFilled
-                style={{ marginLeft: 4, fontSize: "16px", color: "#FF4D4F" }}
-              />
-            )}
+          {sortedInfo.columnKey === "sql_understanding" && (
+            <PushpinFilled
+              style={{ marginLeft: 4, fontSize: "16px", color: "#1890ff" }}
+            />
+          )}
         </span>
       ),
       dataIndex: ["scores", "sql_understanding", "ability_score"],
       key: "sql_understanding",
-      sorter: (a, b) => {
-        return (
-          (b.scores?.sql_understanding?.ability_score ?? 0) -
-          (a.scores?.sql_understanding?.ability_score ?? 0)
-        );
-      },
+      sorter: true,
       showSorterTooltip: false,
       align: "center",
+      sortOrder:
+        sortedInfo.columnKey === "sql_understanding"
+          ? sortedInfo.order
+          : false,
       render: (text, record) => {
         const score = typeof text === "number" ? text : undefined;
         if (score === undefined) return "--";
@@ -942,8 +932,10 @@ const RankingPage: React.FC<RankingPageProps> = ({ months }) => {
                       }}
                       onClick={() => {
                         if (model) {
-                          NProgress.start();
-                          router.push(`/models/${currentMonth}/${model.id}`);
+                          setSortedInfo({
+                            columnKey: category,
+                            order: "descend",
+                          });
                         }
                       }}
                       onMouseEnter={(e) =>
