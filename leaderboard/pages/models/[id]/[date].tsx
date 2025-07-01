@@ -960,31 +960,39 @@ const Detail: React.FC<DetailProps> = ({
 export const getStaticPaths: GetStaticPaths = async () => {
   const dataDir = path.join(process.cwd(), "public", "data", "eval_reports");
   const filenames = fs.readdirSync(dataDir);
+  const paths: { params: { id: string; date: string } }[] = [];
 
-  const dates = filenames
-    .filter((name) => name.startsWith("models-") && name.endsWith(".json"))
-    .map((name) => name.replace("models-", "").replace(".json", ""));
+  for (const filename of filenames) {
+    if (filename.startsWith("models-") && filename.endsWith(".json")) {
+      const date = filename.replace("models-", "").replace(".json", "");
+      const filePath = path.join(dataDir, filename);
+      const fileContents = fs.readFileSync(filePath, "utf8");
+      const data = JSON.parse(fileContents);
+      const models: Model[] = data.models || [];
 
-  let paths: { params: { date: string; id: string } }[] = [];
-
-  for (const date of dates) {
-    const modelsFilePath = path.join(dataDir, `models-${date}.json`);
-    const modelsFileContent = fs.readFileSync(modelsFilePath, "utf-8");
-    const { models } = JSON.parse(modelsFileContent);
-
-    for (const model of models) {
-      paths.push({ params: { date, id: model.id } });
+      models.forEach((model) => {
+        paths.push({
+          params: {
+            id: model.id,
+            date: date,
+          },
+        });
+      });
     }
   }
 
   return {
     paths,
-    fallback: false, // 如果访问的路径不存在，则返回404
+    fallback: false,
   };
 };
 
-export const getStaticProps: GetStaticProps<DetailProps> = async (context) => {
-  const { date, id } = context.params as { date: string; id: string };
+export const getStaticProps: GetStaticProps<DetailProps> = async (
+  context
+) => {
+  const { params } = context;
+  const id = params?.id as string;
+  const date = params?.date as string;
 
   let model: Model | null = null;
   let evaluationDimensions: string[] = [];
@@ -995,16 +1003,12 @@ export const getStaticProps: GetStaticProps<DetailProps> = async (context) => {
 
   try {
     // Fetch model data
-    const modelsFilePath = path.join(
-      process.cwd(),
-      "public",
-      "data",
-      "eval_reports",
-      `models-${date}.json`
-    );
-    const modelsFileContent = fs.readFileSync(modelsFilePath, "utf-8");
-    const { models } = JSON.parse(modelsFileContent);
-    model = models.find((m: Model) => m.id === id) || null;
+    const dataDir = path.join(process.cwd(), "public", "data", "eval_reports");
+    const filePath = path.join(dataDir, `models-${date}.json`);
+    const fileContents = fs.readFileSync(filePath, "utf8");
+    const data = JSON.parse(fileContents);
+    const models: Model[] = data.models;
+    model = models.find((m) => m.id === id) || null;
 
     if (model) {
       // Fetch evaluation dimensions
