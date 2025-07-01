@@ -660,7 +660,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
       render: (_, record) => (
         <Link
           scroll={true}
-          href={`/models/${currentMonth}/${record.id}`}
+          href={`/models/${record.id}/${currentMonth}`}
           onClick={() => NProgress.start()}
         >
           <Button
@@ -1240,7 +1240,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                     return;
                   }
                   NProgress.start();
-                  router.push(`/models/${currentMonth}/${record.id}`);
+                  router.push(`/models/${record.id}/${currentMonth}`);
                 },
               };
             }}
