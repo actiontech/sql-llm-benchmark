@@ -3,6 +3,7 @@ from datetime import datetime
 from decimal import Decimal, InvalidOperation
 from collections.abc import Mapping, Sequence
 from numbers import Number
+import re
 
 # Global cache
 process_log_entries = []
@@ -80,6 +81,91 @@ def deep_equal(a, b) -> bool:
 
     return False
 
+
+class SqlConverter:
+    """
+    一个用于将独立的SQL语句转换为Oracle或SQL Server存储过程的工具类。
+    """
+
+    def __init__(self):
+        """初始化，定义用于检测已有存储过程的正则表达式。"""
+        # Oracle: 支持 DELIMITER $$ CREATE OR REPLACE PROCEDURE、CREATE OR REPLACE PROCEDURE、CREATE PROCEDURE 等多种开头
+        self._oracle_proc_pattern = re.compile(
+            r'^\s*(DELIMITER\s+\$\$\s*)?(CREATE\s+(OR\s+REPLACE\s+)?PROCEDURE)',
+            re.IGNORECASE
+        )
+        self._sqlserver_proc_pattern = re.compile(
+            r'^\s*(CREATE|ALTER)\s+(OR\s+ALTER\s+)?PROCEDURE',
+            re.IGNORECASE
+        )
+
+    def _is_already_procedure(self, sql_text: str, db_type: str) -> bool:
+        """检查SQL文本是否已经是创建存储过程的语句。"""
+        if db_type == 'ORACLE':
+            return bool(self._oracle_proc_pattern.match(sql_text))
+        elif db_type == 'SQLSERVER':
+            return bool(self._sqlserver_proc_pattern.match(sql_text))
+        return False
+
+    def _generate_proc_name(self) -> str:
+        """生成一个带时间戳的唯一过程名。"""
+        return f"p_universal_{datetime.now().strftime('%Y%m%d%H%M%S')}"
+
+    def convert_to_procedure(self, db_type: str, sql_text: str) -> str:
+        """
+        将SQL文本以通用方式转换为存储过程的主方法。
+        
+        :param db_type: 数据库类型, 'ORACLE' or 'SQLSERVER'.
+        :param sql_text: 完整的SQL语句文本。
+        :return: 转换后的存储过程创建脚本。
+        """
+        db_type_upper = db_type.upper()
+        if db_type_upper not in ['ORACLE', 'SQLSERVER']:
+            raise ValueError("数据库类型错误，目前仅支持 'ORACLE' 或 'SQLSERVER'。")
+
+        if not sql_text or not sql_text.strip():
+            raise ValueError("SQL文本不能为空。")
+            
+        sql_text = sql_text.strip()
+
+        if self._is_already_procedure(sql_text, db_type_upper):
+            return sql_text
+
+        proc_name = self._generate_proc_name()
+        
+        # 移除SQL语句末尾的分号（如果存在）
+        if sql_text.endswith(';'):
+            sql_text = sql_text[:-1]
+
+        # 为确保所有代码路径都有返回值以满足静态分析器，我们先声明一个变量
+        converted_procedure: str = ""
+
+        if db_type_upper == 'ORACLE':
+            # Oracle的通用方法是 EXECUTE IMMEDIATE
+            escaped_sql = sql_text.replace("'", "''")
+            converted_procedure = (
+                f"CREATE OR REPLACE PROCEDURE {proc_name} AS\n"
+                f"BEGIN\n"
+                f"    EXECUTE IMMEDIATE '{escaped_sql}';\n"
+                f"END {proc_name};"
+            )
+        elif db_type_upper == 'SQLSERVER':
+            # SQL Server的通用方法是 BEGIN TRY ... END CATCH
+            converted_procedure = (
+                f"CREATE OR ALTER PROCEDURE {proc_name}\n"
+                f"AS\n"
+                f"BEGIN\n"
+                f"    SET NOCOUNT ON;\n"
+                f"    BEGIN TRY\n"
+                f"        {sql_text};\n"
+                f"    END TRY\n"
+                f"    BEGIN CATCH\n"
+                f"        THROW;\n"
+                f"    END CATCH;\n"
+                f"END;"
+            )
+        
+        return converted_procedure
 
 # ---- Example Test ----
 if __name__ == "__main__":
