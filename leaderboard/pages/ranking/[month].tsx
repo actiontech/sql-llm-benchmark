@@ -765,7 +765,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
       </Head>
       <div className={styles.container}>
         <Card
-          bordered={false}
+          variant="borderless"
           style={{
             borderRadius: 12,
             boxShadow: "0 6px 20px rgba(0, 0, 0, 0.08)",
@@ -948,7 +948,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                       }
                     >
                       <Card
-                        bordered={false}
+                        variant="borderless"
                         style={{
                           width: "100%",
                           height: "100%",
@@ -965,14 +965,16 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                           clipPath:
                             "polygon(0% 0%, 100% 0%, 100% 85%, 50% 100%, 0% 85%)",
                         }}
-                        bodyStyle={{
-                          padding: 0,
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          height: "100%",
-                          width: "100%",
+                        styles={{
+                          body: {
+                            padding: 0,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "100%",
+                            width: "100%",
+                          },
                         }}
                       >
                         <Space align="center" style={{ marginBottom: "12px" }}>
