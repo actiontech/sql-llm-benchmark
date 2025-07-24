@@ -4,16 +4,20 @@ from decimal import Decimal, InvalidOperation
 from collections.abc import Mapping, Sequence
 from numbers import Number
 import re
+import threading
 
 # Global cache
 process_log_entries = []
+# Thread lock for log operations
+log_lock = threading.Lock()
 
 
 def log_process_detail(message: str):
-    """Appends a message to the process log buffer."""
+    """Appends a message to the process log buffer. Thread-safe."""
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
-    process_log_entries.append(f"[{timestamp}] {message}")
-    print(message)  # Print in real-time if needed
+    with log_lock:
+        process_log_entries.append(f"[{timestamp}] {message}")
+        print(message)  # Print in real-time if needed
 
 
 def is_numeric(val) -> bool:
