@@ -573,7 +573,9 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
             sortedInfo.columnKey === "sql_optimization") && (
             <Tooltip
               title={
-                Object.keys(sortedInfo).length === 0 ? "默认排序" : ""
+                Object.keys(sortedInfo).length === 0
+                  ? t("table.default_sort_tooltip")
+                  : ""
               }
             >
               <PushpinFilled
@@ -856,9 +858,9 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                   }}
                 >
                   <span>
-                    <span style={{ fontWeight: "bold" }}>S</span>QL{" "}
-                    <span style={{ fontWeight: "bold" }}>Ca</span>pability{" "}
-                    <span style={{ fontWeight: "bold" }}>Le</span>aderboard for
+                    <span style={{ color: "#1890ff", fontWeight: 800 }}>S</span>QL{" "}
+                    <span style={{ color: "#1890ff", fontWeight: 800 }}>Ca</span>pability{" "}
+                    <span style={{ color: "#1890ff", fontWeight: 800 }}>Le</span>aderboard for{" "}
                     LLMs
                   </span>
                 </Title>
@@ -1039,7 +1041,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                           </Space>
                         ) : (
                           <Paragraph style={{ color: "#666" }}>
-                            no data
+                            {t("table.no_data")}
                           </Paragraph>
                         )}
                       </Card>
