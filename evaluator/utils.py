@@ -91,11 +91,12 @@ class SqlConverter:
         """初始化，定义用于检测已有存储过程的正则表达式。"""
         # Oracle: 支持 DELIMITER $$ CREATE OR REPLACE PROCEDURE、CREATE OR REPLACE PROCEDURE、CREATE PROCEDURE 等多种开头
         self._oracle_proc_pattern = re.compile(
-            r'^\s*(DELIMITER\s+\$\$\s*)?(CREATE\s+(OR\s+REPLACE\s+)?PROCEDURE)',
+            r'^\s*(DELIMITER\s+\$\$\s*)?(CREATE\s+(OR\s+REPLACE\s+)?PROCEDURE)\b',
             re.IGNORECASE
         )
+        # SQL Server: 支持 CREATE PROC/PROCEDURE, ALTER PROC/PROCEDURE, CREATE OR ALTER PROCEDURE
         self._sqlserver_proc_pattern = re.compile(
-            r'^\s*(CREATE|ALTER)\s+(OR\s+ALTER\s+)?PROCEDURE',
+            r'^\s*(?:CREATE|ALTER)(?:\s+OR\s+ALTER)?\s+PROC(?:EDURE)?\b',
             re.IGNORECASE
         )
 
@@ -107,11 +108,11 @@ class SqlConverter:
             return bool(self._sqlserver_proc_pattern.match(sql_text))
         return False
 
-    def _generate_proc_name(self) -> str:
-        """生成一个带时间戳的唯一过程名。"""
-        return f"p_universal_{datetime.now().strftime('%Y%m%d%H%M%S')}"
+    def _generate_proc_name(self, case_id) -> str:
+        """生成一个case id的过程名。"""
+        return f"p_universal_case_{case_id}"
 
-    def convert_to_procedure(self, db_type: str, sql_text: str) -> str:
+    def convert_to_procedure(self, case_id: str, db_type: str, sql_text: str) -> str:
         """
         将SQL文本以通用方式转换为存储过程的主方法。
         
@@ -131,7 +132,7 @@ class SqlConverter:
         if self._is_already_procedure(sql_text, db_type_upper):
             return sql_text
 
-        proc_name = self._generate_proc_name()
+        proc_name = self._generate_proc_name(case_id)
         
         # 移除SQL语句末尾的分号（如果存在）
         if sql_text.endswith(';'):
