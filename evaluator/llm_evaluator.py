@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Iterable
 import ast
 import logging
+import concurrent.futures
 
 from llm_interface import get_target_llm_response, get_judge_llm_evaluation
 from reports.process_log_reporting import generate_process_log_reports
@@ -55,27 +56,83 @@ def evaluate_subjective(
             f"[{test_case_id}] Hybrid Eval: No judge LLMs configured. Skipping.")
         return []
 
-    judge_details = []
-
-    for judge_config in JUDGE_LLM_CONFIGS:
-        log_process_detail(
-            f"[{test_case_id}] Subjective Eval: Using Judge LLM '{judge_config.get('name', 'N/A')}'")
-        judge_answer = get_judge_llm_evaluation(
-            judge_llm_config=judge_config,
-            judge_prompt=judge_prompt,
-        )
+    # Helper function to evaluate with a single judge
+    def evaluate_with_judge(judge_config):
+        judge_name = judge_config.get('name', 'N/A')
+        # Store log messages to output later
+        logs = []
+        logs.append(f"[{test_case_id}] Subjective Eval: Using Judge LLM '{judge_name}'")
+        
+        # Temporarily disable logging during API call
+        original_log_function = log_process_detail
+        temp_logs = []
+        
+        def capture_log(msg):
+            temp_logs.append(msg)
+        
+        # Replace global log function temporarily
+        import llm_interface
+        import utils
+        original_llm_log = llm_interface.log_process_detail
+        original_utils_log = utils.log_process_detail
+        llm_interface.log_process_detail = capture_log
+        utils.log_process_detail = capture_log
+        
+        try:
+            judge_answer = get_judge_llm_evaluation(
+                judge_llm_config=judge_config,
+                judge_prompt=judge_prompt,
+            )
+        finally:
+            # Restore original log function
+            llm_interface.log_process_detail = original_llm_log
+            utils.log_process_detail = original_utils_log
+        
+        logs.extend(temp_logs)
+        
         if isinstance(judge_answer, dict):
             raw_ids = judge_answer.get('matched_rule_ids') or []
         else:
             raw_ids = []
+        
         val = str(raw_ids)
-        judge_details.append(val)
-        log_process_detail(
-            f"[{test_case_id}] Subjective Eval Case Judge {judge_config.get('name', 'N/A')} Correct Rules: {val}")
+        logs.append(f"[{test_case_id}] Subjective Eval Case Judge {judge_name} Correct Rules: {val}")
+        
+        return (judge_config, val, logs)
+
+    # Use ThreadPoolExecutor to evaluate with all judges concurrently
+    judge_results = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(JUDGE_LLM_CONFIGS)) as executor:
+        future_to_judge = {executor.submit(evaluate_with_judge, judge_config): judge_config 
+                          for judge_config in JUDGE_LLM_CONFIGS}
+        
+        for future in concurrent.futures.as_completed(future_to_judge):
+            try:
+                judge_config, val, logs = future.result()
+                judge_results.append((judge_config, val, logs))
+            except Exception as exc:
+                judge_config = future_to_judge[future]
+                logger.error(f"Judge {judge_config.get('name', 'N/A')} generated an exception: {exc}")
+                judge_results.append((judge_config, None, []))
+
+    # Sort results by the order of JUDGE_LLM_CONFIGS to maintain consistent ordering
+    judge_results.sort(key=lambda x: JUDGE_LLM_CONFIGS.index(x[0]))
+    
+    # Now output all logs in the correct order
+    judge_details = []
+    for judge_config, val, logs in judge_results:
+        # Output all logs for this judge
+        for log_msg in logs:
+            log_process_detail(log_msg)
+        
+        if val is not None:
+            judge_details.append(val)
+    
     if not judge_details:
         log_process_detail(
             f"[{test_case_id}] Subjective Eval: All judge LLMs failed to provide a evaluation.")
         return []
+    
     final_result = majority_consensus(judge_details)
     log_process_detail(
         f"[{test_case_id}] Subjective Eval Case Judge Final Correct Rules: {final_result}")
@@ -148,15 +205,39 @@ def evaluate_hybrid(
             f"[{test_case_id}] Hybrid Eval: No judge LLMs configured. Skipping.")
         return False
 
-    judge_details = []
-
-    for judge_config in JUDGE_LLM_CONFIGS:
-        log_process_detail(
-            f"[{test_case_id}] Hybrid Eval: Using Judge LLM '{judge_config.get('name', 'N/A')}'")
-        judge_answer = get_judge_llm_evaluation(
-            judge_llm_config=judge_config,
-            judge_prompt=judge_prompt,
-        )
+    # Helper function to evaluate with a single judge
+    def evaluate_with_judge(judge_config):
+        judge_name = judge_config.get('name', 'N/A')
+        # Store log messages to output later
+        logs = []
+        logs.append(f"[{test_case_id}] Hybrid Eval: Using Judge LLM '{judge_name}'")
+        
+        # Temporarily disable logging during API call
+        temp_logs = []
+        
+        def capture_log(msg):
+            temp_logs.append(msg)
+        
+        # Replace global log function temporarily
+        import llm_interface
+        import utils
+        original_llm_log = llm_interface.log_process_detail
+        original_utils_log = utils.log_process_detail
+        llm_interface.log_process_detail = capture_log
+        utils.log_process_detail = capture_log
+        
+        try:
+            judge_answer = get_judge_llm_evaluation(
+                judge_llm_config=judge_config,
+                judge_prompt=judge_prompt,
+            )
+        finally:
+            # Restore original log function
+            llm_interface.log_process_detail = original_llm_log
+            utils.log_process_detail = original_utils_log
+        
+        logs.extend(temp_logs)
+        
         if isinstance(judge_answer, dict):
             raw = judge_answer.get("answer", "")
         else:
@@ -165,14 +246,43 @@ def evaluate_hybrid(
         text = str(raw)
         text_lower = text.lower()
         result = "yes" in text_lower
-        log_process_detail(
-            f"[{test_case_id}] Hybrid Eval Case Judge {judge_config.get('name', 'N/A')} Results: {result}")
-        judge_details.append(result)
+        logs.append(f"[{test_case_id}] Hybrid Eval Case Judge {judge_name} Results: {result}")
+        
+        return (judge_config, result, logs)
+
+    # Use ThreadPoolExecutor to evaluate with all judges concurrently
+    judge_results = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(JUDGE_LLM_CONFIGS)) as executor:
+        future_to_judge = {executor.submit(evaluate_with_judge, judge_config): judge_config 
+                          for judge_config in JUDGE_LLM_CONFIGS}
+        
+        for future in concurrent.futures.as_completed(future_to_judge):
+            try:
+                judge_config, result, logs = future.result()
+                judge_results.append((judge_config, result, logs))
+            except Exception as exc:
+                judge_config = future_to_judge[future]
+                logger.error(f"Judge {judge_config.get('name', 'N/A')} generated an exception: {exc}")
+                judge_results.append((judge_config, None, []))
+
+    # Sort results by the order of JUDGE_LLM_CONFIGS to maintain consistent ordering
+    judge_results.sort(key=lambda x: JUDGE_LLM_CONFIGS.index(x[0]))
+    
+    # Now output all logs in the correct order
+    judge_details = []
+    for judge_config, result, logs in judge_results:
+        # Output all logs for this judge
+        for log_msg in logs:
+            log_process_detail(log_msg)
+        
+        if result is not None:
+            judge_details.append(result)
 
     if not judge_details:
         logger.warning(
             f"[{test_case_id}] Hybrid Eval Case: All judge LLMs failed to provide a evaluation.")
         return False
+    
     final_result = majority_bool(judge_details)
     log_process_detail(
         f"[{test_case_id}] Hybrid Eval Case Judge Final Results: {final_result}")
@@ -306,9 +416,9 @@ def run_all_evaluations(run_id: str, target_llm_config: dict):
     scores = {}
     base_dir = os.path.dirname(os.path.abspath(__file__))
     test_categories = {
-        "sql_understanding": os.path.join(base_dir, "dataset","sql_understanding"),
+        # "sql_understanding": os.path.join(base_dir, "dataset","sql_understanding"),
         "dialect_conversion": os.path.join(base_dir, "dataset/dialect_conversion"),
-        "sql_optimization": os.path.join(base_dir, "dataset/sql_optimization")
+        # "sql_optimization": os.path.join(base_dir, "dataset/sql_optimization")
     }
 
     for cat_key, cat_file in test_categories.items():
