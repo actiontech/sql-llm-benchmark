@@ -226,11 +226,11 @@ def run_evaluation_category(category_name: str, test_cases_file: Path, target_ll
                     continue
                 res = evaluate_objective(answer, case["expected"], case_id)
             elif eval_type == "hybrid":
-                judge_prompt = generate_judge_model_prompt(
+                judge_prompt = generate_judge_model_prompt(target_llm_config.get("name", ""),
                     category_name, test_cases_file.name, case, answer)
                 res = evaluate_hybrid(case_id, judge_prompt)
             else:  # subjective
-                judge_prompt = generate_judge_model_prompt(
+                judge_prompt = generate_judge_model_prompt(target_llm_config.get("name", ""),
                     category_name, test_cases_file.name, case, answer)
 
                 res = evaluate_subjective(case_id, judge_prompt)

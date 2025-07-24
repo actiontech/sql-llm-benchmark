@@ -177,8 +177,9 @@ class SQLShiftClient(BaseApplicationClient):
     def request_dialect_conversion(self, case: Dict[str, Any]) -> Any:
         source_dialect = case.get("source_dialect") or ""
         sql_text = case.get("sql") or ""
+        case_id = case.get("case_id") or ""
         simple_converter = SqlConverter()
-        sql = simple_converter.convert_to_procedure(str(source_dialect), str(sql_text))
+        sql = simple_converter.convert_to_procedure(str(case_id), str(source_dialect), str(sql_text))
 
         request_data = {
             "sql": sql,
