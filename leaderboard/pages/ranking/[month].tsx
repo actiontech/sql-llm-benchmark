@@ -571,18 +571,18 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
           {t("table.sql_optimization")}
           {(Object.keys(sortedInfo).length === 0 ||
             sortedInfo.columnKey === "sql_optimization") && (
-            <Tooltip
-              title={
-                Object.keys(sortedInfo).length === 0
-                  ? t("table.default_sort_tooltip")
-                  : ""
-              }
-            >
-              <PushpinFilled
-                style={{ marginLeft: 4, fontSize: "16px", color: "#1890ff" }}
-              />
-            </Tooltip>
-          )}
+              <Tooltip
+                title={
+                  Object.keys(sortedInfo).length === 0
+                    ? t("table.default_sort_tooltip")
+                    : ""
+                }
+              >
+                <PushpinFilled
+                  style={{ marginLeft: 4, fontSize: "16px", color: "#1890ff" }}
+                />
+              </Tooltip>
+            )}
         </span>
       ),
       dataIndex: ["scores", "sql_optimization", "ability_score"],
@@ -981,7 +981,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                       >
                         <Space align="center" style={{ marginBottom: "12px" }}>
                           <Title
-                            level={4}
+                            level={3}
                             style={{
                               margin: 0,
                               color: "#333",
