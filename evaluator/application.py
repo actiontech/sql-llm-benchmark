@@ -140,6 +140,19 @@ class BaseApplicationClient(ABC):
 class SQLFlashClient(BaseApplicationClient):
     def _initialize(self):
         self.optimize_sql_path = self.config.get("optimize_sql_path", "/api/v1/optimizes")
+    
+    def _extract_optimized_sql(self, resp: Dict[str, Any]) -> str:
+        """Safely extract optimized SQL from response, handling empty steps array."""
+        data = resp.get("data", {})
+        steps = data.get("optimize", {}).get("steps", [])
+        
+        # If steps array is empty, return the original SQL
+        if not steps:
+            return data.get("origin_sql", "")
+        
+        # Get the optimized SQL from the last step, fallback to original SQL
+        last_step = steps[-1]
+        return last_step.get("optimized_sql", data.get("origin_sql", ""))
 
     def request_sql_optimization(self, case: Dict[str, Any]) -> Any:
         sql = case.get("sql")
@@ -163,7 +176,7 @@ class SQLFlashClient(BaseApplicationClient):
             task_id=task_id,
             get_url_builder=lambda tid: f"{self.base_url}{self.optimize_sql_path}/sql/{tid}",
             status_checker=lambda resp: "running" if resp.get("data", {}).get("total_state") == "running" else "complete",
-            result_extractor=lambda resp: (resp.get("data", {}).get("optimize", {}).get("steps", [{}])[-1].get("optimized_sql", resp.get("data", {}).get("origin_sql"))),
+            result_extractor=lambda resp: self._extract_optimized_sql(resp),
         )
 
         return result.get("result")
