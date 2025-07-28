@@ -92,7 +92,7 @@ class SqlConverter:
     """
 
     def __init__(self):
-        """初始化，定义用于检测已有存储过程的正则表达式。"""
+        """初始化，定义用于检测已有存储过程和函数的正则表达式。"""
         # Oracle: 支持 DELIMITER $$ CREATE OR REPLACE PROCEDURE、CREATE OR REPLACE PROCEDURE、CREATE PROCEDURE 等多种开头
         self._oracle_proc_pattern = re.compile(
             r'^\s*(DELIMITER\s+\$\$\s*)?(CREATE\s+(OR\s+REPLACE\s+)?PROCEDURE)\b',
@@ -103,6 +103,17 @@ class SqlConverter:
             r'^\s*(?:CREATE|ALTER)(?:\s+OR\s+ALTER)?\s+PROC(?:EDURE)?\b',
             re.IGNORECASE
         )
+        
+        # Oracle: 支持 DELIMITER $$ CREATE OR REPLACE FUNCTION、CREATE OR REPLACE FUNCTION、CREATE FUNCTION 等多种开头
+        self._oracle_func_pattern = re.compile(
+            r'^\s*(DELIMITER\s+\$\$\s*)?(CREATE\s+(OR\s+REPLACE\s+)?FUNCTION)\b',
+            re.IGNORECASE
+        )
+        # SQL Server: 支持 CREATE FUNCTION, ALTER FUNCTION, CREATE OR ALTER FUNCTION
+        self._sqlserver_func_pattern = re.compile(
+            r'^\s*(?:CREATE|ALTER)(?:\s+OR\s+ALTER)?\s+FUNCTION\b',
+            re.IGNORECASE
+        )
 
     def _is_already_procedure(self, sql_text: str, db_type: str) -> bool:
         """检查SQL文本是否已经是创建存储过程的语句。"""
@@ -111,6 +122,19 @@ class SqlConverter:
         elif db_type == 'SQLSERVER':
             return bool(self._sqlserver_proc_pattern.match(sql_text))
         return False
+
+    def _is_already_function(self, sql_text: str, db_type: str) -> bool:
+        """检查SQL文本是否已经是创建函数的语句。"""
+        if db_type == 'ORACLE':
+            return bool(self._oracle_func_pattern.match(sql_text))
+        elif db_type == 'SQLSERVER':
+            return bool(self._sqlserver_func_pattern.match(sql_text))
+        return False
+
+    def _is_already_procedure_or_function(self, sql_text: str, db_type: str) -> bool:
+        """检查SQL文本是否已经是创建存储过程或函数的语句。"""
+        return (self._is_already_procedure(sql_text, db_type) or 
+                self._is_already_function(sql_text, db_type))
 
     def _generate_proc_name(self, case_id) -> str:
         """生成一个case id的过程名。"""
@@ -133,7 +157,7 @@ class SqlConverter:
             
         sql_text = sql_text.strip()
 
-        if self._is_already_procedure(sql_text, db_type_upper):
+        if self._is_already_procedure_or_function(sql_text, db_type_upper):
             return sql_text
 
         proc_name = self._generate_proc_name(case_id)

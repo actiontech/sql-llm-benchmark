@@ -115,7 +115,7 @@ def prompt_for_conversion(case: dict) -> str:
     sql = case.get("sql", "")
     return f"""You are an expert in SQL dialect translation.
 Please convert the following SQL statement from {src} syntax to {tgt} syntax.
-Return **only** the translated SQL statement(no extra text, no markdown fences), with no additional commentary or text.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
 
 Source SQL:
 {sql}
@@ -161,13 +161,13 @@ def prompt_for_equivalence_judge(model_name: str, case: dict, model_answer: str)
     """
     src = case.get("source_dialect")
     tgt = case.get("target_dialect")
-    tables = "\n".join(case.get("create_table_statements", []))
     original = case.get("sql", "")
+    case_id = case.get("case_id") or ""
     translated = model_answer
     # SQLShift need to convert the original sql to procedure
     if model_name == "SQLShift":
         simple_converter = SqlConverter()
-        original = simple_converter.convert_to_procedure(str(src), str(original))
+        original = simple_converter.convert_to_procedure(str(case_id), str(src), str(original))
         
     return f"""You are a senior database expert with deep knowledge of SQL dialects.
 You need to verify two things:
@@ -179,9 +179,6 @@ Return **only** a JSON object with this format, without any additional commentar
 {{
   "answer": "yes" | "no"
 }}
-
--- Original Table Definitions --
-{tables}
 
 -- Original SQL ({src}) --
 {original}
@@ -199,13 +196,13 @@ def prompt_for_conversion_judge(model_name: str, case: dict, model_answer: str) 
     """
     src = case.get("source_dialect")
     tgt = case.get("target_dialect")
-    tables = "\n".join(case.get("create_table_statements", []))
     original_sql = case.get("sql", "")
+    case_id = case.get("case_id") or ""
     translated_sql = model_answer
     # SQLShift need to convert the original sql to procedure
     if model_name == "SQLShift":
         simple_converter = SqlConverter()
-        original_sql = simple_converter.convert_to_procedure(str(src), str(original_sql))
+        original_sql = simple_converter.convert_to_procedure(str(case_id), str(src), str(original_sql))
     return f"""You are a senior database engineer specializing in {tgt} SQL.
 You need to verify two things at once:
 1. **Executable**: The translated SQL must be syntactically valid in {tgt}, using only supported keywords, functions, and constructs.
@@ -218,9 +215,6 @@ Return **only** a JSON object in this exact format (no extra text):
 {{
   "answer": "yes" | "no"
 }}
-
--- Table Definitions --
-{tables}
 
 -- Original SQL ({src}) --
 {original_sql}
