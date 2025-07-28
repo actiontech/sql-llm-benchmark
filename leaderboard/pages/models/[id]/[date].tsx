@@ -571,7 +571,7 @@ const Detail: React.FC<DetailProps> = ({
           }}
         >
           <Title
-            level={2}
+            level={1}
             style={{
               marginTop: 0,
               marginBottom: "16px",
@@ -610,10 +610,10 @@ const Detail: React.FC<DetailProps> = ({
               {model.type === "Chat"
                 ? t("table.type_chat")
                 : model.type === "Application"
-                ? t("table.type_application")
-                : model.type ==="Chat(Thinking)"
-                ? t("table.type_chat_thinking")
-                : model.type}
+                  ? t("table.type_application")
+                  : model.type === "Chat(Thinking)"
+                    ? t("table.type_chat_thinking")
+                    : model.type}
             </Descriptions.Item>
             <Descriptions.Item label={t("table.organization")}>
               {model.organization}
@@ -650,7 +650,7 @@ const Detail: React.FC<DetailProps> = ({
           }}
         >
           <Title
-            level={3}
+            level={2}
             style={{
               marginTop: 0,
               marginBottom: "24px",
@@ -724,7 +724,7 @@ const Detail: React.FC<DetailProps> = ({
             }}
           >
             <Title
-              level={3}
+              level={2}
               style={{
                 marginTop: 0,
                 marginBottom: "24px",
@@ -794,7 +794,7 @@ const Detail: React.FC<DetailProps> = ({
             }}
           >
             <Title
-              level={3}
+              level={2}
               style={{
                 marginTop: 0,
                 marginBottom: "24px",
