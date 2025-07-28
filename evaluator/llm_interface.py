@@ -226,7 +226,7 @@ def call_llm_api(api_url: str, api_key: str, name: str, prompt: str, is_judge: b
     adapter = get_adapter(name)
     adapter_config = get_adapter_config(name, is_judge)
 
-    max_retries = 5
+    max_retries = 6
     retry_delay = 60
 
     for attempt in range(max_retries):
@@ -236,9 +236,9 @@ def call_llm_api(api_url: str, api_key: str, name: str, prompt: str, is_judge: b
                 prompt,
                 is_judge=is_judge,
                 model=adapter_config["model"],
-                platform=adapter_config["platform"],
-                max_tokens=adapter_config["max_tokens"],
-                temperature=adapter_config["temperature"]
+                platform=adapter_config.get("platform", ""),
+                max_tokens=adapter_config.get("max_tokens", ""),
+                temperature=adapter_config.get("temperature", "")
             )
 
             log_process_detail(f"Model Request Data: {request_data}")
@@ -260,9 +260,9 @@ def call_llm_api(api_url: str, api_key: str, name: str, prompt: str, is_judge: b
                 )
                 model_answer = adapter.parse_response(response.model_dump())
                 if not model_answer:
-                    logger.error(f"Model answer empty, retry {attempt + 1}")
+                    logger.error(f"[{adapter_config['model']} Model answer empty, retry {attempt + 1}]")
                     continue
-                log_process_detail(f"[Model Answer]: {model_answer}")
+                log_process_detail(f"[{adapter_config['model']} Model Answer]: {model_answer}")
                 cleaned = re.sub(r'^```(?:json)?\s*|```$', '',
                                  model_answer.strip(), flags=re.IGNORECASE | re.MULTILINE)
                 # Try JSON parse, fallback to model_answer string

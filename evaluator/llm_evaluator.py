@@ -6,6 +6,7 @@ from typing import Iterable
 import ast
 import logging
 import concurrent.futures
+import threading
 
 from llm_interface import get_target_llm_response, get_judge_llm_evaluation
 from reports.process_log_reporting import generate_process_log_reports
@@ -19,6 +20,14 @@ from typing import List, Any, Union
 from application import get_application_result
 
 logger = logging.getLogger(__name__)
+
+# 线程安全的日志锁
+_log_lock = threading.Lock()
+
+def thread_safe_log(message: str):
+    """线程安全的日志函数"""
+    with _log_lock:
+        log_process_detail(message)
 
 
 def load_test_cases(file_path: Path) -> list:
@@ -56,77 +65,84 @@ def evaluate_subjective(
             f"[{test_case_id}] Hybrid Eval: No judge LLMs configured. Skipping.")
         return []
 
-    # Helper function to evaluate with a single judge
-    def evaluate_with_judge(judge_config):
+    def evaluate_single_judge(judge_config):
+        """评估单个裁判模型的函数"""
         judge_name = judge_config.get('name', 'N/A')
-        # Store log messages to output later
-        logs = []
-        logs.append(f"[{test_case_id}] Subjective Eval: Using Judge LLM '{judge_name}'")
         
-        # Temporarily disable logging during API call
-        original_log_function = log_process_detail
-        temp_logs = []
-        
-        def capture_log(msg):
-            temp_logs.append(msg)
-        
-        # Replace global log function temporarily
-        import llm_interface
-        import utils
-        original_llm_log = llm_interface.log_process_detail
-        original_utils_log = utils.log_process_detail
-        llm_interface.log_process_detail = capture_log
-        utils.log_process_detail = capture_log
+        # 收集这个裁判模型的所有日志
+        judge_logs = []
+        judge_logs.append(f"[{test_case_id}] Subjective Eval: Using Judge LLM '{judge_name}'")
         
         try:
             judge_answer = get_judge_llm_evaluation(
                 judge_llm_config=judge_config,
                 judge_prompt=judge_prompt,
             )
-        finally:
-            # Restore original log function
-            llm_interface.log_process_detail = original_llm_log
-            utils.log_process_detail = original_utils_log
-        
-        logs.extend(temp_logs)
-        
-        if isinstance(judge_answer, dict):
-            raw_ids = judge_answer.get('matched_rule_ids') or []
-        else:
-            raw_ids = []
-        
-        val = str(raw_ids)
-        logs.append(f"[{test_case_id}] Subjective Eval Case Judge {judge_name} Correct Rules: {val}")
-        
-        return (judge_config, val, logs)
+            
+            if isinstance(judge_answer, dict):
+                raw_ids = judge_answer.get('matched_rule_ids') or []
+            else:
+                raw_ids = []
+            
+            val = str(raw_ids)
+            judge_logs.append(f"[{test_case_id}] Subjective Eval Case Judge {judge_name} Correct Rules: {val}")
+            
+            return {
+                'judge_config': judge_config,
+                'value': val,
+                'logs': judge_logs,
+                'success': True
+            }
+            
+        except Exception as e:
+            judge_logs.append(f"[{test_case_id}] Judge {judge_name} failed: {str(e)}")
+            return {
+                'judge_config': judge_config,
+                'value': None,
+                'logs': judge_logs,
+                'success': False
+            }
 
-    # Use ThreadPoolExecutor to evaluate with all judges concurrently
+    # 使用线程池并行执行裁判模型评估
     judge_results = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=len(JUDGE_LLM_CONFIGS)) as executor:
-        future_to_judge = {executor.submit(evaluate_with_judge, judge_config): judge_config 
-                          for judge_config in JUDGE_LLM_CONFIGS}
-        
-        for future in concurrent.futures.as_completed(future_to_judge):
-            try:
-                judge_config, val, logs = future.result()
-                judge_results.append((judge_config, val, logs))
-            except Exception as exc:
-                judge_config = future_to_judge[future]
-                logger.error(f"Judge {judge_config.get('name', 'N/A')} generated an exception: {exc}")
-                judge_results.append((judge_config, None, []))
-
-    # Sort results by the order of JUDGE_LLM_CONFIGS to maintain consistent ordering
-    judge_results.sort(key=lambda x: JUDGE_LLM_CONFIGS.index(x[0]))
+    max_workers = min(len(JUDGE_LLM_CONFIGS), 5)  # 限制最大并发数
     
-    # Now output all logs in the correct order
-    judge_details = []
-    for judge_config, val, logs in judge_results:
-        # Output all logs for this judge
-        for log_msg in logs:
-            log_process_detail(log_msg)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # 提交所有任务
+        future_to_config = {
+            executor.submit(evaluate_single_judge, judge_config): judge_config
+            for judge_config in JUDGE_LLM_CONFIGS
+        }
         
-        if val is not None:
-            judge_details.append(val)
+        # 收集结果
+        for future in concurrent.futures.as_completed(future_to_config):
+            try:
+                result = future.result(timeout=120)  # 2分钟超时
+                judge_results.append(result)
+            except Exception as exc:
+                judge_config = future_to_config[future]
+                judge_name = judge_config.get('name', 'N/A')
+                thread_safe_log(f"[{test_case_id}] Judge {judge_name} execution failed: {exc}")
+                judge_results.append({
+                    'judge_config': judge_config,
+                    'value': None,
+                    'logs': [f"[{test_case_id}] Judge {judge_name} execution failed: {exc}"],
+                    'success': False
+                })
+
+    # 按原始配置顺序排序结果
+    judge_results.sort(key=lambda x: JUDGE_LLM_CONFIGS.index(x['judge_config']))
+    
+    # 按顺序输出日志并收集有效结果
+    judge_details = []
+    for result in judge_results:
+        # 输出这个裁判模型的所有日志
+        for log_msg in result['logs']:
+            thread_safe_log(log_msg)
+        
+        # 收集有效的评估结果
+        if result['success'] and result['value'] is not None:
+            judge_details.append(result['value'])
     
     if not judge_details:
         log_process_detail(
@@ -205,78 +221,87 @@ def evaluate_hybrid(
             f"[{test_case_id}] Hybrid Eval: No judge LLMs configured. Skipping.")
         return False
 
-    # Helper function to evaluate with a single judge
-    def evaluate_with_judge(judge_config):
+    def evaluate_single_judge(judge_config):
+        """评估单个裁判模型的函数"""
         judge_name = judge_config.get('name', 'N/A')
-        # Store log messages to output later
-        logs = []
-        logs.append(f"[{test_case_id}] Hybrid Eval: Using Judge LLM '{judge_name}'")
         
-        # Temporarily disable logging during API call
-        temp_logs = []
-        
-        def capture_log(msg):
-            temp_logs.append(msg)
-        
-        # Replace global log function temporarily
-        import llm_interface
-        import utils
-        original_llm_log = llm_interface.log_process_detail
-        original_utils_log = utils.log_process_detail
-        llm_interface.log_process_detail = capture_log
-        utils.log_process_detail = capture_log
+        # 收集这个裁判模型的所有日志
+        judge_logs = []
+        judge_logs.append(f"[{test_case_id}] Hybrid Eval: Using Judge LLM '{judge_name}'")
         
         try:
             judge_answer = get_judge_llm_evaluation(
                 judge_llm_config=judge_config,
                 judge_prompt=judge_prompt,
             )
-        finally:
-            # Restore original log function
-            llm_interface.log_process_detail = original_llm_log
-            utils.log_process_detail = original_utils_log
-        
-        logs.extend(temp_logs)
-        
-        if isinstance(judge_answer, dict):
-            raw = judge_answer.get("answer", "")
-        else:
-            raw = judge_answer
+            
+            if isinstance(judge_answer, dict):
+                raw = judge_answer.get("answer", "")
+            else:
+                raw = judge_answer
 
-        text = str(raw)
-        text_lower = text.lower()
-        result = "yes" in text_lower
-        logs.append(f"[{test_case_id}] Hybrid Eval Case Judge {judge_name} Results: {result}")
-        
-        return (judge_config, result, logs)
+            text = str(raw)
+            text_lower = text.lower()
+            result = "yes" in text_lower
+            
+            judge_logs.append(f"[{test_case_id}] Hybrid Eval Case Judge {judge_name} Results: {result}")
+            
+            return {
+                'judge_config': judge_config,
+                'result': result,
+                'logs': judge_logs,
+                'success': True
+            }
+            
+        except Exception as e:
+            judge_logs.append(f"[{test_case_id}] Judge {judge_name} failed: {str(e)}")
+            return {
+                'judge_config': judge_config,
+                'result': None,
+                'logs': judge_logs,
+                'success': False
+            }
 
-    # Use ThreadPoolExecutor to evaluate with all judges concurrently
+    # 使用线程池并行执行裁判模型评估
     judge_results = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=len(JUDGE_LLM_CONFIGS)) as executor:
-        future_to_judge = {executor.submit(evaluate_with_judge, judge_config): judge_config 
-                          for judge_config in JUDGE_LLM_CONFIGS}
-        
-        for future in concurrent.futures.as_completed(future_to_judge):
-            try:
-                judge_config, result, logs = future.result()
-                judge_results.append((judge_config, result, logs))
-            except Exception as exc:
-                judge_config = future_to_judge[future]
-                logger.error(f"Judge {judge_config.get('name', 'N/A')} generated an exception: {exc}")
-                judge_results.append((judge_config, None, []))
-
-    # Sort results by the order of JUDGE_LLM_CONFIGS to maintain consistent ordering
-    judge_results.sort(key=lambda x: JUDGE_LLM_CONFIGS.index(x[0]))
+    max_workers = min(len(JUDGE_LLM_CONFIGS), 5)  # 限制最大并发数
     
-    # Now output all logs in the correct order
-    judge_details = []
-    for judge_config, result, logs in judge_results:
-        # Output all logs for this judge
-        for log_msg in logs:
-            log_process_detail(log_msg)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # 提交所有任务
+        future_to_config = {
+            executor.submit(evaluate_single_judge, judge_config): judge_config
+            for judge_config in JUDGE_LLM_CONFIGS
+        }
         
-        if result is not None:
-            judge_details.append(result)
+        # 收集结果
+        for future in concurrent.futures.as_completed(future_to_config):
+            try:
+                result = future.result(timeout=120)  # 2分钟超时
+                judge_results.append(result)
+            except Exception as exc:
+                judge_config = future_to_config[future]
+                judge_name = judge_config.get('name', 'N/A')
+                thread_safe_log(f"[{test_case_id}] Judge {judge_name} execution failed: {exc}")
+                judge_results.append({
+                    'judge_config': judge_config,
+                    'result': None,
+                    'logs': [f"[{test_case_id}] Judge {judge_name} execution failed: {exc}"],
+                    'success': False
+                })
+
+    # 按原始配置顺序排序结果
+    judge_results.sort(key=lambda x: JUDGE_LLM_CONFIGS.index(x['judge_config']))
+    
+    # 按顺序输出日志并收集有效结果
+    judge_details = []
+    for result in judge_results:
+        # 输出这个裁判模型的所有日志
+        for log_msg in result['logs']:
+            thread_safe_log(log_msg)
+        
+        # 收集有效的评估结果
+        if result['success'] and result['result'] is not None:
+            judge_details.append(result['result'])
 
     if not judge_details:
         logger.warning(
