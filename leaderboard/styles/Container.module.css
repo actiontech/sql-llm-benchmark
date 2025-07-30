@@ -134,6 +134,27 @@
   cursor: pointer;
 }
 
+/* SCALE Title Responsive Styles */
+.scaleTitle {
+  white-space: nowrap !important;
+}
+
+/* 只在手机屏幕上调整字体大小，防止换行 */
+@media (max-width: 767px) {
+  .scaleTitle {
+    font-size: calc(18vw) !important;
+    letter-spacing: -2px !important;
+  }
+}
+
+/* 极小屏幕优化 */
+@media (max-width: 375px) {
+  .scaleTitle {
+    font-size: calc(16vw) !important;
+    letter-spacing: -1px !important;
+  }
+}
+
 /* Responsive font sizes for titles */
 @media (max-width: 1200px) {
   .responsiveTitle1 {
