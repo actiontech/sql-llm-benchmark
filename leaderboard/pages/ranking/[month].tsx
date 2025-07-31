@@ -834,6 +834,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
               <div style={{ textAlign: "left", marginBottom: "40px" }}>
                 <Title
                   level={1}
+                  className={styles.scaleTitle}
                   style={{
                     margin: 0,
                     fontSize: "230px",
@@ -842,6 +843,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                     letterSpacing: "-2px",
                     lineHeight: 1,
                     textShadow: "4px 4px 8px rgba(0, 0, 0, 0.1)",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {t("ranking.title")}
