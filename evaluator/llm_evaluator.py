@@ -441,9 +441,9 @@ def run_all_evaluations(run_id: str, target_llm_config: dict):
     scores = {}
     base_dir = os.path.dirname(os.path.abspath(__file__))
     test_categories = {
-        # "sql_understanding": os.path.join(base_dir, "dataset","sql_understanding"),
+        "sql_understanding": os.path.join(base_dir, "dataset","sql_understanding"),
         "dialect_conversion": os.path.join(base_dir, "dataset/dialect_conversion"),
-        # "sql_optimization": os.path.join(base_dir, "dataset/sql_optimization")
+        "sql_optimization": os.path.join(base_dir, "dataset/sql_optimization")
     }
 
     for cat_key, cat_file in test_categories.items():
