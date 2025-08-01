@@ -208,9 +208,9 @@
         "indicator_name": "China-made_database.jsonl",
         "indicator_weight": 3,
         "evaluation_type": "hybrid",
-        "case_pass_count": 17,
-        "case_wrong_count": 2,
-        "correct_rate": 0.89,
+        "case_pass_count": 18,
+        "case_wrong_count": 1,
+        "correct_rate": 0.95,
         "case_datas": [
             {
                 "case_id": "1",
@@ -385,7 +385,7 @@
                 "case_id": "14",
                 "case_weight": 3,
                 "case_content": "{\"case_id\": \"14\", \"difficulty_level\": \"3\", \"source_dialect\": \"ORACLE\", \"target_dialect\": \"OceanBase的Oracle模式-4.2.5\", \"sql\": \"CREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;\"}",
-                "case_eval_result": "Fail",
+                "case_eval_result": "Pass",
                 "mode_question": "You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n",
                 "model_answers": [
                     {
