@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 import logging
 
-from llm_evaluator import run_all_evaluations
+from evaluation import run_all_evaluations
 from reports.reporting import generate_report
 from config.llm_config import (
     OUTPUT_DIR,
