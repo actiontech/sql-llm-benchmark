@@ -1,0 +1,2271 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20250813_162415_056
+Run Dimensions: dialect_conversion
+Run Indicator: syntax_error_detection
+Evaluation Timestamp: 2025-08-13T17:58:56.420901
+Target LLM: gpt-5-mini
+Judge LLMs: Pro/deepseek-ai/DeepSeek-V3, o4-mini, gemini-2.5-pro-preview-06-05
+-------------------------------------------------
+
+[2025-08-13 17:47:43.235992] Run Indicator: dialect_conversion, Parameters size: 7342B
+[2025-08-13 17:47:43.238002] 
+--- Capability: dialect_conversion Indicator syntax_error_detection.jsonl Evaluating Type: hybrid  ---
+[2025-08-13 17:47:43.238002] 
+--- Case: 1 ---
+[2025-08-13 17:47:43.238002] [1] Case Run 1/1
+[2025-08-13 17:47:43.238002] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE TABLE employees (employee_id NUMBER(6) NOT NULL, first_name VARCHAR2(20), hire_date DATE DEFAULT SYSDATE);
+
+Translated SQL (Postgresql-9.2):
+
+[2025-08-13 17:47:43.239006] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE TABLE employees (employee_id NUMBER(6) NOT NULL, first_name VARCHAR2(20), hire_date DATE DEFAULT SYSDATE);\n\nTranslated SQL (Postgresql-9.2):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:47:52.723299] [gpt-5-mini Model Answer]: CREATE TABLE employees (employee_id integer NOT NULL, first_name varchar(20), hire_date date DEFAULT CURRENT_DATE);
+[2025-08-13 17:47:52.726834] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE TABLE employees (employee_id integer NOT NULL, first_name varchar(20), hire_date date DEFAULT CURRENT_DATE);
+
+[2025-08-13 17:47:52.728311] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE TABLE employees (employee_id integer NOT NULL, first_name varchar(20), hire_date date DEFAULT CURRENT_DATE);\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:47:52.730999] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE TABLE employees (employee_id integer NOT NULL, first_name varchar(20), hire_date date DEFAULT CURRENT_DATE);
+
+[2025-08-13 17:47:52.733386] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE TABLE employees (employee_id integer NOT NULL, first_name varchar(20), hire_date date DEFAULT CURRENT_DATE);\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:47:52.733386] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE TABLE employees (employee_id integer NOT NULL, first_name varchar(20), hire_date date DEFAULT CURRENT_DATE);
+
+[2025-08-13 17:47:52.736846] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE TABLE employees (employee_id integer NOT NULL, first_name varchar(20), hire_date date DEFAULT CURRENT_DATE);\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:47:56.842124] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:47:58.613166] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:48:02.989123] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:48:02.989123] [1] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:48:02.989123] [1] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:48:02.990282] [1] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:48:02.990282] [1] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:48:02.990282] [1] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:48:02.990282] [1] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:48:02.990786] [1] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:48:02.990786] [1] hybrid Eval Case Final Result: True
+[2025-08-13 17:48:02.990786] 
+--- Case: 2 ---
+[2025-08-13 17:48:02.990786] [2] Case Run 1/1
+[2025-08-13 17:48:02.990786] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE PROCEDURE usp_UpdateOrderStatus @CustomerID INT, @OldStatus VARCHAR(20), @NewStatus VARCHAR(20), @RowsUpdated INT OUTPUT, @ErrorMessage VARCHAR(200) OUTPUT AS BEGIN SET NOCOUNT ON; DECLARE @OrderCount INT, @TranCount INT = @@TRANCOUNT; IF @OldStatus = @NewStatus BEGIN SET @ErrorMessage = '新旧状态不能相同'; RETURN 400; END BEGIN TRY IF @TranCount = 0 BEGIN TRANSACTION; UPDATE Orders SET Status = @NewStatus, LastUpdated = GETDATE() WHERE CustomerID = @CustomerID AND Status = @OldStatus AND OrderDate > DATEADD(month, -3, GETDATE()); SET @RowsUpdated = @@ROWCOUNT; IF @RowsUpdated = 0 BEGIN SET @ErrorMessage = '未找到符合条件的订单'; RETURN 404; END INSERT INTO OrderLog (OrderID, OldStatus, NewStatus, ChangeDate) SELECT OrderID, @OldStatus, @NewStatus, GETDATE() FROM Orders WHERE CustomerID = @CustomerID AND Status = @NewStatus; DECLARE @ProcessingFee DECIMAL(10,2) = 0; DECLARE fee_cursor CURSOR FOR SELECT Fee FROM OrderDetails WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = @CustomerID AND Status = @NewStatus); OPEN fee_cursor; FETCH NEXT FROM fee_cursor INTO @ProcessingFee; WHILE @@FETCH_STATUS = 0 BEGIN SET @ProcessingFee = @ProcessingFee * 0.95; FETCH NEXT FROM fee_cursor INTO @ProcessingFee; END CLOSE fee_cursor; DEALLOCATE fee_cursor; IF @TranCount = 0 COMMIT TRANSACTION; SET @ErrorMessage = '更新成功'; RETURN 200; END TRY BEGIN CATCH IF @TranCount = 0 AND @@TRANCOUNT > 0 ROLLBACK TRANSACTION; SET @ErrorMessage = ERROR_MESSAGE() + ' (Line:' + CAST(ERROR_LINE() AS VARCHAR) + ')'; RETURN 500; END CATCH END
+
+Translated SQL (GaussDB-v2.0_3.x):
+
+[2025-08-13 17:48:02.991787] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': "You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE PROCEDURE usp_UpdateOrderStatus @CustomerID INT, @OldStatus VARCHAR(20), @NewStatus VARCHAR(20), @RowsUpdated INT OUTPUT, @ErrorMessage VARCHAR(200) OUTPUT AS BEGIN SET NOCOUNT ON; DECLARE @OrderCount INT, @TranCount INT = @@TRANCOUNT; IF @OldStatus = @NewStatus BEGIN SET @ErrorMessage = '新旧状态不能相同'; RETURN 400; END BEGIN TRY IF @TranCount = 0 BEGIN TRANSACTION; UPDATE Orders SET Status = @NewStatus, LastUpdated = GETDATE() WHERE CustomerID = @CustomerID AND Status = @OldStatus AND OrderDate > DATEADD(month, -3, GETDATE()); SET @RowsUpdated = @@ROWCOUNT; IF @RowsUpdated = 0 BEGIN SET @ErrorMessage = '未找到符合条件的订单'; RETURN 404; END INSERT INTO OrderLog (OrderID, OldStatus, NewStatus, ChangeDate) SELECT OrderID, @OldStatus, @NewStatus, GETDATE() FROM Orders WHERE CustomerID = @CustomerID AND Status = @NewStatus; DECLARE @ProcessingFee DECIMAL(10,2) = 0; DECLARE fee_cursor CURSOR FOR SELECT Fee FROM OrderDetails WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = @CustomerID AND Status = @NewStatus); OPEN fee_cursor; FETCH NEXT FROM fee_cursor INTO @ProcessingFee; WHILE @@FETCH_STATUS = 0 BEGIN SET @ProcessingFee = @ProcessingFee * 0.95; FETCH NEXT FROM fee_cursor INTO @ProcessingFee; END CLOSE fee_cursor; DEALLOCATE fee_cursor; IF @TranCount = 0 COMMIT TRANSACTION; SET @ErrorMessage = '更新成功'; RETURN 200; END TRY BEGIN CATCH IF @TranCount = 0 AND @@TRANCOUNT > 0 ROLLBACK TRANSACTION; SET @ErrorMessage = ERROR_MESSAGE() + ' (Line:' + CAST(ERROR_LINE() AS VARCHAR) + ')'; RETURN 500; END CATCH END\n\nTranslated SQL (GaussDB-v2.0_3.x):\n"}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:48:50.871824] [gpt-5-mini Model Answer]: CREATE PROCEDURE usp_UpdateOrderStatus(
+  IN p_CustomerID INT,
+  IN p_OldStatus VARCHAR(20),
+  IN p_NewStatus VARCHAR(20),
+  OUT RowsUpdated INT,
+  OUT ErrorMessage VARCHAR(200)
+)
+LANGUAGE plpgsql
+AS
+$$
+DECLARE
+  ProcessingFee NUMERIC(10,2);
+  rec RECORD;
+BEGIN
+  RowsUpdated := 0;
+  ErrorMessage := NULL;
+
+  IF p_OldStatus = p_NewStatus THEN
+    ErrorMessage := '新旧状态不能相同';
+    RETURN;
+  END IF;
+
+  -- Try to create a savepoint to emulate nested transaction behavior; ignore if not in a transaction
+  BEGIN
+    EXECUTE 'SAVEPOINT sp_upd_order_status';
+  EXCEPTION WHEN OTHERS THEN
+    NULL;
+  END;
+
+  BEGIN
+    UPDATE Orders
+    SET Status = p_NewStatus,
+        LastUpdated = now()
+    WHERE CustomerID = p_CustomerID
+      AND Status = p_OldStatus
+      AND OrderDate > (now() - INTERVAL '3 months');
+
+    GET DIAGNOSTICS RowsUpdated = ROW_COUNT;
+
+    IF RowsUpdated = 0 THEN
+      ErrorMessage := '未找到符合条件的订单';
+      -- rollback to savepoint if exists
+      BEGIN
+        EXECUTE 'ROLLBACK TO SAVEPOINT sp_upd_order_status';
+      EXCEPTION WHEN OTHERS THEN
+        NULL;
+      END;
+      RETURN;
+    END IF;
+
+    INSERT INTO OrderLog (OrderID, OldStatus, NewStatus, ChangeDate)
+    SELECT OrderID, p_OldStatus, p_NewStatus, now()
+    FROM Orders
+    WHERE CustomerID = p_CustomerID
+      AND Status = p_NewStatus;
+
+    FOR rec IN
+      SELECT Fee FROM OrderDetails WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = p_CustomerID AND Status = p_NewStatus)
+    LOOP
+      ProcessingFee := rec.fee * 0.95;
+      -- processing fee computed per original logic; no persistent action required here
+    END LOOP;
+
+    -- release savepoint if exists
+    BEGIN
+      EXECUTE 'RELEASE SAVEPOINT sp_upd_order_status';
+    EXCEPTION WHEN OTHERS THEN
+      NULL;
+    END;
+
+    ErrorMessage := '更新成功';
+    RETURN;
+  EXCEPTION WHEN OTHERS THEN
+    -- rollback to savepoint if exists
+    BEGIN
+      EXECUTE 'ROLLBACK TO SAVEPOINT sp_upd_order_status';
+    EXCEPTION WHEN OTHERS THEN
+      NULL;
+    END;
+    ErrorMessage := COALESCE(SQLERRM, '未知错误') || ' (Line:0)';
+    RowsUpdated := 0;
+    RETURN;
+  END;
+END;
+$$;
+[2025-08-13 17:48:50.879420] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE PROCEDURE usp_UpdateOrderStatus(
+  IN p_CustomerID INT,
+  IN p_OldStatus VARCHAR(20),
+  IN p_NewStatus VARCHAR(20),
+  OUT RowsUpdated INT,
+  OUT ErrorMessage VARCHAR(200)
+)
+LANGUAGE plpgsql
+AS
+$$
+DECLARE
+  ProcessingFee NUMERIC(10,2);
+  rec RECORD;
+BEGIN
+  RowsUpdated := 0;
+  ErrorMessage := NULL;
+
+  IF p_OldStatus = p_NewStatus THEN
+    ErrorMessage := '新旧状态不能相同';
+    RETURN;
+  END IF;
+
+  -- Try to create a savepoint to emulate nested transaction behavior; ignore if not in a transaction
+  BEGIN
+    EXECUTE 'SAVEPOINT sp_upd_order_status';
+  EXCEPTION WHEN OTHERS THEN
+    NULL;
+  END;
+
+  BEGIN
+    UPDATE Orders
+    SET Status = p_NewStatus,
+        LastUpdated = now()
+    WHERE CustomerID = p_CustomerID
+      AND Status = p_OldStatus
+      AND OrderDate > (now() - INTERVAL '3 months');
+
+    GET DIAGNOSTICS RowsUpdated = ROW_COUNT;
+
+    IF RowsUpdated = 0 THEN
+      ErrorMessage := '未找到符合条件的订单';
+      -- rollback to savepoint if exists
+      BEGIN
+        EXECUTE 'ROLLBACK TO SAVEPOINT sp_upd_order_status';
+      EXCEPTION WHEN OTHERS THEN
+        NULL;
+      END;
+      RETURN;
+    END IF;
+
+    INSERT INTO OrderLog (OrderID, OldStatus, NewStatus, ChangeDate)
+    SELECT OrderID, p_OldStatus, p_NewStatus, now()
+    FROM Orders
+    WHERE CustomerID = p_CustomerID
+      AND Status = p_NewStatus;
+
+    FOR rec IN
+      SELECT Fee FROM OrderDetails WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = p_CustomerID AND Status = p_NewStatus)
+    LOOP
+      ProcessingFee := rec.fee * 0.95;
+      -- processing fee computed per original logic; no persistent action required here
+    END LOOP;
+
+    -- release savepoint if exists
+    BEGIN
+      EXECUTE 'RELEASE SAVEPOINT sp_upd_order_status';
+    EXCEPTION WHEN OTHERS THEN
+      NULL;
+    END;
+
+    ErrorMessage := '更新成功';
+    RETURN;
+  EXCEPTION WHEN OTHERS THEN
+    -- rollback to savepoint if exists
+    BEGIN
+      EXECUTE 'ROLLBACK TO SAVEPOINT sp_upd_order_status';
+    EXCEPTION WHEN OTHERS THEN
+      NULL;
+    END;
+    ErrorMessage := COALESCE(SQLERRM, '未知错误') || ' (Line:0)';
+    RowsUpdated := 0;
+    RETURN;
+  END;
+END;
+$$;
+
+[2025-08-13 17:48:50.881939] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE PROCEDURE usp_UpdateOrderStatus(\n  IN p_CustomerID INT,\n  IN p_OldStatus VARCHAR(20),\n  IN p_NewStatus VARCHAR(20),\n  OUT RowsUpdated INT,\n  OUT ErrorMessage VARCHAR(200)\n)\nLANGUAGE plpgsql\nAS\n$$\nDECLARE\n  ProcessingFee NUMERIC(10,2);\n  rec RECORD;\nBEGIN\n  RowsUpdated := 0;\n  ErrorMessage := NULL;\n\n  IF p_OldStatus = p_NewStatus THEN\n    ErrorMessage := \'新旧状态不能相同\';\n    RETURN;\n  END IF;\n\n  -- Try to create a savepoint to emulate nested transaction behavior; ignore if not in a transaction\n  BEGIN\n    EXECUTE \'SAVEPOINT sp_upd_order_status\';\n  EXCEPTION WHEN OTHERS THEN\n    NULL;\n  END;\n\n  BEGIN\n    UPDATE Orders\n    SET Status = p_NewStatus,\n        LastUpdated = now()\n    WHERE CustomerID = p_CustomerID\n      AND Status = p_OldStatus\n      AND OrderDate > (now() - INTERVAL \'3 months\');\n\n    GET DIAGNOSTICS RowsUpdated = ROW_COUNT;\n\n    IF RowsUpdated = 0 THEN\n      ErrorMessage := \'未找到符合条件的订单\';\n      -- rollback to savepoint if exists\n      BEGIN\n        EXECUTE \'ROLLBACK TO SAVEPOINT sp_upd_order_status\';\n      EXCEPTION WHEN OTHERS THEN\n        NULL;\n      END;\n      RETURN;\n    END IF;\n\n    INSERT INTO OrderLog (OrderID, OldStatus, NewStatus, ChangeDate)\n    SELECT OrderID, p_OldStatus, p_NewStatus, now()\n    FROM Orders\n    WHERE CustomerID = p_CustomerID\n      AND Status = p_NewStatus;\n\n    FOR rec IN\n      SELECT Fee FROM OrderDetails WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = p_CustomerID AND Status = p_NewStatus)\n    LOOP\n      ProcessingFee := rec.fee * 0.95;\n      -- processing fee computed per original logic; no persistent action required here\n    END LOOP;\n\n    -- release savepoint if exists\n    BEGIN\n      EXECUTE \'RELEASE SAVEPOINT sp_upd_order_status\';\n    EXCEPTION WHEN OTHERS THEN\n      NULL;\n    END;\n\n    ErrorMessage := \'更新成功\';\n    RETURN;\n  EXCEPTION WHEN OTHERS THEN\n    -- rollback to savepoint if exists\n    BEGIN\n      EXECUTE \'ROLLBACK TO SAVEPOINT sp_upd_order_status\';\n    EXCEPTION WHEN OTHERS THEN\n      NULL;\n    END;\n    ErrorMessage := COALESCE(SQLERRM, \'未知错误\') || \' (Line:0)\';\n    RowsUpdated := 0;\n    RETURN;\n  END;\nEND;\n$$;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:48:50.881939] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE PROCEDURE usp_UpdateOrderStatus(
+  IN p_CustomerID INT,
+  IN p_OldStatus VARCHAR(20),
+  IN p_NewStatus VARCHAR(20),
+  OUT RowsUpdated INT,
+  OUT ErrorMessage VARCHAR(200)
+)
+LANGUAGE plpgsql
+AS
+$$
+DECLARE
+  ProcessingFee NUMERIC(10,2);
+  rec RECORD;
+BEGIN
+  RowsUpdated := 0;
+  ErrorMessage := NULL;
+
+  IF p_OldStatus = p_NewStatus THEN
+    ErrorMessage := '新旧状态不能相同';
+    RETURN;
+  END IF;
+
+  -- Try to create a savepoint to emulate nested transaction behavior; ignore if not in a transaction
+  BEGIN
+    EXECUTE 'SAVEPOINT sp_upd_order_status';
+  EXCEPTION WHEN OTHERS THEN
+    NULL;
+  END;
+
+  BEGIN
+    UPDATE Orders
+    SET Status = p_NewStatus,
+        LastUpdated = now()
+    WHERE CustomerID = p_CustomerID
+      AND Status = p_OldStatus
+      AND OrderDate > (now() - INTERVAL '3 months');
+
+    GET DIAGNOSTICS RowsUpdated = ROW_COUNT;
+
+    IF RowsUpdated = 0 THEN
+      ErrorMessage := '未找到符合条件的订单';
+      -- rollback to savepoint if exists
+      BEGIN
+        EXECUTE 'ROLLBACK TO SAVEPOINT sp_upd_order_status';
+      EXCEPTION WHEN OTHERS THEN
+        NULL;
+      END;
+      RETURN;
+    END IF;
+
+    INSERT INTO OrderLog (OrderID, OldStatus, NewStatus, ChangeDate)
+    SELECT OrderID, p_OldStatus, p_NewStatus, now()
+    FROM Orders
+    WHERE CustomerID = p_CustomerID
+      AND Status = p_NewStatus;
+
+    FOR rec IN
+      SELECT Fee FROM OrderDetails WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = p_CustomerID AND Status = p_NewStatus)
+    LOOP
+      ProcessingFee := rec.fee * 0.95;
+      -- processing fee computed per original logic; no persistent action required here
+    END LOOP;
+
+    -- release savepoint if exists
+    BEGIN
+      EXECUTE 'RELEASE SAVEPOINT sp_upd_order_status';
+    EXCEPTION WHEN OTHERS THEN
+      NULL;
+    END;
+
+    ErrorMessage := '更新成功';
+    RETURN;
+  EXCEPTION WHEN OTHERS THEN
+    -- rollback to savepoint if exists
+    BEGIN
+      EXECUTE 'ROLLBACK TO SAVEPOINT sp_upd_order_status';
+    EXCEPTION WHEN OTHERS THEN
+      NULL;
+    END;
+    ErrorMessage := COALESCE(SQLERRM, '未知错误') || ' (Line:0)';
+    RowsUpdated := 0;
+    RETURN;
+  END;
+END;
+$$;
+
+[2025-08-13 17:48:50.884439] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE PROCEDURE usp_UpdateOrderStatus(\n  IN p_CustomerID INT,\n  IN p_OldStatus VARCHAR(20),\n  IN p_NewStatus VARCHAR(20),\n  OUT RowsUpdated INT,\n  OUT ErrorMessage VARCHAR(200)\n)\nLANGUAGE plpgsql\nAS\n$$\nDECLARE\n  ProcessingFee NUMERIC(10,2);\n  rec RECORD;\nBEGIN\n  RowsUpdated := 0;\n  ErrorMessage := NULL;\n\n  IF p_OldStatus = p_NewStatus THEN\n    ErrorMessage := \'新旧状态不能相同\';\n    RETURN;\n  END IF;\n\n  -- Try to create a savepoint to emulate nested transaction behavior; ignore if not in a transaction\n  BEGIN\n    EXECUTE \'SAVEPOINT sp_upd_order_status\';\n  EXCEPTION WHEN OTHERS THEN\n    NULL;\n  END;\n\n  BEGIN\n    UPDATE Orders\n    SET Status = p_NewStatus,\n        LastUpdated = now()\n    WHERE CustomerID = p_CustomerID\n      AND Status = p_OldStatus\n      AND OrderDate > (now() - INTERVAL \'3 months\');\n\n    GET DIAGNOSTICS RowsUpdated = ROW_COUNT;\n\n    IF RowsUpdated = 0 THEN\n      ErrorMessage := \'未找到符合条件的订单\';\n      -- rollback to savepoint if exists\n      BEGIN\n        EXECUTE \'ROLLBACK TO SAVEPOINT sp_upd_order_status\';\n      EXCEPTION WHEN OTHERS THEN\n        NULL;\n      END;\n      RETURN;\n    END IF;\n\n    INSERT INTO OrderLog (OrderID, OldStatus, NewStatus, ChangeDate)\n    SELECT OrderID, p_OldStatus, p_NewStatus, now()\n    FROM Orders\n    WHERE CustomerID = p_CustomerID\n      AND Status = p_NewStatus;\n\n    FOR rec IN\n      SELECT Fee FROM OrderDetails WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = p_CustomerID AND Status = p_NewStatus)\n    LOOP\n      ProcessingFee := rec.fee * 0.95;\n      -- processing fee computed per original logic; no persistent action required here\n    END LOOP;\n\n    -- release savepoint if exists\n    BEGIN\n      EXECUTE \'RELEASE SAVEPOINT sp_upd_order_status\';\n    EXCEPTION WHEN OTHERS THEN\n      NULL;\n    END;\n\n    ErrorMessage := \'更新成功\';\n    RETURN;\n  EXCEPTION WHEN OTHERS THEN\n    -- rollback to savepoint if exists\n    BEGIN\n      EXECUTE \'ROLLBACK TO SAVEPOINT sp_upd_order_status\';\n    EXCEPTION WHEN OTHERS THEN\n      NULL;\n    END;\n    ErrorMessage := COALESCE(SQLERRM, \'未知错误\') || \' (Line:0)\';\n    RowsUpdated := 0;\n    RETURN;\n  END;\nEND;\n$$;\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:48:50.885909] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE PROCEDURE usp_UpdateOrderStatus(
+  IN p_CustomerID INT,
+  IN p_OldStatus VARCHAR(20),
+  IN p_NewStatus VARCHAR(20),
+  OUT RowsUpdated INT,
+  OUT ErrorMessage VARCHAR(200)
+)
+LANGUAGE plpgsql
+AS
+$$
+DECLARE
+  ProcessingFee NUMERIC(10,2);
+  rec RECORD;
+BEGIN
+  RowsUpdated := 0;
+  ErrorMessage := NULL;
+
+  IF p_OldStatus = p_NewStatus THEN
+    ErrorMessage := '新旧状态不能相同';
+    RETURN;
+  END IF;
+
+  -- Try to create a savepoint to emulate nested transaction behavior; ignore if not in a transaction
+  BEGIN
+    EXECUTE 'SAVEPOINT sp_upd_order_status';
+  EXCEPTION WHEN OTHERS THEN
+    NULL;
+  END;
+
+  BEGIN
+    UPDATE Orders
+    SET Status = p_NewStatus,
+        LastUpdated = now()
+    WHERE CustomerID = p_CustomerID
+      AND Status = p_OldStatus
+      AND OrderDate > (now() - INTERVAL '3 months');
+
+    GET DIAGNOSTICS RowsUpdated = ROW_COUNT;
+
+    IF RowsUpdated = 0 THEN
+      ErrorMessage := '未找到符合条件的订单';
+      -- rollback to savepoint if exists
+      BEGIN
+        EXECUTE 'ROLLBACK TO SAVEPOINT sp_upd_order_status';
+      EXCEPTION WHEN OTHERS THEN
+        NULL;
+      END;
+      RETURN;
+    END IF;
+
+    INSERT INTO OrderLog (OrderID, OldStatus, NewStatus, ChangeDate)
+    SELECT OrderID, p_OldStatus, p_NewStatus, now()
+    FROM Orders
+    WHERE CustomerID = p_CustomerID
+      AND Status = p_NewStatus;
+
+    FOR rec IN
+      SELECT Fee FROM OrderDetails WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = p_CustomerID AND Status = p_NewStatus)
+    LOOP
+      ProcessingFee := rec.fee * 0.95;
+      -- processing fee computed per original logic; no persistent action required here
+    END LOOP;
+
+    -- release savepoint if exists
+    BEGIN
+      EXECUTE 'RELEASE SAVEPOINT sp_upd_order_status';
+    EXCEPTION WHEN OTHERS THEN
+      NULL;
+    END;
+
+    ErrorMessage := '更新成功';
+    RETURN;
+  EXCEPTION WHEN OTHERS THEN
+    -- rollback to savepoint if exists
+    BEGIN
+      EXECUTE 'ROLLBACK TO SAVEPOINT sp_upd_order_status';
+    EXCEPTION WHEN OTHERS THEN
+      NULL;
+    END;
+    ErrorMessage := COALESCE(SQLERRM, '未知错误') || ' (Line:0)';
+    RowsUpdated := 0;
+    RETURN;
+  END;
+END;
+$$;
+
+[2025-08-13 17:48:50.886959] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE PROCEDURE usp_UpdateOrderStatus(\n  IN p_CustomerID INT,\n  IN p_OldStatus VARCHAR(20),\n  IN p_NewStatus VARCHAR(20),\n  OUT RowsUpdated INT,\n  OUT ErrorMessage VARCHAR(200)\n)\nLANGUAGE plpgsql\nAS\n$$\nDECLARE\n  ProcessingFee NUMERIC(10,2);\n  rec RECORD;\nBEGIN\n  RowsUpdated := 0;\n  ErrorMessage := NULL;\n\n  IF p_OldStatus = p_NewStatus THEN\n    ErrorMessage := \'新旧状态不能相同\';\n    RETURN;\n  END IF;\n\n  -- Try to create a savepoint to emulate nested transaction behavior; ignore if not in a transaction\n  BEGIN\n    EXECUTE \'SAVEPOINT sp_upd_order_status\';\n  EXCEPTION WHEN OTHERS THEN\n    NULL;\n  END;\n\n  BEGIN\n    UPDATE Orders\n    SET Status = p_NewStatus,\n        LastUpdated = now()\n    WHERE CustomerID = p_CustomerID\n      AND Status = p_OldStatus\n      AND OrderDate > (now() - INTERVAL \'3 months\');\n\n    GET DIAGNOSTICS RowsUpdated = ROW_COUNT;\n\n    IF RowsUpdated = 0 THEN\n      ErrorMessage := \'未找到符合条件的订单\';\n      -- rollback to savepoint if exists\n      BEGIN\n        EXECUTE \'ROLLBACK TO SAVEPOINT sp_upd_order_status\';\n      EXCEPTION WHEN OTHERS THEN\n        NULL;\n      END;\n      RETURN;\n    END IF;\n\n    INSERT INTO OrderLog (OrderID, OldStatus, NewStatus, ChangeDate)\n    SELECT OrderID, p_OldStatus, p_NewStatus, now()\n    FROM Orders\n    WHERE CustomerID = p_CustomerID\n      AND Status = p_NewStatus;\n\n    FOR rec IN\n      SELECT Fee FROM OrderDetails WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = p_CustomerID AND Status = p_NewStatus)\n    LOOP\n      ProcessingFee := rec.fee * 0.95;\n      -- processing fee computed per original logic; no persistent action required here\n    END LOOP;\n\n    -- release savepoint if exists\n    BEGIN\n      EXECUTE \'RELEASE SAVEPOINT sp_upd_order_status\';\n    EXCEPTION WHEN OTHERS THEN\n      NULL;\n    END;\n\n    ErrorMessage := \'更新成功\';\n    RETURN;\n  EXCEPTION WHEN OTHERS THEN\n    -- rollback to savepoint if exists\n    BEGIN\n      EXECUTE \'ROLLBACK TO SAVEPOINT sp_upd_order_status\';\n    EXCEPTION WHEN OTHERS THEN\n      NULL;\n    END;\n    ErrorMessage := COALESCE(SQLERRM, \'未知错误\') || \' (Line:0)\';\n    RowsUpdated := 0;\n    RETURN;\n  END;\nEND;\n$$;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:49:03.374069] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:49:08.566279] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:49:19.072762] [o4-mini Model Answer]: {"answer":"no"}
+[2025-08-13 17:49:19.072762] [2] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:49:19.072762] [2] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:49:19.072762] [2] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:49:19.072762] [2] Hybrid Eval Case Judge o4-mini Results: False
+[2025-08-13 17:49:19.074240] [2] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:49:19.074240] [2] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:49:19.074240] [2] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:49:19.074240] [2] hybrid Eval Case Final Result: True
+[2025-08-13 17:49:19.074240] 
+--- Case: 3 ---
+[2025-08-13 17:49:19.074240] [3] Case Run 1/1
+[2025-08-13 17:49:19.074240] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE SEQUENCE emp_seq START WITH 1000 INCREMENT BY 1 CACHE 20;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-08-13 17:49:19.075305] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE SEQUENCE emp_seq START WITH 1000 INCREMENT BY 1 CACHE 20;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:49:29.955284] [gpt-5-mini Model Answer]: CREATE SEQUENCE emp_seq START WITH 1000 INCREMENT BY 1 CACHE 20;
+[2025-08-13 17:49:29.961792] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE SEQUENCE emp_seq START WITH 1000 INCREMENT BY 1 CACHE 20;
+
+[2025-08-13 17:49:29.962302] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE SEQUENCE emp_seq START WITH 1000 INCREMENT BY 1 CACHE 20;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:49:29.963349] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE SEQUENCE emp_seq START WITH 1000 INCREMENT BY 1 CACHE 20;
+
+[2025-08-13 17:49:29.965386] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE SEQUENCE emp_seq START WITH 1000 INCREMENT BY 1 CACHE 20;\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:49:29.965386] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE SEQUENCE emp_seq START WITH 1000 INCREMENT BY 1 CACHE 20;
+
+[2025-08-13 17:49:29.970326] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE SEQUENCE emp_seq START WITH 1000 INCREMENT BY 1 CACHE 20;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:49:34.455097] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:49:35.319554] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:49:36.720219] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:49:36.721813] [3] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:49:36.721813] [3] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:49:36.721813] [3] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:49:36.721813] [3] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:49:36.721813] [3] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:49:36.721813] [3] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:49:36.722797] [3] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:49:36.722797] [3] hybrid Eval Case Final Result: True
+[2025-08-13 17:49:36.722797] 
+--- Case: 4 ---
+[2025-08-13 17:49:36.722797] [4] Case Run 1/1
+[2025-08-13 17:49:36.722797] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+DELIMITER $$ CREATE OR REPLACE PROCEDURE "SP_KSH_PERSON_DESC" (V_USER_ID IN VARCHAR2, OUTCURSOR OUT SYS_REFCURSOR) IS BEGIN OPEN OUTCURSOR FOR SELECT SYS_GUID() AS UUID, v0.usr_name AS user_name, v0.dept_name, v0.position_describe AS post_name, NVL(v1.ves_cnt,0) AS ves_cnt, NVL(v1.jw_num,0) AS jw_num, NVL(v1.hw_num,0) AS hw_num FROM (SELECT su.usr_id, su.usr_name, so.office_name || so2.office_name AS dept_name, su.position_describe FROM sys_user su LEFT JOIN sys_office so ON su.department_id = so.office_id LEFT JOIN sys_office so2 ON su.dept = so2.office_code WHERE su.usr_id = V_USER_ID) v0 LEFT JOIN (SELECT COUNT(um.vessel_code) AS ves_cnt, COUNT(DISTINCT fn_get_vessel_manager_bc(um.VESSEL_CODE, SYSDATE, '1')) AS jw_num, COUNT(DISTINCT fn_get_vessel_manager_bc(um.VESSEL_CODE, SYSDATE, '2')) AS hw_num FROM ksh_user_manage_ship um WHERE um.user_id = V_USER_ID) v1 ON 1=1; END SP_KSH_PERSON_DESC; $$
+
+Translated SQL (Postgresql-9.2):
+
+[2025-08-13 17:49:36.722797] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nDELIMITER $$ CREATE OR REPLACE PROCEDURE "SP_KSH_PERSON_DESC" (V_USER_ID IN VARCHAR2, OUTCURSOR OUT SYS_REFCURSOR) IS BEGIN OPEN OUTCURSOR FOR SELECT SYS_GUID() AS UUID, v0.usr_name AS user_name, v0.dept_name, v0.position_describe AS post_name, NVL(v1.ves_cnt,0) AS ves_cnt, NVL(v1.jw_num,0) AS jw_num, NVL(v1.hw_num,0) AS hw_num FROM (SELECT su.usr_id, su.usr_name, so.office_name || so2.office_name AS dept_name, su.position_describe FROM sys_user su LEFT JOIN sys_office so ON su.department_id = so.office_id LEFT JOIN sys_office so2 ON su.dept = so2.office_code WHERE su.usr_id = V_USER_ID) v0 LEFT JOIN (SELECT COUNT(um.vessel_code) AS ves_cnt, COUNT(DISTINCT fn_get_vessel_manager_bc(um.VESSEL_CODE, SYSDATE, \'1\')) AS jw_num, COUNT(DISTINCT fn_get_vessel_manager_bc(um.VESSEL_CODE, SYSDATE, \'2\')) AS hw_num FROM ksh_user_manage_ship um WHERE um.user_id = V_USER_ID) v1 ON 1=1; END SP_KSH_PERSON_DESC; $$\n\nTranslated SQL (Postgresql-9.2):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:50:37.797133] [gpt-5-mini Model Answer]: CREATE OR REPLACE FUNCTION sp_ksh_person_desc(v_user_id varchar)
+RETURNS refcursor AS $$
+DECLARE
+  outcursor refcursor;
+BEGIN
+  OPEN outcursor FOR
+    SELECT uuid_generate_v4()::text AS uuid,
+           v0.usr_name AS user_name,
+           v0.dept_name,
+           v0.position_describe AS post_name,
+           COALESCE(v1.ves_cnt,0) AS ves_cnt,
+           COALESCE(v1.jw_num,0) AS jw_num,
+           COALESCE(v1.hw_num,0) AS hw_num
+    FROM (
+      SELECT su.usr_id, su.usr_name, so.office_name || so2.office_name AS dept_name, su.position_describe
+      FROM sys_user su
+      LEFT JOIN sys_office so ON su.department_id = so.office_id
+      LEFT JOIN sys_office so2 ON su.dept = so2.office_code
+      WHERE su.usr_id = v_user_id
+    ) v0
+    LEFT JOIN (
+      SELECT COUNT(um.vessel_code) AS ves_cnt,
+             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), '1')) AS jw_num,
+             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), '2')) AS hw_num
+      FROM ksh_user_manage_ship um
+      WHERE um.user_id = v_user_id
+    ) v1 ON true;
+  RETURN outcursor;
+END;
+$$ LANGUAGE plpgsql;
+[2025-08-13 17:50:37.805219] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE FUNCTION sp_ksh_person_desc(v_user_id varchar)
+RETURNS refcursor AS $$
+DECLARE
+  outcursor refcursor;
+BEGIN
+  OPEN outcursor FOR
+    SELECT uuid_generate_v4()::text AS uuid,
+           v0.usr_name AS user_name,
+           v0.dept_name,
+           v0.position_describe AS post_name,
+           COALESCE(v1.ves_cnt,0) AS ves_cnt,
+           COALESCE(v1.jw_num,0) AS jw_num,
+           COALESCE(v1.hw_num,0) AS hw_num
+    FROM (
+      SELECT su.usr_id, su.usr_name, so.office_name || so2.office_name AS dept_name, su.position_describe
+      FROM sys_user su
+      LEFT JOIN sys_office so ON su.department_id = so.office_id
+      LEFT JOIN sys_office so2 ON su.dept = so2.office_code
+      WHERE su.usr_id = v_user_id
+    ) v0
+    LEFT JOIN (
+      SELECT COUNT(um.vessel_code) AS ves_cnt,
+             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), '1')) AS jw_num,
+             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), '2')) AS hw_num
+      FROM ksh_user_manage_ship um
+      WHERE um.user_id = v_user_id
+    ) v1 ON true;
+  RETURN outcursor;
+END;
+$$ LANGUAGE plpgsql;
+
+[2025-08-13 17:50:37.816159] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE FUNCTION sp_ksh_person_desc(v_user_id varchar)\nRETURNS refcursor AS $$\nDECLARE\n  outcursor refcursor;\nBEGIN\n  OPEN outcursor FOR\n    SELECT uuid_generate_v4()::text AS uuid,\n           v0.usr_name AS user_name,\n           v0.dept_name,\n           v0.position_describe AS post_name,\n           COALESCE(v1.ves_cnt,0) AS ves_cnt,\n           COALESCE(v1.jw_num,0) AS jw_num,\n           COALESCE(v1.hw_num,0) AS hw_num\n    FROM (\n      SELECT su.usr_id, su.usr_name, so.office_name || so2.office_name AS dept_name, su.position_describe\n      FROM sys_user su\n      LEFT JOIN sys_office so ON su.department_id = so.office_id\n      LEFT JOIN sys_office so2 ON su.dept = so2.office_code\n      WHERE su.usr_id = v_user_id\n    ) v0\n    LEFT JOIN (\n      SELECT COUNT(um.vessel_code) AS ves_cnt,\n             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), \'1\')) AS jw_num,\n             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), \'2\')) AS hw_num\n      FROM ksh_user_manage_ship um\n      WHERE um.user_id = v_user_id\n    ) v1 ON true;\n  RETURN outcursor;\nEND;\n$$ LANGUAGE plpgsql;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:50:37.816159] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE FUNCTION sp_ksh_person_desc(v_user_id varchar)
+RETURNS refcursor AS $$
+DECLARE
+  outcursor refcursor;
+BEGIN
+  OPEN outcursor FOR
+    SELECT uuid_generate_v4()::text AS uuid,
+           v0.usr_name AS user_name,
+           v0.dept_name,
+           v0.position_describe AS post_name,
+           COALESCE(v1.ves_cnt,0) AS ves_cnt,
+           COALESCE(v1.jw_num,0) AS jw_num,
+           COALESCE(v1.hw_num,0) AS hw_num
+    FROM (
+      SELECT su.usr_id, su.usr_name, so.office_name || so2.office_name AS dept_name, su.position_describe
+      FROM sys_user su
+      LEFT JOIN sys_office so ON su.department_id = so.office_id
+      LEFT JOIN sys_office so2 ON su.dept = so2.office_code
+      WHERE su.usr_id = v_user_id
+    ) v0
+    LEFT JOIN (
+      SELECT COUNT(um.vessel_code) AS ves_cnt,
+             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), '1')) AS jw_num,
+             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), '2')) AS hw_num
+      FROM ksh_user_manage_ship um
+      WHERE um.user_id = v_user_id
+    ) v1 ON true;
+  RETURN outcursor;
+END;
+$$ LANGUAGE plpgsql;
+
+[2025-08-13 17:50:37.819602] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE FUNCTION sp_ksh_person_desc(v_user_id varchar)
+RETURNS refcursor AS $$
+DECLARE
+  outcursor refcursor;
+BEGIN
+  OPEN outcursor FOR
+    SELECT uuid_generate_v4()::text AS uuid,
+           v0.usr_name AS user_name,
+           v0.dept_name,
+           v0.position_describe AS post_name,
+           COALESCE(v1.ves_cnt,0) AS ves_cnt,
+           COALESCE(v1.jw_num,0) AS jw_num,
+           COALESCE(v1.hw_num,0) AS hw_num
+    FROM (
+      SELECT su.usr_id, su.usr_name, so.office_name || so2.office_name AS dept_name, su.position_describe
+      FROM sys_user su
+      LEFT JOIN sys_office so ON su.department_id = so.office_id
+      LEFT JOIN sys_office so2 ON su.dept = so2.office_code
+      WHERE su.usr_id = v_user_id
+    ) v0
+    LEFT JOIN (
+      SELECT COUNT(um.vessel_code) AS ves_cnt,
+             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), '1')) AS jw_num,
+             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), '2')) AS hw_num
+      FROM ksh_user_manage_ship um
+      WHERE um.user_id = v_user_id
+    ) v1 ON true;
+  RETURN outcursor;
+END;
+$$ LANGUAGE plpgsql;
+
+[2025-08-13 17:50:37.819602] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE FUNCTION sp_ksh_person_desc(v_user_id varchar)\nRETURNS refcursor AS $$\nDECLARE\n  outcursor refcursor;\nBEGIN\n  OPEN outcursor FOR\n    SELECT uuid_generate_v4()::text AS uuid,\n           v0.usr_name AS user_name,\n           v0.dept_name,\n           v0.position_describe AS post_name,\n           COALESCE(v1.ves_cnt,0) AS ves_cnt,\n           COALESCE(v1.jw_num,0) AS jw_num,\n           COALESCE(v1.hw_num,0) AS hw_num\n    FROM (\n      SELECT su.usr_id, su.usr_name, so.office_name || so2.office_name AS dept_name, su.position_describe\n      FROM sys_user su\n      LEFT JOIN sys_office so ON su.department_id = so.office_id\n      LEFT JOIN sys_office so2 ON su.dept = so2.office_code\n      WHERE su.usr_id = v_user_id\n    ) v0\n    LEFT JOIN (\n      SELECT COUNT(um.vessel_code) AS ves_cnt,\n             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), \'1\')) AS jw_num,\n             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), \'2\')) AS hw_num\n      FROM ksh_user_manage_ship um\n      WHERE um.user_id = v_user_id\n    ) v1 ON true;\n  RETURN outcursor;\nEND;\n$$ LANGUAGE plpgsql;\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:50:37.821264] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE FUNCTION sp_ksh_person_desc(v_user_id varchar)\nRETURNS refcursor AS $$\nDECLARE\n  outcursor refcursor;\nBEGIN\n  OPEN outcursor FOR\n    SELECT uuid_generate_v4()::text AS uuid,\n           v0.usr_name AS user_name,\n           v0.dept_name,\n           v0.position_describe AS post_name,\n           COALESCE(v1.ves_cnt,0) AS ves_cnt,\n           COALESCE(v1.jw_num,0) AS jw_num,\n           COALESCE(v1.hw_num,0) AS hw_num\n    FROM (\n      SELECT su.usr_id, su.usr_name, so.office_name || so2.office_name AS dept_name, su.position_describe\n      FROM sys_user su\n      LEFT JOIN sys_office so ON su.department_id = so.office_id\n      LEFT JOIN sys_office so2 ON su.dept = so2.office_code\n      WHERE su.usr_id = v_user_id\n    ) v0\n    LEFT JOIN (\n      SELECT COUNT(um.vessel_code) AS ves_cnt,\n             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), \'1\')) AS jw_num,\n             COUNT(DISTINCT fn_get_vessel_manager_bc(um.vessel_code, now(), \'2\')) AS hw_num\n      FROM ksh_user_manage_ship um\n      WHERE um.user_id = v_user_id\n    ) v1 ON true;\n  RETURN outcursor;\nEND;\n$$ LANGUAGE plpgsql;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:50:42.117371] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:50:50.433704] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:50:55.699615] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:50:55.700625] [4] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:50:55.700939] [4] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:50:55.700939] [4] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:50:55.700939] [4] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:50:55.700939] [4] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:50:55.700939] [4] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:50:55.701944] [4] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:50:55.701944] [4] hybrid Eval Case Final Result: True
+[2025-08-13 17:50:55.701944] 
+--- Case: 5 ---
+[2025-08-13 17:50:55.701944] [5] Case Run 1/1
+[2025-08-13 17:50:55.702952] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Logs') CREATE TABLE Logs (LogID int, LogMessage nvarchar(max));
+
+Translated SQL (GaussDB-v2.0_3.x):
+
+[2025-08-13 17:50:55.702952] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': "You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nIF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Logs') CREATE TABLE Logs (LogID int, LogMessage nvarchar(max));\n\nTranslated SQL (GaussDB-v2.0_3.x):\n"}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:51:01.432364] [gpt-5-mini Model Answer]: CREATE TABLE IF NOT EXISTS Logs (LogID integer, LogMessage text);
+[2025-08-13 17:51:01.439404] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE TABLE IF NOT EXISTS Logs (LogID integer, LogMessage text);
+
+[2025-08-13 17:51:01.440414] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE TABLE IF NOT EXISTS Logs (LogID integer, LogMessage text);\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:51:01.441829] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE TABLE IF NOT EXISTS Logs (LogID integer, LogMessage text);
+
+[2025-08-13 17:51:01.443833] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE TABLE IF NOT EXISTS Logs (LogID integer, LogMessage text);\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:51:01.444965] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE TABLE IF NOT EXISTS Logs (LogID integer, LogMessage text);
+
+[2025-08-13 17:51:01.446988] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE TABLE IF NOT EXISTS Logs (LogID integer, LogMessage text);\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:51:04.143883] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:51:05.903942] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:51:14.905353] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:51:14.906366] [5] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:51:14.907430] [5] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:51:14.907430] [5] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:51:14.907430] [5] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:51:14.907430] [5] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:51:14.907430] [5] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:51:14.907430] [5] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:51:14.907430] [5] hybrid Eval Case Final Result: True
+[2025-08-13 17:51:14.908436] 
+--- Case: 6 ---
+[2025-08-13 17:51:14.908436] [6] Case Run 1/1
+[2025-08-13 17:51:14.908436] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE OR REPLACE VIEW v_emp_dept AS SELECT e.ename, d.dname FROM emp e JOIN dept d ON e.deptno = d.deptno WITH READ ONLY;
+
+Translated SQL (Postgresql-9.2):
+
+[2025-08-13 17:51:14.908436] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE OR REPLACE VIEW v_emp_dept AS SELECT e.ename, d.dname FROM emp e JOIN dept d ON e.deptno = d.deptno WITH READ ONLY;\n\nTranslated SQL (Postgresql-9.2):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:51:24.562967] [gpt-5-mini Model Answer]: CREATE OR REPLACE VIEW v_emp_dept AS SELECT e.ename, d.dname FROM emp e JOIN dept d ON e.deptno = d.deptno;
+[2025-08-13 17:51:24.568350] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE VIEW v_emp_dept AS SELECT e.ename, d.dname FROM emp e JOIN dept d ON e.deptno = d.deptno;
+
+[2025-08-13 17:51:24.568350] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE VIEW v_emp_dept AS SELECT e.ename, d.dname FROM emp e JOIN dept d ON e.deptno = d.deptno;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:51:24.569684] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE VIEW v_emp_dept AS SELECT e.ename, d.dname FROM emp e JOIN dept d ON e.deptno = d.deptno;
+
+[2025-08-13 17:51:24.571921] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE VIEW v_emp_dept AS SELECT e.ename, d.dname FROM emp e JOIN dept d ON e.deptno = d.deptno;\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:51:24.571921] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE VIEW v_emp_dept AS SELECT e.ename, d.dname FROM emp e JOIN dept d ON e.deptno = d.deptno;
+
+[2025-08-13 17:51:24.574165] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE VIEW v_emp_dept AS SELECT e.ename, d.dname FROM emp e JOIN dept d ON e.deptno = d.deptno;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:51:27.276015] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:51:30.240392] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:51:36.710373] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:51:36.712837] [6] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:51:36.712837] [6] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:51:36.719972] [6] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:51:36.719972] [6] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:51:36.720973] [6] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:51:36.720973] [6] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:51:36.720973] [6] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:51:36.720973] [6] hybrid Eval Case Final Result: True
+[2025-08-13 17:51:36.720973] 
+--- Case: 7 ---
+[2025-08-13 17:51:36.722131] [7] Case Run 1/1
+[2025-08-13 17:51:36.722131] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE PROCEDURE sp_GetCustomerOrders @CustomerID nchar(5) AS BEGIN SELECT * FROM Orders WHERE CustomerID = @CustomerID; END;
+
+Translated SQL (GaussDB-v2.0_3.x):
+
+[2025-08-13 17:51:36.722131] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE PROCEDURE sp_GetCustomerOrders @CustomerID nchar(5) AS BEGIN SELECT * FROM Orders WHERE CustomerID = @CustomerID; END;\n\nTranslated SQL (GaussDB-v2.0_3.x):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:51:54.550518] [gpt-5-mini Model Answer]: CREATE OR REPLACE FUNCTION sp_GetCustomerOrders(p_CustomerID CHAR(5)) RETURNS SETOF Orders LANGUAGE plpgsql AS $$
+BEGIN
+    RETURN QUERY SELECT * FROM Orders WHERE CustomerID = p_CustomerID;
+END;
+$$;
+[2025-08-13 17:51:54.557830] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE FUNCTION sp_GetCustomerOrders(p_CustomerID CHAR(5)) RETURNS SETOF Orders LANGUAGE plpgsql AS $$
+BEGIN
+    RETURN QUERY SELECT * FROM Orders WHERE CustomerID = p_CustomerID;
+END;
+$$;
+
+[2025-08-13 17:51:54.558831] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE FUNCTION sp_GetCustomerOrders(p_CustomerID CHAR(5)) RETURNS SETOF Orders LANGUAGE plpgsql AS $$\nBEGIN\n    RETURN QUERY SELECT * FROM Orders WHERE CustomerID = p_CustomerID;\nEND;\n$$;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:51:54.560356] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE FUNCTION sp_GetCustomerOrders(p_CustomerID CHAR(5)) RETURNS SETOF Orders LANGUAGE plpgsql AS $$
+BEGIN
+    RETURN QUERY SELECT * FROM Orders WHERE CustomerID = p_CustomerID;
+END;
+$$;
+
+[2025-08-13 17:51:54.562553] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE FUNCTION sp_GetCustomerOrders(p_CustomerID CHAR(5)) RETURNS SETOF Orders LANGUAGE plpgsql AS $$\nBEGIN\n    RETURN QUERY SELECT * FROM Orders WHERE CustomerID = p_CustomerID;\nEND;\n$$;\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:51:54.563985] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE FUNCTION sp_GetCustomerOrders(p_CustomerID CHAR(5)) RETURNS SETOF Orders LANGUAGE plpgsql AS $$
+BEGIN
+    RETURN QUERY SELECT * FROM Orders WHERE CustomerID = p_CustomerID;
+END;
+$$;
+
+[2025-08-13 17:51:54.565043] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE FUNCTION sp_GetCustomerOrders(p_CustomerID CHAR(5)) RETURNS SETOF Orders LANGUAGE plpgsql AS $$\nBEGIN\n    RETURN QUERY SELECT * FROM Orders WHERE CustomerID = p_CustomerID;\nEND;\n$$;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:51:57.704359] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:52:02.753224] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:52:04.857435] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:52:04.858437] [7] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:52:04.858437] [7] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:52:04.858437] [7] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:52:04.858437] [7] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:52:04.858437] [7] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:52:04.859485] [7] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:52:04.859485] [7] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:52:04.859485] [7] hybrid Eval Case Final Result: True
+[2025-08-13 17:52:04.859485] 
+--- Case: 8 ---
+[2025-08-13 17:52:04.860499] [8] Case Run 1/1
+[2025-08-13 17:52:04.860499] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE INDEX idx_emp_name ON emp(LOWER(ename));
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-08-13 17:52:04.860499] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE INDEX idx_emp_name ON emp(LOWER(ename));\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:52:23.229390] [gpt-5-mini Model Answer]: ALTER TABLE emp ADD ename_lower VARCHAR2(4000) GENERATED ALWAYS AS (LOWER(ename)) VIRTUAL;
+CREATE INDEX idx_emp_name ON emp(ename_lower);
+[2025-08-13 17:52:23.235297] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+ALTER TABLE emp ADD ename_lower VARCHAR2(4000) GENERATED ALWAYS AS (LOWER(ename)) VIRTUAL;
+CREATE INDEX idx_emp_name ON emp(ename_lower);
+
+[2025-08-13 17:52:23.236299] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nALTER TABLE emp ADD ename_lower VARCHAR2(4000) GENERATED ALWAYS AS (LOWER(ename)) VIRTUAL;\nCREATE INDEX idx_emp_name ON emp(ename_lower);\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:52:23.237302] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+ALTER TABLE emp ADD ename_lower VARCHAR2(4000) GENERATED ALWAYS AS (LOWER(ename)) VIRTUAL;
+CREATE INDEX idx_emp_name ON emp(ename_lower);
+
+[2025-08-13 17:52:23.240503] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nALTER TABLE emp ADD ename_lower VARCHAR2(4000) GENERATED ALWAYS AS (LOWER(ename)) VIRTUAL;\nCREATE INDEX idx_emp_name ON emp(ename_lower);\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:52:23.241733] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+ALTER TABLE emp ADD ename_lower VARCHAR2(4000) GENERATED ALWAYS AS (LOWER(ename)) VIRTUAL;
+CREATE INDEX idx_emp_name ON emp(ename_lower);
+
+[2025-08-13 17:52:23.244840] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nALTER TABLE emp ADD ename_lower VARCHAR2(4000) GENERATED ALWAYS AS (LOWER(ename)) VIRTUAL;\nCREATE INDEX idx_emp_name ON emp(ename_lower);\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:52:26.964804] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:52:33.371446] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:52:36.635797] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:52:36.637304] [8] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:52:36.637304] [8] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:52:36.637304] [8] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:52:36.638311] [8] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:52:36.638311] [8] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:52:36.638311] [8] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:52:36.638311] [8] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:52:36.638311] [8] hybrid Eval Case Final Result: True
+[2025-08-13 17:52:36.638311] 
+--- Case: 9 ---
+[2025-08-13 17:52:36.639320] [9] Case Run 1/1
+[2025-08-13 17:52:36.639320] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE OR REPLACE TRIGGER trg_audit_emp_sal BEFORE UPDATE OF sal ON emp FOR EACH ROW BEGIN INSERT INTO emp_audit(emp_id, old_sal, new_sal) VALUES (:OLD.empno, :OLD.sal, :NEW.sal); END;
+
+Translated SQL (Postgresql-9.2):
+
+[2025-08-13 17:52:36.639320] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE OR REPLACE TRIGGER trg_audit_emp_sal BEFORE UPDATE OF sal ON emp FOR EACH ROW BEGIN INSERT INTO emp_audit(emp_id, old_sal, new_sal) VALUES (:OLD.empno, :OLD.sal, :NEW.sal); END;\n\nTranslated SQL (Postgresql-9.2):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:52:54.085088] [gpt-5-mini Model Answer]: CREATE OR REPLACE FUNCTION trg_audit_emp_sal_fn() RETURNS trigger AS $$
+BEGIN
+    INSERT INTO emp_audit(emp_id, old_sal, new_sal)
+    VALUES (OLD.empno, OLD.sal, NEW.sal);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+DROP TRIGGER IF EXISTS trg_audit_emp_sal ON emp;
+CREATE TRIGGER trg_audit_emp_sal
+BEFORE UPDATE OF sal ON emp
+FOR EACH ROW
+EXECUTE PROCEDURE trg_audit_emp_sal_fn();
+[2025-08-13 17:52:54.089267] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE FUNCTION trg_audit_emp_sal_fn() RETURNS trigger AS $$
+BEGIN
+    INSERT INTO emp_audit(emp_id, old_sal, new_sal)
+    VALUES (OLD.empno, OLD.sal, NEW.sal);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+DROP TRIGGER IF EXISTS trg_audit_emp_sal ON emp;
+CREATE TRIGGER trg_audit_emp_sal
+BEFORE UPDATE OF sal ON emp
+FOR EACH ROW
+EXECUTE PROCEDURE trg_audit_emp_sal_fn();
+
+[2025-08-13 17:52:54.090706] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE FUNCTION trg_audit_emp_sal_fn() RETURNS trigger AS $$\nBEGIN\n    INSERT INTO emp_audit(emp_id, old_sal, new_sal)\n    VALUES (OLD.empno, OLD.sal, NEW.sal);\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\nDROP TRIGGER IF EXISTS trg_audit_emp_sal ON emp;\nCREATE TRIGGER trg_audit_emp_sal\nBEFORE UPDATE OF sal ON emp\nFOR EACH ROW\nEXECUTE PROCEDURE trg_audit_emp_sal_fn();\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:52:54.092945] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE FUNCTION trg_audit_emp_sal_fn() RETURNS trigger AS $$
+BEGIN
+    INSERT INTO emp_audit(emp_id, old_sal, new_sal)
+    VALUES (OLD.empno, OLD.sal, NEW.sal);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+DROP TRIGGER IF EXISTS trg_audit_emp_sal ON emp;
+CREATE TRIGGER trg_audit_emp_sal
+BEFORE UPDATE OF sal ON emp
+FOR EACH ROW
+EXECUTE PROCEDURE trg_audit_emp_sal_fn();
+
+[2025-08-13 17:52:54.093951] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE FUNCTION trg_audit_emp_sal_fn() RETURNS trigger AS $$\nBEGIN\n    INSERT INTO emp_audit(emp_id, old_sal, new_sal)\n    VALUES (OLD.empno, OLD.sal, NEW.sal);\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\nDROP TRIGGER IF EXISTS trg_audit_emp_sal ON emp;\nCREATE TRIGGER trg_audit_emp_sal\nBEFORE UPDATE OF sal ON emp\nFOR EACH ROW\nEXECUTE PROCEDURE trg_audit_emp_sal_fn();\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:52:54.093951] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE FUNCTION trg_audit_emp_sal_fn() RETURNS trigger AS $$
+BEGIN
+    INSERT INTO emp_audit(emp_id, old_sal, new_sal)
+    VALUES (OLD.empno, OLD.sal, NEW.sal);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+DROP TRIGGER IF EXISTS trg_audit_emp_sal ON emp;
+CREATE TRIGGER trg_audit_emp_sal
+BEFORE UPDATE OF sal ON emp
+FOR EACH ROW
+EXECUTE PROCEDURE trg_audit_emp_sal_fn();
+
+[2025-08-13 17:52:54.096192] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE FUNCTION trg_audit_emp_sal_fn() RETURNS trigger AS $$\nBEGIN\n    INSERT INTO emp_audit(emp_id, old_sal, new_sal)\n    VALUES (OLD.empno, OLD.sal, NEW.sal);\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\nDROP TRIGGER IF EXISTS trg_audit_emp_sal ON emp;\nCREATE TRIGGER trg_audit_emp_sal\nBEFORE UPDATE OF sal ON emp\nFOR EACH ROW\nEXECUTE PROCEDURE trg_audit_emp_sal_fn();\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:52:57.350789] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:53:04.245292] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:53:05.229661] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:53:05.230752] [9] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:53:05.230752] [9] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:53:05.230752] [9] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:53:05.230752] [9] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:53:05.232173] [9] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:53:05.232173] [9] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:53:05.232173] [9] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:53:05.232173] [9] hybrid Eval Case Final Result: True
+[2025-08-13 17:53:05.232173] 
+--- Case: 10 ---
+[2025-08-13 17:53:05.233567] [10] Case Run 1/1
+[2025-08-13 17:53:05.233567] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+DECLARE @MyCursor CURSOR; DECLARE @LastName varchar(50); SET @MyCursor = CURSOR FOR SELECT LastName FROM Person.Person; OPEN @MyCursor; FETCH NEXT FROM @MyCursor INTO @LastName; CLOSE @MyCursor; DEALLOCATE @MyCursor;
+
+Translated SQL (GaussDB-v2.0_3.x):
+
+[2025-08-13 17:53:05.233567] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nDECLARE @MyCursor CURSOR; DECLARE @LastName varchar(50); SET @MyCursor = CURSOR FOR SELECT LastName FROM Person.Person; OPEN @MyCursor; FETCH NEXT FROM @MyCursor INTO @LastName; CLOSE @MyCursor; DEALLOCATE @MyCursor;\n\nTranslated SQL (GaussDB-v2.0_3.x):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:53:22.385983] [gpt-5-mini Model Answer]: DO
+$$
+DECLARE
+    MyCursor REFCURSOR;
+    LastName varchar(50);
+BEGIN
+    OPEN MyCursor FOR SELECT LastName FROM Person.Person;
+    FETCH MyCursor INTO LastName;
+    CLOSE MyCursor;
+END;
+$$ LANGUAGE plpgsql;
+[2025-08-13 17:53:22.391571] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+DO
+$$
+DECLARE
+    MyCursor REFCURSOR;
+    LastName varchar(50);
+BEGIN
+    OPEN MyCursor FOR SELECT LastName FROM Person.Person;
+    FETCH MyCursor INTO LastName;
+    CLOSE MyCursor;
+END;
+$$ LANGUAGE plpgsql;
+
+[2025-08-13 17:53:22.392689] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nDO\n$$\nDECLARE\n    MyCursor REFCURSOR;\n    LastName varchar(50);\nBEGIN\n    OPEN MyCursor FOR SELECT LastName FROM Person.Person;\n    FETCH MyCursor INTO LastName;\n    CLOSE MyCursor;\nEND;\n$$ LANGUAGE plpgsql;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:53:22.393843] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+DO
+$$
+DECLARE
+    MyCursor REFCURSOR;
+    LastName varchar(50);
+BEGIN
+    OPEN MyCursor FOR SELECT LastName FROM Person.Person;
+    FETCH MyCursor INTO LastName;
+    CLOSE MyCursor;
+END;
+$$ LANGUAGE plpgsql;
+
+[2025-08-13 17:53:22.394848] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nDO\n$$\nDECLARE\n    MyCursor REFCURSOR;\n    LastName varchar(50);\nBEGIN\n    OPEN MyCursor FOR SELECT LastName FROM Person.Person;\n    FETCH MyCursor INTO LastName;\n    CLOSE MyCursor;\nEND;\n$$ LANGUAGE plpgsql;\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:53:22.395853] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+DO
+$$
+DECLARE
+    MyCursor REFCURSOR;
+    LastName varchar(50);
+BEGIN
+    OPEN MyCursor FOR SELECT LastName FROM Person.Person;
+    FETCH MyCursor INTO LastName;
+    CLOSE MyCursor;
+END;
+$$ LANGUAGE plpgsql;
+
+[2025-08-13 17:53:22.397361] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nDO\n$$\nDECLARE\n    MyCursor REFCURSOR;\n    LastName varchar(50);\nBEGIN\n    OPEN MyCursor FOR SELECT LastName FROM Person.Person;\n    FETCH MyCursor INTO LastName;\n    CLOSE MyCursor;\nEND;\n$$ LANGUAGE plpgsql;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:53:25.875446] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:53:31.683952] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:53:35.986403] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:53:35.987407] [10] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:53:35.987407] [10] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:53:35.988439] [10] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:53:35.988439] [10] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:53:35.988439] [10] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:53:35.988439] [10] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:53:35.988439] [10] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:53:35.989481] [10] hybrid Eval Case Final Result: True
+[2025-08-13 17:53:35.989481] 
+--- Case: 11 ---
+[2025-08-13 17:53:35.989481] [11] Case Run 1/1
+[2025-08-13 17:53:35.989481] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+ALTER TABLE sales ADD CONSTRAINT sales_time_fk FOREIGN KEY (time_id) REFERENCES times(time_id) ENABLE NOVALIDATE;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-08-13 17:53:35.990484] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nALTER TABLE sales ADD CONSTRAINT sales_time_fk FOREIGN KEY (time_id) REFERENCES times(time_id) ENABLE NOVALIDATE;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:53:54.769111] [gpt-5-mini Model Answer]: ALTER TABLE sales ADD CONSTRAINT sales_time_fk FOREIGN KEY (time_id) REFERENCES times(time_id);
+[2025-08-13 17:53:54.774547] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+ALTER TABLE sales ADD CONSTRAINT sales_time_fk FOREIGN KEY (time_id) REFERENCES times(time_id);
+
+[2025-08-13 17:53:54.783822] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nALTER TABLE sales ADD CONSTRAINT sales_time_fk FOREIGN KEY (time_id) REFERENCES times(time_id);\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:53:54.784328] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+ALTER TABLE sales ADD CONSTRAINT sales_time_fk FOREIGN KEY (time_id) REFERENCES times(time_id);
+
+[2025-08-13 17:53:54.787342] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nALTER TABLE sales ADD CONSTRAINT sales_time_fk FOREIGN KEY (time_id) REFERENCES times(time_id);\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:53:54.787342] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+ALTER TABLE sales ADD CONSTRAINT sales_time_fk FOREIGN KEY (time_id) REFERENCES times(time_id);
+
+[2025-08-13 17:53:54.788509] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nALTER TABLE sales ADD CONSTRAINT sales_time_fk FOREIGN KEY (time_id) REFERENCES times(time_id);\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:53:57.202407] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:54:01.844669] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:54:04.055827] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:54:04.057322] [11] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:54:04.057322] [11] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:54:04.057322] [11] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:54:04.057322] [11] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:54:04.058335] [11] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:54:04.058335] [11] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:54:04.058335] [11] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:54:04.058335] [11] hybrid Eval Case Final Result: True
+[2025-08-13 17:54:04.058335] 
+--- Case: 12 ---
+[2025-08-13 17:54:04.058335] [12] Case Run 1/1
+[2025-08-13 17:54:04.059335] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE TYPE [dbo].[AccountNumber] FROM [nvarchar](15) NOT NULL;
+
+Translated SQL (GaussDB-v2.0_3.x):
+
+[2025-08-13 17:54:04.059335] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE TYPE [dbo].[AccountNumber] FROM [nvarchar](15) NOT NULL;\n\nTranslated SQL (GaussDB-v2.0_3.x):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:54:13.995655] [gpt-5-mini Model Answer]: CREATE DOMAIN dbo.AccountNumber AS varchar(15) NOT NULL;
+[2025-08-13 17:54:13.997749] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE DOMAIN dbo.AccountNumber AS varchar(15) NOT NULL;
+
+[2025-08-13 17:54:13.998260] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE DOMAIN dbo.AccountNumber AS varchar(15) NOT NULL;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:54:13.999204] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE DOMAIN dbo.AccountNumber AS varchar(15) NOT NULL;
+
+[2025-08-13 17:54:14.000215] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE DOMAIN dbo.AccountNumber AS varchar(15) NOT NULL;\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:54:14.001240] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE DOMAIN dbo.AccountNumber AS varchar(15) NOT NULL;
+
+[2025-08-13 17:54:14.002252] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE DOMAIN dbo.AccountNumber AS varchar(15) NOT NULL;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:54:16.976115] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "no"
+}
+[2025-08-13 17:54:26.377027] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:54:27.363999] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:54:27.374380] [12] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:54:27.374380] [12] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: False
+[2025-08-13 17:54:27.374380] [12] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:54:27.374380] [12] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:54:27.375520] [12] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:54:27.375520] [12] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:54:27.375520] [12] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:54:27.375520] [12] hybrid Eval Case Final Result: True
+[2025-08-13 17:54:27.375520] 
+--- Case: 13 ---
+[2025-08-13 17:54:27.375520] [13] Case Run 1/1
+[2025-08-13 17:54:27.375520] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE OR REPLACE PACKAGE emp_actions AS PROCEDURE hire_employee(p_name VARCHAR2, p_job VARCHAR2); FUNCTION get_salary(p_emp_id NUMBER) RETURN NUMBER; END emp_actions;
+
+Translated SQL (Postgresql-9.2):
+
+[2025-08-13 17:54:27.375520] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE OR REPLACE PACKAGE emp_actions AS PROCEDURE hire_employee(p_name VARCHAR2, p_job VARCHAR2); FUNCTION get_salary(p_emp_id NUMBER) RETURN NUMBER; END emp_actions;\n\nTranslated SQL (Postgresql-9.2):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:54:43.803535] [gpt-5-mini Model Answer]: CREATE OR REPLACE FUNCTION hire_employee(p_name varchar, p_job varchar) RETURNS void AS $func$
+BEGIN
+  RETURN;
+END;
+$func$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_salary(p_emp_id numeric) RETURNS numeric AS $func$
+BEGIN
+  RETURN NULL;
+END;
+$func$ LANGUAGE plpgsql;
+[2025-08-13 17:54:43.809239] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE FUNCTION hire_employee(p_name varchar, p_job varchar) RETURNS void AS $func$
+BEGIN
+  RETURN;
+END;
+$func$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_salary(p_emp_id numeric) RETURNS numeric AS $func$
+BEGIN
+  RETURN NULL;
+END;
+$func$ LANGUAGE plpgsql;
+
+[2025-08-13 17:54:43.810654] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE FUNCTION hire_employee(p_name varchar, p_job varchar) RETURNS void AS $func$\nBEGIN\n  RETURN;\nEND;\n$func$ LANGUAGE plpgsql;\n\nCREATE OR REPLACE FUNCTION get_salary(p_emp_id numeric) RETURNS numeric AS $func$\nBEGIN\n  RETURN NULL;\nEND;\n$func$ LANGUAGE plpgsql;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:54:43.811735] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE FUNCTION hire_employee(p_name varchar, p_job varchar) RETURNS void AS $func$
+BEGIN
+  RETURN;
+END;
+$func$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_salary(p_emp_id numeric) RETURNS numeric AS $func$
+BEGIN
+  RETURN NULL;
+END;
+$func$ LANGUAGE plpgsql;
+
+[2025-08-13 17:54:43.813073] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE FUNCTION hire_employee(p_name varchar, p_job varchar) RETURNS void AS $func$\nBEGIN\n  RETURN;\nEND;\n$func$ LANGUAGE plpgsql;\n\nCREATE OR REPLACE FUNCTION get_salary(p_emp_id numeric) RETURNS numeric AS $func$\nBEGIN\n  RETURN NULL;\nEND;\n$func$ LANGUAGE plpgsql;\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:54:43.813073] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE FUNCTION hire_employee(p_name varchar, p_job varchar) RETURNS void AS $func$
+BEGIN
+  RETURN;
+END;
+$func$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_salary(p_emp_id numeric) RETURNS numeric AS $func$
+BEGIN
+  RETURN NULL;
+END;
+$func$ LANGUAGE plpgsql;
+
+[2025-08-13 17:54:43.815084] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE FUNCTION hire_employee(p_name varchar, p_job varchar) RETURNS void AS $func$\nBEGIN\n  RETURN;\nEND;\n$func$ LANGUAGE plpgsql;\n\nCREATE OR REPLACE FUNCTION get_salary(p_emp_id numeric) RETURNS numeric AS $func$\nBEGIN\n  RETURN NULL;\nEND;\n$func$ LANGUAGE plpgsql;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:54:46.268779] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:54:52.664855] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:54:53.733622] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:54:53.734640] [13] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:54:53.734640] [13] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:54:53.734640] [13] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:54:53.734640] [13] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:54:53.735647] [13] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:54:53.735647] [13] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:54:53.735647] [13] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:54:53.735647] [13] hybrid Eval Case Final Result: True
+[2025-08-13 17:54:53.735647] 
+--- Case: 14 ---
+[2025-08-13 17:54:53.735647] [14] Case Run 1/1
+[2025-08-13 17:54:53.735647] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE PROCEDURE [HumanResources].[uspUpdateEmployeePersonalInfo] @BusinessEntityID [int], @NationalIDNumber [nvarchar](15), @BirthDate [datetime] AS BEGIN SET NOCOUNT ON; BEGIN TRY UPDATE [HumanResources].[Employee] SET [NationalIDNumber] = @NationalIDNumber, [BirthDate] = @BirthDate WHERE [BusinessEntityID] = @BusinessEntityID; END TRY BEGIN CATCH EXECUTE [dbo].[uspLogError]; END CATCH; END;
+
+Translated SQL (GaussDB-v2.0_3.x):
+
+[2025-08-13 17:54:53.737158] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE PROCEDURE [HumanResources].[uspUpdateEmployeePersonalInfo] @BusinessEntityID [int], @NationalIDNumber [nvarchar](15), @BirthDate [datetime] AS BEGIN SET NOCOUNT ON; BEGIN TRY UPDATE [HumanResources].[Employee] SET [NationalIDNumber] = @NationalIDNumber, [BirthDate] = @BirthDate WHERE [BusinessEntityID] = @BusinessEntityID; END TRY BEGIN CATCH EXECUTE [dbo].[uspLogError]; END CATCH; END;\n\nTranslated SQL (GaussDB-v2.0_3.x):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:55:08.199207] [gpt-5-mini Model Answer]: CREATE OR REPLACE PROCEDURE HumanResources.uspUpdateEmployeePersonalInfo(
+    p_BusinessEntityID integer,
+    p_NationalIDNumber varchar(15),
+    p_BirthDate timestamp)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE HumanResources.Employee
+    SET NationalIDNumber = p_NationalIDNumber,
+        BirthDate = p_BirthDate
+    WHERE BusinessEntityID = p_BusinessEntityID;
+EXCEPTION
+    WHEN OTHERS THEN
+        CALL dbo.uspLogError();
+END;
+$$;
+[2025-08-13 17:55:08.207380] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE PROCEDURE HumanResources.uspUpdateEmployeePersonalInfo(
+    p_BusinessEntityID integer,
+    p_NationalIDNumber varchar(15),
+    p_BirthDate timestamp)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE HumanResources.Employee
+    SET NationalIDNumber = p_NationalIDNumber,
+        BirthDate = p_BirthDate
+    WHERE BusinessEntityID = p_BusinessEntityID;
+EXCEPTION
+    WHEN OTHERS THEN
+        CALL dbo.uspLogError();
+END;
+$$;
+
+[2025-08-13 17:55:08.208385] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE PROCEDURE HumanResources.uspUpdateEmployeePersonalInfo(\n    p_BusinessEntityID integer,\n    p_NationalIDNumber varchar(15),\n    p_BirthDate timestamp)\nLANGUAGE plpgsql\nAS $$\nBEGIN\n    UPDATE HumanResources.Employee\n    SET NationalIDNumber = p_NationalIDNumber,\n        BirthDate = p_BirthDate\n    WHERE BusinessEntityID = p_BusinessEntityID;\nEXCEPTION\n    WHEN OTHERS THEN\n        CALL dbo.uspLogError();\nEND;\n$$;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:55:08.208385] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE PROCEDURE HumanResources.uspUpdateEmployeePersonalInfo(
+    p_BusinessEntityID integer,
+    p_NationalIDNumber varchar(15),
+    p_BirthDate timestamp)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE HumanResources.Employee
+    SET NationalIDNumber = p_NationalIDNumber,
+        BirthDate = p_BirthDate
+    WHERE BusinessEntityID = p_BusinessEntityID;
+EXCEPTION
+    WHEN OTHERS THEN
+        CALL dbo.uspLogError();
+END;
+$$;
+
+[2025-08-13 17:55:08.211899] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE PROCEDURE HumanResources.uspUpdateEmployeePersonalInfo(\n    p_BusinessEntityID integer,\n    p_NationalIDNumber varchar(15),\n    p_BirthDate timestamp)\nLANGUAGE plpgsql\nAS $$\nBEGIN\n    UPDATE HumanResources.Employee\n    SET NationalIDNumber = p_NationalIDNumber,\n        BirthDate = p_BirthDate\n    WHERE BusinessEntityID = p_BusinessEntityID;\nEXCEPTION\n    WHEN OTHERS THEN\n        CALL dbo.uspLogError();\nEND;\n$$;\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:55:08.213213] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE PROCEDURE HumanResources.uspUpdateEmployeePersonalInfo(
+    p_BusinessEntityID integer,
+    p_NationalIDNumber varchar(15),
+    p_BirthDate timestamp)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE HumanResources.Employee
+    SET NationalIDNumber = p_NationalIDNumber,
+        BirthDate = p_BirthDate
+    WHERE BusinessEntityID = p_BusinessEntityID;
+EXCEPTION
+    WHEN OTHERS THEN
+        CALL dbo.uspLogError();
+END;
+$$;
+
+[2025-08-13 17:55:08.216594] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE PROCEDURE HumanResources.uspUpdateEmployeePersonalInfo(\n    p_BusinessEntityID integer,\n    p_NationalIDNumber varchar(15),\n    p_BirthDate timestamp)\nLANGUAGE plpgsql\nAS $$\nBEGIN\n    UPDATE HumanResources.Employee\n    SET NationalIDNumber = p_NationalIDNumber,\n        BirthDate = p_BirthDate\n    WHERE BusinessEntityID = p_BusinessEntityID;\nEXCEPTION\n    WHEN OTHERS THEN\n        CALL dbo.uspLogError();\nEND;\n$$;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:55:11.769513] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "no"
+}
+[2025-08-13 17:55:18.308769] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:55:37.698863] [o4-mini Model Answer]: {"answer":"no"}
+[2025-08-13 17:55:37.700066] [14] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:55:37.700066] [14] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: False
+[2025-08-13 17:55:37.700066] [14] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:55:37.700582] [14] Hybrid Eval Case Judge o4-mini Results: False
+[2025-08-13 17:55:37.700582] [14] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:55:37.700582] [14] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:55:37.701099] [14] Hybrid Eval Case Judge Final Results: False
+[2025-08-13 17:55:37.701099] [14] hybrid Eval Case Final Result: False
+[2025-08-13 17:55:37.701099] 
+--- Case: 15 ---
+[2025-08-13 17:55:37.701099] [15] Case Run 1/1
+[2025-08-13 17:55:37.701099] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE OR REPLACE PROCEDURE process_orders IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO order_logs (log_date, log_msg) VALUES (SYSDATE, 'Processing started'); DELETE FROM new_orders; COMMIT; END;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-08-13 17:55:37.702115] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': "You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE OR REPLACE PROCEDURE process_orders IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO order_logs (log_date, log_msg) VALUES (SYSDATE, 'Processing started'); DELETE FROM new_orders; COMMIT; END;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n"}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:55:54.038077] [gpt-5-mini Model Answer]: CREATE OR REPLACE PROCEDURE process_orders IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO order_logs (log_date, log_msg) VALUES (SYSDATE, 'Processing started'); DELETE FROM new_orders; COMMIT; END process_orders;
+[2025-08-13 17:55:54.056042] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE PROCEDURE process_orders IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO order_logs (log_date, log_msg) VALUES (SYSDATE, 'Processing started'); DELETE FROM new_orders; COMMIT; END process_orders;
+
+[2025-08-13 17:55:54.057147] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE PROCEDURE process_orders IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO order_logs (log_date, log_msg) VALUES (SYSDATE, \'Processing started\'); DELETE FROM new_orders; COMMIT; END process_orders;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:55:54.058151] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE PROCEDURE process_orders IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO order_logs (log_date, log_msg) VALUES (SYSDATE, 'Processing started'); DELETE FROM new_orders; COMMIT; END process_orders;
+
+[2025-08-13 17:55:54.061233] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE PROCEDURE process_orders IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO order_logs (log_date, log_msg) VALUES (SYSDATE, \'Processing started\'); DELETE FROM new_orders; COMMIT; END process_orders;\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:55:54.062441] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE OR REPLACE PROCEDURE process_orders IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO order_logs (log_date, log_msg) VALUES (SYSDATE, 'Processing started'); DELETE FROM new_orders; COMMIT; END process_orders;
+
+[2025-08-13 17:55:54.064465] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE OR REPLACE PROCEDURE process_orders IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO order_logs (log_date, log_msg) VALUES (SYSDATE, \'Processing started\'); DELETE FROM new_orders; COMMIT; END process_orders;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:55:57.527635] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:56:05.478262] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:56:06.731158] [o4-mini Model Answer]: {"answer":"no"}
+[2025-08-13 17:56:06.732158] [15] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:56:06.732158] [15] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:56:06.732158] [15] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:56:06.732158] [15] Hybrid Eval Case Judge o4-mini Results: False
+[2025-08-13 17:56:06.732158] [15] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:56:06.732158] [15] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:56:06.742658] [15] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:56:06.742658] [15] hybrid Eval Case Final Result: True
+[2025-08-13 17:56:06.743375] 
+--- Case: 16 ---
+[2025-08-13 17:56:06.744661] [16] Case Run 1/1
+[2025-08-13 17:56:06.745665] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+DECLARE TYPE emp_cur_type IS REF CURSOR; v_cur emp_cur_type; BEGIN OPEN v_cur FOR SELECT * FROM emp; END;
+
+Translated SQL (Postgresql-9.2):
+
+[2025-08-13 17:56:06.745665] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nDECLARE TYPE emp_cur_type IS REF CURSOR; v_cur emp_cur_type; BEGIN OPEN v_cur FOR SELECT * FROM emp; END;\n\nTranslated SQL (Postgresql-9.2):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:56:15.654333] [gpt-5-mini Model Answer]: DO $$
+DECLARE
+  v_cur REFCURSOR;
+BEGIN
+  OPEN v_cur FOR SELECT * FROM emp;
+END;
+$$ LANGUAGE plpgsql;
+[2025-08-13 17:56:15.665527] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+DO $$
+DECLARE
+  v_cur REFCURSOR;
+BEGIN
+  OPEN v_cur FOR SELECT * FROM emp;
+END;
+$$ LANGUAGE plpgsql;
+
+[2025-08-13 17:56:15.666529] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nDO $$\nDECLARE\n  v_cur REFCURSOR;\nBEGIN\n  OPEN v_cur FOR SELECT * FROM emp;\nEND;\n$$ LANGUAGE plpgsql;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:56:15.668918] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+DO $$
+DECLARE
+  v_cur REFCURSOR;
+BEGIN
+  OPEN v_cur FOR SELECT * FROM emp;
+END;
+$$ LANGUAGE plpgsql;
+
+[2025-08-13 17:56:15.671067] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nDO $$\nDECLARE\n  v_cur REFCURSOR;\nBEGIN\n  OPEN v_cur FOR SELECT * FROM emp;\nEND;\n$$ LANGUAGE plpgsql;\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:56:15.674247] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+DO $$
+DECLARE
+  v_cur REFCURSOR;
+BEGIN
+  OPEN v_cur FOR SELECT * FROM emp;
+END;
+$$ LANGUAGE plpgsql;
+
+[2025-08-13 17:56:15.675265] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nDO $$\nDECLARE\n  v_cur REFCURSOR;\nBEGIN\n  OPEN v_cur FOR SELECT * FROM emp;\nEND;\n$$ LANGUAGE plpgsql;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:56:19.877050] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:56:27.789855] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:56:28.593011] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:56:28.594073] [16] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:56:28.594073] [16] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:56:28.594073] [16] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:56:28.594073] [16] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:56:28.594073] [16] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:56:28.595323] [16] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:56:28.595323] [16] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:56:28.595323] [16] hybrid Eval Case Final Result: True
+[2025-08-13 17:56:28.595323] 
+--- Case: 17 ---
+[2025-08-13 17:56:28.595323] [17] Case Run 1/1
+[2025-08-13 17:56:28.595323] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+SELECT OrderID, CustomerID, OrderDate FROM Orders FOR XML PATH('Order'), ROOT('Orders');
+
+Translated SQL (GaussDB-v2.0_3.x):
+
+[2025-08-13 17:56:28.596665] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': "You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nSELECT OrderID, CustomerID, OrderDate FROM Orders FOR XML PATH('Order'), ROOT('Orders');\n\nTranslated SQL (GaussDB-v2.0_3.x):\n"}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:56:45.228268] [gpt-5-mini Model Answer]: SELECT XMLELEMENT(NAME Orders,
+       XMLAGG(
+         XMLELEMENT(NAME Order,
+           XMLELEMENT(NAME OrderID, OrderID),
+           XMLELEMENT(NAME CustomerID, CustomerID),
+           XMLELEMENT(NAME OrderDate, OrderDate)
+         ) ORDER BY OrderID
+       )
+) AS xml_result
+FROM Orders;
+[2025-08-13 17:56:45.234808] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+SELECT XMLELEMENT(NAME Orders,
+       XMLAGG(
+         XMLELEMENT(NAME Order,
+           XMLELEMENT(NAME OrderID, OrderID),
+           XMLELEMENT(NAME CustomerID, CustomerID),
+           XMLELEMENT(NAME OrderDate, OrderDate)
+         ) ORDER BY OrderID
+       )
+) AS xml_result
+FROM Orders;
+
+[2025-08-13 17:56:45.236256] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nSELECT XMLELEMENT(NAME Orders,\n       XMLAGG(\n         XMLELEMENT(NAME Order,\n           XMLELEMENT(NAME OrderID, OrderID),\n           XMLELEMENT(NAME CustomerID, CustomerID),\n           XMLELEMENT(NAME OrderDate, OrderDate)\n         ) ORDER BY OrderID\n       )\n) AS xml_result\nFROM Orders;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:56:45.238783] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+SELECT XMLELEMENT(NAME Orders,
+       XMLAGG(
+         XMLELEMENT(NAME Order,
+           XMLELEMENT(NAME OrderID, OrderID),
+           XMLELEMENT(NAME CustomerID, CustomerID),
+           XMLELEMENT(NAME OrderDate, OrderDate)
+         ) ORDER BY OrderID
+       )
+) AS xml_result
+FROM Orders;
+
+[2025-08-13 17:56:45.239970] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nSELECT XMLELEMENT(NAME Orders,\n       XMLAGG(\n         XMLELEMENT(NAME Order,\n           XMLELEMENT(NAME OrderID, OrderID),\n           XMLELEMENT(NAME CustomerID, CustomerID),\n           XMLELEMENT(NAME OrderDate, OrderDate)\n         ) ORDER BY OrderID\n       )\n) AS xml_result\nFROM Orders;\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:56:45.240972] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+SELECT XMLELEMENT(NAME Orders,
+       XMLAGG(
+         XMLELEMENT(NAME Order,
+           XMLELEMENT(NAME OrderID, OrderID),
+           XMLELEMENT(NAME CustomerID, CustomerID),
+           XMLELEMENT(NAME OrderDate, OrderDate)
+         ) ORDER BY OrderID
+       )
+) AS xml_result
+FROM Orders;
+
+[2025-08-13 17:56:45.243645] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nSELECT XMLELEMENT(NAME Orders,\n       XMLAGG(\n         XMLELEMENT(NAME Order,\n           XMLELEMENT(NAME OrderID, OrderID),\n           XMLELEMENT(NAME CustomerID, CustomerID),\n           XMLELEMENT(NAME OrderDate, OrderDate)\n         ) ORDER BY OrderID\n       )\n) AS xml_result\nFROM Orders;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:56:48.695598] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:56:59.626320] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:57:15.679176] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:57:15.680859] [17] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:57:15.680859] [17] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:57:15.680859] [17] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:57:15.680859] [17] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:57:15.681864] [17] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:57:15.681864] [17] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:57:15.681864] [17] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:57:15.681864] [17] hybrid Eval Case Final Result: True
+[2025-08-13 17:57:15.682887] 
+--- Case: 18 ---
+[2025-08-13 17:57:15.682887] [18] Case Run 1/1
+[2025-08-13 17:57:15.682887] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD HH24:MI:SS';
+
+Translated SQL (Postgresql-9.2):
+
+[2025-08-13 17:57:15.683888] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': "You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to Postgresql-9.2 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD HH24:MI:SS';\n\nTranslated SQL (Postgresql-9.2):\n"}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:57:26.142197] [gpt-5-mini Model Answer]: SET SESSION datestyle = 'ISO, YMD';
+[2025-08-13 17:57:26.149653] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+SET SESSION datestyle = 'ISO, YMD';
+
+[2025-08-13 17:57:26.151161] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nSET SESSION datestyle = \'ISO, YMD\';\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:57:26.153670] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+SET SESSION datestyle = 'ISO, YMD';
+
+[2025-08-13 17:57:26.155675] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nSET SESSION datestyle = \'ISO, YMD\';\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:57:26.156742] [Model Prompt]: You are a seasoned database engineer specializing in Postgresql-9.2 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in Postgresql-9.2.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+SET SESSION datestyle = 'ISO, YMD';
+
+[2025-08-13 17:57:26.158858] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in Postgresql-9.2 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in Postgresql-9.2.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nSET SESSION datestyle = \'ISO, YMD\';\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:57:29.704762] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:57:35.691881] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:57:40.429552] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:57:40.431119] [18] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:57:40.432119] [18] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:57:40.432119] [18] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:57:40.432119] [18] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:57:40.432119] [18] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:57:40.432119] [18] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:57:40.433193] [18] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:57:40.433193] [18] hybrid Eval Case Final Result: True
+[2025-08-13 17:57:40.433193] 
+--- Case: 19 ---
+[2025-08-13 17:57:40.433193] [19] Case Run 1/1
+[2025-08-13 17:57:40.433193] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+SELECT /*+ FULL(e) PARALLEL(e, 4) */ e.ename, d.dname FROM emp e, dept d WHERE e.deptno = d.deptno;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-08-13 17:57:40.434305] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nSELECT /*+ FULL(e) PARALLEL(e, 4) */ e.ename, d.dname FROM emp e, dept d WHERE e.deptno = d.deptno;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:57:52.195108] [gpt-5-mini Model Answer]: SELECT /*+ FULL(e) PARALLEL(e, 4) */ e.ename, d.dname FROM emp e, dept d WHERE e.deptno = d.deptno;
+[2025-08-13 17:57:52.668688] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+SELECT /*+ FULL(e) PARALLEL(e, 4) */ e.ename, d.dname FROM emp e, dept d WHERE e.deptno = d.deptno;
+
+[2025-08-13 17:57:52.668688] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nSELECT /*+ FULL(e) PARALLEL(e, 4) */ e.ename, d.dname FROM emp e, dept d WHERE e.deptno = d.deptno;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:57:52.671199] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+SELECT /*+ FULL(e) PARALLEL(e, 4) */ e.ename, d.dname FROM emp e, dept d WHERE e.deptno = d.deptno;
+
+[2025-08-13 17:57:52.672217] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nSELECT /*+ FULL(e) PARALLEL(e, 4) */ e.ename, d.dname FROM emp e, dept d WHERE e.deptno = d.deptno;\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:57:52.674827] [Model Prompt]: You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+SELECT /*+ FULL(e) PARALLEL(e, 4) */ e.ename, d.dname FROM emp e, dept d WHERE e.deptno = d.deptno;
+
+[2025-08-13 17:57:52.676113] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in OceanBase的Oracle模式-4.2.5.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nSELECT /*+ FULL(e) PARALLEL(e, 4) */ e.ename, d.dname FROM emp e, dept d WHERE e.deptno = d.deptno;\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:57:57.062233] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:58:00.898321] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-08-13 17:58:01.705088] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:58:01.706094] [19] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:58:01.706094] [19] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:58:01.706094] [19] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:58:01.707110] [19] Hybrid Eval Case Judge o4-mini Results: True
+[2025-08-13 17:58:01.707110] [19] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:58:01.707110] [19] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:58:01.707110] [19] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:58:01.707110] [19] hybrid Eval Case Final Result: True
+[2025-08-13 17:58:01.708113] 
+--- Case: 20 ---
+[2025-08-13 17:58:01.708113] [20] Case Run 1/1
+[2025-08-13 17:58:01.708113] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE PARTITION FUNCTION myRangePF1 (int) AS RANGE LEFT FOR VALUES (1, 100, 1000);
+
+Translated SQL (GaussDB-v2.0_3.x):
+
+[2025-08-13 17:58:01.709146] Model Request Data: {'model': 'gpt-5-mini', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from SQLServer syntax to GaussDB-v2.0_3.x syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE PARTITION FUNCTION myRangePF1 (int) AS RANGE LEFT FOR VALUES (1, 100, 1000);\n\nTranslated SQL (GaussDB-v2.0_3.x):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-08-13 17:58:37.978186] [gpt-5-mini Model Answer]: CREATE TABLE myRangePF1 (value int) PARTITION BY RANGE (value) (PARTITION p1 VALUES LESS THAN (2), PARTITION p2 VALUES LESS THAN (101), PARTITION p3 VALUES LESS THAN (1001), PARTITION p4 VALUES LESS THAN (MAXVALUE)));
+[2025-08-13 17:58:37.981242] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE TABLE myRangePF1 (value int) PARTITION BY RANGE (value) (PARTITION p1 VALUES LESS THAN (2), PARTITION p2 VALUES LESS THAN (101), PARTITION p3 VALUES LESS THAN (1001), PARTITION p4 VALUES LESS THAN (MAXVALUE)));
+
+[2025-08-13 17:58:37.981242] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE TABLE myRangePF1 (value int) PARTITION BY RANGE (value) (PARTITION p1 VALUES LESS THAN (2), PARTITION p2 VALUES LESS THAN (101), PARTITION p3 VALUES LESS THAN (1001), PARTITION p4 VALUES LESS THAN (MAXVALUE)));\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:58:37.984205] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE TABLE myRangePF1 (value int) PARTITION BY RANGE (value) (PARTITION p1 VALUES LESS THAN (2), PARTITION p2 VALUES LESS THAN (101), PARTITION p3 VALUES LESS THAN (1001), PARTITION p4 VALUES LESS THAN (MAXVALUE)));
+
+[2025-08-13 17:58:37.984205] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE TABLE myRangePF1 (value int) PARTITION BY RANGE (value) (PARTITION p1 VALUES LESS THAN (2), PARTITION p2 VALUES LESS THAN (101), PARTITION p3 VALUES LESS THAN (1001), PARTITION p4 VALUES LESS THAN (MAXVALUE)));\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:58:37.987657] [Model Prompt]: You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.
+Your task is to evaluate **only** the syntax and dialect compliance of the SQL below—
+you do **not** need to run it.  
+- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  
+- Ensure there are no syntax errors or unsupported features.  
+
+Respond **only** with a JSON object in this exact format (no extra text or formatting):
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL to validate:
+CREATE TABLE myRangePF1 (value int) PARTITION BY RANGE (value) (PARTITION p1 VALUES LESS THAN (2), PARTITION p2 VALUES LESS THAN (101), PARTITION p3 VALUES LESS THAN (1001), PARTITION p4 VALUES LESS THAN (MAXVALUE)));
+
+[2025-08-13 17:58:37.988720] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a seasoned database engineer specializing in GaussDB-v2.0_3.x SQL.\nYour task is to evaluate **only** the syntax and dialect compliance of the SQL below—\nyou do **not** need to run it.  \n- Check that every keyword, function, and construct is valid in GaussDB-v2.0_3.x.  \n- Ensure there are no syntax errors or unsupported features.  \n\nRespond **only** with a JSON object in this exact format (no extra text or formatting):\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL to validate:\nCREATE TABLE myRangePF1 (value int) PARTITION BY RANGE (value) (PARTITION p1 VALUES LESS THAN (2), PARTITION p2 VALUES LESS THAN (101), PARTITION p3 VALUES LESS THAN (1001), PARTITION p4 VALUES LESS THAN (MAXVALUE)));\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-08-13 17:58:41.606042] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:58:46.741071] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-08-13 17:58:56.416966] [o4-mini Model Answer]: {"answer":"no"}
+[2025-08-13 17:58:56.418185] [20] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-08-13 17:58:56.418185] [20] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-08-13 17:58:56.418185] [20] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-08-13 17:58:56.418185] [20] Hybrid Eval Case Judge o4-mini Results: False
+[2025-08-13 17:58:56.418185] [20] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-08-13 17:58:56.419391] [20] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-08-13 17:58:56.419391] [20] Hybrid Eval Case Judge Final Results: True
+[2025-08-13 17:58:56.419391] [20] hybrid Eval Case Final Result: True

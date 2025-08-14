@@ -1,0 +1,2002 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20250729_113422_420
+Run Dimensions: dialect_conversion
+Run Indicator: China-made_database
+Evaluation Timestamp: 2025-07-29T11:57:06.492280
+Target LLM: gemini-2.0-flash
+Judge LLMs: Pro/deepseek-ai/DeepSeek-V3, o4-mini, gemini-2.5-pro-preview-06-05
+-------------------------------------------------
+
+[2025-07-29 11:52:39.216381] Run Indicator: dialect_conversion, Parameters size: 6238B
+[2025-07-29 11:52:39.216381] 
+--- Capability: dialect_conversion Indicator China-made_database.jsonl Evaluating Type: hybrid  ---
+[2025-07-29 11:52:39.217795] 
+--- Case: 1 ---
+[2025-07-29 11:52:39.217795] [1] Case Run 1/1
+[2025-07-29 11:52:39.217795] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS TYPE stats_rec IS RECORD (total_emp NUMBER, avg_salary NUMBER, max_salary NUMBER, active_projects NUMBER); TYPE p_result_rec IS RECORD (employee_id NUMBER, last_name VARCHAR2(50), salary NUMBER(8,2)); v_stats stats_rec; v_result p_result_rec; v_cursor SYS_REFCURSOR; v_sql VARCHAR2(1000); v_dept_name VARCHAR2(50); BEGIN SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id; SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary FROM EMPLOYEES WHERE department_id = p_dept_id; SELECT COUNT(*) INTO v_stats.active_projects FROM PROJECTS WHERE department_id = p_dept_id AND status = 'ACTIVE'; v_sql := 'SELECT * FROM (SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC) WHERE ROWNUM <= 5'; OPEN v_cursor FOR v_sql USING p_dept_id; p_result := '{  "department": "' || v_dept_name || '",  "total_employees": ' || v_stats.total_emp || ',  "salary_stats": {    "average": ' || v_stats.avg_salary || ',    "max": ' || v_stats.max_salary || '  },  "active_projects": ' || v_stats.active_projects || ',  "top_earners": ['; LOOP FETCH v_cursor INTO v_result; EXIT WHEN v_cursor%NOTFOUND; p_result := p_result || '    {"id": ' || v_result.employee_id || ', "name": "' || v_result.last_name || '", "salary": ' || v_result.salary || '},'; END LOOP; p_result := RTRIM(p_result, ',') || '  ]}'; CLOSE v_cursor; EXCEPTION WHEN NO_DATA_FOUND THEN p_result := '{"error": "Department not found"}'; WHEN OTHERS THEN p_result := '{"error": "' || SQLERRM || '"}'; END;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:52:39.217795] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS TYPE stats_rec IS RECORD (total_emp NUMBER, avg_salary NUMBER, max_salary NUMBER, active_projects NUMBER); TYPE p_result_rec IS RECORD (employee_id NUMBER, last_name VARCHAR2(50), salary NUMBER(8,2)); v_stats stats_rec; v_result p_result_rec; v_cursor SYS_REFCURSOR; v_sql VARCHAR2(1000); v_dept_name VARCHAR2(50); BEGIN SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id; SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary FROM EMPLOYEES WHERE department_id = p_dept_id; SELECT COUNT(*) INTO v_stats.active_projects FROM PROJECTS WHERE department_id = p_dept_id AND status = \'ACTIVE\'; v_sql := \'SELECT * FROM (SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC) WHERE ROWNUM <= 5\'; OPEN v_cursor FOR v_sql USING p_dept_id; p_result := \'{  "department": "\' || v_dept_name || \'",  "total_employees": \' || v_stats.total_emp || \',  "salary_stats": {    "average": \' || v_stats.avg_salary || \',    "max": \' || v_stats.max_salary || \'  },  "active_projects": \' || v_stats.active_projects || \',  "top_earners": [\'; LOOP FETCH v_cursor INTO v_result; EXIT WHEN v_cursor%NOTFOUND; p_result := p_result || \'    {"id": \' || v_result.employee_id || \', "name": "\' || v_result.last_name || \'", "salary": \' || v_result.salary || \'},\'; END LOOP; p_result := RTRIM(p_result, \',\') || \'  ]}\'; CLOSE v_cursor; EXCEPTION WHEN NO_DATA_FOUND THEN p_result := \'{"error": "Department not found"}\'; WHEN OTHERS THEN p_result := \'{"error": "\' || SQLERRM || \'"}\'; END;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:52:43.511631] [gemini-2.0-flash Model Answer]: CREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS
+  TYPE stats_rec IS RECORD (
+    total_emp NUMBER,
+    avg_salary NUMBER,
+    max_salary NUMBER,
+    active_projects NUMBER
+  );
+  TYPE p_result_rec IS RECORD (
+    employee_id NUMBER,
+    last_name VARCHAR2(50),
+    salary NUMBER(8,2)
+  );
+  v_stats stats_rec;
+  v_result p_result_rec;
+  v_cursor SYS_REFCURSOR;
+  v_sql VARCHAR2(1000);
+  v_dept_name VARCHAR2(50);
+BEGIN
+  SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id;
+
+  SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary
+  FROM EMPLOYEES
+  WHERE department_id = p_dept_id;
+
+  SELECT COUNT(*) INTO v_stats.active_projects
+  FROM PROJECTS
+  WHERE department_id = p_dept_id AND status = 'ACTIVE';
+
+  v_sql := 'SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC FETCH FIRST 5 ROWS ONLY';
+
+  OPEN v_cursor FOR v_sql USING p_dept_id;
+
+  p_result := '{  "department": "' || v_dept_name || '",  "total_employees": ' || v_stats.total_emp || ',  "salary_stats": {    "average": ' || v_stats.avg_salary || ',    "max": ' || v_stats.max_salary || '  },  "active_projects": ' || v_stats.active_projects || ',  "top_earners": [';
+
+  LOOP
+    FETCH v_cursor INTO v_result;
+    EXIT WHEN v_cursor%NOTFOUND;
+    p_result := p_result || '    {"id": ' || v_result.employee_id || ', "name": "' || v_result.last_name || '", "salary": ' || v_result.salary || '},';
+  END LOOP;
+
+  p_result := RTRIM(p_result, ',') || '  ]}';
+
+  CLOSE v_cursor;
+
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      p_result := '{"error": "Department not found"}';
+    WHEN OTHERS THEN
+      p_result := '{"error": "' || SQLERRM || '"}';
+END;
+
+[2025-07-29 11:52:43.513635] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS TYPE stats_rec IS RECORD (total_emp NUMBER, avg_salary NUMBER, max_salary NUMBER, active_projects NUMBER); TYPE p_result_rec IS RECORD (employee_id NUMBER, last_name VARCHAR2(50), salary NUMBER(8,2)); v_stats stats_rec; v_result p_result_rec; v_cursor SYS_REFCURSOR; v_sql VARCHAR2(1000); v_dept_name VARCHAR2(50); BEGIN SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id; SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary FROM EMPLOYEES WHERE department_id = p_dept_id; SELECT COUNT(*) INTO v_stats.active_projects FROM PROJECTS WHERE department_id = p_dept_id AND status = 'ACTIVE'; v_sql := 'SELECT * FROM (SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC) WHERE ROWNUM <= 5'; OPEN v_cursor FOR v_sql USING p_dept_id; p_result := '{  "department": "' || v_dept_name || '",  "total_employees": ' || v_stats.total_emp || ',  "salary_stats": {    "average": ' || v_stats.avg_salary || ',    "max": ' || v_stats.max_salary || '  },  "active_projects": ' || v_stats.active_projects || ',  "top_earners": ['; LOOP FETCH v_cursor INTO v_result; EXIT WHEN v_cursor%NOTFOUND; p_result := p_result || '    {"id": ' || v_result.employee_id || ', "name": "' || v_result.last_name || '", "salary": ' || v_result.salary || '},'; END LOOP; p_result := RTRIM(p_result, ',') || '  ]}'; CLOSE v_cursor; EXCEPTION WHEN NO_DATA_FOUND THEN p_result := '{"error": "Department not found"}'; WHEN OTHERS THEN p_result := '{"error": "' || SQLERRM || '"}'; END;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS
+  TYPE stats_rec IS RECORD (
+    total_emp NUMBER,
+    avg_salary NUMBER,
+    max_salary NUMBER,
+    active_projects NUMBER
+  );
+  TYPE p_result_rec IS RECORD (
+    employee_id NUMBER,
+    last_name VARCHAR2(50),
+    salary NUMBER(8,2)
+  );
+  v_stats stats_rec;
+  v_result p_result_rec;
+  v_cursor SYS_REFCURSOR;
+  v_sql VARCHAR2(1000);
+  v_dept_name VARCHAR2(50);
+BEGIN
+  SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id;
+
+  SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary
+  FROM EMPLOYEES
+  WHERE department_id = p_dept_id;
+
+  SELECT COUNT(*) INTO v_stats.active_projects
+  FROM PROJECTS
+  WHERE department_id = p_dept_id AND status = 'ACTIVE';
+
+  v_sql := 'SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC FETCH FIRST 5 ROWS ONLY';
+
+  OPEN v_cursor FOR v_sql USING p_dept_id;
+
+  p_result := '{  "department": "' || v_dept_name || '",  "total_employees": ' || v_stats.total_emp || ',  "salary_stats": {    "average": ' || v_stats.avg_salary || ',    "max": ' || v_stats.max_salary || '  },  "active_projects": ' || v_stats.active_projects || ',  "top_earners": [';
+
+  LOOP
+    FETCH v_cursor INTO v_result;
+    EXIT WHEN v_cursor%NOTFOUND;
+    p_result := p_result || '    {"id": ' || v_result.employee_id || ', "name": "' || v_result.last_name || '", "salary": ' || v_result.salary || '},';
+  END LOOP;
+
+  p_result := RTRIM(p_result, ',') || '  ]}';
+
+  CLOSE v_cursor;
+
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      p_result := '{"error": "Department not found"}';
+    WHEN OTHERS THEN
+      p_result := '{"error": "' || SQLERRM || '"}';
+END;
+
+
+[2025-07-29 11:52:43.515725] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS TYPE stats_rec IS RECORD (total_emp NUMBER, avg_salary NUMBER, max_salary NUMBER, active_projects NUMBER); TYPE p_result_rec IS RECORD (employee_id NUMBER, last_name VARCHAR2(50), salary NUMBER(8,2)); v_stats stats_rec; v_result p_result_rec; v_cursor SYS_REFCURSOR; v_sql VARCHAR2(1000); v_dept_name VARCHAR2(50); BEGIN SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id; SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary FROM EMPLOYEES WHERE department_id = p_dept_id; SELECT COUNT(*) INTO v_stats.active_projects FROM PROJECTS WHERE department_id = p_dept_id AND status = \'ACTIVE\'; v_sql := \'SELECT * FROM (SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC) WHERE ROWNUM <= 5\'; OPEN v_cursor FOR v_sql USING p_dept_id; p_result := \'{  "department": "\' || v_dept_name || \'",  "total_employees": \' || v_stats.total_emp || \',  "salary_stats": {    "average": \' || v_stats.avg_salary || \',    "max": \' || v_stats.max_salary || \'  },  "active_projects": \' || v_stats.active_projects || \',  "top_earners": [\'; LOOP FETCH v_cursor INTO v_result; EXIT WHEN v_cursor%NOTFOUND; p_result := p_result || \'    {"id": \' || v_result.employee_id || \', "name": "\' || v_result.last_name || \'", "salary": \' || v_result.salary || \'},\'; END LOOP; p_result := RTRIM(p_result, \',\') || \'  ]}\'; CLOSE v_cursor; EXCEPTION WHEN NO_DATA_FOUND THEN p_result := \'{"error": "Department not found"}\'; WHEN OTHERS THEN p_result := \'{"error": "\' || SQLERRM || \'"}\'; END;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS\n  TYPE stats_rec IS RECORD (\n    total_emp NUMBER,\n    avg_salary NUMBER,\n    max_salary NUMBER,\n    active_projects NUMBER\n  );\n  TYPE p_result_rec IS RECORD (\n    employee_id NUMBER,\n    last_name VARCHAR2(50),\n    salary NUMBER(8,2)\n  );\n  v_stats stats_rec;\n  v_result p_result_rec;\n  v_cursor SYS_REFCURSOR;\n  v_sql VARCHAR2(1000);\n  v_dept_name VARCHAR2(50);\nBEGIN\n  SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id;\n\n  SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary\n  FROM EMPLOYEES\n  WHERE department_id = p_dept_id;\n\n  SELECT COUNT(*) INTO v_stats.active_projects\n  FROM PROJECTS\n  WHERE department_id = p_dept_id AND status = \'ACTIVE\';\n\n  v_sql := \'SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC FETCH FIRST 5 ROWS ONLY\';\n\n  OPEN v_cursor FOR v_sql USING p_dept_id;\n\n  p_result := \'{  "department": "\' || v_dept_name || \'",  "total_employees": \' || v_stats.total_emp || \',  "salary_stats": {    "average": \' || v_stats.avg_salary || \',    "max": \' || v_stats.max_salary || \'  },  "active_projects": \' || v_stats.active_projects || \',  "top_earners": [\';\n\n  LOOP\n    FETCH v_cursor INTO v_result;\n    EXIT WHEN v_cursor%NOTFOUND;\n    p_result := p_result || \'    {"id": \' || v_result.employee_id || \', "name": "\' || v_result.last_name || \'", "salary": \' || v_result.salary || \'},\';\n  END LOOP;\n\n  p_result := RTRIM(p_result, \',\') || \'  ]}\';\n\n  CLOSE v_cursor;\n\n  EXCEPTION\n    WHEN NO_DATA_FOUND THEN\n      p_result := \'{"error": "Department not found"}\';\n    WHEN OTHERS THEN\n      p_result := \'{"error": "\' || SQLERRM || \'"}\';\nEND;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:52:43.516853] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS TYPE stats_rec IS RECORD (total_emp NUMBER, avg_salary NUMBER, max_salary NUMBER, active_projects NUMBER); TYPE p_result_rec IS RECORD (employee_id NUMBER, last_name VARCHAR2(50), salary NUMBER(8,2)); v_stats stats_rec; v_result p_result_rec; v_cursor SYS_REFCURSOR; v_sql VARCHAR2(1000); v_dept_name VARCHAR2(50); BEGIN SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id; SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary FROM EMPLOYEES WHERE department_id = p_dept_id; SELECT COUNT(*) INTO v_stats.active_projects FROM PROJECTS WHERE department_id = p_dept_id AND status = 'ACTIVE'; v_sql := 'SELECT * FROM (SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC) WHERE ROWNUM <= 5'; OPEN v_cursor FOR v_sql USING p_dept_id; p_result := '{  "department": "' || v_dept_name || '",  "total_employees": ' || v_stats.total_emp || ',  "salary_stats": {    "average": ' || v_stats.avg_salary || ',    "max": ' || v_stats.max_salary || '  },  "active_projects": ' || v_stats.active_projects || ',  "top_earners": ['; LOOP FETCH v_cursor INTO v_result; EXIT WHEN v_cursor%NOTFOUND; p_result := p_result || '    {"id": ' || v_result.employee_id || ', "name": "' || v_result.last_name || '", "salary": ' || v_result.salary || '},'; END LOOP; p_result := RTRIM(p_result, ',') || '  ]}'; CLOSE v_cursor; EXCEPTION WHEN NO_DATA_FOUND THEN p_result := '{"error": "Department not found"}'; WHEN OTHERS THEN p_result := '{"error": "' || SQLERRM || '"}'; END;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS
+  TYPE stats_rec IS RECORD (
+    total_emp NUMBER,
+    avg_salary NUMBER,
+    max_salary NUMBER,
+    active_projects NUMBER
+  );
+  TYPE p_result_rec IS RECORD (
+    employee_id NUMBER,
+    last_name VARCHAR2(50),
+    salary NUMBER(8,2)
+  );
+  v_stats stats_rec;
+  v_result p_result_rec;
+  v_cursor SYS_REFCURSOR;
+  v_sql VARCHAR2(1000);
+  v_dept_name VARCHAR2(50);
+BEGIN
+  SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id;
+
+  SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary
+  FROM EMPLOYEES
+  WHERE department_id = p_dept_id;
+
+  SELECT COUNT(*) INTO v_stats.active_projects
+  FROM PROJECTS
+  WHERE department_id = p_dept_id AND status = 'ACTIVE';
+
+  v_sql := 'SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC FETCH FIRST 5 ROWS ONLY';
+
+  OPEN v_cursor FOR v_sql USING p_dept_id;
+
+  p_result := '{  "department": "' || v_dept_name || '",  "total_employees": ' || v_stats.total_emp || ',  "salary_stats": {    "average": ' || v_stats.avg_salary || ',    "max": ' || v_stats.max_salary || '  },  "active_projects": ' || v_stats.active_projects || ',  "top_earners": [';
+
+  LOOP
+    FETCH v_cursor INTO v_result;
+    EXIT WHEN v_cursor%NOTFOUND;
+    p_result := p_result || '    {"id": ' || v_result.employee_id || ', "name": "' || v_result.last_name || '", "salary": ' || v_result.salary || '},';
+  END LOOP;
+
+  p_result := RTRIM(p_result, ',') || '  ]}';
+
+  CLOSE v_cursor;
+
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      p_result := '{"error": "Department not found"}';
+    WHEN OTHERS THEN
+      p_result := '{"error": "' || SQLERRM || '"}';
+END;
+
+
+[2025-07-29 11:52:43.519559] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS TYPE stats_rec IS RECORD (total_emp NUMBER, avg_salary NUMBER, max_salary NUMBER, active_projects NUMBER); TYPE p_result_rec IS RECORD (employee_id NUMBER, last_name VARCHAR2(50), salary NUMBER(8,2)); v_stats stats_rec; v_result p_result_rec; v_cursor SYS_REFCURSOR; v_sql VARCHAR2(1000); v_dept_name VARCHAR2(50); BEGIN SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id; SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary FROM EMPLOYEES WHERE department_id = p_dept_id; SELECT COUNT(*) INTO v_stats.active_projects FROM PROJECTS WHERE department_id = p_dept_id AND status = \'ACTIVE\'; v_sql := \'SELECT * FROM (SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC) WHERE ROWNUM <= 5\'; OPEN v_cursor FOR v_sql USING p_dept_id; p_result := \'{  "department": "\' || v_dept_name || \'",  "total_employees": \' || v_stats.total_emp || \',  "salary_stats": {    "average": \' || v_stats.avg_salary || \',    "max": \' || v_stats.max_salary || \'  },  "active_projects": \' || v_stats.active_projects || \',  "top_earners": [\'; LOOP FETCH v_cursor INTO v_result; EXIT WHEN v_cursor%NOTFOUND; p_result := p_result || \'    {"id": \' || v_result.employee_id || \', "name": "\' || v_result.last_name || \'", "salary": \' || v_result.salary || \'},\'; END LOOP; p_result := RTRIM(p_result, \',\') || \'  ]}\'; CLOSE v_cursor; EXCEPTION WHEN NO_DATA_FOUND THEN p_result := \'{"error": "Department not found"}\'; WHEN OTHERS THEN p_result := \'{"error": "\' || SQLERRM || \'"}\'; END;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS\n  TYPE stats_rec IS RECORD (\n    total_emp NUMBER,\n    avg_salary NUMBER,\n    max_salary NUMBER,\n    active_projects NUMBER\n  );\n  TYPE p_result_rec IS RECORD (\n    employee_id NUMBER,\n    last_name VARCHAR2(50),\n    salary NUMBER(8,2)\n  );\n  v_stats stats_rec;\n  v_result p_result_rec;\n  v_cursor SYS_REFCURSOR;\n  v_sql VARCHAR2(1000);\n  v_dept_name VARCHAR2(50);\nBEGIN\n  SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id;\n\n  SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary\n  FROM EMPLOYEES\n  WHERE department_id = p_dept_id;\n\n  SELECT COUNT(*) INTO v_stats.active_projects\n  FROM PROJECTS\n  WHERE department_id = p_dept_id AND status = \'ACTIVE\';\n\n  v_sql := \'SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC FETCH FIRST 5 ROWS ONLY\';\n\n  OPEN v_cursor FOR v_sql USING p_dept_id;\n\n  p_result := \'{  "department": "\' || v_dept_name || \'",  "total_employees": \' || v_stats.total_emp || \',  "salary_stats": {    "average": \' || v_stats.avg_salary || \',    "max": \' || v_stats.max_salary || \'  },  "active_projects": \' || v_stats.active_projects || \',  "top_earners": [\';\n\n  LOOP\n    FETCH v_cursor INTO v_result;\n    EXIT WHEN v_cursor%NOTFOUND;\n    p_result := p_result || \'    {"id": \' || v_result.employee_id || \', "name": "\' || v_result.last_name || \'", "salary": \' || v_result.salary || \'},\';\n  END LOOP;\n\n  p_result := RTRIM(p_result, \',\') || \'  ]}\';\n\n  CLOSE v_cursor;\n\n  EXCEPTION\n    WHEN NO_DATA_FOUND THEN\n      p_result := \'{"error": "Department not found"}\';\n    WHEN OTHERS THEN\n      p_result := \'{"error": "\' || SQLERRM || \'"}\';\nEND;\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:52:43.520560] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS TYPE stats_rec IS RECORD (total_emp NUMBER, avg_salary NUMBER, max_salary NUMBER, active_projects NUMBER); TYPE p_result_rec IS RECORD (employee_id NUMBER, last_name VARCHAR2(50), salary NUMBER(8,2)); v_stats stats_rec; v_result p_result_rec; v_cursor SYS_REFCURSOR; v_sql VARCHAR2(1000); v_dept_name VARCHAR2(50); BEGIN SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id; SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary FROM EMPLOYEES WHERE department_id = p_dept_id; SELECT COUNT(*) INTO v_stats.active_projects FROM PROJECTS WHERE department_id = p_dept_id AND status = 'ACTIVE'; v_sql := 'SELECT * FROM (SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC) WHERE ROWNUM <= 5'; OPEN v_cursor FOR v_sql USING p_dept_id; p_result := '{  "department": "' || v_dept_name || '",  "total_employees": ' || v_stats.total_emp || ',  "salary_stats": {    "average": ' || v_stats.avg_salary || ',    "max": ' || v_stats.max_salary || '  },  "active_projects": ' || v_stats.active_projects || ',  "top_earners": ['; LOOP FETCH v_cursor INTO v_result; EXIT WHEN v_cursor%NOTFOUND; p_result := p_result || '    {"id": ' || v_result.employee_id || ', "name": "' || v_result.last_name || '", "salary": ' || v_result.salary || '},'; END LOOP; p_result := RTRIM(p_result, ',') || '  ]}'; CLOSE v_cursor; EXCEPTION WHEN NO_DATA_FOUND THEN p_result := '{"error": "Department not found"}'; WHEN OTHERS THEN p_result := '{"error": "' || SQLERRM || '"}'; END;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS
+  TYPE stats_rec IS RECORD (
+    total_emp NUMBER,
+    avg_salary NUMBER,
+    max_salary NUMBER,
+    active_projects NUMBER
+  );
+  TYPE p_result_rec IS RECORD (
+    employee_id NUMBER,
+    last_name VARCHAR2(50),
+    salary NUMBER(8,2)
+  );
+  v_stats stats_rec;
+  v_result p_result_rec;
+  v_cursor SYS_REFCURSOR;
+  v_sql VARCHAR2(1000);
+  v_dept_name VARCHAR2(50);
+BEGIN
+  SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id;
+
+  SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary
+  FROM EMPLOYEES
+  WHERE department_id = p_dept_id;
+
+  SELECT COUNT(*) INTO v_stats.active_projects
+  FROM PROJECTS
+  WHERE department_id = p_dept_id AND status = 'ACTIVE';
+
+  v_sql := 'SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC FETCH FIRST 5 ROWS ONLY';
+
+  OPEN v_cursor FOR v_sql USING p_dept_id;
+
+  p_result := '{  "department": "' || v_dept_name || '",  "total_employees": ' || v_stats.total_emp || ',  "salary_stats": {    "average": ' || v_stats.avg_salary || ',    "max": ' || v_stats.max_salary || '  },  "active_projects": ' || v_stats.active_projects || ',  "top_earners": [';
+
+  LOOP
+    FETCH v_cursor INTO v_result;
+    EXIT WHEN v_cursor%NOTFOUND;
+    p_result := p_result || '    {"id": ' || v_result.employee_id || ', "name": "' || v_result.last_name || '", "salary": ' || v_result.salary || '},';
+  END LOOP;
+
+  p_result := RTRIM(p_result, ',') || '  ]}';
+
+  CLOSE v_cursor;
+
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      p_result := '{"error": "Department not found"}';
+    WHEN OTHERS THEN
+      p_result := '{"error": "' || SQLERRM || '"}';
+END;
+
+
+[2025-07-29 11:52:43.523169] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS TYPE stats_rec IS RECORD (total_emp NUMBER, avg_salary NUMBER, max_salary NUMBER, active_projects NUMBER); TYPE p_result_rec IS RECORD (employee_id NUMBER, last_name VARCHAR2(50), salary NUMBER(8,2)); v_stats stats_rec; v_result p_result_rec; v_cursor SYS_REFCURSOR; v_sql VARCHAR2(1000); v_dept_name VARCHAR2(50); BEGIN SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id; SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary FROM EMPLOYEES WHERE department_id = p_dept_id; SELECT COUNT(*) INTO v_stats.active_projects FROM PROJECTS WHERE department_id = p_dept_id AND status = \'ACTIVE\'; v_sql := \'SELECT * FROM (SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC) WHERE ROWNUM <= 5\'; OPEN v_cursor FOR v_sql USING p_dept_id; p_result := \'{  "department": "\' || v_dept_name || \'",  "total_employees": \' || v_stats.total_emp || \',  "salary_stats": {    "average": \' || v_stats.avg_salary || \',    "max": \' || v_stats.max_salary || \'  },  "active_projects": \' || v_stats.active_projects || \',  "top_earners": [\'; LOOP FETCH v_cursor INTO v_result; EXIT WHEN v_cursor%NOTFOUND; p_result := p_result || \'    {"id": \' || v_result.employee_id || \', "name": "\' || v_result.last_name || \'", "salary": \' || v_result.salary || \'},\'; END LOOP; p_result := RTRIM(p_result, \',\') || \'  ]}\'; CLOSE v_cursor; EXCEPTION WHEN NO_DATA_FOUND THEN p_result := \'{"error": "Department not found"}\'; WHEN OTHERS THEN p_result := \'{"error": "\' || SQLERRM || \'"}\'; END;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS\n  TYPE stats_rec IS RECORD (\n    total_emp NUMBER,\n    avg_salary NUMBER,\n    max_salary NUMBER,\n    active_projects NUMBER\n  );\n  TYPE p_result_rec IS RECORD (\n    employee_id NUMBER,\n    last_name VARCHAR2(50),\n    salary NUMBER(8,2)\n  );\n  v_stats stats_rec;\n  v_result p_result_rec;\n  v_cursor SYS_REFCURSOR;\n  v_sql VARCHAR2(1000);\n  v_dept_name VARCHAR2(50);\nBEGIN\n  SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id;\n\n  SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary\n  FROM EMPLOYEES\n  WHERE department_id = p_dept_id;\n\n  SELECT COUNT(*) INTO v_stats.active_projects\n  FROM PROJECTS\n  WHERE department_id = p_dept_id AND status = \'ACTIVE\';\n\n  v_sql := \'SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC FETCH FIRST 5 ROWS ONLY\';\n\n  OPEN v_cursor FOR v_sql USING p_dept_id;\n\n  p_result := \'{  "department": "\' || v_dept_name || \'",  "total_employees": \' || v_stats.total_emp || \',  "salary_stats": {    "average": \' || v_stats.avg_salary || \',    "max": \' || v_stats.max_salary || \'  },  "active_projects": \' || v_stats.active_projects || \',  "top_earners": [\';\n\n  LOOP\n    FETCH v_cursor INTO v_result;\n    EXIT WHEN v_cursor%NOTFOUND;\n    p_result := p_result || \'    {"id": \' || v_result.employee_id || \', "name": "\' || v_result.last_name || \'", "salary": \' || v_result.salary || \'},\';\n  END LOOP;\n\n  p_result := RTRIM(p_result, \',\') || \'  ]}\';\n\n  CLOSE v_cursor;\n\n  EXCEPTION\n    WHEN NO_DATA_FOUND THEN\n      p_result := \'{"error": "Department not found"}\';\n    WHEN OTHERS THEN\n      p_result := \'{"error": "\' || SQLERRM || \'"}\';\nEND;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:52:46.849157] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "no"
+}
+[2025-07-29 11:52:59.074671] [o4-mini Model Answer]: {"answer":"no"}
+[2025-07-29 11:53:08.437958] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:53:08.439283] [1] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:53:08.440287] [1] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: False
+[2025-07-29 11:53:08.440287] [1] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:53:08.440287] [1] Hybrid Eval Case Judge o4-mini Results: False
+[2025-07-29 11:53:08.440287] [1] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:53:08.440287] [1] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:53:08.440287] [1] Hybrid Eval Case Judge Final Results: False
+[2025-07-29 11:53:08.441537] [1] hybrid Eval Case Final Result: False
+[2025-07-29 11:53:08.441537] 
+--- Case: 2 ---
+[2025-07-29 11:53:08.441537] [2] Case Run 1/1
+[2025-07-29 11:53:08.441537] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:53:08.441537] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:53:10.332550] [gemini-2.0-flash Model Answer]: CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+[2025-07-29 11:53:10.334468] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+
+[2025-07-29 11:53:10.335715] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:10.336904] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+
+[2025-07-29 11:53:10.337965] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:10.340365] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+
+[2025-07-29 11:53:10.341372] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:14.158229] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:53:14.590034] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-07-29 11:53:18.206834] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:53:18.208090] [2] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:53:18.208090] [2] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:53:18.208090] [2] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:53:18.208090] [2] Hybrid Eval Case Judge o4-mini Results: True
+[2025-07-29 11:53:18.208090] [2] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:53:18.208090] [2] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:53:18.208090] [2] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:53:18.209595] [2] hybrid Eval Case Final Result: True
+[2025-07-29 11:53:18.209595] 
+--- Case: 3 ---
+[2025-07-29 11:53:18.209595] [3] Case Run 1/1
+[2025-07-29 11:53:18.209595] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:53:18.210601] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': "You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nINSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n"}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:53:20.931775] [gemini-2.0-flash Model Answer]: INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+[2025-07-29 11:53:20.933240] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+
+[2025-07-29 11:53:20.934523] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nINSERT INTO t1 VALUES (1, \'Hello OceanBase\', TO_DATE(\'2025-01-01\', \'yyyy-mm-dd\'));\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nINSERT INTO t1 VALUES (1, \'Hello OceanBase\', TO_DATE(\'2025-01-01\', \'yyyy-mm-dd\'));\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:20.934523] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+
+[2025-07-29 11:53:20.937119] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nINSERT INTO t1 VALUES (1, \'Hello OceanBase\', TO_DATE(\'2025-01-01\', \'yyyy-mm-dd\'));\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nINSERT INTO t1 VALUES (1, \'Hello OceanBase\', TO_DATE(\'2025-01-01\', \'yyyy-mm-dd\'));\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:20.937119] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+
+[2025-07-29 11:53:20.939583] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nINSERT INTO t1 VALUES (1, \'Hello OceanBase\', TO_DATE(\'2025-01-01\', \'yyyy-mm-dd\'));\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nINSERT INTO t1 VALUES (1, \'Hello OceanBase\', TO_DATE(\'2025-01-01\', \'yyyy-mm-dd\'));\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:24.142441] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:53:25.583420] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-07-29 11:53:29.197276] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:53:29.198297] [3] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:53:29.198297] [3] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:53:29.198297] [3] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:53:29.198297] [3] Hybrid Eval Case Judge o4-mini Results: True
+[2025-07-29 11:53:29.199398] [3] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:53:29.199398] [3] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:53:29.199398] [3] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:53:29.199398] [3] hybrid Eval Case Final Result: True
+[2025-07-29 11:53:29.199398] 
+--- Case: 4 ---
+[2025-07-29 11:53:29.199398] [4] Case Run 1/1
+[2025-07-29 11:53:29.200577] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+SELECT c1, NVL(c2, 'is null') FROM t1;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:53:29.200577] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': "You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nSELECT c1, NVL(c2, 'is null') FROM t1;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n"}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:53:31.150765] [gemini-2.0-flash Model Answer]: SELECT c1, NVL(c2, 'is null') FROM t1
+
+[2025-07-29 11:53:31.154280] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT c1, NVL(c2, 'is null') FROM t1;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT c1, NVL(c2, 'is null') FROM t1
+
+
+[2025-07-29 11:53:31.154280] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT c1, NVL(c2, \'is null\') FROM t1;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT c1, NVL(c2, \'is null\') FROM t1\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:31.155409] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT c1, NVL(c2, 'is null') FROM t1;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT c1, NVL(c2, 'is null') FROM t1
+
+
+[2025-07-29 11:53:31.158202] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT c1, NVL(c2, \'is null\') FROM t1;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT c1, NVL(c2, \'is null\') FROM t1\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:31.158202] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT c1, NVL(c2, 'is null') FROM t1;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT c1, NVL(c2, 'is null') FROM t1
+
+
+[2025-07-29 11:53:31.160611] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT c1, NVL(c2, \'is null\') FROM t1;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT c1, NVL(c2, \'is null\') FROM t1\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:35.180348] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:53:36.063826] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-07-29 11:53:41.875109] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:53:41.876113] [4] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:53:41.876113] [4] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:53:41.876113] [4] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:53:41.876113] [4] Hybrid Eval Case Judge o4-mini Results: True
+[2025-07-29 11:53:41.876113] [4] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:53:41.877339] [4] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:53:41.877339] [4] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:53:41.877339] [4] hybrid Eval Case Final Result: True
+[2025-07-29 11:53:41.877339] 
+--- Case: 5 ---
+[2025-07-29 11:53:41.877339] [5] Case Run 1/1
+[2025-07-29 11:53:41.878345] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:53:41.878345] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE USER ob_user IDENTIFIED BY "Password123";\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:53:43.566545] [gemini-2.0-flash Model Answer]: CREATE USER ob_user IDENTIFIED BY "Password123";
+
+[2025-07-29 11:53:43.568548] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+
+[2025-07-29 11:53:43.569700] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE USER ob_user IDENTIFIED BY "Password123";\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE USER ob_user IDENTIFIED BY "Password123";\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:43.570825] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+
+[2025-07-29 11:53:43.573040] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE USER ob_user IDENTIFIED BY "Password123";\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE USER ob_user IDENTIFIED BY "Password123";\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:43.573040] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+
+[2025-07-29 11:53:43.574223] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE USER ob_user IDENTIFIED BY "Password123";\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE USER ob_user IDENTIFIED BY "Password123";\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:46.816758] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:53:51.127238] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-07-29 11:53:51.907104] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:53:51.908914] [5] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:53:51.908914] [5] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:53:51.908914] [5] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:53:51.909420] [5] Hybrid Eval Case Judge o4-mini Results: True
+[2025-07-29 11:53:51.909420] [5] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:53:51.909420] [5] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:53:51.909948] [5] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:53:51.909948] [5] hybrid Eval Case Final Result: True
+[2025-07-29 11:53:51.909948] 
+--- Case: 6 ---
+[2025-07-29 11:53:51.909948] [6] Case Run 1/1
+[2025-07-29 11:53:51.909948] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:53:51.911165] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nSELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:53:53.673357] [gemini-2.0-flash Model Answer]: SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp
+
+[2025-07-29 11:53:53.675365] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp
+
+
+[2025-07-29 11:53:53.676369] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:53.676369] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp
+
+
+[2025-07-29 11:53:53.678974] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp
+
+
+[2025-07-29 11:53:53.678974] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:53.680369] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:53:57.237893] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:53:59.115441] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-07-29 11:54:02.495830] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:54:02.495830] [6] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:54:02.497239] [6] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:54:02.497239] [6] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:54:02.497239] [6] Hybrid Eval Case Judge o4-mini Results: True
+[2025-07-29 11:54:02.497239] [6] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:54:02.497239] [6] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:54:02.497239] [6] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:54:02.498282] [6] hybrid Eval Case Final Result: True
+[2025-07-29 11:54:02.498282] 
+--- Case: 7 ---
+[2025-07-29 11:54:02.498282] [7] Case Run 1/1
+[2025-07-29 11:54:02.498282] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:54:02.499654] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:54:04.373630] [gemini-2.0-flash Model Answer]: CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+[2025-07-29 11:54:04.375739] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+
+[2025-07-29 11:54:04.377108] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:04.379252] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+
+[2025-07-29 11:54:04.380365] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:04.381457] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+
+[2025-07-29 11:54:04.382920] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:07.510615] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:54:10.580402] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-07-29 11:54:15.445358] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:54:15.446363] [7] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:54:15.446363] [7] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:54:15.446363] [7] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:54:15.446363] [7] Hybrid Eval Case Judge o4-mini Results: True
+[2025-07-29 11:54:15.447541] [7] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:54:15.447541] [7] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:54:15.447541] [7] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:54:15.447541] [7] hybrid Eval Case Final Result: True
+[2025-07-29 11:54:15.447541] 
+--- Case: 8 ---
+[2025-07-29 11:54:15.447541] [8] Case Run 1/1
+[2025-07-29 11:54:15.447541] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:54:15.449010] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nSELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:54:17.196595] [gemini-2.0-flash Model Answer]: SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees
+
+[2025-07-29 11:54:17.199059] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees
+
+
+[2025-07-29 11:54:17.199059] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:17.200158] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees
+
+
+[2025-07-29 11:54:17.203662] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:17.203662] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees
+
+
+[2025-07-29 11:54:17.206167] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:21.070747] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:54:24.021709] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-07-29 11:54:29.508242] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:54:29.509245] [8] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:54:29.509245] [8] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:54:29.510250] [8] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:54:29.510250] [8] Hybrid Eval Case Judge o4-mini Results: True
+[2025-07-29 11:54:29.510250] [8] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:54:29.510250] [8] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:54:29.510250] [8] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:54:29.510250] [8] hybrid Eval Case Final Result: True
+[2025-07-29 11:54:29.511615] 
+--- Case: 9 ---
+[2025-07-29 11:54:29.511615] [9] Case Run 1/1
+[2025-07-29 11:54:29.511615] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:54:29.511615] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:54:31.304482] [gemini-2.0-flash Model Answer]: CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp
+
+[2025-07-29 11:54:31.306934] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp
+
+
+[2025-07-29 11:54:31.307948] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE PUBLIC SYNONYM emp_synonym FOR scott.emp\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:31.309234] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp
+
+
+[2025-07-29 11:54:31.311318] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE PUBLIC SYNONYM emp_synonym FOR scott.emp\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:31.312735] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp
+
+
+[2025-07-29 11:54:31.314750] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE PUBLIC SYNONYM emp_synonym FOR scott.emp\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:34.844261] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:54:36.204720] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-07-29 11:54:39.813377] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:54:39.814380] [9] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:54:39.814380] [9] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:54:39.814380] [9] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:54:39.814380] [9] Hybrid Eval Case Judge o4-mini Results: True
+[2025-07-29 11:54:39.815683] [9] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:54:39.815683] [9] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:54:39.815683] [9] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:54:39.815683] [9] hybrid Eval Case Final Result: True
+[2025-07-29 11:54:39.815683] 
+--- Case: 10 ---
+[2025-07-29 11:54:39.816689] [10] Case Run 1/1
+[2025-07-29 11:54:39.816689] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:54:39.816689] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nSELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:54:41.567561] [gemini-2.0-flash Model Answer]: SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10
+
+[2025-07-29 11:54:41.569923] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10
+
+
+[2025-07-29 11:54:41.570926] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:41.571932] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10
+
+
+[2025-07-29 11:54:41.572935] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:41.572935] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10
+
+
+[2025-07-29 11:54:41.575290] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:46.522794] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-07-29 11:54:47.860773] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:54:53.046710] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:54:53.047712] [10] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:54:53.047712] [10] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:54:53.048791] [10] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:54:53.048791] [10] Hybrid Eval Case Judge o4-mini Results: True
+[2025-07-29 11:54:53.048791] [10] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:54:53.048791] [10] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:54:53.048791] [10] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:54:53.048791] [10] hybrid Eval Case Final Result: True
+[2025-07-29 11:54:53.049933] 
+--- Case: 11 ---
+[2025-07-29 11:54:53.049933] [11] Case Run 1/1
+[2025-07-29 11:54:53.049933] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+DECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP'; DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count); END;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:54:53.049933] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': "You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nDECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP'; DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count); END;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n"}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:54:55.046083] [gemini-2.0-flash Model Answer]: ```sql
+DECLARE v_count NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP';
+  DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count);
+END;
+/
+```
+[2025-07-29 11:54:55.048203] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+DECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP'; DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count); END;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+```sql
+DECLARE v_count NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP';
+  DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count);
+END;
+/
+```
+
+[2025-07-29 11:54:55.048203] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nDECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = \'EMP\'; DBMS_OUTPUT.PUT_LINE(\'Count is: \' || v_count); END;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\n```sql\nDECLARE v_count NUMBER;\nBEGIN\n  SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = \'EMP\';\n  DBMS_OUTPUT.PUT_LINE(\'Count is: \' || v_count);\nEND;\n/\n```\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:55.050465] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+DECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP'; DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count); END;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+```sql
+DECLARE v_count NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP';
+  DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count);
+END;
+/
+```
+
+[2025-07-29 11:54:55.051642] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nDECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = \'EMP\'; DBMS_OUTPUT.PUT_LINE(\'Count is: \' || v_count); END;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\n```sql\nDECLARE v_count NUMBER;\nBEGIN\n  SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = \'EMP\';\n  DBMS_OUTPUT.PUT_LINE(\'Count is: \' || v_count);\nEND;\n/\n```\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:54:55.052650] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+DECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP'; DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count); END;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+```sql
+DECLARE v_count NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP';
+  DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count);
+END;
+/
+```
+
+[2025-07-29 11:54:55.055060] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nDECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = \'EMP\'; DBMS_OUTPUT.PUT_LINE(\'Count is: \' || v_count); END;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\n```sql\nDECLARE v_count NUMBER;\nBEGIN\n  SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = \'EMP\';\n  DBMS_OUTPUT.PUT_LINE(\'Count is: \' || v_count);\nEND;\n/\n```\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:01.262701] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:55:04.437037] [o4-mini Model Answer]: {"answer":"no"}
+[2025-07-29 11:55:06.566481] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:55:06.566481] [11] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:55:06.566481] [11] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:55:06.567818] [11] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:55:06.567818] [11] Hybrid Eval Case Judge o4-mini Results: False
+[2025-07-29 11:55:06.567818] [11] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:55:06.567818] [11] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:55:06.567818] [11] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:55:06.567818] [11] hybrid Eval Case Final Result: True
+[2025-07-29 11:55:06.568956] 
+--- Case: 12 ---
+[2025-07-29 11:55:06.568956] [12] Case Run 1/1
+[2025-07-29 11:55:06.568956] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:55:06.568956] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': "You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nSELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n"}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:55:08.379526] [gemini-2.0-flash Model Answer]: SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+[2025-07-29 11:55:08.381530] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+
+[2025-07-29 11:55:08.381530] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT listagg(ename, \';\') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT listagg(ename, \';\') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:08.382964] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+
+[2025-07-29 11:55:08.385238] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+
+[2025-07-29 11:55:08.385238] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT listagg(ename, \';\') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT listagg(ename, \';\') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:08.385238] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT listagg(ename, \';\') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT listagg(ename, \';\') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:13.182411] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:55:15.645623] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-07-29 11:55:17.656849] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:55:17.657866] [12] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:55:17.657866] [12] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:55:17.658870] [12] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:55:17.658870] [12] Hybrid Eval Case Judge o4-mini Results: True
+[2025-07-29 11:55:17.658870] [12] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:55:17.658870] [12] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:55:17.658870] [12] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:55:17.658870] [12] hybrid Eval Case Final Result: True
+[2025-07-29 11:55:17.659872] 
+--- Case: 13 ---
+[2025-07-29 11:55:17.659872] [13] Case Run 1/1
+[2025-07-29 11:55:17.659872] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:55:17.659872] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': "You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nSELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n"}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:55:19.593887] [gemini-2.0-flash Model Answer]: SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr
+
+[2025-07-29 11:55:19.595377] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr
+
+
+[2025-07-29 11:55:19.596535] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT LPAD(\' \', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT LPAD(\' \', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:19.597603] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr
+
+
+[2025-07-29 11:55:19.599882] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT LPAD(\' \', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT LPAD(\' \', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:19.599882] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr
+
+
+[2025-07-29 11:55:19.602121] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT LPAD(\' \', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT LPAD(\' \', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:23.480558] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:55:24.496710] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-07-29 11:55:32.331055] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:55:32.332227] [13] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:55:32.332227] [13] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:55:32.332753] [13] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:55:32.332753] [13] Hybrid Eval Case Judge o4-mini Results: True
+[2025-07-29 11:55:32.332753] [13] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:55:32.332753] [13] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:55:32.332753] [13] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:55:32.332753] [13] hybrid Eval Case Final Result: True
+[2025-07-29 11:55:32.332753] 
+--- Case: 14 ---
+[2025-07-29 11:55:32.332753] [14] Case Run 1/1
+[2025-07-29 11:55:32.332753] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:55:32.334178] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': "You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n"}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:55:34.176025] [gemini-2.0-flash Model Answer]: CREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;
+
+[2025-07-29 11:55:34.178029] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;
+
+
+[2025-07-29 11:55:34.179308] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES (\'An autonomous action occurred\'); COMMIT; END;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES (\'An autonomous action occurred\'); COMMIT; END;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:34.181416] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;
+
+
+[2025-07-29 11:55:34.182674] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES (\'An autonomous action occurred\'); COMMIT; END;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES (\'An autonomous action occurred\'); COMMIT; END;\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:34.182674] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;
+
+
+[2025-07-29 11:55:34.184751] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES (\'An autonomous action occurred\'); COMMIT; END;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES (\'An autonomous action occurred\'); COMMIT; END;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:39.568393] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "no"
+}
+[2025-07-29 11:55:42.084398] [o4-mini Model Answer]: {"answer":"no"}
+[2025-07-29 11:55:44.150815] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:55:44.151817] [14] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:55:44.151817] [14] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: False
+[2025-07-29 11:55:44.153073] [14] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:55:44.153073] [14] Hybrid Eval Case Judge o4-mini Results: False
+[2025-07-29 11:55:44.153073] [14] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:55:44.153073] [14] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:55:44.153073] [14] Hybrid Eval Case Judge Final Results: False
+[2025-07-29 11:55:44.153073] [14] hybrid Eval Case Final Result: False
+[14]【Manual evaluation Result: True】
+--- Case: 15 ---
+[2025-07-29 11:55:44.154256] [15] Case Run 1/1
+[2025-07-29 11:55:44.154256] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:55:44.154256] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': "You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n"}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:55:46.206197] [gemini-2.0-flash Model Answer]: CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+[2025-07-29 11:55:46.208521] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+
+[2025-07-29 11:55:46.209529] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE(\'2024-01-01\',\'YYYY-MM-DD\')), PARTITION p2 VALUES LESS THAN (MAXVALUE));\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE(\'2024-01-01\',\'YYYY-MM-DD\')), PARTITION p2 VALUES LESS THAN (MAXVALUE));\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:46.211616] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+
+[2025-07-29 11:55:46.212678] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE(\'2024-01-01\',\'YYYY-MM-DD\')), PARTITION p2 VALUES LESS THAN (MAXVALUE));\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE(\'2024-01-01\',\'YYYY-MM-DD\')), PARTITION p2 VALUES LESS THAN (MAXVALUE));\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:46.213679] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+
+[2025-07-29 11:55:46.214900] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE(\'2024-01-01\',\'YYYY-MM-DD\')), PARTITION p2 VALUES LESS THAN (MAXVALUE));\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE(\'2024-01-01\',\'YYYY-MM-DD\')), PARTITION p2 VALUES LESS THAN (MAXVALUE));\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:48.980586] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:55:51.145718] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-07-29 11:55:55.102234] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:55:55.103237] [15] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:55:55.103237] [15] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:55:55.103237] [15] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:55:55.104387] [15] Hybrid Eval Case Judge o4-mini Results: True
+[2025-07-29 11:55:55.104387] [15] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:55:55.104387] [15] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:55:55.104387] [15] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:55:55.104387] [15] hybrid Eval Case Final Result: True
+[2025-07-29 11:55:55.104387] 
+--- Case: 16 ---
+[2025-07-29 11:55:55.104387] [16] Case Run 1/1
+[2025-07-29 11:55:55.105655] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:55:55.105655] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:55:57.243782] [gemini-2.0-flash Model Answer]: CREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;
+
+[2025-07-29 11:55:57.244942] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;
+
+
+[2025-07-29 11:55:57.246093] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:57.247158] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;
+
+
+[2025-07-29 11:55:57.249032] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:55:57.250417] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;
+
+
+[2025-07-29 11:55:57.252603] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:56:00.265343] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:56:03.164375] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-07-29 11:56:08.532391] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:56:08.533392] [16] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:56:08.533392] [16] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:56:08.534394] [16] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:56:08.534394] [16] Hybrid Eval Case Judge o4-mini Results: True
+[2025-07-29 11:56:08.534394] [16] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:56:08.534394] [16] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:56:08.534394] [16] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:56:08.534394] [16] hybrid Eval Case Final Result: True
+[2025-07-29 11:56:08.534394] 
+--- Case: 17 ---
+[2025-07-29 11:56:08.534394] [17] Case Run 1/1
+[2025-07-29 11:56:08.535797] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:56:08.535797] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nCREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:56:10.422184] [gemini-2.0-flash Model Answer]: CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno
+
+[2025-07-29 11:56:10.423549] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno
+
+
+[2025-07-29 11:56:10.425020] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:56:10.427239] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno
+
+
+[2025-07-29 11:56:10.428242] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:56:10.429527] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno
+
+
+[2025-07-29 11:56:10.430871] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nCREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nCREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:56:14.607819] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:56:18.514020] [o4-mini Model Answer]: {"answer":"no"}
+[2025-07-29 11:56:34.573543] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:56:34.574545] [17] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:56:34.574545] [17] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:56:34.574545] [17] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:56:34.574545] [17] Hybrid Eval Case Judge o4-mini Results: False
+[2025-07-29 11:56:34.574545] [17] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:56:34.575546] [17] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:56:34.575546] [17] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:56:34.575546] [17] hybrid Eval Case Final Result: True
+[2025-07-29 11:56:34.575546] 
+--- Case: 18 ---
+[2025-07-29 11:56:34.575546] [18] Case Run 1/1
+[2025-07-29 11:56:34.576672] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+SELECT CAST(MULTISET(SELECT ename FROM emp WHERE deptno = d.deptno) AS SYS.ODCIVARCHAR2LIST) as employees FROM dept d;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:56:34.576672] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nSELECT CAST(MULTISET(SELECT ename FROM emp WHERE deptno = d.deptno) AS SYS.ODCIVARCHAR2LIST) as employees FROM dept d;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:56:36.462613] [gemini-2.0-flash Model Answer]: SELECT CAST(COLLECT(ename) AS SYS.ODCIVARCHAR2LIST) AS employees FROM emp WHERE deptno IN (SELECT deptno FROM dept) GROUP BY deptno;
+
+[2025-07-29 11:56:36.464856] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT CAST(MULTISET(SELECT ename FROM emp WHERE deptno = d.deptno) AS SYS.ODCIVARCHAR2LIST) as employees FROM dept d;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT CAST(COLLECT(ename) AS SYS.ODCIVARCHAR2LIST) AS employees FROM emp WHERE deptno IN (SELECT deptno FROM dept) GROUP BY deptno;
+
+
+[2025-07-29 11:56:36.466284] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT CAST(MULTISET(SELECT ename FROM emp WHERE deptno = d.deptno) AS SYS.ODCIVARCHAR2LIST) as employees FROM dept d;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT CAST(COLLECT(ename) AS SYS.ODCIVARCHAR2LIST) AS employees FROM emp WHERE deptno IN (SELECT deptno FROM dept) GROUP BY deptno;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:56:36.466284] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT CAST(MULTISET(SELECT ename FROM emp WHERE deptno = d.deptno) AS SYS.ODCIVARCHAR2LIST) as employees FROM dept d;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT CAST(COLLECT(ename) AS SYS.ODCIVARCHAR2LIST) AS employees FROM emp WHERE deptno IN (SELECT deptno FROM dept) GROUP BY deptno;
+
+
+[2025-07-29 11:56:36.468650] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT CAST(MULTISET(SELECT ename FROM emp WHERE deptno = d.deptno) AS SYS.ODCIVARCHAR2LIST) as employees FROM dept d;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT CAST(COLLECT(ename) AS SYS.ODCIVARCHAR2LIST) AS employees FROM emp WHERE deptno IN (SELECT deptno FROM dept) GROUP BY deptno;\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:56:36.469656] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+SELECT CAST(MULTISET(SELECT ename FROM emp WHERE deptno = d.deptno) AS SYS.ODCIVARCHAR2LIST) as employees FROM dept d;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+SELECT CAST(COLLECT(ename) AS SYS.ODCIVARCHAR2LIST) AS employees FROM emp WHERE deptno IN (SELECT deptno FROM dept) GROUP BY deptno;
+
+
+[2025-07-29 11:56:36.470837] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nSELECT CAST(MULTISET(SELECT ename FROM emp WHERE deptno = d.deptno) AS SYS.ODCIVARCHAR2LIST) as employees FROM dept d;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nSELECT CAST(COLLECT(ename) AS SYS.ODCIVARCHAR2LIST) AS employees FROM emp WHERE deptno IN (SELECT deptno FROM dept) GROUP BY deptno;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:56:39.701731] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "no"
+}
+[2025-07-29 11:56:43.942637] [o4-mini Model Answer]: {"answer":"no"}
+[2025-07-29 11:56:55.130820] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "no"
+}
+[2025-07-29 11:56:55.131822] [18] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:56:55.133149] [18] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: False
+[2025-07-29 11:56:55.133149] [18] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:56:55.133149] [18] Hybrid Eval Case Judge o4-mini Results: False
+[2025-07-29 11:56:55.133149] [18] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:56:55.133149] [18] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: False
+[2025-07-29 11:56:55.133149] [18] Hybrid Eval Case Judge Final Results: False
+[2025-07-29 11:56:55.133149] [18] hybrid Eval Case Final Result: False
+[2025-07-29 11:56:55.133149] 
+--- Case: 19 ---
+[2025-07-29 11:56:55.134315] [19] Case Run 1/1
+[2025-07-29 11:56:55.134315] [Model Prompt]: You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+
+Source SQL:
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2025-07-29 11:56:55.134315] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are an expert in SQL dialect translation.\nPlease convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.\nReturn **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.\n\nSource SQL:\nLOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;\n\nTranslated SQL (OceanBase的Oracle模式-4.2.5):\n'}], 'temperature': 0.6, 'max_tokens': 6500, 'stream': False, 'response_format': None}
+[2025-07-29 11:56:56.881425] [gemini-2.0-flash Model Answer]: LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+[2025-07-29 11:56:56.883508] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+
+[2025-07-29 11:56:56.884514] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nLOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nLOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:56:56.885552] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+
+[2025-07-29 11:56:56.887988] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nLOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nLOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;\n\n'}], 'max_completion_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:56:56.887988] [Model Prompt]: You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no"
+}
+
+-- Original SQL (ORACLE) --
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+-- Translated SQL (OceanBase的Oracle模式-4.2.5) --
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+
+[2025-07-29 11:56:56.890038] Model Request Data: {'model': 'gemini-2.5-pro-preview-06-05', 'messages': [{'role': 'user', 'content': 'You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.\nYou need to verify two things at once:\n1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.\n2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.\n\nDo **not** execute the SQL—judge solely based on inspection.\n\nReturn **only** a JSON object in this exact format (no extra text):\n\n{\n  "answer": "yes" | "no"\n}\n\n-- Original SQL (ORACLE) --\nLOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;\n\n-- Translated SQL (OceanBase的Oracle模式-4.2.5) --\nLOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;\n\n'}], 'temperature': 0.4, 'max_tokens': 4500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-07-29 11:57:01.789605] [Pro/deepseek-ai/DeepSeek-V3 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:57:03.485402] [o4-mini Model Answer]: {"answer":"no"}
+[2025-07-29 11:57:06.488959] [gemini-2.5-pro-preview-06-05 Model Answer]: {
+  "answer": "yes"
+}
+[2025-07-29 11:57:06.489963] [19] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-07-29 11:57:06.489963] [19] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-07-29 11:57:06.489963] [19] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-07-29 11:57:06.491275] [19] Hybrid Eval Case Judge o4-mini Results: False
+[2025-07-29 11:57:06.491275] [19] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro-preview-06-05'
+[2025-07-29 11:57:06.491275] [19] Hybrid Eval Case Judge gemini-2.5-pro-preview-06-05 Results: True
+[2025-07-29 11:57:06.491275] [19] Hybrid Eval Case Judge Final Results: True
+[2025-07-29 11:57:06.491275] [19] hybrid Eval Case Final Result: True
