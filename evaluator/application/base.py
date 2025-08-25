@@ -74,6 +74,9 @@ class BaseApplicationClient(ABC):
                         "result": result_extractor(response_data),
                     }
                 else:  # failed or other statuses
+                    logger.error(
+                    f"failed or other statuses, raw response: {response_data}"
+                    )
                     return {
                         "status": "error",
                         "message": response_data.get("message", "Task failed"),

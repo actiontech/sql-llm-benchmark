@@ -42,6 +42,8 @@ def evaluate_objective(model_answer: Any, expected_answer: Any, test_case_id: st
 def evaluate_hybrid(
     test_case_id: str,
     judge_prompt: str,
+    case: dict = None,
+    dimension: str = None,
 ) -> bool:
     """
     Performs hybrid evaluation using LLM-as-a-judge.
@@ -63,7 +65,9 @@ def evaluate_hybrid(
         try:
             judge_answer = get_judge_llm_evaluation(
                 judge_llm_config=judge_config,
-                judge_prompt=judge_prompt,
+                judge_prompt=judge_prompt,  # 使用原始提示词，MCP增强在client层处理
+                test_case=case,  # 传递测试案例
+                dimension=dimension  # 传递测评维度
             )
             
             if isinstance(judge_answer, dict):
@@ -140,6 +144,7 @@ def evaluate_hybrid(
         return False
     
     final_result = majority_bool(judge_details)
+    logger.info(f"[{test_case_id}] Hybrid Eval Case Judge Final Results: {final_result}")
     log_process_detail(
         f"[{test_case_id}] Hybrid Eval Case Judge Final Results: {final_result}")
     return final_result
@@ -148,14 +153,16 @@ def evaluate_hybrid(
 def evaluate_subjective(
     test_case_id: str,
     judge_prompt: str,
+    case: dict = None,
+    dimension: str = None,
 ) -> list:
     """
-    Performs hybrid evaluation using LLM-as-a-judge.
+    Performs subjective evaluation using LLM-as-a-judge.
     Averages scores from multiple judge LLMs.
     """
     if not JUDGE_LLM_CONFIGS:
         log_process_detail(
-            f"[{test_case_id}] Hybrid Eval: No judge LLMs configured. Skipping.")
+            f"[{test_case_id}] Subjective Eval: No judge LLMs configured. Skipping.")
         return []
 
     def evaluate_single_judge(judge_config):
@@ -170,6 +177,8 @@ def evaluate_subjective(
             judge_answer = get_judge_llm_evaluation(
                 judge_llm_config=judge_config,
                 judge_prompt=judge_prompt,
+                test_case=case,  # 传递测试案例
+                dimension=dimension  # 传递测评维度
             )
             
             if isinstance(judge_answer, dict):
@@ -243,6 +252,7 @@ def evaluate_subjective(
         return []
     
     final_result = majority_consensus(judge_details)
+    logger.info(f"[{test_case_id}] Subjective Eval Case Judge Final Correct Rules: {final_result}")
     log_process_detail(
         f"[{test_case_id}] Subjective Eval Case Judge Final Correct Rules: {final_result}")
     return final_result 
