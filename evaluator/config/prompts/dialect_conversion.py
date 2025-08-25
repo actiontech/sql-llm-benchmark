@@ -10,7 +10,7 @@ def prompt_for_conversion(case: dict) -> str:
     sql = case.get("sql", "")
     return f"""You are an expert in SQL dialect translation.
 Please convert the following SQL statement from {src} syntax to {tgt} syntax.
-Return **only** the translated SQL statement(no extra text, no markdown fences, need directly executable sql), with no additional commentary or text.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
 
 Source SQL:
 {sql}
