@@ -4,13 +4,14 @@ English | [简体中文](./README_zh.md)
 
 ## Introduction
 
-This project provides a script tool and a leaderboard for evaluating the SQL capabilities of Large Language Models (LLMs). It aims to assess LLMs' proficiency in SQL understanding, dialect conversion, and SQL optimization. The system generates detailed evaluation reports and presents them intuitively through a frontend interface.
+This project provides a script tool and a leaderboard for evaluating the SQL capabilities of Large Language Models (LLMs). It aims to assess LLMs' proficiency in SQL understanding, dialect conversion, and SQL optimization. The system integrates MCP (Model Context Protocol) network search functionality to enhance judge model accuracy, and generates detailed evaluation reports presented intuitively through a frontend interface.
 
 You can view the leaderboard and detailed evaluation reports on our website: [https://sql-llm-leaderboard.com](https://sql-llm-leaderboard.com)
 
 ## Features
 
 - **Multi-dimensional Evaluation**: Supports three core capabilities: SQL understanding, dialect conversion, and SQL optimization.
+- **Enhanced Judge Intelligence**: Integrates MCP network search functionality, enabling judge models to search database documentation and best practices in real-time, significantly improving judgment accuracy.
 - **Flexible Datasets**: Allows users to customize and extend evaluation datasets.
 - **Configurable LLMs**: Supports integrating various LLMs as target models and judge models.
 - **Automated Report Generation**: Automatically generates detailed evaluation reports, including overall scores, case details, and interaction logs.
@@ -23,40 +24,7 @@ This project consists of two main parts: the LLM Evaluation Script (`evaluator`)
 
 ### LLM Evaluation Script (`evaluator`)
 
-The LLM evaluation script is responsible for the core evaluation logic, data processing, and report generation.
-
-```
-evaluator/
-├── application.py          # HTTP interface to support evaluation for other applications (e.g., SQLFlash SQL Optimization)
-├── evaluator.py            # Core evaluation logic
-├── llm_interface.py        # LLM interface definitions for integrating different LLM APIs
-├── main.py                 # Main entry point for the evaluation script
-├── utils.py                # Auxiliary utility functions
-├── config/
-│   ├── dataset_config.py   # Dataset configuration, including prompts and metric/case weights
-│   └── llm_config.py       # LLM configuration for setting up target models and judge models
-├── dataset/                # Evaluation datasets
-│   ├── dialect_conversion/ # Dataset for SQL dialect conversion capability
-│   │   ├── logical_equivalence.jsonl
-│   │   └── syntax_error_detection.jsonl
-│   ├── sql_optimization/   # Dataset for SQL optimization capability
-│   │   ├── logical_equivalence.jsonl
-│   │   ├── optimization_depth.jsonl
-│   │   └── syntax_error_detection.jsonl
-│   └── sql_understanding/  # Dataset for SQL understanding capability
-│       ├── execution_accuracy.jsonl
-│       ├── explain_detection.jsonl
-│       ├── sql_identification.jsonl
-│       └── syntax_error_detection.jsonl
-├── outputs/                # Evaluation results output directory
-│   ├── eval_reports/       # Evaluation model score reports (leaderboard data)
-│   ├── evaluation_case_reports/ # Detailed evaluation results for each test case by models
-│   └── evaluation_process_detail_logs/ # Evaluation process logs, including each conversation with the model
-└── reports/                # Report generation module
-    ├── case_reporting.py
-    ├── process_log_reporting.py
-    └── reporting.py
-```
+The LLM evaluation script is responsible for the core evaluation logic, data processing, and report generation. It supports evaluation of three core capabilities: SQL understanding, dialect conversion, and SQL optimization. The system integrates MCP network search functionality that enables real-time search of relevant database documentation during evaluation, significantly enhancing judge model accuracy.
 
 ### Leaderboard UI (`leaderboard`)
 
@@ -113,6 +81,7 @@ leaderboard/
 
     - Edit [`evaluator/config/llm_config.py`](evaluator/config/llm_config.py) to configure API keys, model names, and other information for your target LLM and judge LLM.
     - Edit [`evaluator/config/dataset_config.py`](evaluator/config/dataset_config.py) to configure dataset prompts and weights for metrics or cases.
+    - Edit [`evaluator/config/mcp_config.py`](evaluator/config/mcp_config.py) to configure MCP network search functionality, including enabled evaluation dimensions and search engine settings.
 
 3.  **Run Evaluation**:
     Navigate to the `evaluator` directory and run the `main.py` script:
@@ -208,9 +177,9 @@ leaderboard/
 
 This project is designed to be highly extensible, allowing users to customize it according to their needs.
 
-- **Add New LLM Interfaces**: Modify [`evaluator/llm_interface.py`](evaluator/llm_interface.py) to support new LLM APIs.
-- **Add New HTTP Interfaces**: Modify [`evaluator/application.py`](evaluator/application.py) to support evaluation for other applications (e.g., SQLFlash SQL Optimization).
+- **Add New LLM Interfaces**: Modify relevant configuration files to support new LLM APIs.
 - **Add New Test Cases**: Create or modify JSON files in the [`evaluator/dataset/`](evaluator/dataset/) directory following the existing format.
+- **Configure MCP Search Functionality**: Customize network search behavior and enabled scope through [`evaluator/config/mcp_config.py`](evaluator/config/mcp_config.py).
 
 ## Important Notes
 
