@@ -81,6 +81,7 @@ def run_evaluation_category(category_name: str, test_cases_file: Path, target_ll
         results = []
         model_answers = []
         for run_idx in range(CASE_EXECUTION_TIMES):
+            logger.info(f"[{case_id}] Case Run {run_idx+1}/{CASE_EXECUTION_TIMES}")
             log_process_detail(
                 f"[{case_id}] Case Run {run_idx+1}/{CASE_EXECUTION_TIMES}")
             answer = get_evaluation_target_result(
@@ -98,17 +99,18 @@ def run_evaluation_category(category_name: str, test_cases_file: Path, target_ll
             elif eval_type == "hybrid":
                 judge_prompt = generate_judge_model_prompt(target_llm_config.get("name", ""),
                     category_name, test_cases_file.name, case, answer)
-                res = evaluate_hybrid(case_id, judge_prompt)
+                res = evaluate_hybrid(case_id, judge_prompt, case, category_name)
             else:  # subjective
                 judge_prompt = generate_judge_model_prompt(target_llm_config.get("name", ""),
                     category_name, test_cases_file.name, case, answer)
 
-                res = evaluate_subjective(case_id, judge_prompt)
+                res = evaluate_subjective(case_id, judge_prompt, case, category_name)
             results.append(res)
 
         # Aggregate majority vote
         if eval_type in ("objective", "hybrid"):
             final = majority_bool(results)  # bool
+            logger.info(f"[{case_id}] Objective Eval Case Final Result: {final}")
             log_process_detail(
                 f"[{case_id}] {eval_type} Eval Case Final Result: {final}")
             cases_eval_detail.append({
@@ -126,6 +128,7 @@ def run_evaluation_category(category_name: str, test_cases_file: Path, target_ll
             for rule in rules:
                 rid = rule.get("rule_id")
                 rui_result = rid in final_rules
+                logger.info(f"[{case_id}] Subjective Eval Case Rule[{rid}] Final Result: {rui_result}")
                 log_process_detail(
                     f"[{case_id}] {eval_type} Eval Case Rule[{rid}] Final Result: {rui_result}")
                 cases_eval_detail.append({
