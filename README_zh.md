@@ -4,13 +4,14 @@
 
 ## 简介
 
-本项目是一个测评大模型 SQL 能力的脚本工具和排行榜列表，旨在评估大型语言模型 (LLM) 在 SQL 相关任务方面的能力。它支持对 LLM 的 SQL 理解、方言转换和 SQL 优化能力进行深入测评，并最终生成详细的测评报告，通过前端界面直观展示。
+本项目是一个测评大模型 SQL 能力的脚本工具和排行榜列表，旨在评估大型语言模型 (LLM) 在 SQL 相关任务方面的能力。它支持对 LLM 的 SQL 理解、方言转换和 SQL 优化能力进行深入测评，集成了 MCP (Model Context Protocol) 网络搜索功能来增强裁判模型的判断准确性，并最终生成详细的测评报告，通过前端界面直观展示。
 
 您可以在我们的网站上查看排行榜和详细测评报告：[https://sql-llm-leaderboard.com](https://sql-llm-leaderboard.com)
 
 ## 特性
 
 - **多维度评估**: 支持 SQL 理解、方言转换和 SQL 优化三大核心能力。
+- **智能裁判增强**: 集成 MCP 网络搜索功能，裁判模型可实时搜索数据库文档和最佳实践，显著提升判断准确性。
 - **灵活的数据集**: 允许用户自定义和扩展测评数据集。
 - **可配置的 LLM**: 支持集成多种大模型作为被测对象和裁判模型。
 - **自动化报告生成**: 自动生成详细的测评报告，包括总分、案例详情和交互日志。
@@ -23,40 +24,7 @@
 
 ### LLM 测评脚本 (evaluator)
 
-LLM 测评脚本负责核心的测评逻辑、数据处理和报告生成。
-
-```
-evaluator/
-├── application.py          # HTTP 接口，用于支持其他应用的测评（如 SQLFlash SQL 优化）
-├── evaluator.py            # 核心测评逻辑
-├── llm_interface.py        # LLM 接口定义，用于集成不同的大模型 API
-├── main.py                 # 测评脚本主入口，运行测评脚本
-├── utils.py                # 辅助工具函数
-├── config/
-│   ├── dataset_config.py   # 数据集配置，包含提示词和指标/案例权重
-│   └── llm_config.py       # LLM 配置，用于设置目标模型和裁判模型
-├── dataset/                # 测评数据集
-│   ├── dialect_conversion/ # 方言转换能力数据集
-│   │   ├── logical_equivalence.jsonl
-│   │   └── syntax_error_detection.jsonl
-│   ├── sql_optimization/   # SQL 优化能力数据集
-│   │   ├── logical_equivalence.jsonl
-│   │   ├── optimization_depth.jsonl
-│   │   └── syntax_error_detection.jsonl
-│   └── sql_understanding/  # SQL 理解能力数据集
-│       ├── execution_accuracy.jsonl
-│       ├── explain_detection.jsonl
-│       ├── sql_identification.jsonl
-│       └── syntax_error_detection.jsonl
-├── outputs/                # 测评结果输出目录
-│   ├── eval_reports/       # 测评模型得分报告 (排行榜列表数据)
-│   ├── evaluation_case_reports/ # 模型对每个测试案例的详细测评结果
-│   └── evaluation_process_detail_logs/ # 测评流程日志，包含与模型的每次对话
-└── reports/                # 报告生成模块
-    ├── case_reporting.py
-    ├── process_log_reporting.py
-    └── reporting.py
-```
+LLM 测评脚本负责核心的测评逻辑、数据处理和报告生成。支持三大核心能力测评：SQL 理解、方言转换和 SQL 优化。集成了 MCP 网络搜索功能，可在测评过程中实时搜索相关数据库文档，显著提升裁判模型的判断准确性。
 
 ### 排行榜 UI (leaderboard)
 
@@ -113,6 +81,7 @@ leaderboard/
 
     - 编辑 [`evaluator/config/llm_config.py`](evaluator/config/llm_config.py) 配置您要测评的目标 LLM 和裁判 LLM 的 API 密钥、模型名称等信息。
     - 编辑 [`evaluator/config/dataset_config.py`](evaluator/config/dataset_config.py) 配置数据集的提示词以及指标或案例的权重。
+    - 编辑 [`evaluator/config/mcp_config.py`](evaluator/config/mcp_config.py) 配置 MCP 网络搜索功能，包括启用的测评维度和搜索引擎设置。
 
 3.  **运行测评**:
     在 `evaluator` 目录下运行 `main.py` 脚本：
@@ -208,9 +177,9 @@ leaderboard/
 
 本项目设计为高度可扩展，方便用户根据需求进行定制。
 
-- **添加新的 LLM 接口**: 修改 [`evaluator/llm_interface.py`](evaluator/llm_interface.py) 以支持新的 LLM API。
-- **添加新的 HTTP 接口**: 修改 [`evaluator/application.py`](evaluator/application.py) 以支持新的其他应用测评（例如：SQLFlash SQL 优化）。
+- **添加新的 LLM 接口**: 修改相关配置文件以支持新的 LLM API。
 - **添加新的测试用例**: 在 [`evaluator/dataset/`](evaluator/dataset/) 目录下按照现有格式创建或修改 JSON 文件。
+- **配置 MCP 搜索功能**: 通过 [`evaluator/config/mcp_config.py`](evaluator/config/mcp_config.py) 自定义网络搜索行为和启用范围。
 
 ## 注意事项
 
