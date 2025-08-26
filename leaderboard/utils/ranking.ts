@@ -47,4 +47,25 @@ export const getMaxScoresByCategory = (models: Model[]) => {
         }
     });
     return maxScores;
+};
+
+/**
+ * 根据模型的实际数据动态选择默认维度
+ * 优先级：sql_optimization → dialect_conversion → sql_understanding
+ * @param model 模型数据
+ * @returns 默认维度名称
+ */
+export const getModelDefaultDimension = (model: Model): string => {
+    const priorities = ['sql_optimization', 'dialect_conversion', 'sql_understanding'];
+
+    // 按优先级选择第一个有数据的维度
+    for (const dimension of priorities) {
+        if (model.scores?.[dimension]?.ability_score != null) {
+            return dimension;
+        }
+    }
+
+    // 兜底：返回第一个有效维度，如果都没有则返回sql_optimization
+    const availableDimensions = Object.keys(model.scores || {});
+    return availableDimensions.length > 0 ? availableDimensions[0] : 'sql_optimization';
 }; 

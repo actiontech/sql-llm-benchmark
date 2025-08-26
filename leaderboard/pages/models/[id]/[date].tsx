@@ -36,6 +36,7 @@ import {
   LogFile,
   DetailProps
 } from "../../../types/ranking";
+import { getModelDefaultDimension } from "../../../utils/ranking";
 import { ModelDetailCard } from "../../../components/ModelDetailCard";
 import { createCaseColumns, createEvaluationCaseColumns } from "../../../components/DetailTableColumns";
 
@@ -62,9 +63,9 @@ const Detail: React.FC<DetailProps> = ({
   const [selectedLogContent, setSelectedLogContent] =
     useState<string>(initialLogContent);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [activeTabKey, setActiveTabKey] = useState<string>("sql_optimization");
+  const [activeTabKey, setActiveTabKey] = useState<string>("");
   const [selectedDimension, setSelectedDimension] =
-    useState<string>("sql_optimization");
+    useState<string>("");
   const [selectedLogFile, setSelectedLogFile] = useState<string | null>(
     initialSelectedLogFile
   );
@@ -74,7 +75,7 @@ const Detail: React.FC<DetailProps> = ({
     EvaluationCaseReport[] | null
   >(initialEvaluationCaseReports);
   const [selectedEvaluationDimension, setSelectedEvaluationDimension] =
-    useState<string | undefined>("sql_optimization");
+    useState<string | undefined>(undefined);
   const [evaluationLoading, setEvaluationLoading] = useState(false);
   const [isCaseModalVisible, setIsCaseModalVisible] = useState<boolean>(false);
   const [currentCaseDatas, setCurrentCaseDatas] = useState<CaseData[]>([]);
@@ -86,20 +87,16 @@ const Detail: React.FC<DetailProps> = ({
     total: 0,
   });
 
-  // 在模型数据加载后设置默认维度和激活tab
+  // 在模型数据加载后动态设置默认维度和激活tab
   useEffect(() => {
-    // 确保 INDICATOR_KEYS 包含 'sql_optimization'
-    if (model && INDICATOR_KEYS.includes("sql_optimization")) {
-      setActiveTabKey("sql_optimization");
-      setSelectedDimension("sql_optimization");
-      setSelectedEvaluationDimension("sql_optimization");
-    } else if (model && INDICATOR_KEYS.length > 0) {
-      // 如果没有 sql_optimization，则默认选中第一个
-      setActiveTabKey(INDICATOR_KEYS[0]);
-      setSelectedDimension(INDICATOR_KEYS[0]);
-      setSelectedEvaluationDimension(INDICATOR_KEYS[0]);
+    if (model) {
+      // 根据模型的实际数据动态选择默认维度
+      const defaultDimension = getModelDefaultDimension(model);
+      setActiveTabKey(defaultDimension);
+      setSelectedDimension(defaultDimension);
+      setSelectedEvaluationDimension(defaultDimension);
     }
-  }, [model]); // 移除 activeTabKey 依赖，避免循环
+  }, [model]);
 
   // 获取日志文件列表
   useEffect(() => {
@@ -778,12 +775,9 @@ export const getStaticProps: GetStaticProps<DetailProps> = async (
       });
 
       // Fetch initial evaluation case reports for the default dimension
-      if (evaluationDimensions.length > 0) {
-        const defaultDimension = evaluationDimensions.includes(
-          "sql_optimization"
-        )
-          ? "sql_optimization"
-          : evaluationDimensions[0];
+      if (evaluationDimensions.length > 0 && model) {
+        // 根据模型的实际数据动态选择默认维度
+        const defaultDimension = getModelDefaultDimension(model);
         const defaultEvaluationCaseReportPath = path.join(
           evaluationCaseDir,
           defaultDimension,
@@ -827,9 +821,7 @@ export const getStaticProps: GetStaticProps<DetailProps> = async (
       }
 
       // Set initial selected log file and content for the default active tab
-      const defaultLogTabKey = INDICATOR_KEYS.includes("sql_optimization")
-        ? "sql_optimization"
-        : INDICATOR_KEYS[0];
+      const defaultLogTabKey = model ? getModelDefaultDimension(model) : INDICATOR_KEYS[0];
 
       if (
         initialLogFiles[defaultLogTabKey] &&
