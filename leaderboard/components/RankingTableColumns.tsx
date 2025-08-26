@@ -1,0 +1,287 @@
+import React from "react";
+import { Space, Button, Tooltip } from "antd";
+import Link from "next/link";
+import { ProColumns } from "@ant-design/pro-table";
+import {
+    TrophyFilled,
+    EyeOutlined,
+    PushpinFilled,
+} from "@ant-design/icons";
+import { LogoImage } from "./LogoImage";
+import { StyledProgressBar } from "./StyledProgressBar";
+import { Model } from "../types/ranking";
+
+interface ColumnProps {
+    logoInfo: Record<string, string>;
+    sortedInfo: any;
+    maxScoresByCategory: Record<string, number>;
+    currentMonth: string;
+    t: (key: string) => string; // 添加翻译函数参数
+}
+
+export const createRankingTableColumns = ({
+    logoInfo,
+    sortedInfo,
+    maxScoresByCategory,
+    currentMonth,
+    t,
+}: ColumnProps): ProColumns<Model>[] => {
+
+    return [
+        {
+            title: t("table.rank"),
+            dataIndex: "rank",
+            key: "rank",
+            render: (_, record: Model, idx) => {
+                const rank = idx + 1;
+                let icon = null;
+                let color = "";
+                if (rank === 1) {
+                    icon = (
+                        <TrophyFilled style={{ fontSize: "24px", color: "#FFD700" }} />
+                    );
+                    color = "#FFD700";
+                } else if (rank === 2) {
+                    icon = (
+                        <TrophyFilled style={{ fontSize: "20px", color: "#C0C0C0" }} />
+                    );
+                    color = "#C0C0C0";
+                } else if (rank === 3) {
+                    icon = (
+                        <TrophyFilled style={{ fontSize: "16px", color: "#CD7F32" }} />
+                    );
+                    color = "#CD7F32";
+                }
+                return (
+                    <Space>
+                        {icon}
+                        <span
+                            style={{
+                                color: color,
+                                fontWeight: rank <= 3 ? "bold" : "normal",
+                            }}
+                        >
+                            {rank}
+                        </span>
+                    </Space>
+                );
+            },
+            width: 100,
+            align: "center",
+        },
+        {
+            title: t("table.creator"),
+            dataIndex: "organization",
+            key: "organization",
+            align: "center",
+            render: (text, record) =>
+                record.organization ? (
+                    <LogoImage
+                        organization={record.organization}
+                        logoInfo={logoInfo}
+                        width={60}
+                        height={60}
+                        style={{ verticalAlign: "middle" }}
+                    />
+                ) : (
+                    <span>N/A</span>
+                ),
+            width: 120,
+        },
+        {
+            title: (
+                <span>
+                    {t("table.model")}
+                    {sortedInfo.columnKey === "real_model_namne" && (
+                        <PushpinFilled
+                            style={{ marginLeft: 4, fontSize: "16px", color: "#1890ff" }}
+                        />
+                    )}
+                </span>
+            ),
+            dataIndex: "real_model_namne",
+            key: "real_model_namne",
+            align: "center",
+            render: (text) => text,
+            sorter: true,
+            sortOrder:
+                sortedInfo.columnKey === "real_model_namne" ? sortedInfo.order : false,
+            showSorterTooltip: false,
+        },
+        {
+            title: (
+                <span>
+                    {t("table.releaseDate")}
+                    {sortedInfo.columnKey === "releaseDate" && (
+                        <PushpinFilled
+                            style={{ marginLeft: 4, fontSize: "16px", color: "#1890ff" }}
+                        />
+                    )}
+                </span>
+            ),
+            dataIndex: "releaseDate",
+            key: "releaseDate",
+            align: "center",
+            sorter: true,
+            sortOrder:
+                sortedInfo.columnKey === "releaseDate" ? sortedInfo.order : false,
+            showSorterTooltip: false,
+        },
+        {
+            title: t("table.type"),
+            dataIndex: "type",
+            key: "type",
+            filters: true,
+            onFilter: true,
+            align: "center",
+            render: (text: any) => {
+                let translatedText = text;
+                let backgroundColor = "";
+                let textColor = "#333";
+
+                if (text === "Chat") {
+                    translatedText = t("table.type_chat");
+                    backgroundColor = "#e6f7ff"; // 浅蓝色
+                    textColor = "#1890ff"; // 蓝色文字
+                } else if (text === "Application") {
+                    translatedText = t("table.type_application");
+                    backgroundColor = "#f6ffed"; // 浅绿色
+                    textColor = "#52c41a"; // 绿色文字
+                } else if (text === "Chat(Thinking)") {
+                    translatedText = t("table.type_chat_thinking");
+                    backgroundColor = "#f9f0ff"; // Light purple
+                    textColor = "#722ed1"; // Purple text
+                }
+
+                return (
+                    <span
+                        style={{
+                            backgroundColor: backgroundColor,
+                            color: textColor,
+                            padding: "4px 8px",
+                            borderRadius: "4px",
+                            fontWeight: "bold",
+                            display: "inline-block",
+                            minWidth: "60px",
+                            textAlign: "center",
+                        }}
+                    >
+                        {translatedText}
+                    </span>
+                );
+            },
+        },
+        {
+            title: (
+                <span>
+                    {t("table.sql_optimization")}
+                    {(Object.keys(sortedInfo).length === 0 ||
+                        sortedInfo.columnKey === "sql_optimization") && (
+                            <Tooltip
+                                title={
+                                    Object.keys(sortedInfo).length === 0
+                                        ? t("table.default_sort_tooltip")
+                                        : ""
+                                }
+                            >
+                                <PushpinFilled
+                                    style={{ marginLeft: 4, fontSize: "16px", color: "#1890ff" }}
+                                />
+                            </Tooltip>
+                        )}
+                </span>
+            ),
+            dataIndex: ["scores", "sql_optimization", "ability_score"],
+            key: "sql_optimization",
+            sorter: true,
+            showSorterTooltip: false,
+            align: "center",
+            sortOrder:
+                sortedInfo.columnKey === "sql_optimization" ? sortedInfo.order : false,
+            render: (text, record) => {
+                const score = typeof text === "number" ? text : undefined;
+                if (score === undefined) return "--";
+                const isHighest =
+                    score === maxScoresByCategory.sql_optimization && score !== 0;
+                return <StyledProgressBar score={score} isHighestScore={isHighest} />;
+            },
+        },
+        {
+            title: (
+                <span>
+                    {t("table.dialect_conversion")}
+                    {sortedInfo.columnKey === "dialect_conversion" && (
+                        <PushpinFilled
+                            style={{ marginLeft: 4, fontSize: "16px", color: "#1890ff" }}
+                        />
+                    )}
+                </span>
+            ),
+            dataIndex: ["scores", "dialect_conversion", "ability_score"],
+            key: "dialect_conversion",
+            sorter: true,
+            showSorterTooltip: false,
+            align: "center",
+            sortOrder:
+                sortedInfo.columnKey === "dialect_conversion"
+                    ? sortedInfo.order
+                    : false,
+            render: (text, record) => {
+                const score = typeof text === "number" ? text : undefined;
+                if (score === undefined) return "--";
+                const isHighest =
+                    score === maxScoresByCategory.dialect_conversion && score !== 0;
+                return <StyledProgressBar score={score} isHighestScore={isHighest} />;
+            },
+        },
+        {
+            title: (
+                <span>
+                    {t("table.sql_understanding")}
+                    {sortedInfo.columnKey === "sql_understanding" && (
+                        <PushpinFilled
+                            style={{ marginLeft: 4, fontSize: "16px", color: "#1890ff" }}
+                        />
+                    )}
+                </span>
+            ),
+            dataIndex: ["scores", "sql_understanding", "ability_score"],
+            key: "sql_understanding",
+            sorter: true,
+            showSorterTooltip: false,
+            align: "center",
+            sortOrder:
+                sortedInfo.columnKey === "sql_understanding"
+                    ? sortedInfo.order
+                    : false,
+            render: (text, record) => {
+                const score = typeof text === "number" ? text : undefined;
+                if (score === undefined) return "--";
+                const isHighest =
+                    score === maxScoresByCategory.sql_understanding && score !== 0;
+                return <StyledProgressBar score={score} isHighestScore={isHighest} />;
+            },
+        },
+        {
+            title: t("table.details"),
+            key: "details",
+            render: (_, record) => (
+                <Link
+                    scroll={true}
+                    href={`/models/${record.id}/${currentMonth}`}
+                >
+                    <Button
+                        type="link"
+                        icon={<EyeOutlined />}
+                        size="small"
+                        title={t("table.view_details")}
+                    >
+                        {t("table.view_details")}
+                    </Button>
+                </Link>
+            ),
+            width: 80,
+            align: "center",
+        },
+    ];
+}; 
