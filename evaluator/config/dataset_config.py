@@ -15,7 +15,6 @@ from .prompts import (
     prompt_for_optimization_equivalence_judge,
     prompt_for_executable_judge_optimization
 )
-from .knowledge_base import judge_model_knowledge_base
 
 
 DATASET_CONFIG = {
@@ -107,10 +106,8 @@ def generate_judge_model_prompt(model_name: str, dir: str, file: str, case: dict
 
     func = get_dataset_config(dir, file, 'judge_model_prompt', '')
     prompt = func(model_name, case, model_answer)
-    
-    # Enhance prompt with knowledge base if applicable
-    enhanced_prompt = judge_model_knowledge_base(prompt, case)
-    return enhanced_prompt
+
+    return prompt
 
 
 # Difficulty level weight configuration
