@@ -28,42 +28,7 @@ The LLM evaluation script is responsible for the core evaluation logic, data pro
 
 ### Leaderboard UI (`leaderboard`)
 
-The Leaderboard UI is responsible for displaying evaluation reports, the leaderboard, and detailed information.
-
-```
-leaderboard/
-├── components/             # React components
-│   ├── BarChart.tsx
-│   ├── constants.ts
-│   ├── Footer.tsx
-│   ├── LanguageSelector.tsx
-│   ├── MatrixRain.tsx
-│   └── RadarChart.tsx
-├── lib/
-│   └── i18n.ts             # Internationalization configuration
-├── pages/                  # Next.js pages
-│   ├── _app.tsx
-│   ├── _document.tsx
-│   ├── models/[date]/[id].tsx # Model detailed report page
-│   └── ranking/[month].tsx # Leaderboard page
-├── public/                 # Static assets and data
-│   ├── data/               # Evaluation report data (default path for reading reports)
-│   │   ├── eval_reports/
-│   │   ├── evaluation_case_reports/
-│   │   └── evaluation_process_detail_logs/
-│   ├── locales/            # Internationalization language files
-│   │   ├── en/
-│   │   └── zh/
-│   ├── logos/              # Model Logos
-│   └── favicon.ico
-├── styles/                 # CSS styles
-│   ├── Container.module.css
-│   └── globals.css
-├── next-env.d.ts
-├── next.config.js
-├── package.json            # Project dependencies
-└── pnpm-lock.yaml
-```
+The Leaderboard UI is responsible for displaying evaluation reports, the leaderboard, and detailed information. Built with Next.js framework, supporting static generation and server-side rendering.
 
 ## Quick Start
 
