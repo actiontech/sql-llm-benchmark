@@ -100,7 +100,7 @@ interface DetailProps {
   initialEvaluationCaseReports: EvaluationCaseReport[] | null;
   initialLogFiles: Record<string, LogFile[]>;
   initialLogContent: string;
-  initialSelectedLogFile: string | undefined;
+  initialSelectedLogFile: string | null;
   date: string;
   id: string;
 }
@@ -129,7 +129,7 @@ const Detail: React.FC<DetailProps> = ({
   const [activeTabKey, setActiveTabKey] = useState<string>("sql_optimization");
   const [selectedDimension, setSelectedDimension] =
     useState<string>("sql_optimization");
-  const [selectedLogFile, setSelectedLogFile] = useState<string | undefined>(
+  const [selectedLogFile, setSelectedLogFile] = useState<string | null>(
     initialSelectedLogFile
   );
   const [logLoading, setLogLoading] = useState(false);
@@ -179,7 +179,7 @@ const Detail: React.FC<DetailProps> = ({
             `Failed to fetch log files for ${activeTabKey} (status: ${res.status})`
           );
           setLogFiles((prev) => ({ ...prev, [activeTabKey]: [] })); // 设置为空数组，表示无数据
-          setSelectedLogFile(undefined); // 清空选中
+          setSelectedLogFile(null); // 清空选中
           setSelectedLogContent(""); // 清空内容
           return;
         }
@@ -190,13 +190,13 @@ const Detail: React.FC<DetailProps> = ({
           setSelectedLogFile(data.files[0].originalFilename);
           handleLogFileClick(data.files[0].originalFilename);
         } else {
-          setSelectedLogFile(undefined);
+          setSelectedLogFile(null);
           setSelectedLogContent("");
         }
       } catch (error) {
         console.error(`Error fetching log files for ${activeTabKey}:`, error);
         setLogFiles((prev) => ({ ...prev, [activeTabKey]: [] })); // 设置为空数组
-        setSelectedLogFile(undefined); // 清空选中
+        setSelectedLogFile(null); // 清空选中
         setSelectedLogContent(""); // 清空内容
       }
     };
@@ -211,7 +211,7 @@ const Detail: React.FC<DetailProps> = ({
         handleLogFileClick(firstFile.originalFilename);
       } else {
         // 如果是空数组，表示该维度下没有日志文件，清空选中和内容
-        setSelectedLogFile(undefined);
+        setSelectedLogFile(null);
         setSelectedLogContent("");
       }
       return; // 已经处理过，不再请求
@@ -999,7 +999,7 @@ export const getStaticProps: GetStaticProps<DetailProps> = async (
   let initialEvaluationCaseReports: EvaluationCaseReport[] | null = null;
   let initialLogFiles: Record<string, LogFile[]> = {};
   let initialLogContent: string = "";
-  let initialSelectedLogFile: string | undefined = undefined;
+  let initialSelectedLogFile: string | null = null;
 
   try {
     // Fetch model data
@@ -1061,19 +1061,22 @@ export const getStaticProps: GetStaticProps<DetailProps> = async (
         id
       );
 
-      const logDimensions = fs
-        .readdirSync(logDir)
-        .filter((name) => fs.statSync(path.join(logDir, name)).isDirectory());
-      for (const dim of logDimensions) {
-        const dimLogPath = path.join(logDir, dim);
-        const files = fs
-          .readdirSync(dimLogPath)
-          .filter((name) => name.endsWith(".log"))
-          .map((name) => ({
-            originalFilename: name,
-            i18nKey: `${dim}.${name.replace(".log", "")}`,
-          }));
-        initialLogFiles[dim] = files;
+      // 检查日志目录是否存在
+      if (fs.existsSync(logDir)) {
+        const logDimensions = fs
+          .readdirSync(logDir)
+          .filter((name) => fs.statSync(path.join(logDir, name)).isDirectory());
+        for (const dim of logDimensions) {
+          const dimLogPath = path.join(logDir, dim);
+          const files = fs
+            .readdirSync(dimLogPath)
+            .filter((name) => name.endsWith(".log"))
+            .map((name) => ({
+              originalFilename: name,
+              i18nKey: `${dim}.${name.replace(".log", "")}`,
+            }));
+          initialLogFiles[dim] = files;
+        }
       }
 
       // Set initial selected log file and content for the default active tab
@@ -1095,6 +1098,10 @@ export const getStaticProps: GetStaticProps<DetailProps> = async (
         if (fs.existsSync(logFilePath)) {
           initialLogContent = fs.readFileSync(logFilePath, "utf-8");
         }
+      } else {
+        // 确保当没有日志文件时，initialSelectedLogFile 为 null 而不是 undefined
+        initialSelectedLogFile = null;
+        initialLogContent = "";
       }
     }
   } catch (error) {
