@@ -5,7 +5,6 @@ import path from "path";
 import Head from "next/head";
 import NProgress from "nprogress"; // 导入 NProgress
 import {
-  Descriptions,
   Row,
   Col,
   Spin,
@@ -17,7 +16,7 @@ import {
   Select,
   Tooltip, // 新增导入 Tooltip
 } from "antd";
-import { ProColumns, ProTable } from "@ant-design/pro-table";
+import { ProTable } from "@ant-design/pro-table";
 import { useTranslation } from "react-i18next";
 import { RadarChart } from "../../../components/RadarChart";
 import { BarChart } from "../../../components/BarChart";
@@ -25,85 +24,22 @@ import styles from "../../../styles/Container.module.css";
 import Link from "next/link";
 import {
   ArrowLeftOutlined,
-  EyeOutlined,
-  ExportOutlined, // 新增导入 ExportOutlined
 } from "@ant-design/icons";
-// import LanguageSelector from "../../../components/LanguageSelector";
 import { INDICATOR_KEYS } from "../../../components/constants";
 
-const { Title, Paragraph, Link: AntLink } = Typography; // 导入 Ant Design 的 Link 组件
+// 导入拆分的组件和类型
+import {
+  Model,
+  EvaluationCaseReport,
+  CaseData,
+  Answer,
+  LogFile,
+  DetailProps
+} from "../../../types/ranking";
+import { ModelDetailCard } from "../../../components/ModelDetailCard";
+import { createCaseColumns, createEvaluationCaseColumns } from "../../../components/DetailTableColumns";
 
-interface Answer {
-  case_evaluation_count: number;
-  model_answer: string;
-}
-
-interface CaseData {
-  case_id: string;
-  case_description: string;
-  expected_output: string;
-  actual_output: string;
-  evaluation_result: string;
-  score: number;
-  reason: string;
-  rule_id?: string;
-  case_content: string;
-  mode_question: string;
-  model_answers: Answer[];
-}
-
-interface EvaluationCaseReport {
-  indicator_name: string;
-  total_cases: number;
-  passed_cases: number;
-  failed_cases: number;
-  pass_rate: number;
-  average_score: number;
-  case_datas: CaseData[];
-  indicator_weight?: number;
-  evaluation_type?: string;
-  case_pass_count?: number;
-  case_wrong_count?: number;
-  correct_rate?: number;
-}
-
-interface Model {
-  id: string;
-  real_model_namne: string;
-  name: string;
-  description: string;
-  releaseDate: string;
-  type: string;
-  parameters: string;
-  organization: string;
-  website: string;
-  scores: Record<
-    string,
-    {
-      ability_score: number;
-      indicator_score: {
-        indicator_actual_score: number;
-        indicator_name: string;
-      }[];
-    }
-  >;
-}
-
-interface LogFile {
-  originalFilename: string;
-  i18nKey: string;
-}
-
-interface DetailProps {
-  model: Model | null;
-  evaluationDimensions: string[];
-  initialEvaluationCaseReports: EvaluationCaseReport[] | null;
-  initialLogFiles: Record<string, LogFile[]>;
-  initialLogContent: string;
-  initialSelectedLogFile: string | null;
-  date: string;
-  id: string;
-}
+const { Title, Paragraph } = Typography;
 
 const Detail: React.FC<DetailProps> = ({
   model,
@@ -328,129 +264,16 @@ const Detail: React.FC<DetailProps> = ({
     }));
   };
 
+  const evaluationCaseColumns = useMemo(() =>
+    createEvaluationCaseColumns(
+      (caseDatas, indicatorName) => showCaseModal(caseDatas, indicatorName),
+      t
+    ), [t]);
+
   const getCaseColumns = (
     currentDimension: string | undefined,
     currentIndicatorName: string
-  ): ProColumns<CaseData>[] => {
-    const baseColumns: ProColumns<CaseData>[] = [
-      // 使用 const 确保每次调用都是新的数组
-      {
-        title: t("evaluation_cases.case_id"),
-        dataIndex: "case_id",
-        key: "case_id",
-        width: 100,
-      },
-      {
-        title: t("evaluation_cases.case_weight"),
-        dataIndex: "case_weight",
-        key: "case_weight",
-        width: 100,
-      },
-      {
-        title: t("evaluation_cases.evaluation_result"),
-        dataIndex: "case_eval_result",
-        key: "case_eval_result",
-        width: 120,
-        render: (text) => (
-          <span style={{ color: text === "Pass" ? "green" : "red" }}>
-            {text}
-          </span>
-        ),
-      },
-      {
-        title: t("evaluation_cases.mode_question"),
-        dataIndex: "mode_question",
-        key: "mode_question",
-        ellipsis: true,
-      },
-      {
-        title: t("evaluation_cases.model_answers"),
-        dataIndex: "model_answers",
-        key: "model_answers",
-        ellipsis: true,
-        renderText: (value: Answer[]) => JSON.stringify(value, null, 2),
-      },
-    ];
-
-    if (
-      currentDimension === "sql_optimization" &&
-      currentIndicatorName === "optimization_depth.jsonl"
-    ) {
-      // 动态添加规则ID列
-      return [
-        ...baseColumns.slice(0, 1), // 插入到 case_id 后面
-        {
-          title: t("evaluation_cases.rule_id"),
-          dataIndex: "rule_id",
-          key: "rule_id",
-          width: 100,
-        },
-        ...baseColumns.slice(1), // 复制 case_id 之后
-      ];
-    }
-    return baseColumns;
-  };
-
-  const evaluationCaseColumns: ProColumns<EvaluationCaseReport>[] = [
-    {
-      title: t("evaluation_cases.indicator_name"),
-      dataIndex: "indicator_name",
-      key: "indicator_name",
-      width: 150,
-      render: (text: any) => t(`indicator.${text}`), // 假设 indicator_name 对应 i18n key
-    },
-    {
-      title: t("evaluation_cases.indicator_weight"),
-      dataIndex: "indicator_weight",
-      key: "indicator_weight",
-      width: 100,
-    },
-    {
-      title: t("evaluation_cases.evaluation_type"),
-      dataIndex: "evaluation_type",
-      key: "evaluation_type",
-      width: 100,
-    },
-    {
-      title: t("evaluation_cases.passed_cases"),
-      dataIndex: "case_pass_count",
-      key: "case_pass_count",
-      width: 100,
-    },
-    {
-      title: t("evaluation_cases.failed_cases"),
-      dataIndex: "case_wrong_count",
-      key: "case_wrong_count",
-      width: 100,
-    },
-    {
-      title: t("evaluation_cases.pass_rate"),
-      dataIndex: "correct_rate",
-      key: "correct_rate",
-      width: 100,
-      render: (text: any) => {
-        const rate = typeof text === "number" ? text : 0;
-        return `${Math.round(rate * 100)}%`;
-      },
-    },
-    {
-      title: t("evaluation_cases.details"),
-      key: "details",
-      width: 100,
-      render: (_, record) => (
-        <Button
-          type="link"
-          icon={<EyeOutlined />}
-          size="small"
-          onClick={() =>
-            showCaseModal(record.case_datas || [], record.indicator_name)
-          }
-        >
-          {t("evaluation_cases.view_cases")}
-        </Button>
-      ),
-    },
-  ];
+  ) => createCaseColumns({ currentDimension, currentIndicatorName, t });
 
   if (!model) {
     return (
@@ -560,83 +383,7 @@ const Detail: React.FC<DetailProps> = ({
         </div>
 
         {/* 模型详情卡片 */}
-        <Card
-          bordered={false}
-          style={{
-            borderRadius: 12,
-            boxShadow: "0 6px 20px rgba(0, 0, 0, 0.08)",
-            marginBottom: "32px",
-            background: "linear-gradient(135deg, #f6f8fa 0%, #e9eef4 100%)",
-            overflow: "hidden",
-          }}
-        >
-          <Title
-            level={1}
-            style={{
-              marginTop: 0,
-              marginBottom: "16px",
-              fontSize: "32px",
-              fontWeight: 800,
-              color: "#2c3e50",
-              padding: "24px 24px 0", // 增加内边距
-            }}
-          >
-            {model.real_model_namne}
-          </Title>
-          <Paragraph
-            style={{
-              fontSize: "18px",
-              color: "#555",
-              marginBottom: "24px",
-              padding: "0 24px", // 增加内边距
-            }}
-          >
-            {model.description}
-          </Paragraph>
-
-          <Descriptions
-            bordered
-            column={{ xs: 1, sm: 2 }}
-            labelStyle={{
-              fontWeight: "bold",
-              paddingLeft: "24px",
-            }} // 增加内边距
-            contentStyle={{
-              color: "#333",
-              paddingRight: "24px",
-            }} // 增加内边距
-          >
-            <Descriptions.Item label={t("table.type")}>
-              {model.type === "Chat"
-                ? t("table.type_chat")
-                : model.type === "Application"
-                  ? t("table.type_application")
-                  : model.type === "Chat(Thinking)"
-                    ? t("table.type_chat_thinking")
-                    : model.type}
-            </Descriptions.Item>
-            <Descriptions.Item label={t("table.organization")}>
-              {model.organization}
-            </Descriptions.Item>
-            <Descriptions.Item label={t("table.releaseDate")}>
-              {model.releaseDate}
-            </Descriptions.Item>
-            <Descriptions.Item label={t("table.website")}>
-              <AntLink
-                href={model.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "4px",
-                }}
-              >
-                {model.website} <ExportOutlined />
-              </AntLink>
-            </Descriptions.Item>
-          </Descriptions>
-        </Card>
+        <ModelDetailCard model={model} />
 
         {/* 能力评分图表部分 */}
         <Card
