@@ -39,7 +39,12 @@ The Leaderboard UI is responsible for displaying evaluation reports, the leaderb
     - Python 3.10+
     - Install necessary Python libraries:
       ```bash
-      pip install requests openai
+      pip install requests openai playwright python-dotenv mcp
+      ```
+      
+      After installing playwright, you also need to install browser binaries:
+      ```bash
+      playwright install
       ```
 
 2.  **Configuration**:

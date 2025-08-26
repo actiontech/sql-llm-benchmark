@@ -39,7 +39,12 @@ LLM 测评脚本负责核心的测评逻辑、数据处理和报告生成。支�
     - Python 3.10+
     - 安装必要的 Python 库:
       ```bash
-      pip install requests openai
+      pip install requests openai playwright python-dotenv mcp
+      ```
+      
+      安装 playwright 后，还需要安装浏览器二进制文件：
+      ```bash
+      playwright install
       ```
 
 2.  **配置**:
