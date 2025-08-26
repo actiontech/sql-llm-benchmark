@@ -3,9 +3,9 @@
         "indicator_name": "execution_accuracy.jsonl",
         "indicator_weight": 4,
         "evaluation_type": "objective",
-        "case_pass_count": 21,
-        "case_wrong_count": 9,
-        "correct_rate": 0.7,
+        "case_pass_count": 20,
+        "case_wrong_count": 10,
+        "correct_rate": 0.67,
         "case_datas": [
             {
                 "case_id": "1",
@@ -238,17 +238,17 @@
                             "rows": [
                                 [
                                     3,
-                                    "30.00",
+                                    30.0,
                                     1
                                 ],
                                 [
                                     2,
-                                    "45.00",
+                                    45.0,
                                     2
                                 ],
                                 [
                                     1,
-                                    "25.00",
+                                    25.0,
                                     2
                                 ]
                             ]
@@ -303,15 +303,15 @@
                             "rows": [
                                 [
                                     "D",
-                                    40.0
+                                    "40.00"
                                 ],
                                 [
                                     "B",
-                                    30.0
+                                    "30.00"
                                 ],
                                 [
                                     "E",
-                                    25.0
+                                    "25.00"
                                 ]
                             ]
                         }
@@ -401,12 +401,12 @@
                                 [
                                     "Electronics",
                                     5,
-                                    "2024-06-13"
+                                    "2024-07-21"
                                 ],
                                 [
                                     "Clothes",
                                     30,
-                                    "2024-06-13"
+                                    "2024-07-21"
                                 ]
                             ]
                         }
@@ -417,13 +417,13 @@
                 "case_id": "12",
                 "case_weight": 2,
                 "case_content": "{\"case_id\": \"12\", \"difficulty_level\": \"2\", \"create_table_statements\": [\"CREATE TABLE orders_items (order_id INT, item_id INT, item_price DECIMAL(5, 2));\", \"CREATE TABLE order_quantities (order_id INT PRIMARY KEY, quantity INT, discount_percent DECIMAL(3, 2));\"], \"insert_statements\": [\"INSERT INTO orders_items (order_id, item_id, item_price) VALUES (1, 101, 10.00), (2, 102, 15.00), (3, 103, 20.00);\", \"INSERT INTO order_quantities (order_id, quantity, discount_percent) VALUES (1, 2, 0.10), (2, 3, 0.05);\"], \"sql\": \"INSERT INTO orders_items (order_id, item_id, item_price) SELECT oq.order_id, 104, oq.quantity * 10 * (1 - oq.discount_percent) FROM order_quantities oq WHERE oq.order_id = 2;\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"orders_items\", \"columns\": [\"order_id\", \"item_id\", \"item_price\"], \"rows\": [[1, 101, 10.0], [2, 102, 15.0], [3, 103, 20.0], [2, 104, 28.5]]}}",
-                "case_eval_result": "Pass",
+                "case_eval_result": "Fail",
                 "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE orders_items (order_id INT, item_id INT, item_price DECIMAL(5, 2));\nCREATE TABLE order_quantities (order_id INT PRIMARY KEY, quantity INT, discount_percent DECIMAL(3, 2));\n\nData:\nINSERT INTO orders_items (order_id, item_id, item_price) VALUES (1, 101, 10.00), (2, 102, 15.00), (3, 103, 20.00);\nINSERT INTO order_quantities (order_id, quantity, discount_percent) VALUES (1, 2, 0.10), (2, 3, 0.05);\n\nQuery:\nINSERT INTO orders_items (order_id, item_id, item_price) SELECT oq.order_id, 104, oq.quantity * 10 * (1 - oq.discount_percent) FROM order_quantities oq WHERE oq.order_id = 2;\n",
                 "model_answers": [
                     {
                         "case_evaluation_count": 1,
                         "model_answer": {
-                            "result_type": "table_state",
+                            "result_type": "select",
                             "table_name": "orders_items",
                             "columns": [
                                 "order_id",
@@ -543,14 +543,14 @@
                             ],
                             "rows": [
                                 [
-                                    1,
-                                    10.51,
-                                    5
-                                ],
-                                [
                                     2,
                                     20.49,
                                     10
+                                ],
+                                [
+                                    3,
+                                    5.0,
+                                    20
                                 ],
                                 [
                                     4,
@@ -905,13 +905,13 @@
                                     2,
                                     "beta",
                                     "Pending",
-                                    "2024-05-23"
+                                    "2024-05-21"
                                 ],
                                 [
                                     3,
                                     "gamma",
                                     "Blocked",
-                                    "2024-05-23"
+                                    "2024-05-21"
                                 ]
                             ]
                         }
@@ -1071,15 +1071,15 @@
         "indicator_name": "explain_detection.jsonl",
         "indicator_weight": 2,
         "evaluation_type": "objective",
-        "case_pass_count": 7,
-        "case_wrong_count": 13,
-        "correct_rate": 0.35,
+        "case_pass_count": 11,
+        "case_wrong_count": 9,
+        "correct_rate": 0.55,
         "case_datas": [
             {
                 "case_id": "1",
                 "case_weight": 1,
                 "case_content": "{\"case_id\": \"1\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE students (id INT PRIMARY KEY, name VARCHAR(100), age INT, grade VARCHAR(10));\"], \"insert_statements\": [\"INSERT INTO students (id, name, age, grade) VALUES (1, 'Alice', 18, 'A'), (2, 'Bob', 19, 'B'), (3, 'Charlie', 18, 'A'), (4, 'David', 20, 'C');\"], \"sql\": \"SELECT name, age FROM students WHERE grade = 'B';\", \"expected\": {\"type\": \"ALL\", \"rows\": \"4\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 25.0}}",
-                "case_eval_result": "Fail",
+                "case_eval_result": "Pass",
                 "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE students (id INT PRIMARY KEY, name VARCHAR(100), age INT, grade VARCHAR(10));\n\nData Inserts:\nINSERT INTO students (id, name, age, grade) VALUES (1, 'Alice', 18, 'A'), (2, 'Bob', 19, 'B'), (3, 'Charlie', 18, 'A'), (4, 'David', 20, 'C');\n\nQuery:\nSELECT name, age FROM students WHERE grade = 'B';\n",
                 "model_answers": [
                     {
@@ -1090,7 +1090,7 @@
                             "key": null,
                             "possible_keys": null,
                             "Extra": "Using where",
-                            "filtered": "100.00"
+                            "filtered": "25.00"
                         }
                     }
                 ]
@@ -1125,11 +1125,11 @@
                     {
                         "case_evaluation_count": 1,
                         "model_answer": {
-                            "type": "ALL",
-                            "rows": "3",
+                            "type": "UPDATE",
+                            "rows": "1",
                             "key": null,
                             "possible_keys": null,
-                            "Extra": "Using where",
+                            "Extra": "",
                             "filtered": "100.00"
                         }
                     }
@@ -1166,11 +1166,11 @@
                         "case_evaluation_count": 1,
                         "model_answer": {
                             "type": "INSERT",
-                            "rows": "1",
+                            "rows": "0",
                             "key": null,
                             "possible_keys": null,
                             "Extra": "",
-                            "filtered": "100"
+                            "filtered": "100.00"
                         }
                     }
                 ]
@@ -1199,7 +1199,7 @@
                 "case_id": "7",
                 "case_weight": 1,
                 "case_content": "{\"case_id\": \"7\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE sales (sale_id INT PRIMARY KEY, product_id INT, sale_amount DECIMAL(10, 2), sale_date DATE);\"], \"insert_statements\": [\"INSERT INTO sales (sale_id, product_id, sale_amount, sale_date) VALUES (1, 101, 1200.00, '2023-01-01'), (2, 102, 25.00, '2023-01-01'), (3, 101, 300.00, '2023-01-02'), (4, 103, 75.00, '2023-01-02');\"], \"sql\": \"SELECT product_id, sale_amount FROM sales WHERE sale_amount < 100.00;\", \"expected\": {\"type\": \"ALL\", \"rows\": \"4\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 33.33}}",
-                "case_eval_result": "Fail",
+                "case_eval_result": "Pass",
                 "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE sales (sale_id INT PRIMARY KEY, product_id INT, sale_amount DECIMAL(10, 2), sale_date DATE);\n\nData Inserts:\nINSERT INTO sales (sale_id, product_id, sale_amount, sale_date) VALUES (1, 101, 1200.00, '2023-01-01'), (2, 102, 25.00, '2023-01-01'), (3, 101, 300.00, '2023-01-02'), (4, 103, 75.00, '2023-01-02');\n\nQuery:\nSELECT product_id, sale_amount FROM sales WHERE sale_amount < 100.00;\n",
                 "model_answers": [
                     {
@@ -1210,7 +1210,7 @@
                             "key": null,
                             "possible_keys": null,
                             "Extra": "Using where",
-                            "filtered": "100.00"
+                            "filtered": "33.33"
                         }
                     }
                 ]
@@ -1259,7 +1259,7 @@
                 "case_id": "10",
                 "case_weight": 2,
                 "case_content": "{\"case_id\": \"10\", \"difficulty_level\": \"2\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(100));\", \"CREATE TABLE employees_v2 (emp_id INT PRIMARY KEY, emp_name VARCHAR(100), dept_id INT);\"], \"insert_statements\": [\"INSERT INTO departments (dept_id, dept_name) VALUES (1, 'HR'), (2, 'IT'), (3, 'Finance');\", \"INSERT INTO employees_v2 (emp_id, emp_name, dept_id) VALUES (101, 'Alice', 1), (102, 'Bob', 2), (103, 'Charlie', 1), (104, 'David', 3);\"], \"sql\": \"SELECT d.dept_name, COUNT(e.emp_id) FROM departments d LEFT JOIN employees_v2 e ON d.dept_id = e.dept_id GROUP BY d.dept_name ORDER BY d.dept_name;\", \"expected\": {\"type\": \"ALL\", \"rows\": \"3\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using temporary; Using filesort\", \"filtered\": 100.0}}",
-                "case_eval_result": "Fail",
+                "case_eval_result": "Pass",
                 "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(100));\nCREATE TABLE employees_v2 (emp_id INT PRIMARY KEY, emp_name VARCHAR(100), dept_id INT);\n\nData Inserts:\nINSERT INTO departments (dept_id, dept_name) VALUES (1, 'HR'), (2, 'IT'), (3, 'Finance');\nINSERT INTO employees_v2 (emp_id, emp_name, dept_id) VALUES (101, 'Alice', 1), (102, 'Bob', 2), (103, 'Charlie', 1), (104, 'David', 3);\n\nQuery:\nSELECT d.dept_name, COUNT(e.emp_id) FROM departments d LEFT JOIN employees_v2 e ON d.dept_id = e.dept_id GROUP BY d.dept_name ORDER BY d.dept_name;\n",
                 "model_answers": [
                     {
@@ -1268,7 +1268,7 @@
                             "type": "ALL",
                             "rows": "3",
                             "key": null,
-                            "possible_keys": "PRIMARY",
+                            "possible_keys": null,
                             "Extra": "Using temporary; Using filesort",
                             "filtered": "100.00"
                         }
@@ -1330,7 +1330,7 @@
                             "key": null,
                             "possible_keys": null,
                             "Extra": "Using where",
-                            "filtered": "100.00"
+                            "filtered": "50.00"
                         }
                     }
                 ]
@@ -1450,7 +1450,7 @@
                             "key": null,
                             "possible_keys": null,
                             "Extra": "Using where",
-                            "filtered": "33.33"
+                            "filtered": "100.00"
                         }
                     }
                 ]
@@ -1459,7 +1459,7 @@
                 "case_id": "20",
                 "case_weight": 1,
                 "case_content": "{\"case_id\": \"20\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE events (event_id INT PRIMARY KEY, event_name VARCHAR(100), event_date DATE);\"], \"insert_statements\": [\"INSERT INTO events (event_id, event_name, event_date) VALUES (1, 'Meeting', '2023-06-01'), (2, 'Conference', '2023-06-15'), (3, 'Workshop', '2023-07-01');\"], \"sql\": \"SELECT event_name FROM events WHERE event_name = 'Meeting';\", \"expected\": {\"type\": \"ALL\", \"rows\": \"3\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 33.33}}",
-                "case_eval_result": "Fail",
+                "case_eval_result": "Pass",
                 "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE events (event_id INT PRIMARY KEY, event_name VARCHAR(100), event_date DATE);\n\nData Inserts:\nINSERT INTO events (event_id, event_name, event_date) VALUES (1, 'Meeting', '2023-06-01'), (2, 'Conference', '2023-06-15'), (3, 'Workshop', '2023-07-01');\n\nQuery:\nSELECT event_name FROM events WHERE event_name = 'Meeting';\n",
                 "model_answers": [
                     {
@@ -1470,7 +1470,7 @@
                             "key": null,
                             "possible_keys": null,
                             "Extra": "Using where",
-                            "filtered": "100.00"
+                            "filtered": "33.33"
                         }
                     }
                 ]
