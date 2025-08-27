@@ -6,6 +6,7 @@ import logging
 
 from evaluation import run_all_evaluations
 from reports.reporting import generate_report
+from search_tools.core.client import get_mcp_client, close_mcp_client
 from config.llm_config import (
     OUTPUT_DIR,
     TARGET_LLM_CONFIG,
@@ -69,6 +70,12 @@ def main():
 
     all_results = []
     try:
+        mcp_client = get_mcp_client()
+        if mcp_client:
+            logging.info("MCP client initialized successfully.")
+        else:
+            logging.error("Failed to initialize MCP client.")
+            sys.exit(1)
         for llm in targets:
             name = llm.get('name', 'Unknown')
             logging.info(f"Running evaluations for model: {name}")
@@ -79,7 +86,7 @@ def main():
                 'target_llm': llm,
             })
             logging.info(f"[{name}] Evaluation completed. Score: {score}.")
-
+    
         # Generate the final report
         generate_report(all_results)
         logging.info("Report generation completed.")
@@ -96,7 +103,8 @@ def main():
         except Exception as log_err:
             logging.error(f"Failed to write fallback log: {log_err}")
         sys.exit(1)
-
+    finally:
+        close_mcp_client()
 
 if __name__ == '__main__':
     main()

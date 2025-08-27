@@ -122,13 +122,12 @@ class EnhancedMCPClient:
         try:
             response = self._run_in_loop(self.session.list_tools())
             
-            # 核心修正：将 "input_schema" 键名改为 "parameters"
             return [{
                 "type": "function",
                 "function": {
                     "name": tool.name,
                     "description": tool.description,
-                    "parameters": tool.inputSchema  # <--- 已修正
+                    "parameters": tool.inputSchema
                 }
             } for tool in response.tools]
         

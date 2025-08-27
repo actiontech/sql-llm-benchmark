@@ -389,7 +389,7 @@ def call_judge_llm_with_mcp_tools(
     """通过MCP工具增强的LLM调用方法"""
     import json as _json
     import time
-    from search_tools.core.client import get_mcp_client, close_mcp_client
+    from search_tools.core.client import get_mcp_client
     
     try:
         # 获取目标数据库和搜索站点
@@ -455,13 +455,10 @@ def call_judge_llm_with_mcp_tools(
                         raise RuntimeError("OpenAI client not initialized.")
 
                     # 处理工具使用
-                    try:
-                        return _handle_tool_usage(
-                            adapter, adapter_config, api_url, api_key, 
-                            request_data, messages, mcp_client, search_site_info
-                        )
-                    finally:
-                        close_mcp_client()
+                    return _handle_tool_usage(
+                        adapter, adapter_config, api_url, api_key, 
+                        request_data, messages, mcp_client, search_site_info
+                    )
 
             except Exception as e:
                 logger.warning(f"API Attempt {attempt + 1} failed: {e}")
@@ -471,6 +468,5 @@ def call_judge_llm_with_mcp_tools(
                     raise 
     
     except Exception as e:
-        close_mcp_client()
         logger.error(f"[MCP] MCP tool process failed: {e}")
         return call_llm_api(api_url, api_key, name, prompt, is_judge)
