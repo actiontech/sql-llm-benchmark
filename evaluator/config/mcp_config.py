@@ -8,7 +8,7 @@ from typing import Dict, List, Optional
 MCP_CONFIG = {
     # Which evaluation dimensions enable MCP (empty means all disabled)
     "enabled_dimensions": [
-        "dialect_conversion",  # Enable MCP network search for dialect conversion judge
+        # "dialect_conversion",  # Enable MCP network search for dialect conversion judge
         # "sql_optimization",  # SQL optimization (not supported yet)
         # "sql_understanding", # SQL understanding (not supported yet)
     ],

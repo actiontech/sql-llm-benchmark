@@ -1,4 +1,4 @@
-# main.py
+﻿# main.py
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -13,6 +13,7 @@ from config.llm_config import (
     JUDGE_LLM_CONFIGS,
     TARGET_APPLICATION,
 )
+from config.mcp_config import MCP_CONFIG
 
 
 def setup_logging(output_dir: Path) -> None:
@@ -69,13 +70,22 @@ def main():
     validate_llm_configs(JUDGE_LLM_CONFIGS, 'Judge LLM')
 
     all_results = []
+    mcp_client_initialized = False
     try:
-        mcp_client = get_mcp_client()
-        if mcp_client:
-            logging.info("MCP client initialized successfully.")
+        # Check if any evaluation dimensions have MCP enabled
+        enabled_dimensions = MCP_CONFIG.get("enabled_dimensions", [])
+        if enabled_dimensions:
+            logging.info(f"MCP enabled for dimensions: {', '.join(enabled_dimensions)}")
+            mcp_client = get_mcp_client()
+            if mcp_client:
+                logging.info("MCP client initialized successfully.")
+                mcp_client_initialized = True
+            else:
+                logging.error("Failed to initialize MCP client.")
+                sys.exit(1)
         else:
-            logging.error("Failed to initialize MCP client.")
-            sys.exit(1)
+            logging.info("No MCP dimensions enabled, skipping MCP client initialization.")
+        
         for llm in targets:
             name = llm.get('name', 'Unknown')
             logging.info(f"Running evaluations for model: {name}")
@@ -104,7 +114,9 @@ def main():
             logging.error(f"Failed to write fallback log: {log_err}")
         sys.exit(1)
     finally:
-        close_mcp_client()
+        if mcp_client_initialized:
+            close_mcp_client()
+            logging.info("MCP client closed.")
 
 if __name__ == '__main__':
     main()
