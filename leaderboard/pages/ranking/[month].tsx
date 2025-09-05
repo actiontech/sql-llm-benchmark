@@ -132,19 +132,19 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
           const valA = a.real_model_namne;
           const valB = b.real_model_namne;
           const compare = valA.localeCompare(valB);
-          return order === "ascend" ? compare : -compare;
+          return order === "descend" ? compare : -compare;
         }
 
         if (columnKey === "releaseDate") {
           const valA = new Date(a.releaseDate).getTime();
           const valB = new Date(b.releaseDate).getTime();
-          return order === "ascend" ? valA - valB : valB - valA;
+          return order === "descend" ? valA - valB : valB - valA;
         }
 
         const scoreA = a.scores?.[columnKey]?.ability_score ?? -1;
         const scoreB = b.scores?.[columnKey]?.ability_score ?? -1;
 
-        return order === "ascend" ? scoreA - scoreB : scoreB - scoreA;
+        return order === "descend" ? scoreA - scoreB : scoreB - scoreA;
       });
     }
 
