@@ -10,6 +10,7 @@ import {
 import { LogoImage } from "./LogoImage";
 import { StyledProgressBar } from "./StyledProgressBar";
 import { Model } from "../types/ranking";
+import { getModelTypeConfig } from "../utils/modelTypeUtils";
 
 interface ColumnProps {
     logoInfo: Record<string, string>;
@@ -86,7 +87,7 @@ export const createRankingTableColumns = ({
                 ) : (
                     <span>N/A</span>
                 ),
-            width: 120,
+            width: 150,
         },
         {
             title: (
@@ -107,6 +108,7 @@ export const createRankingTableColumns = ({
             sortOrder:
                 sortedInfo.columnKey === "real_model_namne" ? sortedInfo.order : false,
             showSorterTooltip: false,
+            width: 200,
         },
         {
             title: (
@@ -126,6 +128,7 @@ export const createRankingTableColumns = ({
             sortOrder:
                 sortedInfo.columnKey === "releaseDate" ? sortedInfo.order : false,
             showSorterTooltip: false,
+            width: 200,
         },
         {
             title: t("table.type"),
@@ -135,23 +138,10 @@ export const createRankingTableColumns = ({
             onFilter: true,
             align: "center",
             render: (text: any) => {
-                let translatedText = text;
-                let backgroundColor = "";
-                let textColor = "#333";
-
-                if (text === "Chat") {
-                    translatedText = t("table.type_chat");
-                    backgroundColor = "#e6f7ff"; // 浅蓝色
-                    textColor = "#1890ff"; // 蓝色文字
-                } else if (text === "Application") {
-                    translatedText = t("table.type_application");
-                    backgroundColor = "#f6ffed"; // 浅绿色
-                    textColor = "#52c41a"; // 绿色文字
-                } else if (text === "Chat(Thinking)") {
-                    translatedText = t("table.type_chat_thinking");
-                    backgroundColor = "#f9f0ff"; // Light purple
-                    textColor = "#722ed1"; // Purple text
-                }
+                const typeConfig = getModelTypeConfig(text, t);
+                const translatedText = typeConfig.text;
+                const backgroundColor = typeConfig.backgroundColor || "";
+                const textColor = typeConfig.textColor || "#333";
 
                 return (
                     <span
@@ -170,6 +160,7 @@ export const createRankingTableColumns = ({
                     </span>
                 );
             },
+            width: 200,
         },
         {
             title: (
@@ -205,6 +196,7 @@ export const createRankingTableColumns = ({
                     score === maxScoresByCategory.sql_optimization && score !== 0;
                 return <StyledProgressBar score={score} isHighestScore={isHighest} />;
             },
+            width: 300,
         },
         {
             title: (
@@ -233,6 +225,7 @@ export const createRankingTableColumns = ({
                     score === maxScoresByCategory.dialect_conversion && score !== 0;
                 return <StyledProgressBar score={score} isHighestScore={isHighest} />;
             },
+            width: 300,
         },
         {
             title: (
@@ -261,6 +254,7 @@ export const createRankingTableColumns = ({
                     score === maxScoresByCategory.sql_understanding && score !== 0;
                 return <StyledProgressBar score={score} isHighestScore={isHighest} />;
             },
+            width: 300,
         },
         {
             title: t("table.details"),
@@ -280,7 +274,7 @@ export const createRankingTableColumns = ({
                     </Button>
                 </Link>
             ),
-            width: 80,
+            width: 100,
             align: "center",
         },
     ];
