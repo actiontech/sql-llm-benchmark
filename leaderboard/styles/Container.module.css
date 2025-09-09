@@ -253,3 +253,51 @@
   pointer-events: none;
   z-index: 2;
 }
+
+/* 模型对比模式样式 */
+.compareMode {
+  transition: background-color 0.2s ease;
+}
+
+.compareMode:hover {
+  background-color: #f0f9ff !important;
+}
+
+/* 选中行样式 - 使用最简单的方式避免布局问题 */
+.selectedRow {
+  background: linear-gradient(to right, #1890ff 0px, #1890ff 4px, #e6f7ff 4px, #e6f7ff 100%) !important;
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+.selectedRow:hover {
+  background: linear-gradient(to right, #1890ff 0px, #1890ff 4px, #d4edff 4px, #d4edff 100%) !important;
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+/* 确保表格行样式的优先级 */
+.selectedRow td {
+  background: transparent !important;
+}
+
+.selectedRow:hover td {
+  background: transparent !important;
+}
+
+/* 覆盖排名行的样式，确保选中时优先显示选中样式 */
+.compareMode.selectedRow.rank1Row,
+.compareMode.selectedRow.rank2Row,
+.compareMode.selectedRow.rank3Row {
+  background: linear-gradient(to right, #1890ff 0px, #1890ff 4px, #e6f7ff 4px, #e6f7ff 100%) !important;
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+.compareMode.selectedRow.rank1Row:hover,
+.compareMode.selectedRow.rank2Row:hover,
+.compareMode.selectedRow.rank3Row:hover {
+  background: linear-gradient(to right, #1890ff 0px, #1890ff 4px, #d4edff 4px, #d4edff 100%) !important;
+  animation: none !important;
+  box-shadow: none !important;
+}

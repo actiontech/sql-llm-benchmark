@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import { RadarChart } from "../../../components/RadarChart";
 import { BarChart } from "../../../components/BarChart";
 import styles from "../../../styles/Container.module.css";
+import cardStyles from "../../../styles/Card.module.css";
 import Link from "next/link";
 import {
   ArrowLeftOutlined,
@@ -325,7 +326,7 @@ const Detail: React.FC<DetailProps> = ({
         <meta property="twitter:title" content={pageTitle} />
         <meta property="twitter:description" content={pageDescription} />
       </Head>
-      <div className={styles.container} style={{ padding: "24px" }}>
+      <div className={`${styles.container} ${cardStyles.pageContainer}`}>
         {/* 顶部导航栏 */}
         <div
           style={{
@@ -385,31 +386,16 @@ const Detail: React.FC<DetailProps> = ({
         {/* 能力评分图表部分 */}
         <Card
           bordered={false}
-          style={{
-            borderRadius: 12,
-            boxShadow: "0 6px 20px rgba(0, 0, 0, 0.08)",
-            marginBottom: "32px",
-            background: "linear-gradient(135deg, #f6f8fa 0%, #e9eef4 100%)",
-            overflow: "hidden",
-          }}
+          className={`${cardStyles.standardCard} ${cardStyles.cardMarginBottomLarge}`}
         >
           <Title
             level={2}
-            style={{
-              marginTop: 0,
-              marginBottom: "24px",
-              fontSize: "28px",
-              fontWeight: 700,
-              color: "#2c3e50",
-              padding: "24px 24px 0", // 增加内边距
-            }}
+            className={cardStyles.cardTitle}
           >
             {t("detail.abilityScores")}
           </Title>
 
-          <Row gutter={[24, 24]} style={{ padding: "0 24px 24px" }}>
-            {" "}
-            {/* 增加内边距 */}
+          <Row gutter={[24, 24]} className={cardStyles.cardContent}>
             <Col xs={24} md={12}>
               <Card
                 bordered={false}
@@ -459,25 +445,14 @@ const Detail: React.FC<DetailProps> = ({
         {model && (
           <Card
             bordered={false}
-            style={{
-              marginTop: "32px", // 增加顶部间距
-              borderRadius: 12,
-              boxShadow: "0 6px 20px rgba(0, 0, 0, 0.08)",
-              background: "linear-gradient(135deg, #f6f8fa 0%, #e9eef4 100%)",
-              overflow: "hidden",
-            }}
+            className={`${cardStyles.standardCard} ${cardStyles.cardMarginTopLarge}`}
           >
             <Title
               level={2}
+              className={cardStyles.cardTitle}
               style={{
-                marginTop: 0,
-                marginBottom: "24px",
                 display: "flex",
                 alignItems: "center",
-                fontSize: "28px",
-                fontWeight: 700,
-                color: "#2c3e50",
-                padding: "24px 24px 0", // 增加内边距
               }}
             >
               {t("evaluation_cases.title")}
@@ -485,7 +460,7 @@ const Detail: React.FC<DetailProps> = ({
             <Tabs
               activeKey={selectedEvaluationDimension}
               onChange={handleEvaluationTabChange}
-              style={{ padding: "0 24px 24px" }} // 增加内边距
+              className={cardStyles.cardContent}
             >
               {evaluationDimensions.map((dim) => (
                 <Tabs.TabPane tab={t(`table.${dim}`)} key={dim}>
@@ -529,31 +504,18 @@ const Detail: React.FC<DetailProps> = ({
         {model && (
           <Card
             bordered={false}
-            style={{
-              marginTop: "32px", // 增加顶部间距
-              borderRadius: 12,
-              boxShadow: "0 6px 20px rgba(0, 0, 0, 0.08)",
-              background: "linear-gradient(135deg, #f6f8fa 0%, #e9eef4 100%)",
-              overflow: "hidden",
-            }}
+            className={`${cardStyles.standardCard} ${cardStyles.cardMarginTopLarge}`}
           >
             <Title
               level={2}
-              style={{
-                marginTop: 0,
-                marginBottom: "24px",
-                fontSize: "28px",
-                fontWeight: 700,
-                color: "#2c3e50",
-                padding: "24px 24px 0", // 增加内边距
-              }}
+              className={cardStyles.cardTitle}
             >
               {t("log_info.title")}
             </Title>
             <Tabs
               activeKey={activeTabKey}
               onChange={handleTabChange}
-              style={{ padding: "0 24px 24px" }} // 增加内边距
+              className={cardStyles.cardContent}
             >
               {INDICATOR_KEYS.map((key) => (
                 <Tabs.TabPane tab={t(`table.${key}`)} key={key}>
