@@ -1,0 +1,73 @@
+/* 标准卡片样式 - 带渐变背景 */
+.standardCard {
+    border-radius: 12px !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
+    background: linear-gradient(135deg, #f6f8fa 0%, #e9eef4 100%) !important;
+    overflow: hidden !important;
+}
+
+/* 确保Card内部也使用透明背景 */
+.standardCard :global(.ant-card-body) {
+    background: transparent !important;
+}
+
+/* 基础卡片样式 - 不带渐变背景 */
+.baseCard {
+    border-radius: 12px !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
+    overflow: hidden !important;
+}
+
+/* 卡片容器内边距 */
+.cardPadding {
+    padding: 24px;
+}
+
+/* 卡片间距 */
+.cardMarginBottom {
+    margin-bottom: 24px !important;
+}
+
+.cardMarginTop {
+    margin-top: 24px !important;
+}
+
+.cardMarginBottomLarge {
+    margin-bottom: 32px !important;
+}
+
+.cardMarginTopLarge {
+    margin-top: 32px !important;
+}
+
+/* 页面容器样式 */
+.pageContainer {
+    padding: 24px;
+}
+
+/* 加载中心区域 */
+.loadingCenter {
+    text-align: center;
+    padding: 100px;
+}
+
+/* 错误提示中心区域 */
+.errorCenter {
+    text-align: center;
+    margin-top: 100px;
+}
+
+/* Card内部标题样式 */
+.cardTitle {
+    margin-top: 0 !important;
+    margin-bottom: 24px !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: #2c3e50 !important;
+    padding: 24px 24px 0 !important;
+}
+
+/* Card内部内容区域样式 */
+.cardContent {
+    padding: 0 24px 24px !important;
+}

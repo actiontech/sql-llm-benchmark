@@ -14,6 +14,8 @@ import {
   Tooltip,
   Input,
   Modal,
+  Checkbox,
+  Badge,
 } from "antd";
 
 import { useTranslation } from "react-i18next";
@@ -26,6 +28,8 @@ import {
   GithubOutlined, // 导入 Github 图标
   RightOutlined,
   FormOutlined, // 导入 FormOutlined 图标
+  SwapOutlined,
+  CloseOutlined,
 } from "@ant-design/icons";
 
 // 导入拆分的组件和工具
@@ -58,6 +62,8 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
     useState<boolean>(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
   const [sortedInfo, setSortedInfo] = useState<any>({});
+  const [selectedModels, setSelectedModels] = useState<Set<string>>(new Set());
+  const [showCompareMode, setShowCompareMode] = useState<boolean>(false);
 
   // 客户端数据获取函数
   const fetchModels = async (month: string) => {
@@ -180,20 +186,91 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
     setIsSubmissionGuideVisible(false);
   };
 
+  const handleModelSelect = (modelId: string, checked: boolean) => {
+    const newSelected = new Set(selectedModels);
+    if (checked) {
+      if (newSelected.size < 5) { // 最多选择5个模型
+        newSelected.add(modelId);
+      } else {
+        // 已达到最大选择数量，给用户提示
+        // 这里可以添加提示消息，比如使用antd的message
+        return; // 不执行选择
+      }
+    } else {
+      newSelected.delete(modelId);
+    }
+    setSelectedModels(newSelected);
+  };
+
+  const handleCompare = () => {
+    if (selectedModels.size >= 2) {
+      const modelIds = Array.from(selectedModels).join(',');
+      NProgress.start();
+      router.push(`/compare/${currentMonth}?models=${modelIds}`);
+    }
+  };
+
+  const toggleCompareMode = () => {
+    setShowCompareMode(!showCompareMode);
+    if (!showCompareMode) {
+      setSelectedModels(new Set()); // 清空选择
+    }
+  };
+
   useEffect(() => {
     if (isDescriptionExpanded && descriptionRef.current) {
       descriptionRef.current.style.maxHeight = `${descriptionRef.current.scrollHeight}px`;
     }
   }, [i18n.language, isDescriptionExpanded]);
 
-  const columns = useMemo(() =>
-    createRankingTableColumns({
+  const columns = useMemo(() => {
+    const baseColumns = createRankingTableColumns({
       logoInfo,
       sortedInfo,
       maxScoresByCategory,
       currentMonth,
       t,
-    }), [logoInfo, sortedInfo, maxScoresByCategory, currentMonth, t]);
+    });
+
+    if (showCompareMode) {
+      // 在多选模式下，添加复选框列到表格开头
+      return [
+        {
+          title: '选择',
+          dataIndex: 'select',
+          key: 'select',
+          width: 60,
+          align: 'center' as const,
+          render: (_: any, record: Model) => {
+            const isSelected = selectedModels.has(record.id);
+            const isDisabled = !isSelected && selectedModels.size >= 5;
+
+            return (
+              <Tooltip
+                title={
+                  isDisabled
+                    ? t("compare.checkbox_tooltip.max_reached")
+                    : isSelected
+                      ? t("compare.checkbox_tooltip.deselect")
+                      : t("compare.checkbox_tooltip.select")
+                }
+                placement="top"
+              >
+                <Checkbox
+                  checked={isSelected}
+                  disabled={isDisabled}
+                  onChange={(e) => handleModelSelect(record.id, e.target.checked)}
+                />
+              </Tooltip>
+            );
+          },
+        },
+        ...baseColumns,
+      ];
+    }
+
+    return baseColumns;
+  }, [logoInfo, sortedInfo, maxScoresByCategory, currentMonth, t, showCompareMode, selectedModels]);
 
   const pageTitle = t("seo.ranking_page.title", { month: currentMonth });
   const pageDescription = t("seo.ranking_page.description", {
@@ -545,6 +622,28 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
             />
           </Space>
 
+          {/* 对比模式提示 */}
+          {showCompareMode && (
+            <Card style={{
+              marginBottom: '16px',
+              backgroundColor: '#f0f9ff',
+              border: '1px solid #91caff'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#1890ff',
+                fontSize: '14px'
+              }}>
+                <SwapOutlined style={{ marginRight: '8px', fontSize: '16px' }} />
+                <span>
+                  {t("compare.compare_mode_tip")}
+                </span>
+              </div>
+            </Card>
+          )}
+
           {/* 表格 */}
           <ProTable<Model>
             actionRef={actionRef}
@@ -597,16 +696,85 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                   {t("actions.submit_report")}
                   <RightOutlined style={{ fontSize: "12px" }} />
                 </Button>
+                <Button
+                  key="compare-toggle"
+                  type={showCompareMode ? "default" : "primary"}
+                  onClick={toggleCompareMode}
+                  icon={showCompareMode ? <CloseOutlined /> : <SwapOutlined />}
+                  style={{
+                    fontWeight: "bold",
+                    borderRadius: "4px",
+                    padding: "4px 12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                >
+                  {showCompareMode ? t("compare.exit_compare_mode") : t("compare.toggle_compare_mode")}
+                </Button>
+                {showCompareMode && (
+                  <>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      backgroundColor: '#f0f9ff',
+                      padding: '4px 12px',
+                      borderRadius: '6px',
+                      border: '1px solid #91caff'
+                    }}>
+                      <Badge
+                        count={selectedModels.size}
+                        showZero
+                        style={{ backgroundColor: '#1890ff' }}
+                      />
+                      <span style={{
+                        marginLeft: '8px',
+                        fontSize: '14px',
+                        color: '#1890ff',
+                        fontWeight: 'bold'
+                      }}>
+                        {t("compare.selected_models_count", { count: selectedModels.size })}
+                      </span>
+                    </div>
+                    {selectedModels.size >= 2 && (
+                      <Button
+                        key="start-compare"
+                        type="primary"
+                        onClick={handleCompare}
+                        style={{
+                          fontWeight: "bold",
+                          borderRadius: "4px",
+                          padding: "4px 12px",
+                        }}
+                      >
+                        {t("compare.start_compare", { count: selectedModels.size })}
+                      </Button>
+                    )}
+                  </>
+                )}
               </Space>
             }
             pagination={false}
-            scroll={{ y: "auto" }}
             rowClassName={(record: Model, idx) => {
               const rank = idx + 1;
-              if (rank === 1) return styles.rank1Row;
-              if (rank === 2) return styles.rank2Row;
-              if (rank === 3) return styles.rank3Row;
-              return idx % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven;
+              const classes = [];
+
+              // 基础排名样式
+              if (rank === 1) classes.push(styles.rank1Row);
+              else if (rank === 2) classes.push(styles.rank2Row);
+              else if (rank === 3) classes.push(styles.rank3Row);
+              else classes.push(idx % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven);
+
+              // 在多选模式下添加额外样式
+              if (showCompareMode) {
+                classes.push(styles.compareMode);
+                const isSelected = selectedModels.has(record.id);
+                if (isSelected) {
+                  classes.push(styles.selectedRow);
+                }
+              }
+
+              return classes.filter(Boolean).join(' ');
             }}
             tableStyle={{
               borderRadius: 12,
@@ -621,12 +789,35 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
               return {
                 onClick: (event) => {
                   const target = event.target as HTMLElement;
-                  if (target.closest("button") || target.closest("a")) {
+
+                  // 在多选模式下，让整行点击切换选择状态
+                  if (showCompareMode) {
+                    // 如果点击的是复选框本身，让其正常工作，不重复处理
+                    if (target.closest("input[type='checkbox']") ||
+                      target.closest(".ant-checkbox")) {
+                      return;
+                    }
+                    // 整行点击时切换选择状态
+                    const isCurrentlySelected = selectedModels.has(record.id);
+                    handleModelSelect(record.id, !isCurrentlySelected);
                     return;
                   }
+
+                  // 如果点击的是按钮、链接或复选框相关元素，不跳转
+                  if (target.closest("button") ||
+                    target.closest("a") ||
+                    target.closest("input[type='checkbox']") ||
+                    target.closest(".ant-checkbox")) {
+                    return;
+                  }
+
                   NProgress.start();
                   router.push(`/models/${record.id}/${currentMonth}`);
                 },
+                style: showCompareMode ? {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                } : undefined,
               };
             }}
           />
