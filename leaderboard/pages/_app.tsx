@@ -2,6 +2,7 @@ import React from "react";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { BrowserRouter } from "react-router-dom";
+import { App } from "antd";
 import "../lib/i18n"; // 导入i18n配置
 import "../styles/globals.css";
 import Router from "next/router";
@@ -32,16 +33,18 @@ function MyApp({ Component, pageProps }: AppProps) {
           <title>模型评测排行榜</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            minHeight: "100vh",
-          }}
-        >
-          <Component {...pageProps} />
-          <Footer />
-        </div>
+        <App>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              minHeight: "100vh",
+            }}
+          >
+            <Component {...pageProps} />
+            <Footer />
+          </div>
+        </App>
       </>
     );
   }
@@ -53,14 +56,16 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>模型评测排行榜</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div
-        style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
-      >
-        <BrowserRouter>
-          <Component {...pageProps} />
-        </BrowserRouter>
-        <Footer />
-      </div>
+      <App>
+        <div
+          style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+        >
+          <BrowserRouter>
+            <Component {...pageProps} />
+          </BrowserRouter>
+          <Footer />
+        </div>
+      </App>
     </>
   );
 }

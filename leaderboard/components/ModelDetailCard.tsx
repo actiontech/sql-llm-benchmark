@@ -3,6 +3,8 @@ import { Card, Typography, Descriptions } from "antd";
 import { ExportOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { Model } from "../types/ranking";
+import cardStyles from "../styles/Card.module.css";
+import { getModelTypeText } from "../utils/modelTypeUtils";
 
 const { Title, Paragraph } = Typography;
 
@@ -16,13 +18,7 @@ export const ModelDetailCard: React.FC<ModelDetailCardProps> = ({ model }) => {
     return (
         <Card
             bordered={false}
-            style={{
-                borderRadius: 12,
-                boxShadow: "0 6px 20px rgba(0, 0, 0, 0.08)",
-                marginBottom: "32px",
-                background: "linear-gradient(135deg, #f6f8fa 0%, #e9eef4 100%)",
-                overflow: "hidden",
-            }}
+            className={`${cardStyles.standardCard} ${cardStyles.cardMarginBottomLarge}`}
         >
             <Title
                 level={1}
@@ -61,13 +57,7 @@ export const ModelDetailCard: React.FC<ModelDetailCardProps> = ({ model }) => {
                 }} // 增加内边距
             >
                 <Descriptions.Item label={t("table.type")}>
-                    {model.type === "Chat"
-                        ? t("table.type_chat")
-                        : model.type === "Application"
-                            ? t("table.type_application")
-                            : model.type === "Chat(Thinking)"
-                                ? t("table.type_chat_thinking")
-                                : model.type}
+                    {getModelTypeText(model.type, t)}
                 </Descriptions.Item>
                 <Descriptions.Item label={t("table.organization")}>
                     {model.organization}
