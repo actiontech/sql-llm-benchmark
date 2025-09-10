@@ -211,64 +211,70 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
                 <meta name="description" content={pageDescription} />
             </Head>
             <div className={`${styles.container} ${cardStyles.pageContainer}`}>
-                {/* 顶部控制区 */}
+                {/* 顶部导航栏 */}
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "24px",
+                        justifyContent: "space-between",
+                    }}
+                >
+                    <Link href={`/ranking/${currentMonth}`} onClick={() => NProgress.start()}>
+                        <Button
+                            type="default"
+                            icon={<ArrowLeftOutlined />}
+                            size="large"
+                            shape="round"
+                            style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                        >
+                            {t("compare.back_to_ranking")}
+                        </Button>
+                    </Link>
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: "20px",
+                            right: "30px",
+                            zIndex: 3,
+                        }}
+                    >
+                        <Space>
+
+                            <Tooltip title={t("compare.switch_language")}>
+                                <Button
+                                    type="text"
+                                    onClick={handleLanguageChange}
+                                    style={{
+                                        width: "40px",
+                                        height: "40px",
+                                        padding: 0,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        border: "none",
+                                        background: "transparent",
+                                    }}
+                                >
+                                    <img
+                                        src="/icons/language-switch.svg"
+                                        alt="Language Switch"
+                                        style={{ width: "24px", height: "24px" }}
+                                    />
+                                </Button>
+                            </Tooltip>
+                        </Space>
+                    </div>
+                </div>
+
+                {/* 页面标题 */}
                 <Card
                     bordered={false}
                     className={`${cardStyles.standardCard} ${cardStyles.cardMarginBottom}`}
                 >
-                    <Row justify="space-between" align="middle">
-                        <Col>
-                            <Space>
-                                <Link href={`/ranking/${currentMonth}`}>
-                                    <Button
-                                        type="default"
-                                        icon={<ArrowLeftOutlined />}
-                                        size="large"
-                                        shape="round"
-                                        style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                                    >
-                                        {t("compare.back_to_ranking")}
-                                    </Button>
-                                </Link>
-                                <Title level={3} style={{ margin: 0 }}>
-                                    {t("compare.analysis_title")}
-                                </Title>
-                            </Space>
-                        </Col>
-                        <Col>
-                            <Space>
-                                <Select value={currentMonth} onChange={handleMonthChange} style={{ width: 150 }}>
-                                    {months.map((m) => (
-                                        <Option key={m} value={m}>
-                                            {m}
-                                        </Option>
-                                    ))}
-                                </Select>
-                                <Tooltip title={t("compare.switch_language")}>
-                                    <Button
-                                        type="text"
-                                        onClick={handleLanguageChange}
-                                        style={{
-                                            width: "40px",
-                                            height: "40px",
-                                            padding: 0,
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            border: "none",
-                                            background: "transparent",
-                                        }}
-                                    >
-                                        <img
-                                            src="/icons/language-switch.svg"
-                                            alt="Language Switch"
-                                            style={{ width: "24px", height: "24px" }}
-                                        />
-                                    </Button>
-                                </Tooltip>
-                            </Space>
-                        </Col>
-                    </Row>
+                    <Title level={2} className={cardStyles.cardTitle}>
+                        {t("compare.analysis_title")}
+                    </Title>
 
                     {/* 已选模型显示区 */}
                     <Divider />
@@ -342,16 +348,25 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
                                     </Space>
                                 </Col>
                                 <Col>
-                                    <Select
-                                        value={selectedCapability}
-                                        onChange={setSelectedCapability}
-                                        style={{ width: 200 }}
-                                    >
-                                        <Option value="all">{t("compare.capability_filter.all")}</Option>
-                                        <Option value="sql_optimization">{t("compare.capability_filter.sql_optimization")}</Option>
-                                        <Option value="dialect_conversion">{t("compare.capability_filter.dialect_conversion")}</Option>
-                                        <Option value="sql_understanding">{t("compare.capability_filter.sql_understanding")}</Option>
-                                    </Select>
+                                    <Space size={16}>
+                                        <Select
+                                            value={selectedCapability}
+                                            onChange={setSelectedCapability}
+                                            style={{ width: 200 }}
+                                        >
+                                            <Option value="all">{t("compare.capability_filter.all")}</Option>
+                                            <Option value="sql_optimization">{t("compare.capability_filter.sql_optimization")}</Option>
+                                            <Option value="dialect_conversion">{t("compare.capability_filter.dialect_conversion")}</Option>
+                                            <Option value="sql_understanding">{t("compare.capability_filter.sql_understanding")}</Option>
+                                        </Select>
+                                        <Select value={currentMonth} onChange={handleMonthChange} style={{ width: 150 }}>
+                                            {months.map((m) => (
+                                                <Option key={m} value={m}>
+                                                    {m}
+                                                </Option>
+                                            ))}
+                                        </Select>
+                                    </Space>
                                 </Col>
                             </Row>
                         </Card>
