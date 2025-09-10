@@ -21,6 +21,20 @@
     "description_part3_trigger": "提交您的评测报告",
     "full_description": "大模型SQL能力排行榜揭示大模型在SQL领域的真实水平！ SCALE致力于通过科学、严谨的测评，全面评估大语言模型（LLM）处理SQL的核心能力。我们聚焦三大关键维度：SQL优化能力（提升查询效率与性能）、方言转换能力（实现跨数据库平台的无缝迁移）以及SQL深度理解能力（精准解析复杂查询逻辑与用户意图）。为真实反映模型在数据库操作实践中的表现，我们构建了一套多维度、多指标的综合测评体系。并采用不同难度等级的真实案例进行严格测试。每个测试案例均依据其技术复杂度与实际应用价值被赋予科学的权重（难度越高，权重越大），确保最终得分能精准衡量模型在高价值、高挑战性任务上的综合表现力。SCALE 榜单通过严格测试与科学加权评分，旨在为开发者、数据库管理员及企业技术决策者提供权威、客观的参考依据，清晰呈现各模型在SQL处理领域的相对优势，推动大模型在数据库智能化应用中的技术发展与选型落地。"
   },
+  "common": {
+    "select_evaluation_type": "选择评测类型",
+    "dimension_ranking": "维度排名",
+    "dimension_ranking_desc": "查看模型在SQL优化、方言转换、SQL理解等维度的综合排名",
+    "indicator_ranking": "指标排名",
+    "indicator_ranking_desc": "查看模型在具体指标上的详细得分排名",
+    "latest_data": "最新数据",
+    "historical_data": "历史数据",
+    "no_data_available": "暂无可用数据",
+    "search_models": "搜索模型",
+    "items": "项",
+    "reset": "重置",
+    "back_to_ranking": "返回榜单"
+  },
   "table": {
     "rank": "排名",
     "creator": "创建者",
@@ -40,7 +54,9 @@
     "view_details": "详情",
     "model_score": "模型得分",
     "default_sort_tooltip": "默认排序",
-    "no_data": "暂无数据"
+    "no_data": "暂无数据",
+    "dimension": "维度",
+    "indicator": "指标"
   },
   "indicator": {
     "execution_accuracy.jsonl": "执行准确性",
@@ -209,6 +225,41 @@
     "no_logs_found": "此维度下未找到日志文件。",
     "no_logs_for_dimension": "此维度下未找到测评流程日志数据。",
     "logContent": "日志内容"
+  },
+  "indicator_ranking": {
+    "title": "模型指标得分排行",
+    "dimension_filter": "维度筛选",
+    "indicator_filter": "指标筛选",
+    "select_indicator": "选择指标",
+    "available_indicators": "可用指标",
+    "current_indicator": "当前指标",
+    "table_title": "指标排名",
+    "export_csv": "导出CSV",
+    "total_models": "总模型数",
+    "highest_score": "最高分",
+    "average_score": "平均分",
+    "no_data": "暂无数据",
+    "compare_models": "对比模型",
+    "select_models": "选择模型",
+    "start_compare": "开始对比"
+  },
+  "dialect_conversion": {
+    "logical_equivalence": "逻辑等价",
+    "syntax_error_detection": "语法错误检测",
+    "big_sql_conversion": "大SQL转换",
+    "China-made_database": "国产数据库"
+  },
+  "sql_optimization": {
+    "logical_equivalence": "逻辑等价",
+    "optimization_depth": "优化深度",
+    "rule_adherence": "规则遵循",
+    "syntax_error_detection": "语法错误检测"
+  },
+  "sql_understanding": {
+    "execution_accuracy": "执行准确性",
+    "explain_detection": "执行计划检测",
+    "sql_identification": "类型识别",
+    "syntax_error_detection": "语法错误检测"
   },
   "log_file": {
     "dialect_conversion": {
