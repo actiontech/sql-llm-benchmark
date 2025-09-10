@@ -43,7 +43,7 @@ export const ComparisonBar: React.FC<ComparisonBarProps> = ({
             },
             label: {
                 show: true,
-                position: 'top',
+                position: 'inside',
                 formatter: (params: any) => {
                     const value = params.value;
                     return value > 0 ? `${value.toFixed(1)}` : '';
@@ -53,7 +53,7 @@ export const ComparisonBar: React.FC<ComparisonBarProps> = ({
                 color: '#2c3e50',
                 textStyle: {
                     textBorderColor: '#ffffff',
-                    textBorderWidth: 1,
+                    textBorderWidth: 0.6,
                 },
             },
         }));
