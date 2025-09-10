@@ -496,6 +496,28 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                   </Button>
                   .
                 </Paragraph>
+
+                {/* 指标排名入口 */}
+                <div style={{ marginTop: "24px" }}>
+                  <Link href={`/indicators/${currentMonth}`}>
+                    <Button
+                      type="default"
+                      size="large"
+                      style={{
+                        borderRadius: "8px",
+                        height: "48px",
+                        padding: "0 24px",
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        border: "2px solid #1890ff",
+                        color: "#1890ff",
+                        background: "rgba(24, 144, 255, 0.1)",
+                      }}
+                    >
+                      📊 {t("common.indicator_ranking")}
+                    </Button>
+                  </Link>
+                </div>
               </div>
 
               {/* 领奖台模块 */}

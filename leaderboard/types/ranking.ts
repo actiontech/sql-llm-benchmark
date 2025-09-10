@@ -26,6 +26,29 @@ export interface RankingPageProps {
     logoInfo: Record<string, string>;
 }
 
+// 指标排名相关类型
+export interface IndicatorModel {
+    rank: number;
+    modelId: string;
+    modelName: string;
+    score: number;
+    logoInfo: string;
+    modelType: string;
+    organization: string;
+    hasData: boolean;
+}
+
+export interface IndicatorRankingData {
+    dimension: string;
+    indicator: string;
+    models: IndicatorModel[];
+}
+
+export interface IndicatorRankingPageProps {
+    months: string[];
+    logoInfo: Record<string, string>;
+}
+
 export interface Answer {
     case_evaluation_count: number;
     model_answer: string;

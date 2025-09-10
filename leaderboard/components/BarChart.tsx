@@ -13,9 +13,10 @@ interface BarChartProps {
     indicator_actual_score: number;
     indicator_name: string;
   }[];
+  onIndicatorClick?: (indicator: string) => void;
 }
 
-export const BarChart: React.FC<BarChartProps> = ({ data }) => {
+export const BarChart: React.FC<BarChartProps> = ({ data, onIndicatorClick }) => {
   const { t } = useTranslation();
   const chartRef = useRef<any>(null);
   const { exportImage } = useChartExport(chartRef);
@@ -43,6 +44,17 @@ export const BarChart: React.FC<BarChartProps> = ({ data }) => {
     ],
   };
 
+  // 处理图表点击事件
+  const handleChartClick = (params: any) => {
+    if (onIndicatorClick && params.componentType === 'series') {
+      const indicatorIndex = params.dataIndex;
+      const indicatorName = data[indicatorIndex]?.indicator_name;
+      if (indicatorName) {
+        onIndicatorClick(indicatorName);
+      }
+    }
+  };
+
   return (
     <div>
       <div style={{ textAlign: 'right', marginBottom: 8 }}>
@@ -54,6 +66,9 @@ export const BarChart: React.FC<BarChartProps> = ({ data }) => {
         option={option}
         onChartReady={(inst) => (chartRef.current = inst)}
         style={{ width: '100%', height: 400 }}
+        onEvents={{
+          click: handleChartClick,
+        }}
       />
     </div>
   );
