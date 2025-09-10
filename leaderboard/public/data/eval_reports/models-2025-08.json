@@ -1,6 +1,70 @@
 {
     "models": [
         {
+            "id": "sqlflash",
+            "name": "SQLFlash",
+            "real_model_namne": "SQLFlash",
+            "type": "Application",
+            "parameters": 83144,
+            "website": "https://sqlflash.ai/?utm_source=scale",
+            "description": "Optimize Your SQL, Maximize Your Focus",
+            "organization": "SQLFlash",
+            "releaseDate": "2025/2/17",
+            "scores": {
+                "sql_optimization": {
+                    "ability_score": 88.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.2,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "sqlshift",
+            "name": "SQLShift",
+            "real_model_namne": "SQLShift",
+            "type": "Application",
+            "parameters": 69585,
+            "website": "https://sqlshift.cn/?utm_source=scale",
+            "description": "让异构数据库迁移告别「存储过程之痛」",
+            "organization": "SQLShift",
+            "releaseDate": "2025/4/29",
+            "scores": {
+                "dialect_conversion": {
+                    "ability_score": 83.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 67.7,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 83.9,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 83.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "id": "DeepSeek-R1",
             "name": "Pro/deepseek-ai/DeepSeek-R1",
             "real_model_namne": "DeepSeek-R1",
@@ -266,36 +330,6 @@
                         },
                         {
                             "indicator_actual_score": 94.7,
-                            "indicator_name": "syntax_error_detection.jsonl"
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "id": "sqlflash",
-            "name": "SQLFlash",
-            "real_model_namne": "SQLFlash",
-            "type": "Application",
-            "parameters": 83144,
-            "website": "https://sqlflash.ai/?utm_source=scale",
-            "description": "Optimize Your SQL, Maximize Your Focus",
-            "organization": "SQLFlash",
-            "releaseDate": "2025/2/17",
-            "scores": {
-                "sql_optimization": {
-                    "ability_score": 88.5,
-                    "indicator_score": [
-                        {
-                            "indicator_actual_score": 89.5,
-                            "indicator_name": "logical_equivalence.jsonl"
-                        },
-                        {
-                            "indicator_actual_score": 82.2,
-                            "indicator_name": "optimization_depth.jsonl"
-                        },
-                        {
-                            "indicator_actual_score": 100.0,
                             "indicator_name": "syntax_error_detection.jsonl"
                         }
                     ]
@@ -1112,40 +1146,6 @@
                         },
                         {
                             "indicator_actual_score": 100.0,
-                            "indicator_name": "syntax_error_detection.jsonl"
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "id": "sqlshift",
-            "name": "SQLShift",
-            "real_model_namne": "SQLShift",
-            "type": "Application",
-            "parameters": 69585,
-            "website": "https://sqlshift.cn/?utm_source=scale",
-            "description": "让异构数据库迁移告别「存储过程之痛」",
-            "organization": "SQLShift",
-            "releaseDate": "2025/4/29",
-            "scores": {
-                "dialect_conversion": {
-                    "ability_score": 83.4,
-                    "indicator_score": [
-                        {
-                            "indicator_actual_score": 67.7,
-                            "indicator_name": "big_sql_conversion.jsonl"
-                        },
-                        {
-                            "indicator_actual_score": 100.0,
-                            "indicator_name": "China-made_database.jsonl"
-                        },
-                        {
-                            "indicator_actual_score": 83.9,
-                            "indicator_name": "logical_equivalence.jsonl"
-                        },
-                        {
-                            "indicator_actual_score": 83.3,
                             "indicator_name": "syntax_error_detection.jsonl"
                         }
                     ]

@@ -1,6 +1,36 @@
 {
     "models": [
         {
+            "id": "sqlflash",
+            "name": "SQLFlash",
+            "real_model_namne": "SQLFlash",
+            "type": "Application",
+            "parameters": 83144,
+            "website": "https://sqlflash.ai/?utm_source=scale",
+            "description": "Optimize Your SQL, Maximize Your Focus",
+            "organization": "SQLFlash",
+            "releaseDate": "2025/2/17",
+            "scores": {
+                "sql_optimization": {
+                    "ability_score": 88.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.2,
+                            "indicator_name": "optimization_depth.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "id": "DeepSeek-R1",
             "name": "Pro/deepseek-ai/DeepSeek-R1",
             "real_model_namne": "DeepSeek-R1",
@@ -267,36 +297,6 @@
                         {
                             "indicator_actual_score": 94.7,
                             "indicator_name": "syntax_error_detection.jsonl"
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "id": "sqlflash",
-            "name": "SQLFlash",
-            "real_model_namne": "SQLFlash",
-            "type": "Application",
-            "parameters": 83144,
-            "website": "https://sqlflash.ai/?utm_source=scale",
-            "description": "Optimize Your SQL, Maximize Your Focus",
-            "organization": "SQLFlash",
-            "releaseDate": "2025/2/17",
-            "scores": {
-                "sql_optimization": {
-                    "ability_score": 88.5,
-                    "indicator_score": [
-                        {
-                            "indicator_actual_score": 89.5,
-                            "indicator_name": "logical_equivalence.jsonl"
-                        },
-                        {
-                            "indicator_actual_score": 100.0,
-                            "indicator_name": "syntax_error_detection.jsonl"
-                        },
-                        {
-                            "indicator_actual_score": 82.2,
-                            "indicator_name": "optimization_depth.jsonl"
                         }
                     ]
                 }
