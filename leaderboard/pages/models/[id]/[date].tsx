@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import Head from "next/head";
 import NProgress from "nprogress"; // 导入 NProgress
+import { useRouter } from "next/router";
 import {
   Row,
   Col,
@@ -54,6 +55,7 @@ const Detail: React.FC<DetailProps> = ({
   id,
 }) => {
   const { t, i18n } = useTranslation("common");
+  const router = useRouter();
 
   const handleLanguageChange = () => {
     const newLang = i18n.language === "en" ? "zh" : "en";
@@ -434,6 +436,9 @@ const Detail: React.FC<DetailProps> = ({
                 {model && model.scores[selectedDimension] && (
                   <BarChart
                     data={model.scores[selectedDimension].indicator_score}
+                    onIndicatorClick={(indicator) => {
+                      router.push(`/indicators/${date}?dimension=${selectedDimension}&indicator=${indicator}`);
+                    }}
                   />
                 )}
               </Card>
