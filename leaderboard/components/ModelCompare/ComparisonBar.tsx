@@ -42,7 +42,7 @@ export const ComparisonBar: React.FC<ComparisonBarProps> = ({
                 focus: 'series',
             },
             label: {
-                show: true,
+                show: false,
                 position: 'inside',
                 formatter: (params: any) => {
                     const value = params.value;
