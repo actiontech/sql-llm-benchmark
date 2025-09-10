@@ -135,9 +135,10 @@ export const createIndicatorRankingColumns = ({
             width: 120,
             align: "center",
             sorter: (a: IndicatorModel, b: IndicatorModel) => b.score - a.score,
-            render: (_, record: IndicatorModel) => (
-                <StyledProgressBar score={record.score} isHighestScore={false} />
-            ),
+            render: (_, record: IndicatorModel, index) => {
+                const delay = (index || 0) * 100; // 每行延迟100ms
+                return <StyledProgressBar score={record.score} isHighestScore={false} delay={delay} />;
+            },
         },
         {
             title: t("table.details"),

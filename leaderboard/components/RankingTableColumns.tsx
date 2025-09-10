@@ -189,12 +189,13 @@ export const createRankingTableColumns = ({
             align: "center",
             sortOrder:
                 sortedInfo.columnKey === "sql_optimization" ? sortedInfo.order : false,
-            render: (text, record) => {
+            render: (text, record, index) => {
                 const score = typeof text === "number" ? text : undefined;
                 if (score === undefined) return "--";
                 const isHighest =
                     score === maxScoresByCategory.sql_optimization && score !== 0;
-                return <StyledProgressBar score={score} isHighestScore={isHighest} />;
+                const delay = (index || 0) * 100; // 每行延迟100ms
+                return <StyledProgressBar score={score} isHighestScore={isHighest} delay={delay} />;
             },
             width: 300,
         },
@@ -218,12 +219,13 @@ export const createRankingTableColumns = ({
                 sortedInfo.columnKey === "dialect_conversion"
                     ? sortedInfo.order
                     : false,
-            render: (text, record) => {
+            render: (text, record, index) => {
                 const score = typeof text === "number" ? text : undefined;
                 if (score === undefined) return "--";
                 const isHighest =
                     score === maxScoresByCategory.dialect_conversion && score !== 0;
-                return <StyledProgressBar score={score} isHighestScore={isHighest} />;
+                const delay = (index || 0) * 100; // 每行延迟100ms
+                return <StyledProgressBar score={score} isHighestScore={isHighest} delay={delay} />;
             },
             width: 300,
         },
@@ -247,12 +249,13 @@ export const createRankingTableColumns = ({
                 sortedInfo.columnKey === "sql_understanding"
                     ? sortedInfo.order
                     : false,
-            render: (text, record) => {
+            render: (text, record, index) => {
                 const score = typeof text === "number" ? text : undefined;
                 if (score === undefined) return "--";
                 const isHighest =
                     score === maxScoresByCategory.sql_understanding && score !== 0;
-                return <StyledProgressBar score={score} isHighestScore={isHighest} />;
+                const delay = (index || 0) * 100; // 每行延迟100ms
+                return <StyledProgressBar score={score} isHighestScore={isHighest} delay={delay} />;
             },
             width: 300,
         },

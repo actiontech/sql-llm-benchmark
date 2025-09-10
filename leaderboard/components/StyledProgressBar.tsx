@@ -1,18 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 interface StyledProgressBarProps {
     score: number;
     isHighestScore?: boolean;
+    delay?: number; // 添加延迟参数，用于控制动画开始时间
 }
 
 /**
- * @description 新版样式进度条
+ * @description 新版样式进度条，支持动态增长动画
  * @param score 分数 (0-100)
+ * @param isHighestScore 是否为最高分
+ * @param delay 动画延迟时间（毫秒）
  */
 export const StyledProgressBar: React.FC<StyledProgressBarProps> = ({
     score = 0,
-    isHighestScore = false
+    isHighestScore = false,
+    delay = 0
 }) => {
+    const [animatedScore, setAnimatedScore] = useState(0);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        // 延迟显示动画
+        const timer = setTimeout(() => {
+            setIsVisible(true);
+            setAnimatedScore(score);
+        }, delay);
+
+        return () => clearTimeout(timer);
+    }, [score, delay]);
+
     // 根据分数选择颜色，越高分颜色越深
     const getColor = (s: number): string => {
         if (s >= 85) return "#1D4F91"; // 深蓝色
@@ -35,11 +52,11 @@ export const StyledProgressBar: React.FC<StyledProgressBarProps> = ({
             {/* 进度条部分 */}
             <div
                 style={{
-                    width: `${score}%`,
+                    width: `${animatedScore}%`,
                     height: "12px",
                     backgroundColor: barColor,
                     borderRadius: "6px",
-                    transition: "width 0.4s ease",
+                    transition: isVisible ? "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)" : "none",
                     flexShrink: 0, // 防止进度条缩小
                     maxWidth: `calc(100% - 45px)`, // 确保进度条不会占据所有空间，为分数气泡留出空间 (假设气泡宽度约40px + 5px间距)
                 }}
@@ -61,6 +78,8 @@ export const StyledProgressBar: React.FC<StyledProgressBarProps> = ({
                     whiteSpace: "nowrap", // 防止分数换行
                     minWidth: "35px", // 确保气泡有最小宽度
                     flexShrink: 0, // 防止气泡缩小
+                    opacity: isVisible ? 1 : 0,
+                    transition: isVisible ? "opacity 0.3s ease 0.5s" : "none", // 气泡延迟显示
                 }}
             >
                 <span
