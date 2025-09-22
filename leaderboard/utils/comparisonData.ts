@@ -170,13 +170,14 @@ export function generateChartConfig(data: ComparisonData): ChartConfig {
 
 export function getModelColorPalette(): string[] {
     return [
-        '#1890ff', // 蓝色
-        '#52c41a', // 绿色
-        '#faad14', // 橙色
-        '#f5222d', // 红色
-        '#722ed1', // 紫色
-        '#13c2c2', // 青色
-        '#eb2f96', // 品红
-        '#fa8c16', // 橙红
+        '#5470c6', // 经典蓝
+        '#91cc75', // 草木绿
+        '#fac858', // 姜黄
+        '#ee6666', // 牡丹粉
+        '#73c0de', // 天空蓝
+        '#3ba272', // 森林绿
+        '#fc8452', // 晚秋橙
+        '#9a60b4', // 薰衣草紫
+        '#ea7ccc'  // 樱花粉
     ];
 } 

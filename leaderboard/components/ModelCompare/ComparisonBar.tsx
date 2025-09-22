@@ -3,6 +3,16 @@ import ReactECharts from 'echarts-for-react';
 import { BarDataItem } from '../../types/comparison';
 import { Model } from '../../types/ranking';
 
+// 定义一个颜色查找函数，增强可维护性
+const getCapabilityColor = (capability: string) => {
+    switch (capability) {
+        case 'sql_understanding': return 'rgba(200, 220, 255, 0.8)'; // 淡蓝色
+        case 'dialect_conversion': return 'rgba(224, 242, 241, 0.8)'; // 淡薄荷色
+        case 'sql_optimization': return 'rgba(255, 237, 213, 0.8)'; // 淡桃色
+        default: return 'rgba(245, 245, 245, 0.8)'; // 淡灰色
+    }
+};
+
 interface ComparisonBarProps {
     data: BarDataItem[];
     models: Model[];
@@ -21,42 +31,76 @@ export const ComparisonBar: React.FC<ComparisonBarProps> = ({
     t,
 }) => {
     const option = useMemo(() => {
-        // 根据选择的维度过滤数据
-        let filteredData = data;
+        // 1. 按 capability 排序数据
+        const sortedData = [...data].sort((a, b) => a.capability.localeCompare(b.capability));
+
+        let filteredData = sortedData;
         if (selectedCapability !== 'all') {
-            filteredData = data.filter(item => item.capability === selectedCapability);
+            filteredData = sortedData.filter(item => item.capability === selectedCapability);
         }
 
-        // 获取所有指标名称 - 使用特殊分隔符避免与指标名称中的短横线冲突
-        const indicators = filteredData.map(item => `${t ? t(`table.${item.capability}`) : item.capability}|--|${item.indicator}`);
+        // 2. 获取指标名称，并记录每个 capability 的起止位置和维度轴数据
+        const indicators = filteredData.map(item => item.indicator);
+        const capabilityRanges: { [key: string]: { start: number, end: number, name: string } } = {};
+        const dimensionAxisData = new Array(indicators.length).fill('');
 
-        // 为每个模型创建数据系列
+        if (selectedCapability === 'all') {
+            filteredData.forEach((item, index) => {
+                const capabilityName = t ? t(`table.${item.capability}`) : item.capability;
+                if (!capabilityRanges[item.capability]) {
+                    capabilityRanges[item.capability] = { start: index, end: index, name: capabilityName };
+                } else {
+                    capabilityRanges[item.capability].end = index;
+                }
+            });
+            Object.values(capabilityRanges).forEach(range => {
+                const middleIndex = Math.floor((range.start + range.end) / 2);
+                dimensionAxisData[middleIndex] = range.name;
+            });
+        }
+
+        // 3. 为每个模型创建数据系列
         const series = models.map((model, index) => ({
             name: model.real_model_namne,
             type: 'bar',
             data: filteredData.map(item => item[model.id] as number || 0),
             itemStyle: {
                 color: colorPalette[index],
+                borderRadius: [4, 4, 0, 0],
+                shadowColor: 'rgba(0, 0, 0, 0.2)',
+                shadowBlur: 5,
+                shadowOffsetY: 2,
             },
             emphasis: {
                 focus: 'series',
             },
             label: {
-                show: false,
-                position: 'inside',
+                show: false, // 默认关闭，避免拥挤
+                position: 'top',
                 formatter: (params: any) => {
                     const value = params.value;
                     return value > 0 ? `${value.toFixed(1)}` : '';
                 },
-                fontSize: 11,
-                fontWeight: 'bold',
-                color: '#2c3e50',
-                textStyle: {
-                    textBorderColor: '#ffffff',
-                    textBorderWidth: 0.6,
-                },
+                fontSize: 10,
+                color: '#333',
             },
         }));
+
+        // 4. 为背景区域创建 markArea (无标签)，并附加到第一个系列上
+        if (selectedCapability === 'all' && series.length > 0) {
+            (series[0] as any).markArea = {
+                silent: true,
+                data: Object.values(capabilityRanges).map(range => [
+                    {
+                        xAxis: range.start,
+                        itemStyle: { color: getCapabilityColor(Object.keys(capabilityRanges).find(key => capabilityRanges[key] === range) || '') },
+                    },
+                    {
+                        xAxis: range.end
+                    }
+                ]),
+            };
+        }
 
         return {
             title: {
@@ -75,48 +119,15 @@ export const ComparisonBar: React.FC<ComparisonBarProps> = ({
                     type: 'shadow',
                 },
                 formatter: (params: any) => {
-                    const parts = params[0].axisValue.split('|--|');
-                    let displayName;
+                    const dataIndex = params[0].dataIndex;
+                    const capabilityKey = filteredData[dataIndex].capability;
+                    const capabilityName = t ? t(`table.${capabilityKey}`) : capabilityKey;
+                    const indicatorName = params[0].axisValue;
+                    const translatedIndicator = t ? t(`indicator.${indicatorName}`, indicatorName) : indicatorName;
 
-                    if (parts.length > 1) {
-                        const capabilityName = parts[0]; // 已经是翻译后的维度名
-                        const indicatorName = parts[1];
-
-                        // 应用国际化逻辑
-                        let translatedIndicator = indicatorName;
-                        if (t) {
-                            const withSuffix = t(`indicator.${indicatorName}`);
-                            if (withSuffix !== `indicator.${indicatorName}`) {
-                                translatedIndicator = withSuffix;
-                            } else {
-                                const withoutSuffix = indicatorName.replace('.jsonl', '');
-                                const withoutSuffixResult = t(`indicator.${withoutSuffix}`);
-                                if (withoutSuffixResult !== `indicator.${withoutSuffix}`) {
-                                    translatedIndicator = withoutSuffixResult;
-                                }
-                            }
-                        }
-                        displayName = `${capabilityName} - ${translatedIndicator}`;
-                    } else {
-                        // 兼容旧格式
-                        displayName = params[0].axisValue;
-                        if (t) {
-                            const withSuffix = t(`indicator.${displayName}`);
-                            if (withSuffix !== `indicator.${displayName}`) {
-                                displayName = withSuffix;
-                            } else {
-                                const withoutSuffix = displayName.replace('.jsonl', '');
-                                const withoutSuffixResult = t(`indicator.${withoutSuffix}`);
-                                if (withoutSuffixResult !== `indicator.${withoutSuffix}`) {
-                                    displayName = withoutSuffixResult;
-                                }
-                            }
-                        }
-                    }
-
-                    let content = `<strong>${displayName}</strong><br/>`;
+                    let content = `<strong>${capabilityName} - ${translatedIndicator}</strong><br/>`;
                     params.forEach((param: any) => {
-                        content += `${param.seriesName}: ${param.value.toFixed(1)}${t ? t('compare.score_unit') : '分'}<br/>`;
+                        content += `${param.marker} ${param.seriesName}: <strong>${param.value.toFixed(1)}${t ? t('compare.score_unit') : '分'}</strong><br/>`;
                     });
                     return content;
                 },
@@ -124,42 +135,49 @@ export const ComparisonBar: React.FC<ComparisonBarProps> = ({
             legend: {
                 data: models.map(model => model.real_model_namne),
                 top: '10%',
+                // 增加图例滚动，防止模型过多时溢出
+                type: 'scroll',
             },
             grid: {
                 left: '3%',
                 right: '4%',
                 bottom: '15%',
-                top: '20%',
+                top: '20%', // 增加顶部空间以容纳维度轴
                 containLabel: true,
             },
-            xAxis: {
-                type: 'category',
-                data: indicators,
-                axisLabel: {
-                    rotate: 45,
-                    interval: 0,
-                    fontSize: 12,
-                    formatter: (value: string) => {
-                        const parts = value.split('|--|');
-                        if (parts.length > 1) {
-                            const capabilityName = parts[0]; // 已经是翻译后的维度名
-                            const indicatorName = parts[1];
-                            const translatedIndicator = t ? t(`indicator.${indicatorName}`) : indicatorName;
-                            const fullLabel = `${capabilityName} - ${translatedIndicator}`;
-
-                            // 如果标签过长（超过25个字符），使用更紧凑的格式
-                            if (fullLabel.length > 25) {
-                                // 使用缩写格式：维度名缩写 - 指标名
-                                const capabilityAbbr = capabilityName.split(' ').map(word => word.charAt(0)).join('');
-                                return `${capabilityAbbr} - ${translatedIndicator}`;
-                            }
-                            return fullLabel;
-                        }
-                        // 兼容旧格式，如果没有分隔符则直接返回
-                        return t ? t(`indicator.${value}`) : value;
+            xAxis: [
+                { // 指标轴 (底部)
+                    type: 'category',
+                    data: indicators,
+                    gridIndex: 0,
+                    axisLabel: {
+                        rotate: 45,
+                        interval: 0,
+                        fontSize: 12,
+                        formatter: (value: string) => {
+                            return t ? t(`indicator.${value}`, value) : value;
+                        },
+                        hideOverlap: true,
+                    },
+                    axisTick: {
+                        show: false,
                     },
                 },
-            },
+                { // 维度轴 (顶部)
+                    type: 'category',
+                    data: dimensionAxisData,
+                    gridIndex: 0,
+                    position: 'top',
+                    axisLine: { show: false },
+                    axisTick: { show: false },
+                    axisLabel: {
+                        fontSize: 14,
+                        fontWeight: 'bold',
+                        color: '#333',
+                        padding: [0, 0, 10, 0], // 与图表拉开距离
+                    }
+                }
+            ],
             yAxis: {
                 type: 'value',
                 name: t ? t('compare.score_unit') : '得分',
@@ -167,6 +185,14 @@ export const ComparisonBar: React.FC<ComparisonBarProps> = ({
                 axisLabel: {
                     formatter: (value: number) => `${value}${t ? t('compare.score_unit') : '分'}`,
                 },
+                // 添加Y轴分割线，方便对齐
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        type: 'dashed',
+                        color: '#eee'
+                    }
+                }
             },
             dataZoom: [
                 {
@@ -174,7 +200,9 @@ export const ComparisonBar: React.FC<ComparisonBarProps> = ({
                     show: true,
                     xAxisIndex: [0],
                     start: 0,
-                    end: 100,
+                    end: indicators.length > 20 ? 50 : 100, // 指标多时默认缩放
+                    bottom: '3%',
+                    height: 25
                 },
             ],
             series,

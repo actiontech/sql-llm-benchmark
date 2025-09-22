@@ -49,58 +49,6 @@ export const ComparisonRadar: React.FC<ComparisonRadarProps> = ({
             min: dynamicMin,
         }));
 
-        // 🎨 渐变色和视觉优化
-        const seriesData = models.map((model, index) => {
-            const modelValues = data.map(item => item[model.id] as number || 0);
-            const modelAvg = modelValues.reduce((sum, val) => sum + val, 0) / modelValues.length;
-
-            // 根据平均分调整透明度和线宽（排名越高，越突出）
-            const rank = models.length - models.sort((a, b) => {
-                const avgA = data.reduce((sum, item) => sum + (item[a.id] as number || 0), 0) / data.length;
-                const avgB = data.reduce((sum, item) => sum + (item[b.id] as number || 0), 0) / data.length;
-                return avgB - avgA;
-            }).indexOf(model);
-
-            const opacity = Math.max(0.1, 0.35 - (rank - 1) * 0.05);
-
-            return {
-                name: model.real_model_namne,
-                value: modelValues,
-                itemStyle: {
-                    color: colorPalette[index],
-                    borderColor: colorPalette[index],
-                    borderWidth: 2,
-                },
-                lineStyle: {
-                    color: colorPalette[index],
-                    width: 1.5,
-                    shadowColor: colorPalette[index],
-                    shadowBlur: 2,
-                },
-                symbol: 'emptyCircle', // 设置节点为空心圆
-                symbolSize: 7,    // 设置雷达图节点半径为8
-                areaStyle: {
-                    color: {
-                        type: 'radial',
-                        x: 0.5,
-                        y: 0.5,
-                        r: 0.5,
-                        colorStops: [
-                            { offset: 0, color: colorPalette[index] + '40' },
-                            { offset: 1, color: colorPalette[index] + '10' }
-                        ]
-                    },
-                    opacity: opacity,
-                },
-                // 添加自定义数据用于tooltip
-                modelData: {
-                    avgScore: modelAvg,
-                    rank: rank,
-                    type: model.type,
-                }
-            };
-        });
-
         return {
             title: {
                 text: title,
@@ -152,33 +100,9 @@ export const ComparisonRadar: React.FC<ComparisonRadarProps> = ({
                 },
             },
             legend: {
-                orient: 'horizontal',
-                bottom: '2%', // 图例更靠近底部，为雷达图让出更多空间
-                left: 'center',
-                itemGap: 20,
-                textStyle: {
-                    fontSize: 12,
-                    color: '#5a6c7d',
-                    fontWeight: '500',
-                },
-                itemWidth: 14,
-                itemHeight: 14,
-                data: models.map((model, index) => {
-                    const modelAvg = data.reduce((sum, item) => sum + (item[model.id] as number || 0), 0) / data.length;
-                    return {
-                        name: model.real_model_namne,
-                        textStyle: {
-                            color: '#2c3e50',
-                            rich: {
-                                score: {
-                                    color: '#7f8c8d',
-                                    fontSize: 11,
-                                    fontWeight: 'normal',
-                                }
-                            }
-                        }
-                    };
-                }),
+                data: models.map(model => model.real_model_namne),
+                bottom: '2%',
+                type: 'scroll',
             },
             // 圆形雷达图配置
             radar: {
@@ -193,25 +117,18 @@ export const ComparisonRadar: React.FC<ComparisonRadarProps> = ({
                         fontSize: 14,
                         fontWeight: '500',
                     },
-                    gap: 15, // 标签与雷达图距离
                 },
                 splitLine: {
                     lineStyle: {
                         color: '#d1d9e0',
-                        width: 1,
+                        width: 1.2,
                         type: 'solid',
                     },
                 },
                 splitArea: {
                     show: true,
                     areaStyle: {
-                        color: [
-                            'rgba(250, 250, 250, 0.1)',
-                            'rgba(240, 240, 240, 0.2)',
-                            'rgba(230, 230, 230, 0.3)',
-                            'rgba(220, 220, 220, 0.2)',
-                            'rgba(210, 210, 210, 0.1)'
-                        ],
+                        color: ['rgba(250, 250, 250, 0.5)', 'rgba(235, 235, 235, 0.5)'],
                     },
                 },
                 // 显示刻度值
@@ -233,7 +150,31 @@ export const ComparisonRadar: React.FC<ComparisonRadarProps> = ({
             series: [
                 {
                     type: 'radar',
-                    data: seriesData,
+                    data: models.map((model, index) => {
+                        const color = colorPalette[index % colorPalette.length];
+                        return {
+                            value: data.map(d => d[model.id] || 0),
+                            name: model.real_model_namne,
+                            areaStyle: {
+                                color: color,
+                                opacity: 0.1,
+                                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                                shadowBlur: 20,
+                            },
+                            lineStyle: {
+                                color: color,
+                                width: 2.5,
+                                shadowColor: 'rgba(0,0,0,0.3)',
+                                shadowBlur: 5,
+                                shadowOffsetY: 2,
+                            },
+                            symbol: 'circle',
+                            symbolSize: 6,
+                            itemStyle: {
+                                color: color
+                            }
+                        };
+                    })
                 },
             ],
         };
