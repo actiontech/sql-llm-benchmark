@@ -169,13 +169,17 @@ export const ComparisonHeatmap: React.FC<ComparisonHeatmapProps> = ({
                     itemStyle: {
                         borderColor: '#fff',
                         borderWidth: 1,
+                        borderRadius: 3,
+                        shadowColor: 'rgba(0, 0, 0, 0.2)',
+                        shadowBlur: 4,
+                        shadowOffsetY: 1,
+                        shadowOffsetX: 1,
                     },
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)',
-                            borderWidth: 2,
-                        },
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
                     },
                 },
             ],

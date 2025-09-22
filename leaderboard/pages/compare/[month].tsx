@@ -201,8 +201,8 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
         );
     }
 
-    const pageTitle = `模型对比 - ${currentMonth}`;
-    const pageDescription = `对比 ${modelIds.length} 个大语言模型在 SQL 能力上的表现差异`;
+    const pageTitle = t("seo.compare_page.title", { month: currentMonth });
+    const pageDescription = t("seo.compare_page.description", { count: modelIds.length });
 
     return (
         <>
@@ -395,10 +395,11 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
                                             models={comparisonData?.models || []}
                                             colorPalette={colorPalette}
                                             selectedCapability={selectedCapability}
+                                            // 简化 getTitle 逻辑，使其更清晰、更不易出错
                                             getTitle={(capability) =>
                                                 capability === 'all'
                                                     ? t("compare.chart_titles.indicator_comparison")
-                                                    : `${t(`compare.capability_filter.${capability === 'SQL优化' ? 'sql_optimization' : capability === '方言转换' ? 'dialect_conversion' : 'sql_understanding'}`)}${t("compare.chart_titles.indicator_comparison").replace('各指标能力', '指标')}`
+                                                    : `${t(`table.${capability}`)}${t("compare.indicator_comparison_suffix")}`
                                             }
                                             t={t}
                                         />
@@ -407,10 +408,11 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
                                         <ComparisonHeatmap
                                             data={chartConfig.heatmapData}
                                             selectedCapability={selectedCapability}
+                                            // 统一热力图的标题生成逻辑
                                             getTitle={(capability) =>
                                                 capability === 'all'
                                                     ? t("compare.chart_titles.model_indicator_heatmap")
-                                                    : `${t(`compare.capability_filter.${capability === 'SQL优化' ? 'sql_optimization' : capability === '方言转换' ? 'dialect_conversion' : 'sql_understanding'}`)}热力图`
+                                                    : `${t(`table.${capability}`)}${t("compare.chart_titles.heatmap_suffix")}`
                                             }
                                             t={t}
                                         />
