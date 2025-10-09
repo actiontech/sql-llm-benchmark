@@ -33,6 +33,9 @@ const IndicatorRankingPage: React.FC<IndicatorRankingPageProps> = ({
         ? currentMonthParam[0]
         : currentMonthParam || months[0];
 
+    // 从URL中提取modelId，用于判断是从详情页跳转而来
+    const sourceModelId = Array.isArray(modelId) ? modelId[0] : modelId;
+
     const actionRef = useRef<ActionType | undefined>(undefined);
     const [models, setModels] = useState<Model[]>([]);
     const [searchText, setSearchText] = useState<string>("");
@@ -140,7 +143,10 @@ const IndicatorRankingPage: React.FC<IndicatorRankingPageProps> = ({
                     justifyContent: "space-between",
                 }}
             >
-                <Link href={`/ranking/${currentMonth}`} onClick={() => NProgress.start()}>
+                <Link
+                    href={sourceModelId ? `/models/${sourceModelId}/${currentMonth}` : `/ranking/${currentMonth}`}
+                    onClick={() => NProgress.start()}
+                >
                     <Button
                         type="default"
                         icon={<ArrowLeftOutlined />}
@@ -148,7 +154,7 @@ const IndicatorRankingPage: React.FC<IndicatorRankingPageProps> = ({
                         shape="round"
                         style={{ display: "flex", alignItems: "center", gap: "8px" }}
                     >
-                        {t("common.back_to_ranking")}
+                        {sourceModelId ? t("common.back_to_detail") : t("common.back_to_ranking")}
                     </Button>
                 </Link>
                 <div
@@ -215,7 +221,7 @@ const IndicatorRankingPage: React.FC<IndicatorRankingPageProps> = ({
                     currentMonth={currentMonth}
                     logoInfo={logoInfo}
                     loading={loading}
-                    highlightModelId={Array.isArray(modelId) ? modelId[0] : modelId}
+                    highlightModelId={sourceModelId}
                 />
             </Spin>
         </div>
