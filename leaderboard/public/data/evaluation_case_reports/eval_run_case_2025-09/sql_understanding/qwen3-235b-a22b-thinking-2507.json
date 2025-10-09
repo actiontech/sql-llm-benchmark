@@ -1,0 +1,1910 @@
+[
+    {
+        "indicator_name": "execution_accuracy.jsonl",
+        "indicator_weight": 4,
+        "evaluation_type": "objective",
+        "case_pass_count": 25,
+        "case_wrong_count": 5,
+        "correct_rate": 0.83,
+        "case_datas": [
+            {
+                "case_id": "1",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"1\", \"difficulty_level\": \"1\", \"create_table_statements\": [\"CREATE TABLE students (student_id INT PRIMARY KEY, name VARCHAR(50), age INT, city VARCHAR(50), enrollment_date DATE);\"], \"insert_statements\": [\"INSERT INTO students (student_id, name, age, city, enrollment_date) VALUES (1, 'Alice', 11, 'New York', '2023-09-01'), (2, 'Bob', 9, 'Los Angeles', '2023-09-01'), (3, 'Charlie', 12, 'New York', '2023-10-15'), (4, 'David', 10, 'Chicago', '2023-11-01'), (5, 'Eve', 11, 'Los Angeles', '2023-10-01');\"], \"sql\": \"SELECT name, student_id, city FROM students WHERE age > 10 AND city = 'New York';\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"name\", \"student_id\", \"city\"], \"rows\": [[\"Alice\", 1, \"New York\"], [\"Charlie\", 3, \"New York\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE students (student_id INT PRIMARY KEY, name VARCHAR(50), age INT, city VARCHAR(50), enrollment_date DATE);\n\nData:\nINSERT INTO students (student_id, name, age, city, enrollment_date) VALUES (1, 'Alice', 11, 'New York', '2023-09-01'), (2, 'Bob', 9, 'Los Angeles', '2023-09-01'), (3, 'Charlie', 12, 'New York', '2023-10-15'), (4, 'David', 10, 'Chicago', '2023-11-01'), (5, 'Eve', 11, 'Los Angeles', '2023-10-01');\n\nQuery:\nSELECT name, student_id, city FROM students WHERE age > 10 AND city = 'New York';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "name",
+                                "student_id",
+                                "city"
+                            ],
+                            "rows": [
+                                [
+                                    "Alice",
+                                    1,
+                                    "New York"
+                                ],
+                                [
+                                    "Charlie",
+                                    3,
+                                    "New York"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "2",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"2\", \"difficulty_level\": \"1\", \"create_table_statements\": [\"CREATE TABLE tasks (task_id INT PRIMARY KEY, task_name VARCHAR(100), completed BOOLEAN, due_date DATE);\"], \"insert_statements\": [\"INSERT INTO tasks (task_id, task_name, completed, due_date) VALUES (1, 'Task A', TRUE, '2024-06-01'), (2, 'Task B', FALSE, '2024-06-10'), (3, 'Task C', TRUE, '2024-05-20'), (4, 'Task D', FALSE, '2024-06-05');\"], \"sql\": \"SELECT task_name, due_date FROM tasks WHERE completed = FALSE AND due_date < '2024-06-07';\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"task_name\", \"due_date\"], \"rows\": [[\"Task D\", \"2024-06-05\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE tasks (task_id INT PRIMARY KEY, task_name VARCHAR(100), completed BOOLEAN, due_date DATE);\n\nData:\nINSERT INTO tasks (task_id, task_name, completed, due_date) VALUES (1, 'Task A', TRUE, '2024-06-01'), (2, 'Task B', FALSE, '2024-06-10'), (3, 'Task C', TRUE, '2024-05-20'), (4, 'Task D', FALSE, '2024-06-05');\n\nQuery:\nSELECT task_name, due_date FROM tasks WHERE completed = FALSE AND due_date < '2024-06-07';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "task_name",
+                                "due_date"
+                            ],
+                            "rows": [
+                                [
+                                    "Task D",
+                                    "2024-06-05"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "3",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"3\", \"difficulty_level\": \"1\", \"create_table_statements\": [\"CREATE TABLE inventory (product_id INT PRIMARY KEY, stock INT, last_restock_date DATE);\"], \"insert_statements\": [\"INSERT INTO inventory (product_id, stock, last_restock_date) VALUES (101, 50, '2024-01-01'), (102, 0, '2024-02-15'), (103, 120, '2024-03-01');\"], \"sql\": \"INSERT INTO inventory (product_id, stock, last_restock_date) VALUES (104, 70, '2024-06-03'), (105, 10, '2024-06-01');\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"inventory\", \"columns\": [\"product_id\", \"stock\", \"last_restock_date\"], \"rows\": [[101, 50, \"2024-01-01\"], [102, 0, \"2024-02-15\"], [103, 120, \"2024-03-01\"], [104, 70, \"2024-06-03\"], [105, 10, \"2024-06-01\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE inventory (product_id INT PRIMARY KEY, stock INT, last_restock_date DATE);\n\nData:\nINSERT INTO inventory (product_id, stock, last_restock_date) VALUES (101, 50, '2024-01-01'), (102, 0, '2024-02-15'), (103, 120, '2024-03-01');\n\nQuery:\nINSERT INTO inventory (product_id, stock, last_restock_date) VALUES (104, 70, '2024-06-03'), (105, 10, '2024-06-01');\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "inventory",
+                            "columns": [
+                                "product_id",
+                                "stock",
+                                "last_restock_date"
+                            ],
+                            "rows": [
+                                [
+                                    101,
+                                    50,
+                                    "2024-01-01"
+                                ],
+                                [
+                                    102,
+                                    0,
+                                    "2024-02-15"
+                                ],
+                                [
+                                    103,
+                                    120,
+                                    "2024-03-01"
+                                ],
+                                [
+                                    104,
+                                    70,
+                                    "2024-06-03"
+                                ],
+                                [
+                                    105,
+                                    10,
+                                    "2024-06-01"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "4",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"4\", \"difficulty_level\": \"1\", \"create_table_statements\": [\"CREATE TABLE customers (customer_id INT PRIMARY KEY, name VARCHAR(50), email VARCHAR(100), registration_status VARCHAR(20));\"], \"insert_statements\": [\"INSERT INTO customers (customer_id, name, email, registration_status) VALUES (1, 'Cust A', 'a@example.com', 'Active'), (2, 'Cust B', NULL, 'Pending'), (3, 'Cust C', 'c@example.com', 'Active');\"], \"sql\": \"UPDATE customers SET email = 'b@example.com', registration_status = 'Completed' WHERE customer_id = 2;\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"customers\", \"columns\": [\"customer_id\", \"name\", \"email\", \"registration_status\"], \"rows\": [[1, \"Cust A\", \"a@example.com\", \"Active\"], [2, \"Cust B\", \"b@example.com\", \"Completed\"], [3, \"Cust C\", \"c@example.com\", \"Active\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE customers (customer_id INT PRIMARY KEY, name VARCHAR(50), email VARCHAR(100), registration_status VARCHAR(20));\n\nData:\nINSERT INTO customers (customer_id, name, email, registration_status) VALUES (1, 'Cust A', 'a@example.com', 'Active'), (2, 'Cust B', NULL, 'Pending'), (3, 'Cust C', 'c@example.com', 'Active');\n\nQuery:\nUPDATE customers SET email = 'b@example.com', registration_status = 'Completed' WHERE customer_id = 2;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "customers",
+                            "columns": [
+                                "customer_id",
+                                "name",
+                                "email",
+                                "registration_status"
+                            ],
+                            "rows": [
+                                [
+                                    1,
+                                    "Cust A",
+                                    "a@example.com",
+                                    "Active"
+                                ],
+                                [
+                                    2,
+                                    "Cust B",
+                                    "b@example.com",
+                                    "Completed"
+                                ],
+                                [
+                                    3,
+                                    "Cust C",
+                                    "c@example.com",
+                                    "Active"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "5",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"5\", \"difficulty_level\": \"1\", \"create_table_statements\": [\"CREATE TABLE log_entries (log_id INT PRIMARY KEY, message VARCHAR(255), log_level VARCHAR(20));\"], \"insert_statements\": [\"INSERT INTO log_entries (log_id, message, log_level) VALUES (1, 'Error: Something failed.', 'ERROR'), (2, 'Info: Process started.', 'INFO'), (3, 'Warning: Disk usage high.', 'WARNING'), (4, 'Error: Database connection lost.', 'ERROR');\"], \"sql\": \"DELETE FROM log_entries WHERE log_level = 'WARNING';\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"log_entries\", \"columns\": [\"log_id\", \"message\", \"log_level\"], \"rows\": [[1, \"Error: Something failed.\", \"ERROR\"], [2, \"Info: Process started.\", \"INFO\"], [4, \"Error: Database connection lost.\", \"ERROR\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE log_entries (log_id INT PRIMARY KEY, message VARCHAR(255), log_level VARCHAR(20));\n\nData:\nINSERT INTO log_entries (log_id, message, log_level) VALUES (1, 'Error: Something failed.', 'ERROR'), (2, 'Info: Process started.', 'INFO'), (3, 'Warning: Disk usage high.', 'WARNING'), (4, 'Error: Database connection lost.', 'ERROR');\n\nQuery:\nDELETE FROM log_entries WHERE log_level = 'WARNING';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "log_entries",
+                            "columns": [
+                                "log_id",
+                                "message",
+                                "log_level"
+                            ],
+                            "rows": [
+                                [
+                                    1,
+                                    "Error: Something failed.",
+                                    "ERROR"
+                                ],
+                                [
+                                    2,
+                                    "Info: Process started.",
+                                    "INFO"
+                                ],
+                                [
+                                    4,
+                                    "Error: Database connection lost.",
+                                    "ERROR"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "6",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"6\", \"difficulty_level\": \"2\", \"create_table_statements\": [\"CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, amount DECIMAL(10, 2), order_status VARCHAR(20));\"], \"insert_statements\": [\"INSERT INTO orders (order_id, customer_id, amount, order_status) VALUES (1, 10, 150.00, 'Completed'), (2, 20, 50.50, 'Pending'), (3, 10, 200.00, 'Completed'), (4, 30, 300.00, 'Pending'), (5, 10, 75.00, 'Pending');\"], \"sql\": \"SELECT COUNT(*) AS total_pending_orders FROM orders WHERE amount > 100 AND order_status = 'Pending';\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"total_pending_orders\"], \"rows\": [[1]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, amount DECIMAL(10, 2), order_status VARCHAR(20));\n\nData:\nINSERT INTO orders (order_id, customer_id, amount, order_status) VALUES (1, 10, 150.00, 'Completed'), (2, 20, 50.50, 'Pending'), (3, 10, 200.00, 'Completed'), (4, 30, 300.00, 'Pending'), (5, 10, 75.00, 'Pending');\n\nQuery:\nSELECT COUNT(*) AS total_pending_orders FROM orders WHERE amount > 100 AND order_status = 'Pending';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "total_pending_orders"
+                            ],
+                            "rows": [
+                                [
+                                    1
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "7",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"7\", \"difficulty_level\": \"2\", \"create_table_statements\": [\"CREATE TABLE sales (product_id INT, sale_amount DECIMAL(10, 2), sale_date DATE);\"], \"insert_statements\": [\"INSERT INTO sales (product_id, sale_amount, sale_date) VALUES (1, 10.00, '2024-01-01'), (2, 20.00, '2024-01-01'), (1, 15.00, '2024-01-05'), (3, 30.00, '2024-01-05'), (2, 25.00, '2024-01-10');\"], \"sql\": \"SELECT product_id, SUM(sale_amount) AS total_sales, COUNT(*) AS number_of_sales FROM sales GROUP BY product_id ORDER BY total_sales DESC;\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"product_id\", \"total_sales\", \"number_of_sales\"], \"rows\": [[2, 45.0, 2], [3, 30.0, 1], [1, 25.0, 2]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE sales (product_id INT, sale_amount DECIMAL(10, 2), sale_date DATE);\n\nData:\nINSERT INTO sales (product_id, sale_amount, sale_date) VALUES (1, 10.00, '2024-01-01'), (2, 20.00, '2024-01-01'), (1, 15.00, '2024-01-05'), (3, 30.00, '2024-01-05'), (2, 25.00, '2024-01-10');\n\nQuery:\nSELECT product_id, SUM(sale_amount) AS total_sales, COUNT(*) AS number_of_sales FROM sales GROUP BY product_id ORDER BY total_sales DESC;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "product_id",
+                                "total_sales",
+                                "number_of_sales"
+                            ],
+                            "rows": [
+                                [
+                                    2,
+                                    45.0,
+                                    2
+                                ],
+                                [
+                                    3,
+                                    30.0,
+                                    1
+                                ],
+                                [
+                                    1,
+                                    25.0,
+                                    2
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "8",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"8\", \"difficulty_level\": \"2\", \"create_table_statements\": [\"CREATE TABLE employees (department VARCHAR(50), salary DECIMAL(10, 2));\"], \"insert_statements\": [\"INSERT INTO employees (department, salary) VALUES ('Sales', 50000.00), ('IT', 70000.00), ('Sales', 55000.00), ('IT', 75000.00);\"], \"sql\": \"SELECT department, AVG(salary) AS avg_salary FROM employees GROUP BY department HAVING COUNT(*) > 1;\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"department\", \"avg_salary\"], \"rows\": [[\"IT\", 72500.0], [\"Sales\", 52500.0]]}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE employees (department VARCHAR(50), salary DECIMAL(10, 2));\n\nData:\nINSERT INTO employees (department, salary) VALUES ('Sales', 50000.00), ('IT', 70000.00), ('Sales', 55000.00), ('IT', 75000.00);\n\nQuery:\nSELECT department, AVG(salary) AS avg_salary FROM employees GROUP BY department HAVING COUNT(*) > 1;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "department",
+                                "avg_salary"
+                            ],
+                            "rows": [
+                                [
+                                    "Sales",
+                                    52500.0
+                                ],
+                                [
+                                    "IT",
+                                    72500.0
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "9",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"9\", \"difficulty_level\": \"2\", \"create_table_statements\": [\"CREATE TABLE products (product_name VARCHAR(50), price DECIMAL(6, 2), creation_date DATE);\"], \"insert_statements\": [\"INSERT INTO products (product_name, price, creation_date) VALUES ('A', 10.00, '2023-01-01'), ('B', 30.00, '2023-02-01'), ('C', 20.00, '2023-01-15'), ('D', 40.00, '2023-03-01'), ('E', 25.00, '2023-02-10');\"], \"sql\": \"SELECT product_name, price FROM products ORDER BY price DESC, creation_date ASC LIMIT 3;\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"product_name\", \"price\"], \"rows\": [[\"D\", 40.0], [\"B\", 30.0], [\"E\", 25.0]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE products (product_name VARCHAR(50), price DECIMAL(6, 2), creation_date DATE);\n\nData:\nINSERT INTO products (product_name, price, creation_date) VALUES ('A', 10.00, '2023-01-01'), ('B', 30.00, '2023-02-01'), ('C', 20.00, '2023-01-15'), ('D', 40.00, '2023-03-01'), ('E', 25.00, '2023-02-10');\n\nQuery:\nSELECT product_name, price FROM products ORDER BY price DESC, creation_date ASC LIMIT 3;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "product_name",
+                                "price"
+                            ],
+                            "rows": [
+                                [
+                                    "D",
+                                    40.0
+                                ],
+                                [
+                                    "B",
+                                    30.0
+                                ],
+                                [
+                                    "E",
+                                    25.0
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "10",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"10\", \"difficulty_level\": \"2\", \"create_table_statements\": [\"CREATE TABLE orders_date (order_id INT, order_date DATE, customer_segment VARCHAR(20));\"], \"insert_statements\": [\"INSERT INTO orders_date (order_id, order_date, customer_segment) VALUES (1, '2023-01-15', 'Premium'), (2, '2023-01-20', 'Standard'), (3, '2024-02-10', 'Premium'), (4, '2023-03-01', 'Standard'), (5, '2024-02-10', 'Standard');\"], \"sql\": \"SELECT YEAR(order_date) AS order_year, customer_segment, COUNT(*) AS total_orders FROM orders_date GROUP BY YEAR(order_date), customer_segment ORDER BY order_year, customer_segment;\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"order_year\", \"customer_segment\", \"total_orders\"], \"rows\": [[2023, \"Premium\", 1], [2023, \"Standard\", 2], [2024, \"Premium\", 1], [2024, \"Standard\", 1]]}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE orders_date (order_id INT, order_date DATE, customer_segment VARCHAR(20));\n\nData:\nINSERT INTO orders_date (order_id, order_date, customer_segment) VALUES (1, '2023-01-15', 'Premium'), (2, '2023-01-20', 'Standard'), (3, '2024-02-10', 'Premium'), (4, '2023-03-01', 'Standard'), (5, '2024-02-10', 'Standard');\n\nQuery:\nSELECT YEAR(order_date) AS order_year, customer_segment, COUNT(*) AS total_orders FROM orders_date GROUP BY YEAR(order_date), customer_segment ORDER BY order_year, customer_segment;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": "ERROR: Could not get response from target LLM - API failed after 6 attempts: Error code: 403 - {'code': 30001, 'message': 'Sorry, your account balance is insufficient', 'data': None}"
+                    }
+                ]
+            },
+            {
+                "case_id": "11",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"11\", \"difficulty_level\": \"2\", \"create_table_statements\": [\"CREATE TABLE products_stock (category VARCHAR(50), stock INT, last_updated DATE);\"], \"insert_statements\": [\"INSERT INTO products_stock (category, stock, last_updated) VALUES ('Electronics', 10, '2024-01-01'), ('Books', 20, '2024-01-10'), ('Electronics', 15, '2024-02-01'), ('Books', 25, '2024-02-15');\"], \"sql\": \"INSERT INTO products_stock (category, stock, last_updated) VALUES ('Electronics', 5, CURRENT_DATE), ('Clothes', 30, CURRENT_DATE);\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"products_stock\", \"columns\": [\"category\", \"stock\", \"last_updated\"], \"rows\": [[\"Electronics\", 10, \"2024-01-01\"], [\"Books\", 20, \"2024-01-10\"], [\"Electronics\", 15, \"2024-02-01\"], [\"Books\", 25, \"2024-02-15\"], [\"Electronics\", 5, \"2025-06-03\"], [\"Clothes\", 30, \"2025-06-03\"]]}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE products_stock (category VARCHAR(50), stock INT, last_updated DATE);\n\nData:\nINSERT INTO products_stock (category, stock, last_updated) VALUES ('Electronics', 10, '2024-01-01'), ('Books', 20, '2024-01-10'), ('Electronics', 15, '2024-02-01'), ('Books', 25, '2024-02-15');\n\nQuery:\nINSERT INTO products_stock (category, stock, last_updated) VALUES ('Electronics', 5, CURRENT_DATE), ('Clothes', 30, CURRENT_DATE);\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "products_stock",
+                            "columns": [
+                                "category",
+                                "stock",
+                                "last_updated"
+                            ],
+                            "rows": [
+                                [
+                                    "Electronics",
+                                    10,
+                                    "2024-01-01"
+                                ],
+                                [
+                                    "Books",
+                                    20,
+                                    "2024-01-10"
+                                ],
+                                [
+                                    "Electronics",
+                                    15,
+                                    "2024-02-01"
+                                ],
+                                [
+                                    "Books",
+                                    25,
+                                    "2024-02-15"
+                                ],
+                                [
+                                    "Electronics",
+                                    5,
+                                    "2024-03-20"
+                                ],
+                                [
+                                    "Clothes",
+                                    30,
+                                    "2024-03-20"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "12",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"12\", \"difficulty_level\": \"2\", \"create_table_statements\": [\"CREATE TABLE orders_items (order_id INT, item_id INT, item_price DECIMAL(5, 2));\", \"CREATE TABLE order_quantities (order_id INT PRIMARY KEY, quantity INT, discount_percent DECIMAL(3, 2));\"], \"insert_statements\": [\"INSERT INTO orders_items (order_id, item_id, item_price) VALUES (1, 101, 10.00), (2, 102, 15.00), (3, 103, 20.00);\", \"INSERT INTO order_quantities (order_id, quantity, discount_percent) VALUES (1, 2, 0.10), (2, 3, 0.05);\"], \"sql\": \"INSERT INTO orders_items (order_id, item_id, item_price) SELECT oq.order_id, 104, oq.quantity * 10 * (1 - oq.discount_percent) FROM order_quantities oq WHERE oq.order_id = 2;\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"orders_items\", \"columns\": [\"order_id\", \"item_id\", \"item_price\"], \"rows\": [[1, 101, 10.0], [2, 102, 15.0], [3, 103, 20.0], [2, 104, 28.5]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE orders_items (order_id INT, item_id INT, item_price DECIMAL(5, 2));\nCREATE TABLE order_quantities (order_id INT PRIMARY KEY, quantity INT, discount_percent DECIMAL(3, 2));\n\nData:\nINSERT INTO orders_items (order_id, item_id, item_price) VALUES (1, 101, 10.00), (2, 102, 15.00), (3, 103, 20.00);\nINSERT INTO order_quantities (order_id, quantity, discount_percent) VALUES (1, 2, 0.10), (2, 3, 0.05);\n\nQuery:\nINSERT INTO orders_items (order_id, item_id, item_price) SELECT oq.order_id, 104, oq.quantity * 10 * (1 - oq.discount_percent) FROM order_quantities oq WHERE oq.order_id = 2;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "orders_items",
+                            "columns": [
+                                "order_id",
+                                "item_id",
+                                "item_price"
+                            ],
+                            "rows": [
+                                [
+                                    1,
+                                    101,
+                                    10
+                                ],
+                                [
+                                    2,
+                                    102,
+                                    15
+                                ],
+                                [
+                                    3,
+                                    103,
+                                    20
+                                ],
+                                [
+                                    2,
+                                    104,
+                                    28.5
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "13",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"13\", \"difficulty_level\": \"2\", \"create_table_statements\": [\"CREATE TABLE text_values_table (id INT PRIMARY KEY, text VARCHAR(50), status VARCHAR(20));\"], \"insert_statements\": [\"INSERT INTO text_values_table (id, text, status) VALUES (1, 'apple', 'Active'), (2, 'Banana', 'Pending'), (3, 'ORANGE', 'Active');\"], \"sql\": \"UPDATE text_values_table SET text = LCASE(text), status = 'Processed' WHERE id = 2;\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"text_values_table\", \"columns\": [\"id\", \"text\", \"status\"], \"rows\": [[1, \"apple\", \"Active\"], [2, \"banana\", \"Processed\"], [3, \"ORANGE\", \"Active\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE text_values_table (id INT PRIMARY KEY, text VARCHAR(50), status VARCHAR(20));\n\nData:\nINSERT INTO text_values_table (id, text, status) VALUES (1, 'apple', 'Active'), (2, 'Banana', 'Pending'), (3, 'ORANGE', 'Active');\n\nQuery:\nUPDATE text_values_table SET text = LCASE(text), status = 'Processed' WHERE id = 2;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "text_values_table",
+                            "columns": [
+                                "id",
+                                "text",
+                                "status"
+                            ],
+                            "rows": [
+                                [
+                                    1,
+                                    "apple",
+                                    "Active"
+                                ],
+                                [
+                                    2,
+                                    "banana",
+                                    "Processed"
+                                ],
+                                [
+                                    3,
+                                    "ORANGE",
+                                    "Active"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "14",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"14\", \"difficulty_level\": \"2\", \"create_table_statements\": [\"CREATE TABLE zip_codes (city VARCHAR(50), zip VARCHAR(10));\"], \"insert_statements\": [\"INSERT INTO zip_codes (city, zip) VALUES ('New York', '10001'), ('Los Angeles', '90001');\"], \"sql\": \"UPDATE zip_codes SET zip = SUBSTRING(zip, 1, 3) || 'xxx' WHERE city = 'New York';\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"zip_codes\", \"columns\": [\"city\", \"zip\"], \"rows\": [[\"Los Angeles\", \"90001\"], [\"New York\", \"1\"]]}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE zip_codes (city VARCHAR(50), zip VARCHAR(10));\n\nData:\nINSERT INTO zip_codes (city, zip) VALUES ('New York', '10001'), ('Los Angeles', '90001');\n\nQuery:\nUPDATE zip_codes SET zip = SUBSTRING(zip, 1, 3) || 'xxx' WHERE city = 'New York';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "zip_codes",
+                            "columns": [
+                                "city",
+                                "zip"
+                            ],
+                            "rows": [
+                                [
+                                    "New York",
+                                    "100xxx"
+                                ],
+                                [
+                                    "Los Angeles",
+                                    "90001"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "15",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"15\", \"difficulty_level\": \"2\", \"create_table_statements\": [\"CREATE TABLE items_price (item_id INT PRIMARY KEY, price DECIMAL(5, 2), quantity INT);\"], \"insert_statements\": [\"INSERT INTO items_price (item_id, price, quantity) VALUES (1, 10.51, 5), (2, 20.49, 10), (3, 5.00, 20), (4, 9.99, 15);\"], \"sql\": \"DELETE FROM items_price WHERE price < FLOOR(10.51) AND quantity < 15;\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"items_price\", \"columns\": [\"item_id\", \"price\", \"quantity\"], \"rows\": [[1, 10.51, 5], [2, 20.49, 10], [3, 5.0, 20], [4, 9.99, 15]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE items_price (item_id INT PRIMARY KEY, price DECIMAL(5, 2), quantity INT);\n\nData:\nINSERT INTO items_price (item_id, price, quantity) VALUES (1, 10.51, 5), (2, 20.49, 10), (3, 5.00, 20), (4, 9.99, 15);\n\nQuery:\nDELETE FROM items_price WHERE price < FLOOR(10.51) AND quantity < 15;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "items_price",
+                            "columns": [
+                                "item_id",
+                                "price",
+                                "quantity"
+                            ],
+                            "rows": [
+                                [
+                                    1,
+                                    10.51,
+                                    5
+                                ],
+                                [
+                                    2,
+                                    20.49,
+                                    10
+                                ],
+                                [
+                                    3,
+                                    5.0,
+                                    20
+                                ],
+                                [
+                                    4,
+                                    9.99,
+                                    15
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "16",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"16\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE, total_amount DECIMAL(10, 2));\", \"CREATE TABLE customers (customer_id INT PRIMARY KEY, customer_name VARCHAR(50));\"], \"insert_statements\": [\"INSERT INTO orders (order_id, customer_id, order_date, total_amount) VALUES (1, 101, '2024-01-01', 150.00), (2, 102, '2024-01-02', 50.50), (3, 101, '2024-01-03', 200.00);\", \"INSERT INTO customers (customer_id, customer_name) VALUES (101, 'Alice'), (102, 'Bob');\"], \"sql\": \"SELECT o.order_id, c.customer_name FROM orders o INNER JOIN customers c ON o.customer_id = c.customer_id WHERE o.total_amount > (SELECT AVG(total_amount) FROM orders);\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"order_id\", \"customer_name\"], \"rows\": [[1, \"Alice\"], [3, \"Alice\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE, total_amount DECIMAL(10, 2));\nCREATE TABLE customers (customer_id INT PRIMARY KEY, customer_name VARCHAR(50));\n\nData:\nINSERT INTO orders (order_id, customer_id, order_date, total_amount) VALUES (1, 101, '2024-01-01', 150.00), (2, 102, '2024-01-02', 50.50), (3, 101, '2024-01-03', 200.00);\nINSERT INTO customers (customer_id, customer_name) VALUES (101, 'Alice'), (102, 'Bob');\n\nQuery:\nSELECT o.order_id, c.customer_name FROM orders o INNER JOIN customers c ON o.customer_id = c.customer_id WHERE o.total_amount > (SELECT AVG(total_amount) FROM orders);\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "order_id",
+                                "customer_name"
+                            ],
+                            "rows": [
+                                [
+                                    1,
+                                    "Alice"
+                                ],
+                                [
+                                    3,
+                                    "Alice"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "17",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"17\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(50), category VARCHAR(50));\", \"CREATE TABLE inventory (product_id INT PRIMARY KEY, stock INT);\"], \"insert_statements\": [\"INSERT INTO products (product_id, product_name, category) VALUES (1, 'Laptop', 'Electronics'), (2, 'Mouse', 'Electronics'), (3, 'Keyboard', 'Electronics');\", \"INSERT INTO inventory (product_id, stock) VALUES (1, 10), (3, 5);\"], \"sql\": \"SELECT p.product_name, i.stock FROM products p LEFT JOIN inventory i ON p.product_id = i.product_id WHERE p.category = 'Electronics' ORDER BY p.product_id;\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"product_name\", \"stock\"], \"rows\": [[\"Laptop\", 10], [\"Mouse\", null], [\"Keyboard\", 5]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(50), category VARCHAR(50));\nCREATE TABLE inventory (product_id INT PRIMARY KEY, stock INT);\n\nData:\nINSERT INTO products (product_id, product_name, category) VALUES (1, 'Laptop', 'Electronics'), (2, 'Mouse', 'Electronics'), (3, 'Keyboard', 'Electronics');\nINSERT INTO inventory (product_id, stock) VALUES (1, 10), (3, 5);\n\nQuery:\nSELECT p.product_name, i.stock FROM products p LEFT JOIN inventory i ON p.product_id = i.product_id WHERE p.category = 'Electronics' ORDER BY p.product_id;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "product_name",
+                                "stock"
+                            ],
+                            "rows": [
+                                [
+                                    "Laptop",
+                                    10
+                                ],
+                                [
+                                    "Mouse",
+                                    null
+                                ],
+                                [
+                                    "Keyboard",
+                                    5
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "18",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"18\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE employees (employee_id INT PRIMARY KEY, name VARCHAR(50), dept_id INT);\", \"CREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(50));\"], \"insert_statements\": [\"INSERT INTO employees (employee_id, name, dept_id) VALUES (1, 'Alice', 10), (2, 'Bob', 20), (3, 'Charlie', 10);\", \"INSERT INTO departments (dept_id, dept_name) VALUES (10, 'Sales'), (20, 'IT'), (30, 'HR');\"], \"sql\": \"SELECT d.dept_name, COUNT(e.employee_id) AS employee_count FROM departments d LEFT JOIN employees e ON d.dept_id = e.dept_id GROUP BY d.dept_name ORDER BY d.dept_name;\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"dept_name\", \"employee_count\"], \"rows\": [[\"HR\", 0], [\"IT\", 1], [\"Sales\", 2]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE employees (employee_id INT PRIMARY KEY, name VARCHAR(50), dept_id INT);\nCREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(50));\n\nData:\nINSERT INTO employees (employee_id, name, dept_id) VALUES (1, 'Alice', 10), (2, 'Bob', 20), (3, 'Charlie', 10);\nINSERT INTO departments (dept_id, dept_name) VALUES (10, 'Sales'), (20, 'IT'), (30, 'HR');\n\nQuery:\nSELECT d.dept_name, COUNT(e.employee_id) AS employee_count FROM departments d LEFT JOIN employees e ON d.dept_id = e.dept_id GROUP BY d.dept_name ORDER BY d.dept_name;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "dept_name",
+                                "employee_count"
+                            ],
+                            "rows": [
+                                [
+                                    "HR",
+                                    0
+                                ],
+                                [
+                                    "IT",
+                                    1
+                                ],
+                                [
+                                    "Sales",
+                                    2
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "19",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"19\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_status VARCHAR(20));\", \"CREATE TABLE vip_customers (customer_id INT PRIMARY KEY, tier VARCHAR(10));\"], \"insert_statements\": [\"INSERT INTO orders (order_id, customer_id, order_status) VALUES (1, 101, 'Completed'), (2, 105, 'Pending'), (3, 101, 'Completed'), (4, 102, 'Pending');\", \"INSERT INTO vip_customers (customer_id, tier) VALUES (101, 'Gold'), (103, 'Silver');\"], \"sql\": \"SELECT order_id, order_status FROM orders WHERE customer_id IN (SELECT customer_id FROM vip_customers WHERE tier = 'Gold') AND order_status = 'Completed';\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"order_id\", \"order_status\"], \"rows\": [[1, \"Completed\"], [3, \"Completed\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_status VARCHAR(20));\nCREATE TABLE vip_customers (customer_id INT PRIMARY KEY, tier VARCHAR(10));\n\nData:\nINSERT INTO orders (order_id, customer_id, order_status) VALUES (1, 101, 'Completed'), (2, 105, 'Pending'), (3, 101, 'Completed'), (4, 102, 'Pending');\nINSERT INTO vip_customers (customer_id, tier) VALUES (101, 'Gold'), (103, 'Silver');\n\nQuery:\nSELECT order_id, order_status FROM orders WHERE customer_id IN (SELECT customer_id FROM vip_customers WHERE tier = 'Gold') AND order_status = 'Completed';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "order_id",
+                                "order_status"
+                            ],
+                            "rows": [
+                                [
+                                    1,
+                                    "Completed"
+                                ],
+                                [
+                                    3,
+                                    "Completed"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "20",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"20\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(50), category VARCHAR(50));\", \"CREATE TABLE reviews (review_id INT PRIMARY KEY, product_id INT, rating INT, review_date DATE);\"], \"insert_statements\": [\"INSERT INTO products (product_id, product_name, category) VALUES (1, 'Laptop', 'Electronics'), (2, 'Mouse', 'Electronics'), (3, 'Book', 'Literature');\", \"INSERT INTO reviews (review_id, product_id, rating, review_date) VALUES (10, 1, 5, '2024-01-01'), (11, 1, 4, '2024-01-05'), (12, 2, 3, '2024-01-10'), (13, 3, 5, '2024-01-15');\"], \"sql\": \"SELECT p.product_name, p.category FROM products p WHERE EXISTS (SELECT 1 FROM reviews r WHERE r.product_id = p.product_id AND r.rating >= 4 AND r.review_date > '2023-12-31');\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"product_name\", \"category\"], \"rows\": [[\"Laptop\", \"Electronics\"], [\"Book\", \"Literature\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(50), category VARCHAR(50));\nCREATE TABLE reviews (review_id INT PRIMARY KEY, product_id INT, rating INT, review_date DATE);\n\nData:\nINSERT INTO products (product_id, product_name, category) VALUES (1, 'Laptop', 'Electronics'), (2, 'Mouse', 'Electronics'), (3, 'Book', 'Literature');\nINSERT INTO reviews (review_id, product_id, rating, review_date) VALUES (10, 1, 5, '2024-01-01'), (11, 1, 4, '2024-01-05'), (12, 2, 3, '2024-01-10'), (13, 3, 5, '2024-01-15');\n\nQuery:\nSELECT p.product_name, p.category FROM products p WHERE EXISTS (SELECT 1 FROM reviews r WHERE r.product_id = p.product_id AND r.rating >= 4 AND r.review_date > '2023-12-31');\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "product_name",
+                                "category"
+                            ],
+                            "rows": [
+                                [
+                                    "Laptop",
+                                    "Electronics"
+                                ],
+                                [
+                                    "Book",
+                                    "Literature"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "21",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"21\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE employees (employee_id INT PRIMARY KEY, name VARCHAR(50), salary DECIMAL(10, 2), dept_id INT, hire_date DATE);\", \"CREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(50));\"], \"insert_statements\": [\"INSERT INTO employees (employee_id, name, salary, dept_id, hire_date) VALUES (1, 'Alice', 50000.00, 10, '2022-01-01'), (2, 'Bob', 70000.00, 20, '2021-06-01'), (3, 'Charlie', 55000.00, 10, '2022-03-01'), (4, 'David', 72000.00, 20, '2021-09-01'), (5, 'Eve', 60000.00, 30, '2023-01-01');\", \"INSERT INTO departments (dept_id, dept_name) VALUES (10, 'Sales'), (20, 'IT'), (30, 'HR');\"], \"sql\": \"SELECT e.name, d.dept_name, e.salary FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE e.salary > 60000 AND d.dept_name = 'IT' AND e.hire_date < '2022-01-01';\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"name\", \"dept_name\", \"salary\"], \"rows\": [[\"Bob\", \"IT\", 70000.0], [\"David\", \"IT\", 72000.0]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE employees (employee_id INT PRIMARY KEY, name VARCHAR(50), salary DECIMAL(10, 2), dept_id INT, hire_date DATE);\nCREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(50));\n\nData:\nINSERT INTO employees (employee_id, name, salary, dept_id, hire_date) VALUES (1, 'Alice', 50000.00, 10, '2022-01-01'), (2, 'Bob', 70000.00, 20, '2021-06-01'), (3, 'Charlie', 55000.00, 10, '2022-03-01'), (4, 'David', 72000.00, 20, '2021-09-01'), (5, 'Eve', 60000.00, 30, '2023-01-01');\nINSERT INTO departments (dept_id, dept_name) VALUES (10, 'Sales'), (20, 'IT'), (30, 'HR');\n\nQuery:\nSELECT e.name, d.dept_name, e.salary FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE e.salary > 60000 AND d.dept_name = 'IT' AND e.hire_date < '2022-01-01';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "name",
+                                "dept_name",
+                                "salary"
+                            ],
+                            "rows": [
+                                [
+                                    "Bob",
+                                    "IT",
+                                    70000.0
+                                ],
+                                [
+                                    "David",
+                                    "IT",
+                                    72000.0
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "22",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"22\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(50), price DECIMAL(5, 2));\", \"CREATE TABLE sales_items (sale_id INT PRIMARY KEY, product_id INT, quantity INT);\"], \"insert_statements\": [\"INSERT INTO products (product_id, product_name, price) VALUES (1, 'A', 10.00), (2, 'B', 20.00);\", \"INSERT INTO sales_items (sale_id, product_id, quantity) VALUES (101, 1, 5), (102, 1, 10), (103, 2, 3);\"], \"sql\": \"SELECT p.product_name, SUM(si.quantity) AS total_sold FROM products p JOIN sales_items si ON p.product_id = si.product_id GROUP BY p.product_name HAVING SUM(si.quantity) > 5;\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"product_name\", \"total_sold\"], \"rows\": [[\"A\", 15]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(50), price DECIMAL(5, 2));\nCREATE TABLE sales_items (sale_id INT PRIMARY KEY, product_id INT, quantity INT);\n\nData:\nINSERT INTO products (product_id, product_name, price) VALUES (1, 'A', 10.00), (2, 'B', 20.00);\nINSERT INTO sales_items (sale_id, product_id, quantity) VALUES (101, 1, 5), (102, 1, 10), (103, 2, 3);\n\nQuery:\nSELECT p.product_name, SUM(si.quantity) AS total_sold FROM products p JOIN sales_items si ON p.product_id = si.product_id GROUP BY p.product_name HAVING SUM(si.quantity) > 5;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "product_name",
+                                "total_sold"
+                            ],
+                            "rows": [
+                                [
+                                    "A",
+                                    15
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "23",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"23\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT);\", \"CREATE TABLE customers (customer_id INT PRIMARY KEY, customer_name VARCHAR(50));\", \"CREATE TABLE regions (region_id INT PRIMARY KEY, region_name VARCHAR(50));\", \"CREATE TABLE customer_regions (customer_id INT, region_id INT);\"], \"insert_statements\": [\"INSERT INTO orders (order_id, customer_id) VALUES (1, 10), (2, 20);\", \"INSERT INTO customers (customer_id, customer_name) VALUES (10, 'Alice'), (20, 'Bob');\", \"INSERT INTO regions (region_id, region_name) VALUES (100, 'North'), (200, 'South');\", \"INSERT INTO customer_regions (customer_id, region_id) VALUES (10, 100), (20, 200);\"], \"sql\": \"SELECT o.order_id, c.customer_name, r.region_name FROM orders o JOIN customers c ON o.customer_id = c.customer_id JOIN customer_regions cr ON c.customer_id = cr.customer_id JOIN regions r ON cr.region_id = r.region_id;\", \"expected\": {\"result_type\": \"select\", \"columns\": [\"order_id\", \"customer_name\", \"region_name\"], \"rows\": [[1, \"Alice\", \"North\"], [2, \"Bob\", \"South\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT);\nCREATE TABLE customers (customer_id INT PRIMARY KEY, customer_name VARCHAR(50));\nCREATE TABLE regions (region_id INT PRIMARY KEY, region_name VARCHAR(50));\nCREATE TABLE customer_regions (customer_id INT, region_id INT);\n\nData:\nINSERT INTO orders (order_id, customer_id) VALUES (1, 10), (2, 20);\nINSERT INTO customers (customer_id, customer_name) VALUES (10, 'Alice'), (20, 'Bob');\nINSERT INTO regions (region_id, region_name) VALUES (100, 'North'), (200, 'South');\nINSERT INTO customer_regions (customer_id, region_id) VALUES (10, 100), (20, 200);\n\nQuery:\nSELECT o.order_id, c.customer_name, r.region_name FROM orders o JOIN customers c ON o.customer_id = c.customer_id JOIN customer_regions cr ON c.customer_id = cr.customer_id JOIN regions r ON cr.region_id = r.region_id;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "select",
+                            "columns": [
+                                "order_id",
+                                "customer_name",
+                                "region_name"
+                            ],
+                            "rows": [
+                                [
+                                    1,
+                                    "Alice",
+                                    "North"
+                                ],
+                                [
+                                    2,
+                                    "Bob",
+                                    "South"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "24",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"24\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE employees (employee_id INT PRIMARY KEY, department VARCHAR(50), hire_date DATE);\", \"CREATE TABLE salaries (employee_id INT PRIMARY KEY, salary DECIMAL(10, 2));\"], \"insert_statements\": [\"INSERT INTO employees (employee_id, department, hire_date) VALUES (1, 'Sales', '2020-01-01'), (2, 'IT', '2021-03-01'), (3, 'Sales', '2022-05-01');\", \"INSERT INTO salaries (employee_id, salary) VALUES (1, 50000.00), (2, 70000.00);\"], \"sql\": \"INSERT INTO salaries (employee_id, salary) SELECT employee_id, 60000.00 FROM employees WHERE department = 'Sales' AND hire_date > '2021-01-01' AND employee_id NOT IN (SELECT employee_id FROM salaries);\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"salaries\", \"columns\": [\"employee_id\", \"salary\"], \"rows\": [[1, 50000.0], [2, 70000.0], [3, 60000.0]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE employees (employee_id INT PRIMARY KEY, department VARCHAR(50), hire_date DATE);\nCREATE TABLE salaries (employee_id INT PRIMARY KEY, salary DECIMAL(10, 2));\n\nData:\nINSERT INTO employees (employee_id, department, hire_date) VALUES (1, 'Sales', '2020-01-01'), (2, 'IT', '2021-03-01'), (3, 'Sales', '2022-05-01');\nINSERT INTO salaries (employee_id, salary) VALUES (1, 50000.00), (2, 70000.00);\n\nQuery:\nINSERT INTO salaries (employee_id, salary) SELECT employee_id, 60000.00 FROM employees WHERE department = 'Sales' AND hire_date > '2021-01-01' AND employee_id NOT IN (SELECT employee_id FROM salaries);\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "salaries",
+                            "columns": [
+                                "employee_id",
+                                "salary"
+                            ],
+                            "rows": [
+                                [
+                                    1,
+                                    "50000.00"
+                                ],
+                                [
+                                    2,
+                                    "70000.00"
+                                ],
+                                [
+                                    3,
+                                    "60000.00"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "25",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"25\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE products (product_id INT PRIMARY KEY, price DECIMAL(10, 2), last_update DATE);\", \"CREATE TABLE price_updates (product_id INT PRIMARY KEY, new_price DECIMAL(10, 2), update_date DATE);\"], \"insert_statements\": [\"INSERT INTO products (product_id, price, last_update) VALUES (1, 10.00, '2024-01-01'), (2, 20.00, '2024-02-01'), (3, 30.00, '2024-03-01');\", \"INSERT INTO price_updates (product_id, new_price, update_date) VALUES (1, 12.00, '2024-05-01'), (3, 35.00, '2024-05-10');\"], \"sql\": \"UPDATE products SET price = (SELECT new_price FROM price_updates WHERE price_updates.product_id = products.product_id), last_update = (SELECT update_date FROM price_updates WHERE price_updates.product_id = products.product_id) WHERE product_id IN (SELECT product_id FROM price_updates WHERE update_date > '2024-04-30');\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"products\", \"columns\": [\"product_id\", \"price\", \"last_update\"], \"rows\": [[1, 12.0, \"2024-05-01\"], [2, 20.0, \"2024-02-01\"], [3, 35.0, \"2024-05-10\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE products (product_id INT PRIMARY KEY, price DECIMAL(10, 2), last_update DATE);\nCREATE TABLE price_updates (product_id INT PRIMARY KEY, new_price DECIMAL(10, 2), update_date DATE);\n\nData:\nINSERT INTO products (product_id, price, last_update) VALUES (1, 10.00, '2024-01-01'), (2, 20.00, '2024-02-01'), (3, 30.00, '2024-03-01');\nINSERT INTO price_updates (product_id, new_price, update_date) VALUES (1, 12.00, '2024-05-01'), (3, 35.00, '2024-05-10');\n\nQuery:\nUPDATE products SET price = (SELECT new_price FROM price_updates WHERE price_updates.product_id = products.product_id), last_update = (SELECT update_date FROM price_updates WHERE price_updates.product_id = products.product_id) WHERE product_id IN (SELECT product_id FROM price_updates WHERE update_date > '2024-04-30');\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "products",
+                            "columns": [
+                                "product_id",
+                                "price",
+                                "last_update"
+                            ],
+                            "rows": [
+                                [
+                                    1,
+                                    "12.00",
+                                    "2024-05-01"
+                                ],
+                                [
+                                    2,
+                                    "20.00",
+                                    "2024-02-01"
+                                ],
+                                [
+                                    3,
+                                    "35.00",
+                                    "2024-05-10"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "26",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"26\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE users (user_id INT PRIMARY KEY, username VARCHAR(50), status VARCHAR(10), last_login DATE);\", \"CREATE TABLE status_updates_source (username VARCHAR(50), new_status VARCHAR(10), update_timestamp DATETIME);\"], \"insert_statements\": [\"INSERT INTO users (user_id, username, status, last_login) VALUES (1, 'alpha', 'Active', '2024-05-01'), (2, 'beta', 'Inactive', '2024-04-15'), (3, 'gamma', 'Active', '2024-05-10');\", \"INSERT INTO status_updates_source (username, new_status, update_timestamp) VALUES ('beta', 'Pending', '2024-05-20 10:00:00'), ('gamma', 'Blocked', '2024-05-25 11:30:00');\"], \"sql\": \"UPDATE users SET status = (SELECT new_status FROM status_updates_source WHERE status_updates_source.username = users.username), last_login = DATE(CURRENT_TIMESTAMP) WHERE username IN (SELECT username FROM status_updates_source WHERE update_timestamp >= '2024-05-20');\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"users\", \"columns\": [\"user_id\", \"username\", \"status\", \"last_login\"], \"rows\": [[1, \"alpha\", \"Active\", \"2024-05-01\"], [2, \"beta\", \"Pending\", \"2025-06-03\"], [3, \"gamma\", \"Blocked\", \"2025-06-03\"]]}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE users (user_id INT PRIMARY KEY, username VARCHAR(50), status VARCHAR(10), last_login DATE);\nCREATE TABLE status_updates_source (username VARCHAR(50), new_status VARCHAR(10), update_timestamp DATETIME);\n\nData:\nINSERT INTO users (user_id, username, status, last_login) VALUES (1, 'alpha', 'Active', '2024-05-01'), (2, 'beta', 'Inactive', '2024-04-15'), (3, 'gamma', 'Active', '2024-05-10');\nINSERT INTO status_updates_source (username, new_status, update_timestamp) VALUES ('beta', 'Pending', '2024-05-20 10:00:00'), ('gamma', 'Blocked', '2024-05-25 11:30:00');\n\nQuery:\nUPDATE users SET status = (SELECT new_status FROM status_updates_source WHERE status_updates_source.username = users.username), last_login = DATE(CURRENT_TIMESTAMP) WHERE username IN (SELECT username FROM status_updates_source WHERE update_timestamp >= '2024-05-20');\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "users",
+                            "columns": [
+                                "user_id",
+                                "username",
+                                "status",
+                                "last_login"
+                            ],
+                            "rows": [
+                                [
+                                    1,
+                                    "alpha",
+                                    "Active",
+                                    "2024-05-01"
+                                ],
+                                [
+                                    2,
+                                    "beta",
+                                    "Pending",
+                                    "2024-05-25"
+                                ],
+                                [
+                                    3,
+                                    "gamma",
+                                    "Blocked",
+                                    "2024-05-25"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "27",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"27\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE employees (employee_id INT PRIMARY KEY, name VARCHAR(50), salary DECIMAL(10, 2), department VARCHAR(50));\", \"CREATE TABLE high_performers (employee_id INT PRIMARY KEY, bonus DECIMAL(10, 2), evaluation_date DATE);\"], \"insert_statements\": [\"INSERT INTO employees (employee_id, name, salary, department) VALUES (1, 'Alice', 50000.00, 'Sales'), (2, 'Bob', 70000.00, 'IT'), (3, 'Charlie', 55000.00, 'Sales'), (4, 'David', 60000.00, 'Marketing');\", \"INSERT INTO high_performers (employee_id, bonus, evaluation_date) VALUES (2, 5000.00, '2024-04-01'), (4, 3000.00, '2024-04-01');\"], \"sql\": \"UPDATE employees SET salary = salary + (SELECT bonus FROM high_performers WHERE high_performers.employee_id = employees.employee_id AND high_performers.evaluation_date = '2024-04-01') WHERE employee_id IN (SELECT employee_id FROM high_performers);\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"employees\", \"columns\": [\"employee_id\", \"name\", \"salary\", \"department\"], \"rows\": [[1, \"Alice\", 50000.0, \"Sales\"], [2, \"Bob\", 75000.0, \"IT\"], [3, \"Charlie\", 55000.0, \"Sales\"], [4, \"David\", 63000.0, \"Marketing\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE employees (employee_id INT PRIMARY KEY, name VARCHAR(50), salary DECIMAL(10, 2), department VARCHAR(50));\nCREATE TABLE high_performers (employee_id INT PRIMARY KEY, bonus DECIMAL(10, 2), evaluation_date DATE);\n\nData:\nINSERT INTO employees (employee_id, name, salary, department) VALUES (1, 'Alice', 50000.00, 'Sales'), (2, 'Bob', 70000.00, 'IT'), (3, 'Charlie', 55000.00, 'Sales'), (4, 'David', 60000.00, 'Marketing');\nINSERT INTO high_performers (employee_id, bonus, evaluation_date) VALUES (2, 5000.00, '2024-04-01'), (4, 3000.00, '2024-04-01');\n\nQuery:\nUPDATE employees SET salary = salary + (SELECT bonus FROM high_performers WHERE high_performers.employee_id = employees.employee_id AND high_performers.evaluation_date = '2024-04-01') WHERE employee_id IN (SELECT employee_id FROM high_performers);\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "employees",
+                            "columns": [
+                                "employee_id",
+                                "name",
+                                "salary",
+                                "department"
+                            ],
+                            "rows": [
+                                [
+                                    1,
+                                    "Alice",
+                                    "50000.00",
+                                    "Sales"
+                                ],
+                                [
+                                    2,
+                                    "Bob",
+                                    "75000.00",
+                                    "IT"
+                                ],
+                                [
+                                    3,
+                                    "Charlie",
+                                    "55000.00",
+                                    "Sales"
+                                ],
+                                [
+                                    4,
+                                    "David",
+                                    "63000.00",
+                                    "Marketing"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "28",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"28\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE customers (customer_id INT PRIMARY KEY, customer_name VARCHAR(50), registration_date DATE);\", \"CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE);\"], \"insert_statements\": [\"INSERT INTO customers (customer_id, customer_name, registration_date) VALUES (1, 'Alice', '2023-01-01'), (2, 'Bob', '2023-02-01'), (3, 'Charlie', '2023-03-01');\", \"INSERT INTO orders (order_id, customer_id, order_date) VALUES (101, 1, '2024-01-01'), (102, 3, '2024-02-01');\"], \"sql\": \"DELETE FROM customers WHERE customer_id NOT IN (SELECT customer_id FROM orders WHERE order_date >= '2024-01-01');\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"customers\", \"columns\": [\"customer_id\", \"customer_name\", \"registration_date\"], \"rows\": [[1, \"Alice\", \"2023-01-01\"], [3, \"Charlie\", \"2023-03-01\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE customers (customer_id INT PRIMARY KEY, customer_name VARCHAR(50), registration_date DATE);\nCREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE);\n\nData:\nINSERT INTO customers (customer_id, customer_name, registration_date) VALUES (1, 'Alice', '2023-01-01'), (2, 'Bob', '2023-02-01'), (3, 'Charlie', '2023-03-01');\nINSERT INTO orders (order_id, customer_id, order_date) VALUES (101, 1, '2024-01-01'), (102, 3, '2024-02-01');\n\nQuery:\nDELETE FROM customers WHERE customer_id NOT IN (SELECT customer_id FROM orders WHERE order_date >= '2024-01-01');\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "customers",
+                            "columns": [
+                                "customer_id",
+                                "customer_name",
+                                "registration_date"
+                            ],
+                            "rows": [
+                                [
+                                    1,
+                                    "Alice",
+                                    "2023-01-01"
+                                ],
+                                [
+                                    3,
+                                    "Charlie",
+                                    "2023-03-01"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "29",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"29\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE customers (customer_id INT PRIMARY KEY, name VARCHAR(50), region VARCHAR(50), last_purchase_date DATE);\", \"CREATE TABLE regions_to_delete (region_name VARCHAR(50), reason VARCHAR(100));\"], \"insert_statements\": [\"INSERT INTO customers (customer_id, name, region, last_purchase_date) VALUES (1, 'Alice', 'North', '2024-01-01'), (2, 'Bob', 'South', '2024-02-01'), (3, 'Charlie', 'North', '2024-03-01'), (4, 'David', 'East', '2024-04-01');\", \"INSERT INTO regions_to_delete (region_name, reason) VALUES ('North', 'Low sales volume'), ('West', 'No activity');\"], \"sql\": \"DELETE FROM customers WHERE region IN (SELECT region_name FROM regions_to_delete WHERE reason = 'Low sales volume') AND last_purchase_date < '2024-03-15';\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"customers\", \"columns\": [\"customer_id\", \"name\", \"region\", \"last_purchase_date\"], \"rows\": [[2, \"Bob\", \"South\", \"2024-02-01\"], [4, \"David\", \"East\", \"2024-04-01\"]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE customers (customer_id INT PRIMARY KEY, name VARCHAR(50), region VARCHAR(50), last_purchase_date DATE);\nCREATE TABLE regions_to_delete (region_name VARCHAR(50), reason VARCHAR(100));\n\nData:\nINSERT INTO customers (customer_id, name, region, last_purchase_date) VALUES (1, 'Alice', 'North', '2024-01-01'), (2, 'Bob', 'South', '2024-02-01'), (3, 'Charlie', 'North', '2024-03-01'), (4, 'David', 'East', '2024-04-01');\nINSERT INTO regions_to_delete (region_name, reason) VALUES ('North', 'Low sales volume'), ('West', 'No activity');\n\nQuery:\nDELETE FROM customers WHERE region IN (SELECT region_name FROM regions_to_delete WHERE reason = 'Low sales volume') AND last_purchase_date < '2024-03-15';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "customers",
+                            "columns": [
+                                "customer_id",
+                                "name",
+                                "region",
+                                "last_purchase_date"
+                            ],
+                            "rows": [
+                                [
+                                    2,
+                                    "Bob",
+                                    "South",
+                                    "2024-02-01"
+                                ],
+                                [
+                                    4,
+                                    "David",
+                                    "East",
+                                    "2024-04-01"
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "30",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"30\", \"difficulty_level\": \"3\", \"create_table_statements\": [\"CREATE TABLE old_logs (log_id INT PRIMARY KEY);\", \"CREATE TABLE logs (log_id INT PRIMARY KEY, status VARCHAR(10));\"], \"insert_statements\": [\"INSERT INTO old_logs (log_id) VALUES (1), (2), (3);\", \"INSERT INTO logs (log_id, status) VALUES (2, 'Processed'), (4, 'Pending');\"], \"sql\": \"DELETE FROM old_logs WHERE log_id NOT IN (SELECT log_id FROM logs);\", \"expected\": {\"result_type\": \"table_state\", \"table_name\": \"old_logs\", \"columns\": [\"log_id\"], \"rows\": [[2]]}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a database expert in SQL execution. Set up the database schema and data below, then execute the SQL query.\nRespond **only** with valid JSON matching this structure exactly (no extra fields or text):\n\n\n  {\n    \"result_type\": \"<select|table_state|...>\",\n\"table_name\": \"<table_name>\",\n\"columns\": [\"<col1>\", \"<col2>\", ...],\n\"rows\": [[<val1>, <val2>, ...], ...]\n  }\n\n---\nSchema:\nCREATE TABLE old_logs (log_id INT PRIMARY KEY);\nCREATE TABLE logs (log_id INT PRIMARY KEY, status VARCHAR(10));\n\nData:\nINSERT INTO old_logs (log_id) VALUES (1), (2), (3);\nINSERT INTO logs (log_id, status) VALUES (2, 'Processed'), (4, 'Pending');\n\nQuery:\nDELETE FROM old_logs WHERE log_id NOT IN (SELECT log_id FROM logs);\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "result_type": "table_state",
+                            "table_name": "old_logs",
+                            "columns": [
+                                "log_id"
+                            ],
+                            "rows": [
+                                [
+                                    2
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "indicator_name": "explain_detection.jsonl",
+        "indicator_weight": 2,
+        "evaluation_type": "objective",
+        "case_pass_count": 11,
+        "case_wrong_count": 9,
+        "correct_rate": 0.55,
+        "case_datas": [
+            {
+                "case_id": "1",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"1\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE students (id INT PRIMARY KEY, name VARCHAR(100), age INT, grade VARCHAR(10));\"], \"insert_statements\": [\"INSERT INTO students (id, name, age, grade) VALUES (1, 'Alice', 18, 'A'), (2, 'Bob', 19, 'B'), (3, 'Charlie', 18, 'A'), (4, 'David', 20, 'C');\"], \"sql\": \"SELECT name, age FROM students WHERE grade = 'B';\", \"expected\": {\"type\": \"ALL\", \"rows\": \"4\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 25.0}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE students (id INT PRIMARY KEY, name VARCHAR(100), age INT, grade VARCHAR(10));\n\nData Inserts:\nINSERT INTO students (id, name, age, grade) VALUES (1, 'Alice', 18, 'A'), (2, 'Bob', 19, 'B'), (3, 'Charlie', 18, 'A'), (4, 'David', 20, 'C');\n\nQuery:\nSELECT name, age FROM students WHERE grade = 'B';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "4",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using where",
+                            "filtered": "25.00"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "2",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"2\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2));\"], \"insert_statements\": [\"INSERT INTO products (product_id, product_name, price) VALUES (101, 'Laptop', 1200.00), (102, 'Mouse', 25.00), (103, 'Keyboard', 75.00);\"], \"sql\": \"INSERT INTO products (product_id, product_name, price) VALUES (104, 'Monitor', 300.00);\", \"expected\": {\"type\": \"ALL\", \"rows\": null, \"key\": null, \"possible_keys\": null, \"Extra\": null, \"filtered\": null}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2));\n\nData Inserts:\nINSERT INTO products (product_id, product_name, price) VALUES (101, 'Laptop', 1200.00), (102, 'Mouse', 25.00), (103, 'Keyboard', 75.00);\n\nQuery:\nINSERT INTO products (product_id, product_name, price) VALUES (104, 'Monitor', 300.00);\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "insert",
+                            "rows": "1",
+                            "key": "PRIMARY",
+                            "possible_keys": [
+                                "PRIMARY"
+                            ],
+                            "Extra": "Using values",
+                            "filtered": "100.00"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "3",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"3\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE employees (employee_id INT PRIMARY KEY, employee_name VARCHAR(100), salary DECIMAL(10, 2));\"], \"insert_statements\": [\"INSERT INTO employees (employee_id, employee_name, salary) VALUES (1, 'John Doe', 50000.00), (2, 'Jane Smith', 60000.00), (3, 'Peter Jones', 45000.00);\"], \"sql\": \"UPDATE employees SET salary = 55000.00 WHERE employee_name LIKE 'John%';\", \"expected\": {\"type\": \"index\", \"rows\": \"3\", \"key\": \"PRIMARY\", \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 100}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE employees (employee_id INT PRIMARY KEY, employee_name VARCHAR(100), salary DECIMAL(10, 2));\n\nData Inserts:\nINSERT INTO employees (employee_id, employee_name, salary) VALUES (1, 'John Doe', 50000.00), (2, 'Jane Smith', 60000.00), (3, 'Peter Jones', 45000.00);\n\nQuery:\nUPDATE employees SET salary = 55000.00 WHERE employee_name LIKE 'John%';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "3",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using where",
+                            "filtered": "33.33"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "4",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"4\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE);\"], \"insert_statements\": [\"INSERT INTO orders (order_id, customer_id, order_date) VALUES (1, 10, '2023-01-15'), (2, 11, '2023-01-16'), (3, 10, '2023-01-17');\"], \"sql\": \"DELETE FROM orders WHERE customer_id = 10;\", \"expected\": {\"type\": \"ALL\", \"rows\": \"3\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 100}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE);\n\nData Inserts:\nINSERT INTO orders (order_id, customer_id, order_date) VALUES (1, 10, '2023-01-15'), (2, 11, '2023-01-16'), (3, 10, '2023-01-17');\n\nQuery:\nDELETE FROM orders WHERE customer_id = 10;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "3",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using where",
+                            "filtered": "66.67"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "5",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"5\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE categories (category_id INT PRIMARY KEY, category_name VARCHAR(100));\"], \"insert_statements\": [\"INSERT INTO categories (category_id, category_name) VALUES (1, 'Electronics'), (2, 'Books'), (3, 'Food');\"], \"sql\": \"REPLACE INTO categories (category_id, category_name) VALUES (4, 'Clothing');\", \"expected\": {\"type\": \"ALL\", \"rows\": null, \"key\": null, \"possible_keys\": null, \"Extra\": null, \"filtered\": null}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE categories (category_id INT PRIMARY KEY, category_name VARCHAR(100));\n\nData Inserts:\nINSERT INTO categories (category_id, category_name) VALUES (1, 'Electronics'), (2, 'Books'), (3, 'Food');\n\nQuery:\nREPLACE INTO categories (category_id, category_name) VALUES (4, 'Clothing');\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "const",
+                            "rows": "1",
+                            "key": "PRIMARY",
+                            "possible_keys": [
+                                "PRIMARY"
+                            ],
+                            "Extra": "",
+                            "filtered": "100.00"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "6",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"6\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE fruits (fruit_id INT PRIMARY KEY, fruit_name VARCHAR(50), weight DECIMAL(5, 2));\"], \"insert_statements\": [\"INSERT INTO fruits (fruit_id, fruit_name, weight) VALUES (1, 'Apple', 0.2), (2, 'Banana', 0.15), (3, 'Orange', 0.25), (4, 'Grape', 0.05);\"], \"sql\": \"SELECT fruit_name FROM fruits WHERE fruit_name = 'Banana';\", \"expected\": {\"type\": \"ALL\", \"rows\": \"4\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 25.0}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE fruits (fruit_id INT PRIMARY KEY, fruit_name VARCHAR(50), weight DECIMAL(5, 2));\n\nData Inserts:\nINSERT INTO fruits (fruit_id, fruit_name, weight) VALUES (1, 'Apple', 0.2), (2, 'Banana', 0.15), (3, 'Orange', 0.25), (4, 'Grape', 0.05);\n\nQuery:\nSELECT fruit_name FROM fruits WHERE fruit_name = 'Banana';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "4",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using where",
+                            "filtered": "25.00"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "7",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"7\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE sales (sale_id INT PRIMARY KEY, product_id INT, sale_amount DECIMAL(10, 2), sale_date DATE);\"], \"insert_statements\": [\"INSERT INTO sales (sale_id, product_id, sale_amount, sale_date) VALUES (1, 101, 1200.00, '2023-01-01'), (2, 102, 25.00, '2023-01-01'), (3, 101, 300.00, '2023-01-02'), (4, 103, 75.00, '2023-01-02');\"], \"sql\": \"SELECT product_id, sale_amount FROM sales WHERE sale_amount < 100.00;\", \"expected\": {\"type\": \"ALL\", \"rows\": \"4\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 33.33}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE sales (sale_id INT PRIMARY KEY, product_id INT, sale_amount DECIMAL(10, 2), sale_date DATE);\n\nData Inserts:\nINSERT INTO sales (sale_id, product_id, sale_amount, sale_date) VALUES (1, 101, 1200.00, '2023-01-01'), (2, 102, 25.00, '2023-01-01'), (3, 101, 300.00, '2023-01-02'), (4, 103, 75.00, '2023-01-02');\n\nQuery:\nSELECT product_id, sale_amount FROM sales WHERE sale_amount < 100.00;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "4",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using where",
+                            "filtered": "50.00"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "8",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"8\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE articles (article_id INT PRIMARY KEY, title VARCHAR(255), publish_date DATE);\"], \"insert_statements\": [\"INSERT INTO articles (article_id, title, publish_date) VALUES (1, 'Article A', '2023-01-01'), (2, 'Article B', '2023-01-05'), (3, 'Article C', '2023-01-10');\"], \"sql\": \"SELECT title FROM articles WHERE publish_date = '2023-01-05';\", \"expected\": {\"type\": \"ALL\", \"rows\": \"3\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 33.33}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE articles (article_id INT PRIMARY KEY, title VARCHAR(255), publish_date DATE);\n\nData Inserts:\nINSERT INTO articles (article_id, title, publish_date) VALUES (1, 'Article A', '2023-01-01'), (2, 'Article B', '2023-01-05'), (3, 'Article C', '2023-01-10');\n\nQuery:\nSELECT title FROM articles WHERE publish_date = '2023-01-05';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "3",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using where",
+                            "filtered": "33.33"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "9",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"9\", \"difficulty_level\": \"2\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE books (book_id INT PRIMARY KEY, title VARCHAR(255), author VARCHAR(100));\"], \"insert_statements\": [\"INSERT INTO books (book_id, title, author) VALUES (1, 'The Great Gatsby', 'F. Scott Fitzgerald'), (2, '1984', 'George Orwell'), (3, 'To Kill a Mockingbird', 'Harper Lee');\"], \"sql\": \"SELECT book_id, title FROM books WHERE title LIKE '%Great%';\", \"expected\": {\"type\": \"ALL\", \"rows\": \"3\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 33.33}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE books (book_id INT PRIMARY KEY, title VARCHAR(255), author VARCHAR(100));\n\nData Inserts:\nINSERT INTO books (book_id, title, author) VALUES (1, 'The Great Gatsby', 'F. Scott Fitzgerald'), (2, '1984', 'George Orwell'), (3, 'To Kill a Mockingbird', 'Harper Lee');\n\nQuery:\nSELECT book_id, title FROM books WHERE title LIKE '%Great%';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "3",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using where",
+                            "filtered": "33.33"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "10",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"10\", \"difficulty_level\": \"2\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(100));\", \"CREATE TABLE employees_v2 (emp_id INT PRIMARY KEY, emp_name VARCHAR(100), dept_id INT);\"], \"insert_statements\": [\"INSERT INTO departments (dept_id, dept_name) VALUES (1, 'HR'), (2, 'IT'), (3, 'Finance');\", \"INSERT INTO employees_v2 (emp_id, emp_name, dept_id) VALUES (101, 'Alice', 1), (102, 'Bob', 2), (103, 'Charlie', 1), (104, 'David', 3);\"], \"sql\": \"SELECT d.dept_name, COUNT(e.emp_id) FROM departments d LEFT JOIN employees_v2 e ON d.dept_id = e.dept_id GROUP BY d.dept_name ORDER BY d.dept_name;\", \"expected\": {\"type\": \"ALL\", \"rows\": \"3\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using temporary; Using filesort\", \"filtered\": 100.0}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(100));\nCREATE TABLE employees_v2 (emp_id INT PRIMARY KEY, emp_name VARCHAR(100), dept_id INT);\n\nData Inserts:\nINSERT INTO departments (dept_id, dept_name) VALUES (1, 'HR'), (2, 'IT'), (3, 'Finance');\nINSERT INTO employees_v2 (emp_id, emp_name, dept_id) VALUES (101, 'Alice', 1), (102, 'Bob', 2), (103, 'Charlie', 1), (104, 'David', 3);\n\nQuery:\nSELECT d.dept_name, COUNT(e.emp_id) FROM departments d LEFT JOIN employees_v2 e ON d.dept_id = e.dept_id GROUP BY d.dept_name ORDER BY d.dept_name;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "3",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using temporary; Using filesort",
+                            "filtered": "100.00"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "11",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"11\", \"difficulty_level\": \"2\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE transactions (transaction_id INT PRIMARY KEY, account_id INT, amount DECIMAL(10, 2), transaction_date DATE);\"], \"insert_statements\": [\"INSERT INTO transactions (transaction_id, account_id, amount, transaction_date) VALUES (1, 10, 50.00, '2023-01-01'), (2, 11, 75.00, '2023-01-01'), (3, 10, 120.00, '2023-01-02');\"], \"sql\": \"SELECT transaction_date, SUM(amount) FROM transactions GROUP BY transaction_date ORDER BY transaction_date;\", \"expected\": {\"type\": \"ALL\", \"rows\": \"3\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using temporary; Using filesort\", \"filtered\": 100}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE transactions (transaction_id INT PRIMARY KEY, account_id INT, amount DECIMAL(10, 2), transaction_date DATE);\n\nData Inserts:\nINSERT INTO transactions (transaction_id, account_id, amount, transaction_date) VALUES (1, 10, 50.00, '2023-01-01'), (2, 11, 75.00, '2023-01-01'), (3, 10, 120.00, '2023-01-02');\n\nQuery:\nSELECT transaction_date, SUM(amount) FROM transactions GROUP BY transaction_date ORDER BY transaction_date;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "3",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using temporary; Using filesort",
+                            "filtered": "100.00"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "12",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"12\", \"difficulty_level\": \"2\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE sensor_data (id INT PRIMARY KEY AUTO_INCREMENT, sensor_type VARCHAR(50), value DECIMAL(10, 2), timestamp DATETIME);\"], \"insert_statements\": [\"INSERT INTO sensor_data (sensor_type, value, timestamp) VALUES ('Temperature', 25.5, '2023-01-01 10:00:00'), ('Humidity', 60.2, '2023-01-01 10:00:00'), ('Temperature', 26.1, '2023-01-01 10:05:00');\"], \"sql\": \"SELECT sensor_type, AVG(value) FROM sensor_data GROUP BY sensor_type;\", \"expected\": {\"type\": \"ALL\", \"rows\": \"3\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using temporary\", \"filtered\": 100}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE sensor_data (id INT PRIMARY KEY AUTO_INCREMENT, sensor_type VARCHAR(50), value DECIMAL(10, 2), timestamp DATETIME);\n\nData Inserts:\nINSERT INTO sensor_data (sensor_type, value, timestamp) VALUES ('Temperature', 25.5, '2023-01-01 10:00:00'), ('Humidity', 60.2, '2023-01-01 10:00:00'), ('Temperature', 26.1, '2023-01-01 10:05:00');\n\nQuery:\nSELECT sensor_type, AVG(value) FROM sensor_data GROUP BY sensor_type;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "3",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using temporary; Using filesort",
+                            "filtered": "100.00"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "13",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"13\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE products_2 (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2), category VARCHAR(50));\"], \"insert_statements\": [\"INSERT INTO products_2 (product_id, product_name, price, category) VALUES (1, 'Laptop', 1200.00, 'Electronics'), (2, 'Desk', 250.00, 'Furniture'), (3, 'Monitor', 300.00, 'Electronics'), (4, 'Chair', 150.00, 'Furniture');\"], \"sql\": \"SELECT product_name FROM products_2 WHERE category = 'Electronics';\", \"expected\": {\"type\": \"ALL\", \"rows\": \"4\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 25}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE products_2 (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2), category VARCHAR(50));\n\nData Inserts:\nINSERT INTO products_2 (product_id, product_name, price, category) VALUES (1, 'Laptop', 1200.00, 'Electronics'), (2, 'Desk', 250.00, 'Furniture'), (3, 'Monitor', 300.00, 'Electronics'), (4, 'Chair', 150.00, 'Furniture');\n\nQuery:\nSELECT product_name FROM products_2 WHERE category = 'Electronics';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "4",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using where",
+                            "filtered": "50.00"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "14",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"14\", \"difficulty_level\": \"2\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE employees_v3 (emp_id INT PRIMARY KEY, emp_name VARCHAR(100), dept_id INT, salary DECIMAL(10, 2));\", \"CREATE TABLE departments_v2 (dept_id INT PRIMARY KEY, dept_name VARCHAR(100));\"], \"insert_statements\": [\"INSERT INTO employees_v3 (emp_id, emp_name, dept_id, salary) VALUES (1, 'Alice', 10, 60000.00), (2, 'Bob', 20, 75000.00), (3, 'Charlie', 10, 55000.00), (4, 'David', 30, 80000.00);\", \"INSERT INTO departments_v2 (dept_id, dept_name) VALUES (10, 'HR'), (20, 'IT'), (30, 'Finance');\"], \"sql\": \"SELECT e.emp_name, d.dept_name FROM employees_v3 e JOIN departments_v2 d ON e.dept_id = d.dept_id ORDER BY e.salary DESC;\", \"expected\": {\"type\": \"ALL\", \"rows\": \"3\", \"key\": null, \"possible_keys\": \"PRIMARY\", \"Extra\": \"Using temporary; Using filesort\", \"filtered\": 100.0}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE employees_v3 (emp_id INT PRIMARY KEY, emp_name VARCHAR(100), dept_id INT, salary DECIMAL(10, 2));\nCREATE TABLE departments_v2 (dept_id INT PRIMARY KEY, dept_name VARCHAR(100));\n\nData Inserts:\nINSERT INTO employees_v3 (emp_id, emp_name, dept_id, salary) VALUES (1, 'Alice', 10, 60000.00), (2, 'Bob', 20, 75000.00), (3, 'Charlie', 10, 55000.00), (4, 'David', 30, 80000.00);\nINSERT INTO departments_v2 (dept_id, dept_name) VALUES (10, 'HR'), (20, 'IT'), (30, 'Finance');\n\nQuery:\nSELECT e.emp_name, d.dept_name FROM employees_v3 e JOIN departments_v2 d ON e.dept_id = d.dept_id ORDER BY e.salary DESC;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "4",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using filesort",
+                            "filtered": "100.00"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "15",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"15\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE customers_v2 (customer_id INT PRIMARY KEY, customer_name VARCHAR(100), signup_date DATE);\"], \"insert_statements\": [\"INSERT INTO customers_v2 (customer_id, customer_name, signup_date) VALUES (1, 'Alice', '2023-01-01'), (2, 'Bob', '2023-01-05'), (3, 'Charlie', '2023-01-10');\"], \"sql\": \"SELECT customer_name FROM customers_v2 WHERE signup_date = '2023-01-05';\", \"expected\": {\"type\": \"ALL\", \"rows\": \"3\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 33.33}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE customers_v2 (customer_id INT PRIMARY KEY, customer_name VARCHAR(100), signup_date DATE);\n\nData Inserts:\nINSERT INTO customers_v2 (customer_id, customer_name, signup_date) VALUES (1, 'Alice', '2023-01-01'), (2, 'Bob', '2023-01-05'), (3, 'Charlie', '2023-01-10');\n\nQuery:\nSELECT customer_name FROM customers_v2 WHERE signup_date = '2023-01-05';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "3",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using where",
+                            "filtered": "33.33"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "16",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"16\", \"difficulty_level\": \"2\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE users_3 (id INT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100));\", \"CREATE TABLE orders_4 (order_id INT PRIMARY KEY, user_id INT, order_date DATE);\"], \"insert_statements\": [\"INSERT INTO users_3 (id, name, email) VALUES (1, 'Alice', 'alice@example.com'), (2, 'Bob', 'bob@example.com'), (3, 'Charlie', 'charlie@example.com');\", \"INSERT INTO orders_4 (order_id, user_id, order_date) VALUES (101, 1, '2023-01-01'), (102, 2, '2023-01-02'), (103, 1, '2023-01-03');\"], \"sql\": \"SELECT u.name, COUNT(o.order_id) FROM users_3 u LEFT JOIN orders_4 o ON u.id = o.user_id GROUP BY u.name ORDER BY u.name;\", \"expected\": {\"type\": \"ALL\", \"rows\": \"3\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using temporary; Using filesort\", \"filtered\": 100.0}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE users_3 (id INT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100));\nCREATE TABLE orders_4 (order_id INT PRIMARY KEY, user_id INT, order_date DATE);\n\nData Inserts:\nINSERT INTO users_3 (id, name, email) VALUES (1, 'Alice', 'alice@example.com'), (2, 'Bob', 'bob@example.com'), (3, 'Charlie', 'charlie@example.com');\nINSERT INTO orders_4 (order_id, user_id, order_date) VALUES (101, 1, '2023-01-01'), (102, 2, '2023-01-02'), (103, 1, '2023-01-03');\n\nQuery:\nSELECT u.name, COUNT(o.order_id) FROM users_3 u LEFT JOIN orders_4 o ON u.id = o.user_id GROUP BY u.name ORDER BY u.name;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "3",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using temporary; Using filesort",
+                            "filtered": "100.00"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "17",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"17\", \"difficulty_level\": \"2\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE employees_v4 (employee_id INT PRIMARY KEY, employee_name VARCHAR(100), manager_id INT);\"], \"insert_statements\": [\"INSERT INTO employees_v4 (employee_id, employee_name, manager_id) VALUES (1, 'Alice', NULL), (2, 'Bob', 1), (3, 'Charlie', 1), (4, 'David', 2);\"], \"sql\": \"SELECT employee_name FROM employees_v4 ORDER BY employee_name;\", \"expected\": {\"type\": \"ALL\", \"rows\": \"4\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using filesort\", \"filtered\": 100.0}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE employees_v4 (employee_id INT PRIMARY KEY, employee_name VARCHAR(100), manager_id INT);\n\nData Inserts:\nINSERT INTO employees_v4 (employee_id, employee_name, manager_id) VALUES (1, 'Alice', NULL), (2, 'Bob', 1), (3, 'Charlie', 1), (4, 'David', 2);\n\nQuery:\nSELECT employee_name FROM employees_v4 ORDER BY employee_name;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "4",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using filesort",
+                            "filtered": "100.00"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "18",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"18\", \"difficulty_level\": \"2\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE products_v4 (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2));\"], \"insert_statements\": [\"INSERT INTO products_v4 (product_id, product_name, price) VALUES (1, 'Laptop', 1200.00), (2, 'Desk', 250.00), (3, 'Monitor', 300.00);\"], \"sql\": \"SELECT product_name, price FROM products_v4 ORDER BY price DESC;\", \"expected\": {\"type\": \"ALL\", \"rows\": \"3\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using filesort\", \"filtered\": 100}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE products_v4 (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2));\n\nData Inserts:\nINSERT INTO products_v4 (product_id, product_name, price) VALUES (1, 'Laptop', 1200.00), (2, 'Desk', 250.00), (3, 'Monitor', 300.00);\n\nQuery:\nSELECT product_name, price FROM products_v4 ORDER BY price DESC;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "3",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using filesort",
+                            "filtered": "100.00"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "19",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"19\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE inventory (item_id INT PRIMARY KEY, item_name VARCHAR(100), stock_quantity INT);\"], \"insert_statements\": [\"INSERT INTO inventory (item_id, item_name, stock_quantity) VALUES (1, 'Pen', 100), (2, 'Notebook', 50), (3, 'Eraser', 75);\"], \"sql\": \"UPDATE inventory SET stock_quantity = 80 WHERE stock_quantity < 60;\", \"expected\": {\"type\": \"index\", \"rows\": \"3\", \"key\": \"PRIMARY\", \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 100}}",
+                "case_eval_result": "Fail",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE inventory (item_id INT PRIMARY KEY, item_name VARCHAR(100), stock_quantity INT);\n\nData Inserts:\nINSERT INTO inventory (item_id, item_name, stock_quantity) VALUES (1, 'Pen', 100), (2, 'Notebook', 50), (3, 'Eraser', 75);\n\nQuery:\nUPDATE inventory SET stock_quantity = 80 WHERE stock_quantity < 60;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "3",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using where",
+                            "filtered": "33.33"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "20",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"20\", \"difficulty_level\": \"1\", \"dialect\": \"MySQL\", \"create_table_statements\": [\"CREATE TABLE events (event_id INT PRIMARY KEY, event_name VARCHAR(100), event_date DATE);\"], \"insert_statements\": [\"INSERT INTO events (event_id, event_name, event_date) VALUES (1, 'Meeting', '2023-06-01'), (2, 'Conference', '2023-06-15'), (3, 'Workshop', '2023-07-01');\"], \"sql\": \"SELECT event_name FROM events WHERE event_name = 'Meeting';\", \"expected\": {\"type\": \"ALL\", \"rows\": \"3\", \"key\": null, \"possible_keys\": null, \"Extra\": \"Using where\", \"filtered\": 33.33}}",
+                "case_eval_result": "Pass",
+                "mode_question": "You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  \"type\": \"<type>\",\n  \"rows\": \"<rows>\",\n  \"key\": <key|null>,\n  \"possible_keys\": <possible_keys|null>,\n  \"Extra\": \"<Extra>\",\n  \"filtered\": \"<filtered>\"\n}\n\nTable Definitions:\nCREATE TABLE events (event_id INT PRIMARY KEY, event_name VARCHAR(100), event_date DATE);\n\nData Inserts:\nINSERT INTO events (event_id, event_name, event_date) VALUES (1, 'Meeting', '2023-06-01'), (2, 'Conference', '2023-06-15'), (3, 'Workshop', '2023-07-01');\n\nQuery:\nSELECT event_name FROM events WHERE event_name = 'Meeting';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "type": "ALL",
+                            "rows": "3",
+                            "key": null,
+                            "possible_keys": null,
+                            "Extra": "Using where",
+                            "filtered": "33.33"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "indicator_name": "syntax_error_detection.jsonl",
+        "indicator_weight": 1,
+        "evaluation_type": "objective",
+        "case_pass_count": 22,
+        "case_wrong_count": 8,
+        "correct_rate": 0.73,
+        "case_datas": [
+            {
+                "case_id": "1",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"1\", \"difficulty_level\": \"1\", \"sql\": \"SELECT product_id, product_name FROM products WHERE category = 'Electronics';\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT product_id, product_name FROM products WHERE category = 'Electronics';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "2",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"2\", \"difficulty_level\": \"1\", \"sql\": \"INSERT INTO users (username, email) VALUES ('john_doe', 'john.doe@example.com');\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nINSERT INTO users (username, email) VALUES ('john_doe', 'john.doe@example.com');\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "3",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"3\", \"difficulty_level\": \"1\", \"sql\": \"UPDATE orders SET status = 'Shipped' WHERE order_id = 500;\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nUPDATE orders SET status = 'Shipped' WHERE order_id = 500;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "4",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"4\", \"difficulty_level\": \"1\", \"sql\": \"DELETE FROM inactive_accounts WHERE last_login < '2024-01-01';\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nDELETE FROM inactive_accounts WHERE last_login < '2024-01-01';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "5",
+                "case_weight": 1,
+                "case_content": "{\"case_id\": \"5\", \"difficulty_level\": \"1\", \"sql\": \"INSERT INTO logs (event_type, event_date) VALUS ('Login', CURRENT_DATE());\", \"expected\": {\"has_syntax_error\": \"yes\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nINSERT INTO logs (event_type, event_date) VALUS ('Login', CURRENT_DATE());\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "yes"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "6",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"6\", \"difficulty_level\": \"2\", \"sql\": \"SELECT department_id, COUNT(employee_id) AS num_employees, AVG(salary) AS avg_salary FROM employees GROUP BY department_id HAVING AVG(salary) > 60000 ORDER BY avg_salary DESC;\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT department_id, COUNT(employee_id) AS num_employees, AVG(salary) AS avg_salary FROM employees GROUP BY department_id HAVING AVG(salary) > 60000 ORDER BY avg_salary DESC;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "7",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"7\", \"difficulty_level\": \"2\", \"sql\": \"SELECT customer_name, order_date FROM customers JOIN orders ON customers.customer_id = orders.customer_id WHERE order_date BETWEEN '2024-01-01' AND '2024-03-31' ORDER BY order_date ASC LIMIT 20 OFFSET 5;\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT customer_name, order_date FROM customers JOIN orders ON customers.customer_id = orders.customer_id WHERE order_date BETWEEN '2024-01-01' AND '2024-03-31' ORDER BY order_date ASC LIMIT 20 OFFSET 5;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "8",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"8\", \"difficulty_level\": \"2\", \"sql\": \"SELECT product_name, price, (price * 1.08) AS price_with_tax FROM products WHERE category IN ('Books', 'Movies') AND stock_quantity > 0;\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT product_name, price, (price * 1.08) AS price_with_tax FROM products WHERE category IN ('Books', 'Movies') AND stock_quantity > 0;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "9",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"9\", \"difficulty_level\": \"2\", \"sql\": \"SELECT LEFT(product_code, 2) AS category_prefix, SUM(quantity) AS total_sold FROM sales_items GROUP BY category_prefix HAVING SUM(quantity) > 100 ORDER BY total_sold DESC;\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT LEFT(product_code, 2) AS category_prefix, SUM(quantity) AS total_sold FROM sales_items GROUP BY category_prefix HAVING SUM(quantity) > 100 ORDER BY total_sold DESC;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "10",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"10\", \"difficulty_level\": \"2\", \"sql\": \"SELECT employee_id, CONCAT(first_name, ' ', last_name) AS full_name, DATEDIFF(CURRENT_DATE(), hire_date) AS days_employed FROM employees WHERE DATEDIFF(CURRENT_DATE(), hire_date) > 3650;\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT employee_id, CONCAT(first_name, ' ', last_name) AS full_name, DATEDIFF(CURRENT_DATE(), hire_date) AS days_employed FROM employees WHERE DATEDIFF(CURRENT_DATE(), hire_date) > 3650;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "11",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"11\", \"difficulty_level\": \"2\", \"sql\": \"SELECT MAX(score), MIN(score), AVG(score) FROM student_scores WHERE subject = 'Math' AND EXISTS (SELECT 1 FROM students WHERE student_id = student_scores.student_id AND grade_level = 10);\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT MAX(score), MIN(score), AVG(score) FROM student_scores WHERE subject = 'Math' AND EXISTS (SELECT 1 FROM students WHERE student_id = student_scores.student_id AND grade_level = 10);\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "12",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"12\", \"difficulty_level\": \"2\", \"sql\": \"SELECT COUNT(DISTINCT customer_id) AS unique_customers FROM orders WHERE order_date >= '2024-01-01' GROUP BY YEAR(order_date), MONTH(order_date);\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT COUNT(DISTINCT customer_id) AS unique_customers FROM orders WHERE order_date >= '2024-01-01' GROUP BY YEAR(order_date), MONTH(order_date);\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "13",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"13\", \"difficulty_level\": \"2\", \"sql\": \"SELECT customer_name, LENGTH(customer_name) FROM customers WHERE LENGTH(customer_name) > 15 ORDER BY LENGTH(customer_name) DESC;\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT customer_name, LENGTH(customer_name) FROM customers WHERE LENGTH(customer_name) > 15 ORDER BY LENGTH(customer_name) DESC;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "14",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"14\", \"difficulty_level\": \"2\", \"sql\": \"SELECT employee_id, CASE WHEN salary >= 80000 THEN 'High' WHEN salary >= 50000 THEN 'Medium' ELSE 'Low' END AS salary_level FROM employees ORDER BY salary_level DESC;\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT employee_id, CASE WHEN salary >= 80000 THEN 'High' WHEN salary >= 50000 THEN 'Medium' ELSE 'Low' END AS salary_level FROM employees ORDER BY salary_level DESC;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "15",
+                "case_weight": 2,
+                "case_content": "{\"case_id\": \"15\", \"difficulty_level\": \"2\", \"sql\": \"SELECT region, SUM(amount) FROM sales_data WHERE sale_date BETWEEN '2024-01-01' AND '2024-01-31' GROUP BY region ORDER BY SUM(amount) DESC HAVING SUM(amount) > 50000;\", \"expected\": {\"has_syntax_error\": \"yes\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT region, SUM(amount) FROM sales_data WHERE sale_date BETWEEN '2024-01-01' AND '2024-01-31' GROUP BY region ORDER BY SUM(amount) DESC HAVING SUM(amount) > 50000;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "yes"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "16",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"16\", \"difficulty_level\": \"3\", \"sql\": \"SELECT c.customer_name, o.order_id, p.product_name, oi.quantity FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = 'Electronics' AND o.order_date > '2024-01-01' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id);\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT c.customer_name, o.order_id, p.product_name, oi.quantity FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = 'Electronics' AND o.order_date > '2024-01-01' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id);\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "17",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"17\", \"difficulty_level\": \"3\", \"sql\": \"WITH EmployeeSalaries AS (SELECT employee_id, department_id, salary FROM employees), DepartmentAvg AS (SELECT department_id, AVG(salary) AS avg_dept_salary FROM employees GROUP BY department_id) SELECT es.employee_id, es.salary, da.avg_dept_salary FROM EmployeeSalaries es JOIN DepartmentAvg da ON es.department_id = da.department_id WHERE es.salary > da.avg_dept_salary;\", \"expected\": {\"has_syntax_error\": \"yes\"}}",
+                "case_eval_result": "Fail",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nWITH EmployeeSalaries AS (SELECT employee_id, department_id, salary FROM employees), DepartmentAvg AS (SELECT department_id, AVG(salary) AS avg_dept_salary FROM employees GROUP BY department_id) SELECT es.employee_id, es.salary, da.avg_dept_salary FROM EmployeeSalaries es JOIN DepartmentAvg da ON es.department_id = da.department_id WHERE es.salary > da.avg_dept_salary;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "18",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"18\", \"difficulty_level\": \"3\", \"sql\": \"INSERT INTO sales_archive (SELECT * FROM sales WHERE sale_date < '2023-01-01' AND status = 'Completed');\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Fail",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nINSERT INTO sales_archive (SELECT * FROM sales WHERE sale_date < '2023-01-01' AND status = 'Completed');\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "yes"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "19",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"19\", \"difficulty_level\": \"3\", \"sql\": \"SELECT p.product_name, p.price FROM products p WHERE p.product_id IN (SELECT oi.product_id FROM order_items oi GROUP BY oi.product_id HAVING COUNT(oi.order_id) > 10) AND p.category = 'Books' OR p.product_id IN (SELECT r.product_id FROM reviews r WHERE r.rating < 3 AND r.review_date > '2024-01-01') AND p.stock > 0;\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT p.product_name, p.price FROM products p WHERE p.product_id IN (SELECT oi.product_id FROM order_items oi GROUP BY oi.product_id HAVING COUNT(oi.order_id) > 10) AND p.category = 'Books' OR p.product_id IN (SELECT r.product_id FROM reviews r WHERE r.rating < 3 AND r.review_date > '2024-01-01') AND p.stock > 0;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "20",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"20\", \"difficulty_level\": \"3\", \"sql\": \"SELECT e.first_name, e.last_name, d.department_name FROM employees e LEFT JOIN departments d ON e.department_id = d.department_id WHERE e.employee_id NOT IN (SELECT manager_id FROM projects WHERE manager_id IS NOT NULL) UNION ALL SELECT c.contact_name, NULL, 'External Partner' FROM contacts c WHERE c.company_type = 'Supplier';\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT e.first_name, e.last_name, d.department_name FROM employees e LEFT JOIN departments d ON e.department_id = d.department_id WHERE e.employee_id NOT IN (SELECT manager_id FROM projects WHERE manager_id IS NOT NULL) UNION ALL SELECT c.contact_name, NULL, 'External Partner' FROM contacts c WHERE c.company_type = 'Supplier';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "21",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"21\", \"difficulty_level\": \"3\", \"sql\": \"CREATE VIEW high_value_customers AS SELECT c.customer_id, c.customer_name, SUM(o.total_amount) AS lifetime_value FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.customer_id, c.customer_name HAVING SUM(o.total_amount) > 1000 ORDER BY lifetime_value DESC;\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Fail",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nCREATE VIEW high_value_customers AS SELECT c.customer_id, c.customer_name, SUM(o.total_amount) AS lifetime_value FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.customer_id, c.customer_name HAVING SUM(o.total_amount) > 1000 ORDER BY lifetime_value DESC;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "yes"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "22",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"22\", \"difficulty_level\": \"3\", \"sql\": \"SELECT T1.colA, T1.colB FROM table1 T1 WHERE T1.colC = (SELECT MAX(T2.colD) FROM table2 T2 WHERE T2.colE = T1.colA AND T2.colF IN ('status1', 'status2'));\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT T1.colA, T1.colB FROM table1 T1 WHERE T1.colC = (SELECT MAX(T2.colD) FROM table2 T2 WHERE T2.colE = T1.colA AND T2.colF IN ('status1', 'status2'));\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "23",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"23\", \"difficulty_level\": \"3\", \"sql\": \"BEGIN TRANSACTION; UPDATE accounts SET balance = balance - 100 WHERE account_id = 101; SAVEPOINT deduct_funds; INSERT INTO transactions (account_id, amount, type) VALUES (102, 100, 'deposit'); COMMIT;\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Fail",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nBEGIN TRANSACTION; UPDATE accounts SET balance = balance - 100 WHERE account_id = 101; SAVEPOINT deduct_funds; INSERT INTO transactions (account_id, amount, type) VALUES (102, 100, 'deposit'); COMMIT;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "yes"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "24",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"24\", \"difficulty_level\": \"3\", \"sql\": \"SELECT a.artist_name, COUNT(s.song_id) AS num_songs FROM artists a JOIN songs s ON a.artist_id = s.artist_id GROUP BY a.artist_name HAVING COUNT(s.song_id) > 5 AND a.genre = 'Rock' ORDER BY num_songs DESC LIMIT 10;\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT a.artist_name, COUNT(s.song_id) AS num_songs FROM artists a JOIN songs s ON a.artist_id = s.artist_id GROUP BY a.artist_name HAVING COUNT(s.song_id) > 5 AND a.genre = 'Rock' ORDER BY num_songs DESC LIMIT 10;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "25",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"25\", \"difficulty_level\": \"3\", \"sql\": \"WITH MonthlySales AS (SELECT DATE_TRUNC('month', sale_date) AS sale_month, SUM(amount) AS total_monthly_sales FROM sales GROUP BY DATE_TRUNC('month', sale_date)), AvgSales AS (SELECT AVG(total_monthly_sales) FROM MonthlySales) SELECT ms.sale_month, ms.total_monthly_sales FROM MonthlySales ms WHERE ms.total_monthly_sales > (SELECT * FROM AvgSales);\", \"expected\": {\"has_syntax_error\": \"yes\"}}",
+                "case_eval_result": "Fail",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nWITH MonthlySales AS (SELECT DATE_TRUNC('month', sale_date) AS sale_month, SUM(amount) AS total_monthly_sales FROM sales GROUP BY DATE_TRUNC('month', sale_date)), AvgSales AS (SELECT AVG(total_monthly_sales) FROM MonthlySales) SELECT ms.sale_month, ms.total_monthly_sales FROM MonthlySales ms WHERE ms.total_monthly_sales > (SELECT * FROM AvgSales);\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "no"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "26",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"26\", \"difficulty_level\": \"3\", \"sql\": \"SELECT c.customer_name, o.order_id, p.product_name FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = 'Books' AND o.order_date > '2023-01-01' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id AND order_date BETWEEN '2023-01-01' AND '2023-12-31';\", \"expected\": {\"has_syntax_error\": \"yes\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT c.customer_name, o.order_id, p.product_name FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = 'Books' AND o.order_date > '2023-01-01' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id AND order_date BETWEEN '2023-01-01' AND '2023-12-31';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "yes"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "27",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"27\", \"difficulty_level\": \"3\", \"sql\": \"UPDATE inventory SET stock = stock - 10 WHERE product_id IN (SELECT product_id FROM low_stock_alerts WHERE alert_date < CURRENT_DATE() AND alert_level = 'Critical') OR product_id IN (SELECT product_id FROM recent_sales WHERE sale_date > '2024-05-01' AND quantity_sold > 5 AND stock < 20);\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Fail",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nUPDATE inventory SET stock = stock - 10 WHERE product_id IN (SELECT product_id FROM low_stock_alerts WHERE alert_date < CURRENT_DATE() AND alert_level = 'Critical') OR product_id IN (SELECT product_id FROM recent_sales WHERE sale_date > '2024-05-01' AND quantity_sold > 5 AND stock < 20);\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "yes"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "28",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"28\", \"difficulty_level\": \"3\", \"sql\": \"SELECT emp_id, emp_name FROM employees WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = 'New York' AND dept_id NOT IN (SELECT dept_id FROM projects WHERE project_status = 'Completed' ORDER BY project_id));\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Fail",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nSELECT emp_id, emp_name FROM employees WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = 'New York' AND dept_id NOT IN (SELECT dept_id FROM projects WHERE project_status = 'Completed' ORDER BY project_id));\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "yes"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "29",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"29\", \"difficulty_level\": \"3\", \"sql\": \"BEGIN TRANSACTION; INSERT INTO audit_log (action, timestamp) VALUES ('User login attempt', NOW()); UPDATE users SET last_login = NOW() WHERE username = 'testuser'; COMMIT TRANSACTION SELECT * FROM users WHERE username = 'testuser';\", \"expected\": {\"has_syntax_error\": \"yes\"}}",
+                "case_eval_result": "Pass",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nBEGIN TRANSACTION; INSERT INTO audit_log (action, timestamp) VALUES ('User login attempt', NOW()); UPDATE users SET last_login = NOW() WHERE username = 'testuser'; COMMIT TRANSACTION SELECT * FROM users WHERE username = 'testuser';\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "yes"
+                        }
+                    }
+                ]
+            },
+            {
+                "case_id": "30",
+                "case_weight": 3,
+                "case_content": "{\"case_id\": \"30\", \"difficulty_level\": \"3\", \"sql\": \"CREATE VIEW popular_products_view AS SELECT p.product_id, p.product_name, SUM(oi.quantity) AS total_quantity_sold FROM products p JOIN order_items oi ON p.product_id = oi.product_id GROUP BY p.product_id, p.product_name HAVING SUM(oi.quantity) > 50 AND p.category = 'Gadgets' AND (SELECT COUNT(review_id) FROM reviews WHERE product_id = p.product_id) > 10 ORDER BY total_quantity_sold DESC;\", \"expected\": {\"has_syntax_error\": \"no\"}}",
+                "case_eval_result": "Fail",
+                "mode_question": "\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  \"has_syntax_error\": \"yes|no\"\n}\n\nSQL:\nCREATE VIEW popular_products_view AS SELECT p.product_id, p.product_name, SUM(oi.quantity) AS total_quantity_sold FROM products p JOIN order_items oi ON p.product_id = oi.product_id GROUP BY p.product_id, p.product_name HAVING SUM(oi.quantity) > 50 AND p.category = 'Gadgets' AND (SELECT COUNT(review_id) FROM reviews WHERE product_id = p.product_id) > 10 ORDER BY total_quantity_sold DESC;\n",
+                "model_answers": [
+                    {
+                        "case_evaluation_count": 1,
+                        "model_answer": {
+                            "has_syntax_error": "yes"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]
