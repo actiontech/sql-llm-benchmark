@@ -30,6 +30,9 @@ export const BarChart: React.FC<BarChartProps> = ({ data, onIndicatorClick, char
 
   const option = {
     tooltip: {},
+    animation: true,
+    animationDuration: 600,
+    animationEasing: 'cubicOut',
     xAxis: {
       type: 'category',
       data: categories,
@@ -44,6 +47,11 @@ export const BarChart: React.FC<BarChartProps> = ({ data, onIndicatorClick, char
         type: 'bar',
         data: values,
         label: { show: true, position: 'top', formatter: '{c}' },
+        animationDuration: 500,
+        animationEasing: 'cubicOut',
+        itemStyle: {
+          borderRadius: [4, 4, 0, 0], // 顶部圆角
+        },
       },
     ],
   };
