@@ -27,6 +27,7 @@ import {
     RadarChartOutlined,
     HeatMapOutlined,
     CloseOutlined,
+    PlusOutlined,
 } from "@ant-design/icons";
 import styles from "../../styles/Container.module.css";
 import cardStyles from "../../styles/Card.module.css";
@@ -62,6 +63,26 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
     const [loading, setLoading] = useState(true);
     const [chartType, setChartType] = useState<ChartType>('bar');
     const [selectedCapability, setSelectedCapability] = useState<string>('all');
+    const [availableModels, setAvailableModels] = useState<any[]>([]);
+
+    // 获取当前月份的所有可用模型
+    useEffect(() => {
+        const fetchAvailableModels = async () => {
+            try {
+                const response = await fetch(`/data/eval_reports/models-${currentMonth}.json`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setAvailableModels(data.models || []);
+                }
+            } catch (error) {
+                console.error('获取可用模型列表失败:', error);
+            }
+        };
+
+        if (currentMonth) {
+            fetchAvailableModels();
+        }
+    }, [currentMonth]);
 
     // 获取对比数据
     useEffect(() => {
@@ -171,6 +192,23 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
         router.push(`/compare/${currentMonth}?models=${modelsString}`);
     };
 
+    const handleAddModel = (modelId: string) => {
+        if (modelIds.includes(modelId)) return; // 避免重复添加
+        if (modelIds.length >= 5) {
+            message.warning(t("compare.max_models_reached"));
+            return;
+        }
+
+        const newModelIds = [...modelIds, modelId];
+        const modelsString = newModelIds.join(',');
+        router.push(`/compare/${currentMonth}?models=${modelsString}`);
+    };
+
+    // 计算可添加的模型列表（排除已选择的模型）
+    const addableModels = useMemo(() => {
+        return availableModels.filter(model => !modelIds.includes(model.id));
+    }, [availableModels, modelIds]);
+
     const handleLanguageChange = () => {
         const newLang = i18n.language === "en" ? "zh" : "en";
         i18n.changeLanguage(newLang);
@@ -277,23 +315,64 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
 
                     {/* 已选模型显示区 */}
                     <Divider />
-                    <Space wrap size="middle">
-                        <span style={{ fontWeight: 'bold', color: '#666' }}>{t("compare.compare_models_label")}</span>
-                        {comparisonData?.models.map((model, index) => (
-                            <Tag
-                                key={model.id}
-                                color={colorPalette[index]}
-                                closable
-                                onClose={() => handleRemoveModel(model.id)}
-                                style={{
-                                    padding: '4px 8px',
-                                    fontSize: '14px',
-                                }}
-                            >
-                                {model.real_model_namne}
-                            </Tag>
-                        ))}
-                    </Space>
+                    <Row justify="space-between" align="middle" wrap>
+                        <Col>
+                            <Space wrap size="middle">
+                                <span style={{ fontWeight: 'bold', color: '#666' }}>{t("compare.compare_models_label")}</span>
+                                {comparisonData?.models.map((model, index) => (
+                                    <Tag
+                                        key={model.id}
+                                        color={colorPalette[index]}
+                                        closable
+                                        onClose={() => handleRemoveModel(model.id)}
+                                        style={{
+                                            padding: '4px 8px',
+                                            fontSize: '14px',
+                                        }}
+                                    >
+                                        {model.real_model_namne}
+                                    </Tag>
+                                ))}
+                                {/* 添加模型选择器 */}
+                                {addableModels.length > 0 && modelIds.length < 5 && (
+                                    <Select
+                                        placeholder={
+                                            <Space size={4}>
+                                                <PlusOutlined style={{ fontSize: '12px' }} />
+                                                <span>{t("compare.add_model")}</span>
+                                            </Space>
+                                        }
+                                        style={{ minWidth: 120 }}
+                                        size="small"
+                                        onChange={handleAddModel}
+                                        value={undefined}
+                                        showSearch
+                                        filterOption={(input, option) =>
+                                            (option?.children as unknown as string)?.toLowerCase().includes(input.toLowerCase())
+                                        }
+                                    >
+                                        {addableModels.map((model) => (
+                                            <Option key={model.id} value={model.id}>
+                                                {model.real_model_namne}
+                                            </Option>
+                                        ))}
+                                    </Select>
+                                )}
+                            </Space>
+                        </Col>
+                        <Col>
+                            <Space size="middle">
+                                <span style={{ fontWeight: 'bold', color: '#666' }}></span>
+                                <Select value={currentMonth} onChange={handleMonthChange} style={{ width: 150 }}>
+                                    {months.map((m) => (
+                                        <Option key={m} value={m}>
+                                            {m}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            </Space>
+                        </Col>
+                    </Row>
                 </Card>
 
                 {loading ? (
@@ -349,25 +428,16 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
                                     </Space>
                                 </Col>
                                 <Col>
-                                    <Space size={16}>
-                                        <Select
-                                            value={selectedCapability}
-                                            onChange={setSelectedCapability}
-                                            style={{ width: 200 }}
-                                        >
-                                            <Option value="all">{t("compare.capability_filter.all")}</Option>
-                                            <Option value="sql_optimization">{t("compare.capability_filter.sql_optimization")}</Option>
-                                            <Option value="dialect_conversion">{t("compare.capability_filter.dialect_conversion")}</Option>
-                                            <Option value="sql_understanding">{t("compare.capability_filter.sql_understanding")}</Option>
-                                        </Select>
-                                        <Select value={currentMonth} onChange={handleMonthChange} style={{ width: 150 }}>
-                                            {months.map((m) => (
-                                                <Option key={m} value={m}>
-                                                    {m}
-                                                </Option>
-                                            ))}
-                                        </Select>
-                                    </Space>
+                                    <Select
+                                        value={selectedCapability}
+                                        onChange={setSelectedCapability}
+                                        style={{ width: 200 }}
+                                    >
+                                        <Option value="all">{t("compare.capability_filter.all")}</Option>
+                                        <Option value="sql_optimization">{t("compare.capability_filter.sql_optimization")}</Option>
+                                        <Option value="dialect_conversion">{t("compare.capability_filter.dialect_conversion")}</Option>
+                                        <Option value="sql_understanding">{t("compare.capability_filter.sql_understanding")}</Option>
+                                    </Select>
                                 </Col>
                             </Row>
 
