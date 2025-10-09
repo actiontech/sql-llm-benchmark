@@ -26,6 +26,8 @@ import cardStyles from "../../../styles/Card.module.css";
 import Link from "next/link";
 import {
   ArrowLeftOutlined,
+  BarChartOutlined,
+  ExportOutlined,
 } from "@ant-design/icons";
 import { useChartExport } from "../../../lib/chartExport";
 import { INDICATOR_KEYS } from "../../../components/constants";
@@ -434,29 +436,47 @@ const Detail: React.FC<DetailProps> = ({
                   right: "16px",
                   zIndex: 10,
                   display: "flex",
-                  gap: "8px"
+                  flexDirection: "column",
+                  gap: "8px",
+                  alignItems: "flex-end"
                 }}>
                   <Button
+                    size="small"
+                    icon={<BarChartOutlined />}
                     onClick={() => {
                       router.push(`/indicators/${date}?dimension=${selectedDimension}&modelId=${model.id}`);
                     }}
+                    style={{ whiteSpace: "nowrap" }}
                   >
                     {t("common.indicator_ranking")}
                   </Button>
                   <Button
+                    size="small"
+                    icon={<ExportOutlined />}
                     onClick={() => exportImage(`${model.real_model_namne}_${t(`table.${selectedDimension}`)}_bar-chart.png`)}
+                    style={{ whiteSpace: "nowrap" }}
                   >
                     {t('actions.export')}
                   </Button>
                 </div>
 
-                <div style={{ marginBottom: "16px" }}>
+                <div style={{
+                  marginBottom: "16px",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "8px",
+                  paddingRight: "80px" // 为右上角按钮留出空间
+                }}>
                   {INDICATOR_KEYS.map((key) => (
                     <Button
                       key={key}
                       onClick={() => setSelectedDimension(key)}
                       type={selectedDimension === key ? "primary" : "default"}
-                      style={{ marginRight: "8px", marginBottom: "8px" }}
+                      size="small"
+                      style={{
+                        whiteSpace: "nowrap",
+                        flex: "0 0 auto" // 防止按钮被压缩
+                      }}
                     >
                       {t(`table.${key}`)}
                     </Button>

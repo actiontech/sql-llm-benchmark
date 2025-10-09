@@ -2,6 +2,7 @@
 import React, { useRef } from "react";
 import dynamic from "next/dynamic";
 import { Button } from "antd";
+import { ExportOutlined } from "@ant-design/icons";
 import { useChartExport } from "../lib/chartExport";
 import type { EChartsOption } from "echarts";
 import { useTranslation } from "react-i18next";
@@ -68,9 +69,12 @@ export const RadarChart: React.FC<RadarChartProps> = ({ scores }) => {
 
   return (
     <div>
-      {/* “导出”按钮 */}
+      {/* "导出"按钮 */}
       <div style={{ textAlign: "right", marginBottom: 8 }}>
-        <Button onClick={() => exportImage("radar-chart.png")}>
+        <Button
+          icon={<ExportOutlined />}
+          onClick={() => exportImage("radar-chart.png")}
+        >
           {t("actions.export")}
         </Button>
       </div>
