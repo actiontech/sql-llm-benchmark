@@ -36,7 +36,6 @@ import { ComparisonRadar } from "../../components/ModelCompare/ComparisonRadar";
 import { ComparisonBar } from "../../components/ModelCompare/ComparisonBar";
 import { ComparisonHeatmap } from "../../components/ModelCompare/ComparisonHeatmap";
 import { ComparisonTable } from "../../components/ModelCompare/ComparisonTable";
-import { LogoImage } from "../../components/LogoImage";
 
 const { Title, Paragraph } = Typography;
 const { Option } = Select;
@@ -289,17 +288,8 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
                                 style={{
                                     padding: '4px 8px',
                                     fontSize: '14px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '4px'
                                 }}
                             >
-                                <LogoImage
-                                    organization={model.organization}
-                                    logoInfo={logoInfo}
-                                    width={20}
-                                    height={20}
-                                />
                                 {model.real_model_namne}
                             </Tag>
                         ))}

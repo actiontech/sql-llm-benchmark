@@ -23,6 +23,7 @@ interface IndicatorRankingTableProps {
     logoInfo: Record<string, string>;
     loading?: boolean;
     onExport?: () => void;
+    highlightModelId?: string;
 }
 
 export const IndicatorRankingTable: React.FC<IndicatorRankingTableProps> = ({
@@ -33,6 +34,7 @@ export const IndicatorRankingTable: React.FC<IndicatorRankingTableProps> = ({
     logoInfo,
     loading = false,
     onExport,
+    highlightModelId,
 }) => {
     const { t } = useTranslation("common");
 
@@ -213,6 +215,11 @@ export const IndicatorRankingTable: React.FC<IndicatorRankingTableProps> = ({
                     fullScreen: false,
                     setting: false,
                 }}
+                rowClassName={(record) =>
+                    highlightModelId && record.modelId === highlightModelId
+                        ? 'highlighted-row'
+                        : ''
+                }
             />
         </Card>
     );

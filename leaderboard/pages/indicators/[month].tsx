@@ -28,7 +28,7 @@ const IndicatorRankingPage: React.FC<IndicatorRankingPageProps> = ({
 }) => {
     const { t, i18n } = useTranslation("common");
     const router = useRouter();
-    const { month: currentMonthParam, dimension, indicator } = router.query;
+    const { month: currentMonthParam, dimension, indicator, modelId } = router.query;
     const currentMonth = Array.isArray(currentMonthParam)
         ? currentMonthParam[0]
         : currentMonthParam || months[0];
@@ -215,6 +215,7 @@ const IndicatorRankingPage: React.FC<IndicatorRankingPageProps> = ({
                     currentMonth={currentMonth}
                     logoInfo={logoInfo}
                     loading={loading}
+                    highlightModelId={Array.isArray(modelId) ? modelId[0] : modelId}
                 />
             </Spin>
         </div>
