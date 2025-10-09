@@ -1,5 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
+import { Button } from 'antd';
+import { useChartExport } from '../../lib/chartExport';
 import { RadarDataItem } from '../../types/comparison';
 import { Model } from '../../types/ranking';
 
@@ -18,6 +20,8 @@ export const ComparisonRadar: React.FC<ComparisonRadarProps> = ({
     title = '模型能力雷达图',
     t,
 }) => {
+    const chartRef = useRef<any>(null);
+    const { exportImage } = useChartExport(chartRef);
     const option = useMemo(() => {
         // 🎯 方案3：动态数据范围分析
         const allValues = data.flatMap(item =>
@@ -181,10 +185,18 @@ export const ComparisonRadar: React.FC<ComparisonRadarProps> = ({
     }, [data, models, colorPalette, title, t]);
 
     return (
-        <ReactECharts
-            option={option}
-            style={{ width: '100%', height: '600px' }}
-            theme="light"
-        />
+        <div>
+            <div style={{ textAlign: 'right', marginBottom: 8 }}>
+                <Button onClick={() => exportImage('radar-chart.png')}>
+                    {t ? t('actions.export') : '导出'}
+                </Button>
+            </div>
+            <ReactECharts
+                option={option}
+                onChartReady={(inst) => (chartRef.current = inst)}
+                style={{ width: '100%', height: '600px' }}
+                theme="light"
+            />
+        </div>
     );
 }; 

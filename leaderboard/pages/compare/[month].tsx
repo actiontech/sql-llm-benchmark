@@ -60,7 +60,7 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
 
     const [comparisonData, setComparisonData] = useState<ComparisonData | null>(null);
     const [loading, setLoading] = useState(true);
-    const [chartType, setChartType] = useState<ChartType>('radar');
+    const [chartType, setChartType] = useState<ChartType>('bar');
     const [selectedCapability, setSelectedCapability] = useState<string>('all');
 
     // 获取对比数据
@@ -306,21 +306,32 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
                     </Card>
                 ) : (
                     <>
-                        {/* 图表控制区 */}
+                        {/* 雷达图模块 - 单独展示 */}
+                        <Card
+                            bordered={false}
+                            title={t("compare.chart_titles.model_capability_radar")}
+                            className={`${cardStyles.standardCard} ${cardStyles.cardMarginBottom}`}
+                        >
+                            {chartConfig && (
+                                <ComparisonRadar
+                                    data={chartConfig.radarData}
+                                    models={comparisonData?.models || []}
+                                    colorPalette={colorPalette}
+                                    title={t("compare.chart_titles.model_capability_radar")}
+                                    t={t}
+                                />
+                            )}
+                        </Card>
+
+                        {/* 可切换图表模块 */}
                         <Card
                             bordered={false}
                             className={`${cardStyles.standardCard} ${cardStyles.cardMarginBottom}`}
                         >
-                            <Row justify="space-between" align="middle">
+                            {/* 图表控制区 */}
+                            <Row justify="space-between" align="middle" style={{ marginBottom: 24 }}>
                                 <Col>
                                     <Space>
-                                        <Button
-                                            type={chartType === 'radar' ? 'primary' : 'default'}
-                                            icon={<RadarChartOutlined />}
-                                            onClick={() => setChartType('radar')}
-                                        >
-                                            {t("compare.chart_types.radar")}
-                                        </Button>
                                         <Button
                                             type={chartType === 'bar' ? 'primary' : 'default'}
                                             icon={<BarChartOutlined />}
@@ -359,72 +370,51 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
                                     </Space>
                                 </Col>
                             </Row>
-                        </Card>
 
+                            {/* 图表展示区 */}
+                            <div style={{ marginBottom: 32 }}>
+                                {chartType === 'bar' && chartConfig && (
+                                    <ComparisonBar
+                                        data={chartConfig.barData}
+                                        models={comparisonData?.models || []}
+                                        colorPalette={colorPalette}
+                                        selectedCapability={selectedCapability}
+                                        getTitle={(capability) =>
+                                            capability === 'all'
+                                                ? t("compare.chart_titles.indicator_comparison")
+                                                : `${t(`table.${capability}`)}${t("compare.indicator_comparison_suffix")}`
+                                        }
+                                        t={t}
+                                    />
+                                )}
+                                {chartType === 'heatmap' && chartConfig && (
+                                    <ComparisonHeatmap
+                                        data={chartConfig.heatmapData}
+                                        selectedCapability={selectedCapability}
+                                        getTitle={(capability) =>
+                                            capability === 'all'
+                                                ? t("compare.chart_titles.model_indicator_heatmap")
+                                                : `${t(`table.${capability}`)}${t("compare.chart_titles.heatmap_suffix")}`
+                                        }
+                                        t={t}
+                                    />
+                                )}
+                            </div>
 
-                        {/* 图表展示区 */}
-                        <Row gutter={[24, 24]}>
-                            <Col span={24}>
-                                <Card
-                                    bordered={false}
-                                    title={t("compare.chart_titles.capability_comparison")}
-                                    className={`${cardStyles.standardCard} ${cardStyles.cardMarginBottom}`}
-                                >
-                                    {chartType === 'radar' && chartConfig && (
-                                        <ComparisonRadar
-                                            data={chartConfig.radarData}
-                                            models={comparisonData?.models || []}
-                                            colorPalette={colorPalette}
-                                            title={t("compare.chart_titles.model_capability_radar")}
-                                            t={t}
-                                        />
-                                    )}
-                                    {chartType === 'bar' && chartConfig && (
-                                        <ComparisonBar
-                                            data={chartConfig.barData}
-                                            models={comparisonData?.models || []}
-                                            colorPalette={colorPalette}
-                                            selectedCapability={selectedCapability}
-                                            // 简化 getTitle 逻辑，使其更清晰、更不易出错
-                                            getTitle={(capability) =>
-                                                capability === 'all'
-                                                    ? t("compare.chart_titles.indicator_comparison")
-                                                    : `${t(`table.${capability}`)}${t("compare.indicator_comparison_suffix")}`
-                                            }
-                                            t={t}
-                                        />
-                                    )}
-                                    {chartType === 'heatmap' && chartConfig && (
-                                        <ComparisonHeatmap
-                                            data={chartConfig.heatmapData}
-                                            selectedCapability={selectedCapability}
-                                            // 统一热力图的标题生成逻辑
-                                            getTitle={(capability) =>
-                                                capability === 'all'
-                                                    ? t("compare.chart_titles.model_indicator_heatmap")
-                                                    : `${t(`table.${capability}`)}${t("compare.chart_titles.heatmap_suffix")}`
-                                            }
-                                            t={t}
-                                        />
-                                    )}
-                                </Card>
-                            </Col>
-                        </Row>
-
-                        {/* 详细数据表格 */}
-                        <Card
-                            bordered={false}
-                            title={t("compare.chart_titles.detailed_comparison")}
-                            className={`${cardStyles.standardCard} ${cardStyles.cardMarginTop}`}
-                        >
-                            {comparisonData && (
-                                <ComparisonTable
-                                    models={comparisonData.models}
-                                    colorPalette={colorPalette}
-                                    logoInfo={logoInfo}
-                                    t={t}
-                                />
-                            )}
+                            {/* 详细数据表格 */}
+                            <div>
+                                <Title level={4} style={{ marginBottom: 16 }}>
+                                    {t("compare.chart_titles.detailed_comparison")}
+                                </Title>
+                                {comparisonData && (
+                                    <ComparisonTable
+                                        models={comparisonData.models}
+                                        colorPalette={colorPalette}
+                                        logoInfo={logoInfo}
+                                        t={t}
+                                    />
+                                )}
+                            </div>
                         </Card>
                     </>
                 )}
