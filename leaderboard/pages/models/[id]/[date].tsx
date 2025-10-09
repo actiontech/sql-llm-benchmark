@@ -466,7 +466,7 @@ const Detail: React.FC<DetailProps> = ({
                   <BarChart
                     data={model.scores[selectedDimension].indicator_score}
                     onIndicatorClick={(indicator) => {
-                      router.push(`/indicators/${date}?dimension=${selectedDimension}&indicator=${indicator}`);
+                      router.push(`/indicators/${date}?dimension=${selectedDimension}&indicator=${indicator}&modelId=${model.id}`);
                     }}
                     chartRef={chartRef}
                   />
