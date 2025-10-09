@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import fs from "fs";
 import path from "path";
@@ -27,6 +27,7 @@ import Link from "next/link";
 import {
   ArrowLeftOutlined,
 } from "@ant-design/icons";
+import { useChartExport } from "../../../lib/chartExport";
 import { INDICATOR_KEYS } from "../../../components/constants";
 
 // 导入拆分的组件和类型
@@ -89,6 +90,10 @@ const Detail: React.FC<DetailProps> = ({
     pageSize: 10,
     total: 0,
   });
+
+  // 图表导出功能
+  const chartRef = useRef<any>(null);
+  const { exportImage } = useChartExport(chartRef);
 
   // 在模型数据加载后动态设置默认维度和激活tab
   useEffect(() => {
@@ -419,8 +424,32 @@ const Detail: React.FC<DetailProps> = ({
                   height: "100%",
                   borderRadius: 8,
                   boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                  position: "relative",
                 }}
               >
+                {/* 右上角按钮组 */}
+                <div style={{
+                  position: "absolute",
+                  top: "16px",
+                  right: "16px",
+                  zIndex: 10,
+                  display: "flex",
+                  gap: "8px"
+                }}>
+                  <Button
+                    onClick={() => {
+                      router.push(`/indicators/${date}?dimension=${selectedDimension}&modelId=${model.id}`);
+                    }}
+                  >
+                    {t("common.indicator_ranking")}
+                  </Button>
+                  <Button
+                    onClick={() => exportImage(`${model.real_model_namne}_${t(`table.${selectedDimension}`)}_bar-chart.png`)}
+                  >
+                    {t('actions.export')}
+                  </Button>
+                </div>
+
                 <div style={{ marginBottom: "16px" }}>
                   {INDICATOR_KEYS.map((key) => (
                     <Button
@@ -439,6 +468,7 @@ const Detail: React.FC<DetailProps> = ({
                     onIndicatorClick={(indicator) => {
                       router.push(`/indicators/${date}?dimension=${selectedDimension}&indicator=${indicator}`);
                     }}
+                    chartRef={chartRef}
                   />
                 )}
               </Card>

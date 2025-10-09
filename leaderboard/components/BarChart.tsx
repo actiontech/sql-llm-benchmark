@@ -14,12 +14,16 @@ interface BarChartProps {
     indicator_name: string;
   }[];
   onIndicatorClick?: (indicator: string) => void;
+  chartRef?: React.MutableRefObject<any>;
 }
 
-export const BarChart: React.FC<BarChartProps> = ({ data, onIndicatorClick }) => {
+export const BarChart: React.FC<BarChartProps> = ({ data, onIndicatorClick, chartRef: externalChartRef }) => {
   const { t } = useTranslation();
-  const chartRef = useRef<any>(null);
-  const { exportImage } = useChartExport(chartRef);
+  const internalChartRef = useRef<any>(null);
+  const { exportImage } = useChartExport(internalChartRef);
+
+  // 使用外部传入的chartRef或内部的chartRef
+  const chartRef = externalChartRef || internalChartRef;
 
   const categories = data.map((item) => t(`indicator.${item.indicator_name}`));
   const values = data.map((item) => item.indicator_actual_score);
@@ -57,11 +61,6 @@ export const BarChart: React.FC<BarChartProps> = ({ data, onIndicatorClick }) =>
 
   return (
     <div>
-      <div style={{ textAlign: 'right', marginBottom: 8 }}>
-        <Button onClick={() => exportImage('bar-chart.png')}>
-          {t('actions.export')}
-        </Button>
-      </div>
       <ReactECharts
         option={option}
         onChartReady={(inst) => (chartRef.current = inst)}
