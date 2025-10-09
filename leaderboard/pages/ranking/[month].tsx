@@ -150,7 +150,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
         const scoreA = a.scores?.[columnKey]?.ability_score ?? -1;
         const scoreB = b.scores?.[columnKey]?.ability_score ?? -1;
 
-        return order === "descend" ? scoreA - scoreB : scoreB - scoreA;
+        return order === "descend" ? scoreB - scoreA : scoreA - scoreB;
       });
     }
 

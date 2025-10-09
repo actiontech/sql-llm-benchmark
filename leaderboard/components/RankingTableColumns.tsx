@@ -125,6 +125,7 @@ export const createRankingTableColumns = ({
             key: "releaseDate",
             align: "center",
             sorter: true,
+            sortDirections: ['descend', 'ascend'],
             sortOrder:
                 sortedInfo.columnKey === "releaseDate" ? sortedInfo.order : false,
             showSorterTooltip: false,
@@ -185,6 +186,7 @@ export const createRankingTableColumns = ({
             dataIndex: ["scores", "sql_optimization", "ability_score"],
             key: "sql_optimization",
             sorter: true,
+            sortDirections: ['descend', 'ascend'],
             showSorterTooltip: false,
             align: "center",
             sortOrder:
@@ -213,6 +215,7 @@ export const createRankingTableColumns = ({
             dataIndex: ["scores", "dialect_conversion", "ability_score"],
             key: "dialect_conversion",
             sorter: true,
+            sortDirections: ['descend', 'ascend'],
             showSorterTooltip: false,
             align: "center",
             sortOrder:
@@ -243,6 +246,7 @@ export const createRankingTableColumns = ({
             dataIndex: ["scores", "sql_understanding", "ability_score"],
             key: "sql_understanding",
             sorter: true,
+            sortDirections: ['descend', 'ascend'],
             showSorterTooltip: false,
             align: "center",
             sortOrder:
