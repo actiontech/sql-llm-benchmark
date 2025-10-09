@@ -494,9 +494,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                   >
                     {t("ranking.description_part3_trigger")}
                   </Button>
-                  .
                 </Paragraph>
-
               </div>
 
               {/* 领奖台模块 */}
