@@ -1,0 +1,1567 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20250612_121939_797
+Run Dimensions: sql_optimization
+Run Indicator: optimization_depth
+Evaluation Timestamp: 2025-06-12T21:48:02.736228
+Target LLM: SQLFlash
+Judge LLMs: Pro/deepseek-ai/DeepSeek-V3, o4-mini, gemini-2.0-flash
+-------------------------------------------------
+
+[2025-06-12 12:19:39.798500] ======== Starting Full SQL Capability Evaluation ========
+[2025-06-12 12:19:39.798513] Target LLM: SQLFlash
+[2025-06-12 12:19:39.798521] Run Capability: sql_optimization
+[2025-06-12 12:19:39.798790] Run Indicator: sql_optimization, Parameters size: 52975B
+[2025-06-12 12:19:39.799483] 
+--- Capability: sql_optimization Indicator optimization_depth.jsonl Evaluating Type: subjective  ---
+[2025-06-12 12:19:39.799506] 
+--- Case: 1 ---
+[2025-06-12 12:19:39.799516] [1] Case Run 1/1
+[2025-06-12 12:27:11.608440] [1] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 12:27:11.608472] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, gender FROM (SELECT student_id, gender FROM students) AS inner_dt2` 中的 `gender` 列在外层 `SELECT student_id FROM outer_dt` 子查询中没有被使用，因此可以移除。同样，更内层的子查询也可以移除冗余的 `gender` 列，以减少IO和网络代价。"}]
+
+Original SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+Optimized SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students AS inner_dt2 WHERE students.student_id = inner_dt2.student_id ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+[2025-06-12 12:27:11.608561] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, gender FROM (SELECT student_id, gender FROM students) AS inner_dt2` 中的 `gender` 列在外层 `SELECT student_id FROM outer_dt` 子查询中没有被使用，因此可以移除。同样，更内层的子查询也可以移除冗余的 `gender` 列，以减少IO和网络代价。"}]\n\nOriginal SQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n\nOptimized SQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students AS inner_dt2 WHERE students.student_id = inner_dt2.student_id ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 12:27:14.148119] [Model Answer]: {
+  "matched_rule_ids": ["1"]
+}
+[2025-06-12 12:27:14.148550] [1] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1']
+[2025-06-12 12:27:14.148572] [1] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 12:27:14.148588] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, gender FROM (SELECT student_id, gender FROM students) AS inner_dt2` 中的 `gender` 列在外层 `SELECT student_id FROM outer_dt` 子查询中没有被使用，因此可以移除。同样，更内层的子查询也可以移除冗余的 `gender` 列，以减少IO和网络代价。"}]
+
+Original SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+Optimized SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students AS inner_dt2 WHERE students.student_id = inner_dt2.student_id ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+[2025-06-12 12:27:14.148702] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, gender FROM (SELECT student_id, gender FROM students) AS inner_dt2` 中的 `gender` 列在外层 `SELECT student_id FROM outer_dt` 子查询中没有被使用，因此可以移除。同样，更内层的子查询也可以移除冗余的 `gender` 列，以减少IO和网络代价。"}]\n\nOriginal SQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n\nOptimized SQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students AS inner_dt2 WHERE students.student_id = inner_dt2.student_id ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 12:27:20.522398] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 12:27:20.522499] [1] Subjective Eval Case Judge o4-mini Correct Rules: ['1']
+[2025-06-12 12:27:20.522515] [1] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 12:27:20.522535] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, gender FROM (SELECT student_id, gender FROM students) AS inner_dt2` 中的 `gender` 列在外层 `SELECT student_id FROM outer_dt` 子查询中没有被使用，因此可以移除。同样，更内层的子查询也可以移除冗余的 `gender` 列，以减少IO和网络代价。"}]
+
+Original SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+Optimized SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students AS inner_dt2 WHERE students.student_id = inner_dt2.student_id ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+[2025-06-12 12:27:20.522614] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, gender FROM (SELECT student_id, gender FROM students) AS inner_dt2` 中的 `gender` 列在外层 `SELECT student_id FROM outer_dt` 子查询中没有被使用，因此可以移除。同样，更内层的子查询也可以移除冗余的 `gender` 列，以减少IO和网络代价。"}]\n\nOriginal SQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n\nOptimized SQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students AS inner_dt2 WHERE students.student_id = inner_dt2.student_id ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 12:27:30.221440] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 12:27:30.221522] [1] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1']
+[2025-06-12 12:27:30.221790] [1] Subjective Eval Case Judge Final Correct Rules: ['1']
+[2025-06-12 12:27:30.221839] [1] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 12:33:19.036089] 
+--- Case: 2 ---
+[2025-06-12 12:33:19.036114] [2] Case Run 1/1
+[2025-06-12 12:39:50.696342] [2] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 12:39:50.696371] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE teacher_name LIKE 'Dr. %'` 条件被替换为 `WHERE teacher_name >= 'Dr. ' AND teacher_name < 'Dr.!'`。这个新的范围条件依然可以下推到最内层的子查询 `SELECT teacher_id, teacher_name FROM teachers` 中，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：原始SQL文本中存在`LIKE 'Dr.%'`形式的前缀匹配条件，符合`rule0012`的改写流程，可以将其显式改写为`teacher_name >= 'Dr. ' AND teacher_name < 'Dr.!'`的范围查询，以利用索引的有序性。"}]
+
+Original SQL:
+SELECT outer_dt.teacher_id, outer_dt.teacher_name FROM students JOIN ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM teachers WHERE teacher_name >= 'Dr. ' AND teacher_name < 'Dr.!' ) AS inner_dt1 ) AS inner_dt2 ) AS outer_dt ON students.teacher_id = outer_dt.teacher_id;
+
+Optimized SQL:
+SELECT teachers.teacher_id, teachers.teacher_name
+FROM students
+JOIN teachers ON students.teacher_id = teachers.teacher_id
+WHERE teachers.teacher_name >= 'Dr. ' AND teachers.teacher_name < 'Dr.!';
+
+[2025-06-12 12:39:50.696446] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE teacher_name LIKE \'Dr. %\'` 条件被替换为 `WHERE teacher_name >= \'Dr. \' AND teacher_name < \'Dr.!\'`。这个新的范围条件依然可以下推到最内层的子查询 `SELECT teacher_id, teacher_name FROM teachers` 中，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：原始SQL文本中存在`LIKE \'Dr.%\'`形式的前缀匹配条件，符合`rule0012`的改写流程，可以将其显式改写为`teacher_name >= \'Dr. \' AND teacher_name < \'Dr.!\'`的范围查询，以利用索引的有序性。"}]\n\nOriginal SQL:\nSELECT outer_dt.teacher_id, outer_dt.teacher_name FROM students JOIN ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM teachers WHERE teacher_name >= \'Dr. \' AND teacher_name < \'Dr.!\' ) AS inner_dt1 ) AS inner_dt2 ) AS outer_dt ON students.teacher_id = outer_dt.teacher_id;\n\nOptimized SQL:\nSELECT teachers.teacher_id, teachers.teacher_name\nFROM students\nJOIN teachers ON students.teacher_id = teachers.teacher_id\nWHERE teachers.teacher_name >= \'Dr. \' AND teachers.teacher_name < \'Dr.!\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 12:39:55.056142] [Model Answer]: {
+"matched_rule_ids": ["1", "2"]
+}
+[2025-06-12 12:39:55.056255] [2] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1', '2']
+[2025-06-12 12:39:55.056269] [2] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 12:39:55.056280] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE teacher_name LIKE 'Dr. %'` 条件被替换为 `WHERE teacher_name >= 'Dr. ' AND teacher_name < 'Dr.!'`。这个新的范围条件依然可以下推到最内层的子查询 `SELECT teacher_id, teacher_name FROM teachers` 中，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：原始SQL文本中存在`LIKE 'Dr.%'`形式的前缀匹配条件，符合`rule0012`的改写流程，可以将其显式改写为`teacher_name >= 'Dr. ' AND teacher_name < 'Dr.!'`的范围查询，以利用索引的有序性。"}]
+
+Original SQL:
+SELECT outer_dt.teacher_id, outer_dt.teacher_name FROM students JOIN ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM teachers WHERE teacher_name >= 'Dr. ' AND teacher_name < 'Dr.!' ) AS inner_dt1 ) AS inner_dt2 ) AS outer_dt ON students.teacher_id = outer_dt.teacher_id;
+
+Optimized SQL:
+SELECT teachers.teacher_id, teachers.teacher_name
+FROM students
+JOIN teachers ON students.teacher_id = teachers.teacher_id
+WHERE teachers.teacher_name >= 'Dr. ' AND teachers.teacher_name < 'Dr.!';
+
+[2025-06-12 12:39:55.056349] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE teacher_name LIKE \'Dr. %\'` 条件被替换为 `WHERE teacher_name >= \'Dr. \' AND teacher_name < \'Dr.!\'`。这个新的范围条件依然可以下推到最内层的子查询 `SELECT teacher_id, teacher_name FROM teachers` 中，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：原始SQL文本中存在`LIKE \'Dr.%\'`形式的前缀匹配条件，符合`rule0012`的改写流程，可以将其显式改写为`teacher_name >= \'Dr. \' AND teacher_name < \'Dr.!\'`的范围查询，以利用索引的有序性。"}]\n\nOriginal SQL:\nSELECT outer_dt.teacher_id, outer_dt.teacher_name FROM students JOIN ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM teachers WHERE teacher_name >= \'Dr. \' AND teacher_name < \'Dr.!\' ) AS inner_dt1 ) AS inner_dt2 ) AS outer_dt ON students.teacher_id = outer_dt.teacher_id;\n\nOptimized SQL:\nSELECT teachers.teacher_id, teachers.teacher_name\nFROM students\nJOIN teachers ON students.teacher_id = teachers.teacher_id\nWHERE teachers.teacher_name >= \'Dr. \' AND teachers.teacher_name < \'Dr.!\';\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 12:40:38.933031] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE teacher_name LIKE \'Dr. %\'` 条件被替换为 `WHERE teacher_name >= \'Dr. \' AND teacher_name < \'Dr.!\'`。这个新的范围条件依然可以下推到最内层的子查询 `SELECT teacher_id, teacher_name FROM teachers` 中，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：原始SQL文本中存在`LIKE \'Dr.%\'`形式的前缀匹配条件，符合`rule0012`的改写流程，可以将其显式改写为`teacher_name >= \'Dr. \' AND teacher_name < \'Dr.!\'`的范围查询，以利用索引的有序性。"}]\n\nOriginal SQL:\nSELECT outer_dt.teacher_id, outer_dt.teacher_name FROM students JOIN ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM teachers WHERE teacher_name >= \'Dr. \' AND teacher_name < \'Dr.!\' ) AS inner_dt1 ) AS inner_dt2 ) AS outer_dt ON students.teacher_id = outer_dt.teacher_id;\n\nOptimized SQL:\nSELECT teachers.teacher_id, teachers.teacher_name\nFROM students\nJOIN teachers ON students.teacher_id = teachers.teacher_id\nWHERE teachers.teacher_name >= \'Dr. \' AND teachers.teacher_name < \'Dr.!\';\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 12:40:52.473676] [Model Answer]: {"matched_rule_ids": []}
+[2025-06-12 12:40:52.473760] [2] Subjective Eval Case Judge o4-mini Correct Rules: []
+[2025-06-12 12:40:52.473773] [2] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 12:40:52.473785] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE teacher_name LIKE 'Dr. %'` 条件被替换为 `WHERE teacher_name >= 'Dr. ' AND teacher_name < 'Dr.!'`。这个新的范围条件依然可以下推到最内层的子查询 `SELECT teacher_id, teacher_name FROM teachers` 中，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：原始SQL文本中存在`LIKE 'Dr.%'`形式的前缀匹配条件，符合`rule0012`的改写流程，可以将其显式改写为`teacher_name >= 'Dr. ' AND teacher_name < 'Dr.!'`的范围查询，以利用索引的有序性。"}]
+
+Original SQL:
+SELECT outer_dt.teacher_id, outer_dt.teacher_name FROM students JOIN ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM teachers WHERE teacher_name >= 'Dr. ' AND teacher_name < 'Dr.!' ) AS inner_dt1 ) AS inner_dt2 ) AS outer_dt ON students.teacher_id = outer_dt.teacher_id;
+
+Optimized SQL:
+SELECT teachers.teacher_id, teachers.teacher_name
+FROM students
+JOIN teachers ON students.teacher_id = teachers.teacher_id
+WHERE teachers.teacher_name >= 'Dr. ' AND teachers.teacher_name < 'Dr.!';
+
+[2025-06-12 12:40:52.473862] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE teacher_name LIKE \'Dr. %\'` 条件被替换为 `WHERE teacher_name >= \'Dr. \' AND teacher_name < \'Dr.!\'`。这个新的范围条件依然可以下推到最内层的子查询 `SELECT teacher_id, teacher_name FROM teachers` 中，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：原始SQL文本中存在`LIKE \'Dr.%\'`形式的前缀匹配条件，符合`rule0012`的改写流程，可以将其显式改写为`teacher_name >= \'Dr. \' AND teacher_name < \'Dr.!\'`的范围查询，以利用索引的有序性。"}]\n\nOriginal SQL:\nSELECT outer_dt.teacher_id, outer_dt.teacher_name FROM students JOIN ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name FROM teachers WHERE teacher_name >= \'Dr. \' AND teacher_name < \'Dr.!\' ) AS inner_dt1 ) AS inner_dt2 ) AS outer_dt ON students.teacher_id = outer_dt.teacher_id;\n\nOptimized SQL:\nSELECT teachers.teacher_id, teachers.teacher_name\nFROM students\nJOIN teachers ON students.teacher_id = teachers.teacher_id\nWHERE teachers.teacher_name >= \'Dr. \' AND teachers.teacher_name < \'Dr.!\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 12:40:59.969840] [Model Answer]: {"matched_rule_ids": ["2", "1"]}
+[2025-06-12 12:40:59.969928] [2] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['2', '1']
+[2025-06-12 12:40:59.970080] [2] Subjective Eval Case Judge Final Correct Rules: ['1', '2']
+[2025-06-12 12:40:59.970120] [2] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 12:40:59.970134] [2] subjective Eval Case Rule[2] Final Result: True
+[2025-06-12 12:40:59.970164] 
+--- Case: 3 ---
+[2025-06-12 12:40:59.970206] [3] Case Run 1/1
+[2025-06-12 12:51:01.705532] [3] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 12:51:01.705564] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE initial_students.major = 'Physics'` 条件可以下推到 `initial_students` 子查询的 `students` 表中。同样，`final_enrollments.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30'` 可以下推到 `final_enrollments` 子查询的 `enrollments` 表中。`final_courses.course_name LIKE 'Advanced %'` 可以下推到 `final_courses` 子查询的 `courses` 表中。以及 `final_teachers` 子查询中的 `d.location = 'Building A'` 也是谓词下推的体现。这些下推操作旨在尽早过滤数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`final_courses.course_name LIKE 'Advanced %'` 形式的前缀匹配在下推到 `final_courses` 子查询内部后，可以改写为 `course_name >= 'Advanced ' AND course_name < 'Advancee'`（假设下一个字典序值为'Advancee'）的范围查询，以利用索引的有序性，提升查询性能。"}, {"rule_id": "3", "difficulty_level": "1", "rationale": "投影下推：检查各个子查询的投影列，例如 `initial_students` 子查询中的 `enroll_count`，如果它仅用于子查询内部的过滤而未在最终 `SELECT` 列表中或外部关联中使用，则可以从投影中移除。类似地，`final_teachers` 子查询中如果 `teacher_id` 仅用于关联而未在最终SELECT列表中使用，并且 `departments` 表的 `department_name` 和 `location` 仅用于子查询内部过滤，则这些冗余列可以移除，以减少IO和网络代价。"}]
+
+Original SQL:
+SELECT initial_students.student_id, initial_students.student_name, final_courses.course_name, final_enrollments.enrollment_date, final_teachers.teacher_name FROM (SELECT student_id, student_name, major, enroll_count FROM students WHERE enroll_count > 5) AS initial_students JOIN (SELECT e.student_id, e.course_id, e.enrollment_date FROM enrollments e WHERE e.enrollment_year = 2024) AS final_enrollments ON initial_students.student_id = final_enrollments.student_id JOIN (SELECT course_id, course_name, department_id FROM courses WHERE course_credits >= 3) AS final_courses ON final_enrollments.course_id = final_courses.course_id LEFT JOIN (SELECT t.teacher_id, t.teacher_name FROM teachers t JOIN departments d ON t.department_id = d.department_id WHERE d.location = 'Building A') AS final_teachers ON final_courses.department_id = final_teachers.teacher_id WHERE initial_students.major = 'Physics' AND final_enrollments.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30' AND final_courses.course_name LIKE 'Advanced %';
+
+Optimized SQL:
+SELECT initial_students.student_id, initial_students.student_name, final_courses.course_name, final_enrollments.enrollment_date, final_teachers.teacher_name 
+FROM (
+    SELECT student_id, student_name, major 
+    FROM students 
+    WHERE enroll_count > 5 
+      AND major = 'Physics'
+) AS initial_students 
+JOIN (
+    SELECT e.student_id, e.course_id, e.enrollment_date 
+    FROM enrollments e 
+    WHERE e.enrollment_year = 2024 
+      AND e.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30'
+) AS final_enrollments 
+ON initial_students.student_id = final_enrollments.student_id 
+JOIN (
+    SELECT course_id, course_name, department_id 
+    FROM courses 
+    WHERE course_credits >= 3 
+      AND course_name >= 'Advanced ' AND course_name < 'Advanced!'
+) AS final_courses 
+ON final_enrollments.course_id = final_courses.course_id 
+LEFT JOIN (
+    SELECT t.teacher_id, t.teacher_name 
+    FROM teachers t 
+    JOIN departments d ON t.department_id = d.department_id 
+    WHERE d.location = 'Building A'
+) AS final_teachers 
+ON final_courses.department_id = final_teachers.teacher_id;
+
+[2025-06-12 12:51:01.705709] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE initial_students.major = \'Physics\'` 条件可以下推到 `initial_students` 子查询的 `students` 表中。同样，`final_enrollments.enrollment_date BETWEEN \'2024-01-01\' AND \'2024-06-30\'` 可以下推到 `final_enrollments` 子查询的 `enrollments` 表中。`final_courses.course_name LIKE \'Advanced %\'` 可以下推到 `final_courses` 子查询的 `courses` 表中。以及 `final_teachers` 子查询中的 `d.location = \'Building A\'` 也是谓词下推的体现。这些下推操作旨在尽早过滤数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`final_courses.course_name LIKE \'Advanced %\'` 形式的前缀匹配在下推到 `final_courses` 子查询内部后，可以改写为 `course_name >= \'Advanced \' AND course_name < \'Advancee\'`（假设下一个字典序值为\'Advancee\'）的范围查询，以利用索引的有序性，提升查询性能。"}, {"rule_id": "3", "difficulty_level": "1", "rationale": "投影下推：检查各个子查询的投影列，例如 `initial_students` 子查询中的 `enroll_count`，如果它仅用于子查询内部的过滤而未在最终 `SELECT` 列表中或外部关联中使用，则可以从投影中移除。类似地，`final_teachers` 子查询中如果 `teacher_id` 仅用于关联而未在最终SELECT列表中使用，并且 `departments` 表的 `department_name` 和 `location` 仅用于子查询内部过滤，则这些冗余列可以移除，以减少IO和网络代价。"}]\n\nOriginal SQL:\nSELECT initial_students.student_id, initial_students.student_name, final_courses.course_name, final_enrollments.enrollment_date, final_teachers.teacher_name FROM (SELECT student_id, student_name, major, enroll_count FROM students WHERE enroll_count > 5) AS initial_students JOIN (SELECT e.student_id, e.course_id, e.enrollment_date FROM enrollments e WHERE e.enrollment_year = 2024) AS final_enrollments ON initial_students.student_id = final_enrollments.student_id JOIN (SELECT course_id, course_name, department_id FROM courses WHERE course_credits >= 3) AS final_courses ON final_enrollments.course_id = final_courses.course_id LEFT JOIN (SELECT t.teacher_id, t.teacher_name FROM teachers t JOIN departments d ON t.department_id = d.department_id WHERE d.location = \'Building A\') AS final_teachers ON final_courses.department_id = final_teachers.teacher_id WHERE initial_students.major = \'Physics\' AND final_enrollments.enrollment_date BETWEEN \'2024-01-01\' AND \'2024-06-30\' AND final_courses.course_name LIKE \'Advanced %\';\n\nOptimized SQL:\nSELECT initial_students.student_id, initial_students.student_name, final_courses.course_name, final_enrollments.enrollment_date, final_teachers.teacher_name \nFROM (\n    SELECT student_id, student_name, major \n    FROM students \n    WHERE enroll_count > 5 \n      AND major = \'Physics\'\n) AS initial_students \nJOIN (\n    SELECT e.student_id, e.course_id, e.enrollment_date \n    FROM enrollments e \n    WHERE e.enrollment_year = 2024 \n      AND e.enrollment_date BETWEEN \'2024-01-01\' AND \'2024-06-30\'\n) AS final_enrollments \nON initial_students.student_id = final_enrollments.student_id \nJOIN (\n    SELECT course_id, course_name, department_id \n    FROM courses \n    WHERE course_credits >= 3 \n      AND course_name >= \'Advanced \' AND course_name < \'Advanced!\'\n) AS final_courses \nON final_enrollments.course_id = final_courses.course_id \nLEFT JOIN (\n    SELECT t.teacher_id, t.teacher_name \n    FROM teachers t \n    JOIN departments d ON t.department_id = d.department_id \n    WHERE d.location = \'Building A\'\n) AS final_teachers \nON final_courses.department_id = final_teachers.teacher_id;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 12:51:05.292709] [Model Answer]: {
+  "matched_rule_ids": ["1", "2"]
+}
+[2025-06-12 12:51:05.292791] [3] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1', '2']
+[2025-06-12 12:51:05.292804] [3] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 12:51:05.292816] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE initial_students.major = 'Physics'` 条件可以下推到 `initial_students` 子查询的 `students` 表中。同样，`final_enrollments.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30'` 可以下推到 `final_enrollments` 子查询的 `enrollments` 表中。`final_courses.course_name LIKE 'Advanced %'` 可以下推到 `final_courses` 子查询的 `courses` 表中。以及 `final_teachers` 子查询中的 `d.location = 'Building A'` 也是谓词下推的体现。这些下推操作旨在尽早过滤数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`final_courses.course_name LIKE 'Advanced %'` 形式的前缀匹配在下推到 `final_courses` 子查询内部后，可以改写为 `course_name >= 'Advanced ' AND course_name < 'Advancee'`（假设下一个字典序值为'Advancee'）的范围查询，以利用索引的有序性，提升查询性能。"}, {"rule_id": "3", "difficulty_level": "1", "rationale": "投影下推：检查各个子查询的投影列，例如 `initial_students` 子查询中的 `enroll_count`，如果它仅用于子查询内部的过滤而未在最终 `SELECT` 列表中或外部关联中使用，则可以从投影中移除。类似地，`final_teachers` 子查询中如果 `teacher_id` 仅用于关联而未在最终SELECT列表中使用，并且 `departments` 表的 `department_name` 和 `location` 仅用于子查询内部过滤，则这些冗余列可以移除，以减少IO和网络代价。"}]
+
+Original SQL:
+SELECT initial_students.student_id, initial_students.student_name, final_courses.course_name, final_enrollments.enrollment_date, final_teachers.teacher_name FROM (SELECT student_id, student_name, major, enroll_count FROM students WHERE enroll_count > 5) AS initial_students JOIN (SELECT e.student_id, e.course_id, e.enrollment_date FROM enrollments e WHERE e.enrollment_year = 2024) AS final_enrollments ON initial_students.student_id = final_enrollments.student_id JOIN (SELECT course_id, course_name, department_id FROM courses WHERE course_credits >= 3) AS final_courses ON final_enrollments.course_id = final_courses.course_id LEFT JOIN (SELECT t.teacher_id, t.teacher_name FROM teachers t JOIN departments d ON t.department_id = d.department_id WHERE d.location = 'Building A') AS final_teachers ON final_courses.department_id = final_teachers.teacher_id WHERE initial_students.major = 'Physics' AND final_enrollments.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30' AND final_courses.course_name LIKE 'Advanced %';
+
+Optimized SQL:
+SELECT initial_students.student_id, initial_students.student_name, final_courses.course_name, final_enrollments.enrollment_date, final_teachers.teacher_name 
+FROM (
+    SELECT student_id, student_name, major 
+    FROM students 
+    WHERE enroll_count > 5 
+      AND major = 'Physics'
+) AS initial_students 
+JOIN (
+    SELECT e.student_id, e.course_id, e.enrollment_date 
+    FROM enrollments e 
+    WHERE e.enrollment_year = 2024 
+      AND e.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30'
+) AS final_enrollments 
+ON initial_students.student_id = final_enrollments.student_id 
+JOIN (
+    SELECT course_id, course_name, department_id 
+    FROM courses 
+    WHERE course_credits >= 3 
+      AND course_name >= 'Advanced ' AND course_name < 'Advanced!'
+) AS final_courses 
+ON final_enrollments.course_id = final_courses.course_id 
+LEFT JOIN (
+    SELECT t.teacher_id, t.teacher_name 
+    FROM teachers t 
+    JOIN departments d ON t.department_id = d.department_id 
+    WHERE d.location = 'Building A'
+) AS final_teachers 
+ON final_courses.department_id = final_teachers.teacher_id;
+
+[2025-06-12 12:51:05.292912] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE initial_students.major = \'Physics\'` 条件可以下推到 `initial_students` 子查询的 `students` 表中。同样，`final_enrollments.enrollment_date BETWEEN \'2024-01-01\' AND \'2024-06-30\'` 可以下推到 `final_enrollments` 子查询的 `enrollments` 表中。`final_courses.course_name LIKE \'Advanced %\'` 可以下推到 `final_courses` 子查询的 `courses` 表中。以及 `final_teachers` 子查询中的 `d.location = \'Building A\'` 也是谓词下推的体现。这些下推操作旨在尽早过滤数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`final_courses.course_name LIKE \'Advanced %\'` 形式的前缀匹配在下推到 `final_courses` 子查询内部后，可以改写为 `course_name >= \'Advanced \' AND course_name < \'Advancee\'`（假设下一个字典序值为\'Advancee\'）的范围查询，以利用索引的有序性，提升查询性能。"}, {"rule_id": "3", "difficulty_level": "1", "rationale": "投影下推：检查各个子查询的投影列，例如 `initial_students` 子查询中的 `enroll_count`，如果它仅用于子查询内部的过滤而未在最终 `SELECT` 列表中或外部关联中使用，则可以从投影中移除。类似地，`final_teachers` 子查询中如果 `teacher_id` 仅用于关联而未在最终SELECT列表中使用，并且 `departments` 表的 `department_name` 和 `location` 仅用于子查询内部过滤，则这些冗余列可以移除，以减少IO和网络代价。"}]\n\nOriginal SQL:\nSELECT initial_students.student_id, initial_students.student_name, final_courses.course_name, final_enrollments.enrollment_date, final_teachers.teacher_name FROM (SELECT student_id, student_name, major, enroll_count FROM students WHERE enroll_count > 5) AS initial_students JOIN (SELECT e.student_id, e.course_id, e.enrollment_date FROM enrollments e WHERE e.enrollment_year = 2024) AS final_enrollments ON initial_students.student_id = final_enrollments.student_id JOIN (SELECT course_id, course_name, department_id FROM courses WHERE course_credits >= 3) AS final_courses ON final_enrollments.course_id = final_courses.course_id LEFT JOIN (SELECT t.teacher_id, t.teacher_name FROM teachers t JOIN departments d ON t.department_id = d.department_id WHERE d.location = \'Building A\') AS final_teachers ON final_courses.department_id = final_teachers.teacher_id WHERE initial_students.major = \'Physics\' AND final_enrollments.enrollment_date BETWEEN \'2024-01-01\' AND \'2024-06-30\' AND final_courses.course_name LIKE \'Advanced %\';\n\nOptimized SQL:\nSELECT initial_students.student_id, initial_students.student_name, final_courses.course_name, final_enrollments.enrollment_date, final_teachers.teacher_name \nFROM (\n    SELECT student_id, student_name, major \n    FROM students \n    WHERE enroll_count > 5 \n      AND major = \'Physics\'\n) AS initial_students \nJOIN (\n    SELECT e.student_id, e.course_id, e.enrollment_date \n    FROM enrollments e \n    WHERE e.enrollment_year = 2024 \n      AND e.enrollment_date BETWEEN \'2024-01-01\' AND \'2024-06-30\'\n) AS final_enrollments \nON initial_students.student_id = final_enrollments.student_id \nJOIN (\n    SELECT course_id, course_name, department_id \n    FROM courses \n    WHERE course_credits >= 3 \n      AND course_name >= \'Advanced \' AND course_name < \'Advanced!\'\n) AS final_courses \nON final_enrollments.course_id = final_courses.course_id \nLEFT JOIN (\n    SELECT t.teacher_id, t.teacher_name \n    FROM teachers t \n    JOIN departments d ON t.department_id = d.department_id \n    WHERE d.location = \'Building A\'\n) AS final_teachers \nON final_courses.department_id = final_teachers.teacher_id;\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 12:51:33.756481] [Model Answer]: {"matched_rule_ids": ["1", "2", "3"]}
+[2025-06-12 12:51:33.756560] [3] Subjective Eval Case Judge o4-mini Correct Rules: ['1', '2', '3']
+[2025-06-12 12:51:33.756573] [3] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 12:51:33.756591] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE initial_students.major = 'Physics'` 条件可以下推到 `initial_students` 子查询的 `students` 表中。同样，`final_enrollments.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30'` 可以下推到 `final_enrollments` 子查询的 `enrollments` 表中。`final_courses.course_name LIKE 'Advanced %'` 可以下推到 `final_courses` 子查询的 `courses` 表中。以及 `final_teachers` 子查询中的 `d.location = 'Building A'` 也是谓词下推的体现。这些下推操作旨在尽早过滤数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`final_courses.course_name LIKE 'Advanced %'` 形式的前缀匹配在下推到 `final_courses` 子查询内部后，可以改写为 `course_name >= 'Advanced ' AND course_name < 'Advancee'`（假设下一个字典序值为'Advancee'）的范围查询，以利用索引的有序性，提升查询性能。"}, {"rule_id": "3", "difficulty_level": "1", "rationale": "投影下推：检查各个子查询的投影列，例如 `initial_students` 子查询中的 `enroll_count`，如果它仅用于子查询内部的过滤而未在最终 `SELECT` 列表中或外部关联中使用，则可以从投影中移除。类似地，`final_teachers` 子查询中如果 `teacher_id` 仅用于关联而未在最终SELECT列表中使用，并且 `departments` 表的 `department_name` 和 `location` 仅用于子查询内部过滤，则这些冗余列可以移除，以减少IO和网络代价。"}]
+
+Original SQL:
+SELECT initial_students.student_id, initial_students.student_name, final_courses.course_name, final_enrollments.enrollment_date, final_teachers.teacher_name FROM (SELECT student_id, student_name, major, enroll_count FROM students WHERE enroll_count > 5) AS initial_students JOIN (SELECT e.student_id, e.course_id, e.enrollment_date FROM enrollments e WHERE e.enrollment_year = 2024) AS final_enrollments ON initial_students.student_id = final_enrollments.student_id JOIN (SELECT course_id, course_name, department_id FROM courses WHERE course_credits >= 3) AS final_courses ON final_enrollments.course_id = final_courses.course_id LEFT JOIN (SELECT t.teacher_id, t.teacher_name FROM teachers t JOIN departments d ON t.department_id = d.department_id WHERE d.location = 'Building A') AS final_teachers ON final_courses.department_id = final_teachers.teacher_id WHERE initial_students.major = 'Physics' AND final_enrollments.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30' AND final_courses.course_name LIKE 'Advanced %';
+
+Optimized SQL:
+SELECT initial_students.student_id, initial_students.student_name, final_courses.course_name, final_enrollments.enrollment_date, final_teachers.teacher_name 
+FROM (
+    SELECT student_id, student_name, major 
+    FROM students 
+    WHERE enroll_count > 5 
+      AND major = 'Physics'
+) AS initial_students 
+JOIN (
+    SELECT e.student_id, e.course_id, e.enrollment_date 
+    FROM enrollments e 
+    WHERE e.enrollment_year = 2024 
+      AND e.enrollment_date BETWEEN '2024-01-01' AND '2024-06-30'
+) AS final_enrollments 
+ON initial_students.student_id = final_enrollments.student_id 
+JOIN (
+    SELECT course_id, course_name, department_id 
+    FROM courses 
+    WHERE course_credits >= 3 
+      AND course_name >= 'Advanced ' AND course_name < 'Advanced!'
+) AS final_courses 
+ON final_enrollments.course_id = final_courses.course_id 
+LEFT JOIN (
+    SELECT t.teacher_id, t.teacher_name 
+    FROM teachers t 
+    JOIN departments d ON t.department_id = d.department_id 
+    WHERE d.location = 'Building A'
+) AS final_teachers 
+ON final_courses.department_id = final_teachers.teacher_id;
+
+[2025-06-12 12:51:33.756711] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE initial_students.major = \'Physics\'` 条件可以下推到 `initial_students` 子查询的 `students` 表中。同样，`final_enrollments.enrollment_date BETWEEN \'2024-01-01\' AND \'2024-06-30\'` 可以下推到 `final_enrollments` 子查询的 `enrollments` 表中。`final_courses.course_name LIKE \'Advanced %\'` 可以下推到 `final_courses` 子查询的 `courses` 表中。以及 `final_teachers` 子查询中的 `d.location = \'Building A\'` 也是谓词下推的体现。这些下推操作旨在尽早过滤数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`final_courses.course_name LIKE \'Advanced %\'` 形式的前缀匹配在下推到 `final_courses` 子查询内部后，可以改写为 `course_name >= \'Advanced \' AND course_name < \'Advancee\'`（假设下一个字典序值为\'Advancee\'）的范围查询，以利用索引的有序性，提升查询性能。"}, {"rule_id": "3", "difficulty_level": "1", "rationale": "投影下推：检查各个子查询的投影列，例如 `initial_students` 子查询中的 `enroll_count`，如果它仅用于子查询内部的过滤而未在最终 `SELECT` 列表中或外部关联中使用，则可以从投影中移除。类似地，`final_teachers` 子查询中如果 `teacher_id` 仅用于关联而未在最终SELECT列表中使用，并且 `departments` 表的 `department_name` 和 `location` 仅用于子查询内部过滤，则这些冗余列可以移除，以减少IO和网络代价。"}]\n\nOriginal SQL:\nSELECT initial_students.student_id, initial_students.student_name, final_courses.course_name, final_enrollments.enrollment_date, final_teachers.teacher_name FROM (SELECT student_id, student_name, major, enroll_count FROM students WHERE enroll_count > 5) AS initial_students JOIN (SELECT e.student_id, e.course_id, e.enrollment_date FROM enrollments e WHERE e.enrollment_year = 2024) AS final_enrollments ON initial_students.student_id = final_enrollments.student_id JOIN (SELECT course_id, course_name, department_id FROM courses WHERE course_credits >= 3) AS final_courses ON final_enrollments.course_id = final_courses.course_id LEFT JOIN (SELECT t.teacher_id, t.teacher_name FROM teachers t JOIN departments d ON t.department_id = d.department_id WHERE d.location = \'Building A\') AS final_teachers ON final_courses.department_id = final_teachers.teacher_id WHERE initial_students.major = \'Physics\' AND final_enrollments.enrollment_date BETWEEN \'2024-01-01\' AND \'2024-06-30\' AND final_courses.course_name LIKE \'Advanced %\';\n\nOptimized SQL:\nSELECT initial_students.student_id, initial_students.student_name, final_courses.course_name, final_enrollments.enrollment_date, final_teachers.teacher_name \nFROM (\n    SELECT student_id, student_name, major \n    FROM students \n    WHERE enroll_count > 5 \n      AND major = \'Physics\'\n) AS initial_students \nJOIN (\n    SELECT e.student_id, e.course_id, e.enrollment_date \n    FROM enrollments e \n    WHERE e.enrollment_year = 2024 \n      AND e.enrollment_date BETWEEN \'2024-01-01\' AND \'2024-06-30\'\n) AS final_enrollments \nON initial_students.student_id = final_enrollments.student_id \nJOIN (\n    SELECT course_id, course_name, department_id \n    FROM courses \n    WHERE course_credits >= 3 \n      AND course_name >= \'Advanced \' AND course_name < \'Advanced!\'\n) AS final_courses \nON final_enrollments.course_id = final_courses.course_id \nLEFT JOIN (\n    SELECT t.teacher_id, t.teacher_name \n    FROM teachers t \n    JOIN departments d ON t.department_id = d.department_id \n    WHERE d.location = \'Building A\'\n) AS final_teachers \nON final_courses.department_id = final_teachers.teacher_id;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 12:51:36.120913] [Model Answer]: {"matched_rule_ids": ["1", "2"]}
+[2025-06-12 12:51:36.120996] [3] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1', '2']
+[2025-06-12 12:51:36.121168] [3] Subjective Eval Case Judge Final Correct Rules: ['1', '2']
+[2025-06-12 12:51:36.121204] [3] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 12:51:36.121216] [3] subjective Eval Case Rule[2] Final Result: True
+[2025-06-12 12:51:36.121223] [3] subjective Eval Case Rule[3] Final Result: False
+[2025-06-12 14:06:29.191352] 
+--- Case: 4 ---
+[2025-06-12 14:06:29.191377] [4] Case Run 1/1
+[2025-06-12 14:18:30.839100] [4] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 14:18:30.839131] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, gender FROM (SELECT student_id, gender, date_of_birth FROM inner_dt2 ORDER BY student_id DESC LIMIT 1) AS inner_dt1` 返回了 `gender` 列，但外部 JOIN 仅使用了 `student_id` 进行关联。因此，`gender` 可以从 `inner_dt1` 的投影中移除。同理，更内层的子查询 `inner_dt2` 和 `inner_dt3` 中的 `date_of_birth` 列也未被外层引用，可以进行下推。虽然内层有`ORDER BY`和`LIMIT`，但并不影响投影下推的适用性。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "没有LIMIT的子查询排序消除：仅移除最内层子查询中无LIMIT却存在的ORDER BY子句, 其余层级因包含LIMIT或不含ORDER BY无需改写"}]
+
+Original SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'
+
+Optimized SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth
+FROM students s
+JOIN (
+    SELECT student_id, gender
+    FROM (
+        SELECT student_id, gender
+        FROM (
+            SELECT student_id, gender
+            FROM (
+                SELECT student_id, gender
+                FROM students
+            ) AS inner_dt3
+        ) AS inner_dt2
+        ORDER BY student_id DESC
+        LIMIT 1
+    ) AS inner_dt1
+) dt
+ON s.student_id = dt.student_id
+WHERE dt.gender = 'Male'
+
+[2025-06-12 14:18:30.839221] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, gender FROM (SELECT student_id, gender, date_of_birth FROM inner_dt2 ORDER BY student_id DESC LIMIT 1) AS inner_dt1` 返回了 `gender` 列，但外部 JOIN 仅使用了 `student_id` 进行关联。因此，`gender` 可以从 `inner_dt1` 的投影中移除。同理，更内层的子查询 `inner_dt2` 和 `inner_dt3` 中的 `date_of_birth` 列也未被外层引用，可以进行下推。虽然内层有`ORDER BY`和`LIMIT`，但并不影响投影下推的适用性。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "没有LIMIT的子查询排序消除：仅移除最内层子查询中无LIMIT却存在的ORDER BY子句, 其余层级因包含LIMIT或不含ORDER BY无需改写"}]\n\nOriginal SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = \'MALE\'\n\nOptimized SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth\nFROM students s\nJOIN (\n    SELECT student_id, gender\n    FROM (\n        SELECT student_id, gender\n        FROM (\n            SELECT student_id, gender\n            FROM (\n                SELECT student_id, gender\n                FROM students\n            ) AS inner_dt3\n        ) AS inner_dt2\n        ORDER BY student_id DESC\n        LIMIT 1\n    ) AS inner_dt1\n) dt\nON s.student_id = dt.student_id\nWHERE dt.gender = \'Male\'\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 14:18:33.554372] [Model Answer]: {
+  "matched_rule_ids": ["1", "2"]
+}
+[2025-06-12 14:18:33.554460] [4] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1', '2']
+[2025-06-12 14:18:33.554474] [4] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 14:18:33.554487] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, gender FROM (SELECT student_id, gender, date_of_birth FROM inner_dt2 ORDER BY student_id DESC LIMIT 1) AS inner_dt1` 返回了 `gender` 列，但外部 JOIN 仅使用了 `student_id` 进行关联。因此，`gender` 可以从 `inner_dt1` 的投影中移除。同理，更内层的子查询 `inner_dt2` 和 `inner_dt3` 中的 `date_of_birth` 列也未被外层引用，可以进行下推。虽然内层有`ORDER BY`和`LIMIT`，但并不影响投影下推的适用性。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "没有LIMIT的子查询排序消除：仅移除最内层子查询中无LIMIT却存在的ORDER BY子句, 其余层级因包含LIMIT或不含ORDER BY无需改写"}]
+
+Original SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'
+
+Optimized SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth
+FROM students s
+JOIN (
+    SELECT student_id, gender
+    FROM (
+        SELECT student_id, gender
+        FROM (
+            SELECT student_id, gender
+            FROM (
+                SELECT student_id, gender
+                FROM students
+            ) AS inner_dt3
+        ) AS inner_dt2
+        ORDER BY student_id DESC
+        LIMIT 1
+    ) AS inner_dt1
+) dt
+ON s.student_id = dt.student_id
+WHERE dt.gender = 'Male'
+
+[2025-06-12 14:18:33.554567] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, gender FROM (SELECT student_id, gender, date_of_birth FROM inner_dt2 ORDER BY student_id DESC LIMIT 1) AS inner_dt1` 返回了 `gender` 列，但外部 JOIN 仅使用了 `student_id` 进行关联。因此，`gender` 可以从 `inner_dt1` 的投影中移除。同理，更内层的子查询 `inner_dt2` 和 `inner_dt3` 中的 `date_of_birth` 列也未被外层引用，可以进行下推。虽然内层有`ORDER BY`和`LIMIT`，但并不影响投影下推的适用性。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "没有LIMIT的子查询排序消除：仅移除最内层子查询中无LIMIT却存在的ORDER BY子句, 其余层级因包含LIMIT或不含ORDER BY无需改写"}]\n\nOriginal SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = \'MALE\'\n\nOptimized SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth\nFROM students s\nJOIN (\n    SELECT student_id, gender\n    FROM (\n        SELECT student_id, gender\n        FROM (\n            SELECT student_id, gender\n            FROM (\n                SELECT student_id, gender\n                FROM students\n            ) AS inner_dt3\n        ) AS inner_dt2\n        ORDER BY student_id DESC\n        LIMIT 1\n    ) AS inner_dt1\n) dt\nON s.student_id = dt.student_id\nWHERE dt.gender = \'Male\'\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 14:18:59.895709] [Model Answer]: {"matched_rule_ids": ["1", "2"]}
+[2025-06-12 14:18:59.895829] [4] Subjective Eval Case Judge o4-mini Correct Rules: ['1', '2']
+[2025-06-12 14:18:59.895843] [4] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 14:18:59.895855] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, gender FROM (SELECT student_id, gender, date_of_birth FROM inner_dt2 ORDER BY student_id DESC LIMIT 1) AS inner_dt1` 返回了 `gender` 列，但外部 JOIN 仅使用了 `student_id` 进行关联。因此，`gender` 可以从 `inner_dt1` 的投影中移除。同理，更内层的子查询 `inner_dt2` 和 `inner_dt3` 中的 `date_of_birth` 列也未被外层引用，可以进行下推。虽然内层有`ORDER BY`和`LIMIT`，但并不影响投影下推的适用性。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "没有LIMIT的子查询排序消除：仅移除最内层子查询中无LIMIT却存在的ORDER BY子句, 其余层级因包含LIMIT或不含ORDER BY无需改写"}]
+
+Original SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'
+
+Optimized SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth
+FROM students s
+JOIN (
+    SELECT student_id, gender
+    FROM (
+        SELECT student_id, gender
+        FROM (
+            SELECT student_id, gender
+            FROM (
+                SELECT student_id, gender
+                FROM students
+            ) AS inner_dt3
+        ) AS inner_dt2
+        ORDER BY student_id DESC
+        LIMIT 1
+    ) AS inner_dt1
+) dt
+ON s.student_id = dt.student_id
+WHERE dt.gender = 'Male'
+
+[2025-06-12 14:18:59.895945] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, gender FROM (SELECT student_id, gender, date_of_birth FROM inner_dt2 ORDER BY student_id DESC LIMIT 1) AS inner_dt1` 返回了 `gender` 列，但外部 JOIN 仅使用了 `student_id` 进行关联。因此，`gender` 可以从 `inner_dt1` 的投影中移除。同理，更内层的子查询 `inner_dt2` 和 `inner_dt3` 中的 `date_of_birth` 列也未被外层引用，可以进行下推。虽然内层有`ORDER BY`和`LIMIT`，但并不影响投影下推的适用性。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "没有LIMIT的子查询排序消除：仅移除最内层子查询中无LIMIT却存在的ORDER BY子句, 其余层级因包含LIMIT或不含ORDER BY无需改写"}]\n\nOriginal SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = \'MALE\'\n\nOptimized SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth\nFROM students s\nJOIN (\n    SELECT student_id, gender\n    FROM (\n        SELECT student_id, gender\n        FROM (\n            SELECT student_id, gender\n            FROM (\n                SELECT student_id, gender\n                FROM students\n            ) AS inner_dt3\n        ) AS inner_dt2\n        ORDER BY student_id DESC\n        LIMIT 1\n    ) AS inner_dt1\n) dt\nON s.student_id = dt.student_id\nWHERE dt.gender = \'Male\'\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 14:19:02.000135] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 14:19:02.000218] [4] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1']
+[2025-06-12 14:19:02.000358] [4] Subjective Eval Case Judge Final Correct Rules: ['1', '2']
+[2025-06-12 14:19:02.000392] [4] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 14:19:02.000403] [4] subjective Eval Case Rule[2] Final Result: True
+[2025-06-12 15:10:01.017486] 
+--- Case: 5 ---
+[2025-06-12 15:10:01.017504] [5] Case Run 1/1
+[2025-06-12 15:17:02.942098] [5] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 15:17:02.942115] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE outer_dt.teacher_name LIKE 'Dr. %'` 条件可以下推到最内层的 `teachers` 表，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`WHERE outer_dt.teacher_name LIKE 'Dr. %'` 形式的前缀匹配可以改写为 `outer_dt.teacher_name >= 'Dr. ' AND outer_dt.teacher_name < 'Ds.'`（假设下一个字典序值为'Ds.'）的范围查询，以利用索引的有序性，提升查询性能。"}, {"rule_id": "3", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM teachers ) AS inner_dt1 ) AS inner_dt2` 中的 `department` 列在外层 `SELECT teacher_id, teacher_name FROM inner_dt3` 子查询中没有被使用，因此可以移除。同样，更内层的子查询也可以移除冗余的 `department` 列，以减少IO和网络代价。"}]
+
+Original SQL:
+SELECT outer_dt.teacher_id, outer_dt.teacher_name FROM students JOIN ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM teachers ) AS inner_dt1 ) AS inner_dt2 ) AS inner_dt3 ) AS outer_dt ON students.teacher_id = outer_dt.teacher_id WHERE outer_dt.teacher_name LIKE 'Dr. %';
+
+Optimized SQL:
+SELECT teachers.teacher_id, teachers.teacher_name 
+FROM students 
+JOIN teachers 
+ON students.teacher_id = teachers.teacher_id 
+WHERE teachers.teacher_name >= 'Dr. ' AND teachers.teacher_name < 'Dr.!';
+
+[2025-06-12 15:17:02.942158] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE outer_dt.teacher_name LIKE \'Dr. %\'` 条件可以下推到最内层的 `teachers` 表，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`WHERE outer_dt.teacher_name LIKE \'Dr. %\'` 形式的前缀匹配可以改写为 `outer_dt.teacher_name >= \'Dr. \' AND outer_dt.teacher_name < \'Ds.\'`（假设下一个字典序值为\'Ds.\'）的范围查询，以利用索引的有序性，提升查询性能。"}, {"rule_id": "3", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM teachers ) AS inner_dt1 ) AS inner_dt2` 中的 `department` 列在外层 `SELECT teacher_id, teacher_name FROM inner_dt3` 子查询中没有被使用，因此可以移除。同样，更内层的子查询也可以移除冗余的 `department` 列，以减少IO和网络代价。"}]\n\nOriginal SQL:\nSELECT outer_dt.teacher_id, outer_dt.teacher_name FROM students JOIN ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM teachers ) AS inner_dt1 ) AS inner_dt2 ) AS inner_dt3 ) AS outer_dt ON students.teacher_id = outer_dt.teacher_id WHERE outer_dt.teacher_name LIKE \'Dr. %\';\n\nOptimized SQL:\nSELECT teachers.teacher_id, teachers.teacher_name \nFROM students \nJOIN teachers \nON students.teacher_id = teachers.teacher_id \nWHERE teachers.teacher_name >= \'Dr. \' AND teachers.teacher_name < \'Dr.!\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 15:17:05.741936] [Model Answer]: {
+  "matched_rule_ids": ["2"]
+}
+[2025-06-12 15:17:05.742015] [5] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['2']
+[2025-06-12 15:17:05.742027] [5] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 15:17:05.742039] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE outer_dt.teacher_name LIKE 'Dr. %'` 条件可以下推到最内层的 `teachers` 表，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`WHERE outer_dt.teacher_name LIKE 'Dr. %'` 形式的前缀匹配可以改写为 `outer_dt.teacher_name >= 'Dr. ' AND outer_dt.teacher_name < 'Ds.'`（假设下一个字典序值为'Ds.'）的范围查询，以利用索引的有序性，提升查询性能。"}, {"rule_id": "3", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM teachers ) AS inner_dt1 ) AS inner_dt2` 中的 `department` 列在外层 `SELECT teacher_id, teacher_name FROM inner_dt3` 子查询中没有被使用，因此可以移除。同样，更内层的子查询也可以移除冗余的 `department` 列，以减少IO和网络代价。"}]
+
+Original SQL:
+SELECT outer_dt.teacher_id, outer_dt.teacher_name FROM students JOIN ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM teachers ) AS inner_dt1 ) AS inner_dt2 ) AS inner_dt3 ) AS outer_dt ON students.teacher_id = outer_dt.teacher_id WHERE outer_dt.teacher_name LIKE 'Dr. %';
+
+Optimized SQL:
+SELECT teachers.teacher_id, teachers.teacher_name 
+FROM students 
+JOIN teachers 
+ON students.teacher_id = teachers.teacher_id 
+WHERE teachers.teacher_name >= 'Dr. ' AND teachers.teacher_name < 'Dr.!';
+
+[2025-06-12 15:17:05.742111] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE outer_dt.teacher_name LIKE \'Dr. %\'` 条件可以下推到最内层的 `teachers` 表，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`WHERE outer_dt.teacher_name LIKE \'Dr. %\'` 形式的前缀匹配可以改写为 `outer_dt.teacher_name >= \'Dr. \' AND outer_dt.teacher_name < \'Ds.\'`（假设下一个字典序值为\'Ds.\'）的范围查询，以利用索引的有序性，提升查询性能。"}, {"rule_id": "3", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM teachers ) AS inner_dt1 ) AS inner_dt2` 中的 `department` 列在外层 `SELECT teacher_id, teacher_name FROM inner_dt3` 子查询中没有被使用，因此可以移除。同样，更内层的子查询也可以移除冗余的 `department` 列，以减少IO和网络代价。"}]\n\nOriginal SQL:\nSELECT outer_dt.teacher_id, outer_dt.teacher_name FROM students JOIN ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM teachers ) AS inner_dt1 ) AS inner_dt2 ) AS inner_dt3 ) AS outer_dt ON students.teacher_id = outer_dt.teacher_id WHERE outer_dt.teacher_name LIKE \'Dr. %\';\n\nOptimized SQL:\nSELECT teachers.teacher_id, teachers.teacher_name \nFROM students \nJOIN teachers \nON students.teacher_id = teachers.teacher_id \nWHERE teachers.teacher_name >= \'Dr. \' AND teachers.teacher_name < \'Dr.!\';\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 15:17:19.292256] [Model Answer]: {"matched_rule_ids": ["1", "3"]}
+[2025-06-12 15:17:19.292361] [5] Subjective Eval Case Judge o4-mini Correct Rules: ['1', '3']
+[2025-06-12 15:17:19.292374] [5] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 15:17:19.292385] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE outer_dt.teacher_name LIKE 'Dr. %'` 条件可以下推到最内层的 `teachers` 表，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`WHERE outer_dt.teacher_name LIKE 'Dr. %'` 形式的前缀匹配可以改写为 `outer_dt.teacher_name >= 'Dr. ' AND outer_dt.teacher_name < 'Ds.'`（假设下一个字典序值为'Ds.'）的范围查询，以利用索引的有序性，提升查询性能。"}, {"rule_id": "3", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM teachers ) AS inner_dt1 ) AS inner_dt2` 中的 `department` 列在外层 `SELECT teacher_id, teacher_name FROM inner_dt3` 子查询中没有被使用，因此可以移除。同样，更内层的子查询也可以移除冗余的 `department` 列，以减少IO和网络代价。"}]
+
+Original SQL:
+SELECT outer_dt.teacher_id, outer_dt.teacher_name FROM students JOIN ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM teachers ) AS inner_dt1 ) AS inner_dt2 ) AS inner_dt3 ) AS outer_dt ON students.teacher_id = outer_dt.teacher_id WHERE outer_dt.teacher_name LIKE 'Dr. %';
+
+Optimized SQL:
+SELECT teachers.teacher_id, teachers.teacher_name 
+FROM students 
+JOIN teachers 
+ON students.teacher_id = teachers.teacher_id 
+WHERE teachers.teacher_name >= 'Dr. ' AND teachers.teacher_name < 'Dr.!';
+
+[2025-06-12 15:17:19.292477] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE outer_dt.teacher_name LIKE \'Dr. %\'` 条件可以下推到最内层的 `teachers` 表，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`WHERE outer_dt.teacher_name LIKE \'Dr. %\'` 形式的前缀匹配可以改写为 `outer_dt.teacher_name >= \'Dr. \' AND outer_dt.teacher_name < \'Ds.\'`（假设下一个字典序值为\'Ds.\'）的范围查询，以利用索引的有序性，提升查询性能。"}, {"rule_id": "3", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM teachers ) AS inner_dt1 ) AS inner_dt2` 中的 `department` 列在外层 `SELECT teacher_id, teacher_name FROM inner_dt3` 子查询中没有被使用，因此可以移除。同样，更内层的子查询也可以移除冗余的 `department` 列，以减少IO和网络代价。"}]\n\nOriginal SQL:\nSELECT outer_dt.teacher_id, outer_dt.teacher_name FROM students JOIN ( SELECT teacher_id, teacher_name FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM ( SELECT teacher_id, teacher_name, department FROM teachers ) AS inner_dt1 ) AS inner_dt2 ) AS inner_dt3 ) AS outer_dt ON students.teacher_id = outer_dt.teacher_id WHERE outer_dt.teacher_name LIKE \'Dr. %\';\n\nOptimized SQL:\nSELECT teachers.teacher_id, teachers.teacher_name \nFROM students \nJOIN teachers \nON students.teacher_id = teachers.teacher_id \nWHERE teachers.teacher_name >= \'Dr. \' AND teachers.teacher_name < \'Dr.!\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 15:17:26.161773] [Model Answer]: {"matched_rule_ids": ["1", "2", "3"]}
+[2025-06-12 15:17:26.161857] [5] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1', '2', '3']
+[2025-06-12 15:17:26.162002] [5] Subjective Eval Case Judge Final Correct Rules: ['2', '1', '3']
+[2025-06-12 15:17:26.162039] [5] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 15:17:26.162051] [5] subjective Eval Case Rule[2] Final Result: True
+[2025-06-12 15:17:26.162059] [5] subjective Eval Case Rule[3] Final Result: True
+[2025-06-12 15:37:50.118226] 
+--- Case: 6 ---
+[2025-06-12 15:37:50.118251] [6] Case Run 1/1
+[2025-06-12 15:44:52.434342] [6] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 15:44:52.434359] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "隐式转换：WHERE子句中的 `CONCAT(\"id_\", student_id) >= \"id_1000\"` 对字段 `student_id` 使用了 `CONCAT` 函数。这可能导致无法有效使用索引。虽然无法直接消除`CONCAT`函数并保持等价，但此处旨在识别字段上使用了函数的场景。在某些情况下，如果可以推导出等价的条件，例如`student_id >= 1000`，则可以消除函数以利用索引。"}]
+
+Original SQL:
+SELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;
+
+Optimized SQL:
+SELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;
+
+[2025-06-12 15:44:52.434396] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "隐式转换：WHERE子句中的 `CONCAT(\\"id_\\", student_id) >= \\"id_1000\\"` 对字段 `student_id` 使用了 `CONCAT` 函数。这可能导致无法有效使用索引。虽然无法直接消除`CONCAT`函数并保持等价，但此处旨在识别字段上使用了函数的场景。在某些情况下，如果可以推导出等价的条件，例如`student_id >= 1000`，则可以消除函数以利用索引。"}]\n\nOriginal SQL:\nSELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;\n\nOptimized SQL:\nSELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 15:45:03.563810] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 15:45:03.563869] [6] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1']
+[2025-06-12 15:45:03.563877] [6] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 15:45:03.563885] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "隐式转换：WHERE子句中的 `CONCAT(\"id_\", student_id) >= \"id_1000\"` 对字段 `student_id` 使用了 `CONCAT` 函数。这可能导致无法有效使用索引。虽然无法直接消除`CONCAT`函数并保持等价，但此处旨在识别字段上使用了函数的场景。在某些情况下，如果可以推导出等价的条件，例如`student_id >= 1000`，则可以消除函数以利用索引。"}]
+
+Original SQL:
+SELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;
+
+Optimized SQL:
+SELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;
+
+[2025-06-12 15:45:03.563929] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "隐式转换：WHERE子句中的 `CONCAT(\\"id_\\", student_id) >= \\"id_1000\\"` 对字段 `student_id` 使用了 `CONCAT` 函数。这可能导致无法有效使用索引。虽然无法直接消除`CONCAT`函数并保持等价，但此处旨在识别字段上使用了函数的场景。在某些情况下，如果可以推导出等价的条件，例如`student_id >= 1000`，则可以消除函数以利用索引。"}]\n\nOriginal SQL:\nSELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;\n\nOptimized SQL:\nSELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 15:45:09.232408] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 15:45:09.232495] [6] Subjective Eval Case Judge o4-mini Correct Rules: ['1']
+[2025-06-12 15:45:09.232508] [6] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 15:45:09.232520] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "隐式转换：WHERE子句中的 `CONCAT(\"id_\", student_id) >= \"id_1000\"` 对字段 `student_id` 使用了 `CONCAT` 函数。这可能导致无法有效使用索引。虽然无法直接消除`CONCAT`函数并保持等价，但此处旨在识别字段上使用了函数的场景。在某些情况下，如果可以推导出等价的条件，例如`student_id >= 1000`，则可以消除函数以利用索引。"}]
+
+Original SQL:
+SELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;
+
+Optimized SQL:
+SELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;
+
+[2025-06-12 15:45:09.232586] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "隐式转换：WHERE子句中的 `CONCAT(\\"id_\\", student_id) >= \\"id_1000\\"` 对字段 `student_id` 使用了 `CONCAT` 函数。这可能导致无法有效使用索引。虽然无法直接消除`CONCAT`函数并保持等价，但此处旨在识别字段上使用了函数的场景。在某些情况下，如果可以推导出等价的条件，例如`student_id >= 1000`，则可以消除函数以利用索引。"}]\n\nOriginal SQL:\nSELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;\n\nOptimized SQL:\nSELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 15:45:14.313964] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 15:45:14.314041] [6] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1']
+[2025-06-12 15:45:14.314168] [6] Subjective Eval Case Judge Final Correct Rules: ['1']
+[2025-06-12 15:45:14.314203] [6] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 16:20:25.174889] 
+--- Case: 7 ---
+[2025-06-12 16:20:25.174914] [7] Case Run 1/1
+[2025-06-12 16:28:56.487247] [7] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 16:28:56.487277] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "COUNT 标量子查询优化：子查询 `SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000` 是一个关联子查询，且其内部没有 `GROUP BY`、`LIMIT`、`UNION` 等，并且外部对其结果进行了 `> 0` 的存在性判断。这满足了COUNT标量子查询的定义。由于外部条件是 `NOT (...) > 0`，这意味着 `COUNT(*) <= 0`，即不存在匹配记录。因此，可以将其改写为 `NOT IN` 的形式，以利用MySQL的SEMI JOIN特性，提高查询性能。"}]
+
+Original SQL:
+SELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;
+
+Optimized SQL:
+SELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );
+
+[2025-06-12 16:28:56.487349] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "COUNT 标量子查询优化：子查询 `SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000` 是一个关联子查询，且其内部没有 `GROUP BY`、`LIMIT`、`UNION` 等，并且外部对其结果进行了 `> 0` 的存在性判断。这满足了COUNT标量子查询的定义。由于外部条件是 `NOT (...) > 0`，这意味着 `COUNT(*) <= 0`，即不存在匹配记录。因此，可以将其改写为 `NOT IN` 的形式，以利用MySQL的SEMI JOIN特性，提高查询性能。"}]\n\nOriginal SQL:\nSELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;\n\nOptimized SQL:\nSELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 16:28:59.168315] [Model Answer]: {
+"matched_rule_ids": ["1"]
+}
+[2025-06-12 16:28:59.168389] [7] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1']
+[2025-06-12 16:28:59.168400] [7] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 16:28:59.168411] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "COUNT 标量子查询优化：子查询 `SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000` 是一个关联子查询，且其内部没有 `GROUP BY`、`LIMIT`、`UNION` 等，并且外部对其结果进行了 `> 0` 的存在性判断。这满足了COUNT标量子查询的定义。由于外部条件是 `NOT (...) > 0`，这意味着 `COUNT(*) <= 0`，即不存在匹配记录。因此，可以将其改写为 `NOT IN` 的形式，以利用MySQL的SEMI JOIN特性，提高查询性能。"}]
+
+Original SQL:
+SELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;
+
+Optimized SQL:
+SELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );
+
+[2025-06-12 16:28:59.168475] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "COUNT 标量子查询优化：子查询 `SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000` 是一个关联子查询，且其内部没有 `GROUP BY`、`LIMIT`、`UNION` 等，并且外部对其结果进行了 `> 0` 的存在性判断。这满足了COUNT标量子查询的定义。由于外部条件是 `NOT (...) > 0`，这意味着 `COUNT(*) <= 0`，即不存在匹配记录。因此，可以将其改写为 `NOT IN` 的形式，以利用MySQL的SEMI JOIN特性，提高查询性能。"}]\n\nOriginal SQL:\nSELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;\n\nOptimized SQL:\nSELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 16:29:14.289551] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 16:29:14.289646] [7] Subjective Eval Case Judge o4-mini Correct Rules: ['1']
+[2025-06-12 16:29:14.289676] [7] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 16:29:14.289689] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "COUNT 标量子查询优化：子查询 `SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000` 是一个关联子查询，且其内部没有 `GROUP BY`、`LIMIT`、`UNION` 等，并且外部对其结果进行了 `> 0` 的存在性判断。这满足了COUNT标量子查询的定义。由于外部条件是 `NOT (...) > 0`，这意味着 `COUNT(*) <= 0`，即不存在匹配记录。因此，可以将其改写为 `NOT IN` 的形式，以利用MySQL的SEMI JOIN特性，提高查询性能。"}]
+
+Original SQL:
+SELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;
+
+Optimized SQL:
+SELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );
+
+[2025-06-12 16:29:14.289758] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "COUNT 标量子查询优化：子查询 `SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000` 是一个关联子查询，且其内部没有 `GROUP BY`、`LIMIT`、`UNION` 等，并且外部对其结果进行了 `> 0` 的存在性判断。这满足了COUNT标量子查询的定义。由于外部条件是 `NOT (...) > 0`，这意味着 `COUNT(*) <= 0`，即不存在匹配记录。因此，可以将其改写为 `NOT IN` 的形式，以利用MySQL的SEMI JOIN特性，提高查询性能。"}]\n\nOriginal SQL:\nSELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;\n\nOptimized SQL:\nSELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 16:29:18.610805] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 16:29:18.610888] [7] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1']
+[2025-06-12 16:29:18.611018] [7] Subjective Eval Case Judge Final Correct Rules: ['1']
+[2025-06-12 16:29:18.611051] [7] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 16:42:31.872549] 
+--- Case: 8 ---
+[2025-06-12 16:42:31.872572] [8] Case Run 1/1
+[2025-06-12 16:56:03.657051] [8] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 16:56:03.657080] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "HAVING 条件下推：`HAVING student_id = 1999` 这个条件不依赖于任何聚合函数。将这个条件从 `HAVING` 子句移动到 `WHERE` 子句中，可以在分组和聚合操作之前过滤数据，从而减少处理的数据量，提高查询性能。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "隐式转换：WHERE子句中的 `enrollment_date > '1993-11-26'` 和 `enrollment_date < '1991-11-26'` 存在隐式类型转换，因为 `enrollment_date` 字段类型为 `DATE` 而 '1993-11-26' 和 '1991-11-26' 是字符串。这可能导致索引失效，可以通过显式转换值来解决。"}]
+
+Original SQL:
+SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999
+
+Optimized SQL:
+SELECT student_id, MAX(enrollment_date) latest_date
+FROM enrollments
+WHERE (enrollment_date > DATE '1993-11-26' OR enrollment_date < DATE '1991-11-26') AND student_id = 1999
+GROUP BY student_id
+
+[2025-06-12 16:56:03.657156] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "HAVING 条件下推：`HAVING student_id = 1999` 这个条件不依赖于任何聚合函数。将这个条件从 `HAVING` 子句移动到 `WHERE` 子句中，可以在分组和聚合操作之前过滤数据，从而减少处理的数据量，提高查询性能。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "隐式转换：WHERE子句中的 `enrollment_date > \'1993-11-26\'` 和 `enrollment_date < \'1991-11-26\'` 存在隐式类型转换，因为 `enrollment_date` 字段类型为 `DATE` 而 \'1993-11-26\' 和 \'1991-11-26\' 是字符串。这可能导致索引失效，可以通过显式转换值来解决。"}]\n\nOriginal SQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > \'1993-11-26\' OR enrollment_date < \'1991-11-26\' GROUP BY student_id HAVING student_id = 1999\n\nOptimized SQL:\nSELECT student_id, MAX(enrollment_date) latest_date\nFROM enrollments\nWHERE (enrollment_date > DATE \'1993-11-26\' OR enrollment_date < DATE \'1991-11-26\') AND student_id = 1999\nGROUP BY student_id\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 16:56:06.243988] [Model Answer]: {
+  "matched_rule_ids": ["1", "2"]
+}
+[2025-06-12 16:56:06.244070] [8] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1', '2']
+[2025-06-12 16:56:06.244083] [8] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 16:56:06.244094] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "HAVING 条件下推：`HAVING student_id = 1999` 这个条件不依赖于任何聚合函数。将这个条件从 `HAVING` 子句移动到 `WHERE` 子句中，可以在分组和聚合操作之前过滤数据，从而减少处理的数据量，提高查询性能。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "隐式转换：WHERE子句中的 `enrollment_date > '1993-11-26'` 和 `enrollment_date < '1991-11-26'` 存在隐式类型转换，因为 `enrollment_date` 字段类型为 `DATE` 而 '1993-11-26' 和 '1991-11-26' 是字符串。这可能导致索引失效，可以通过显式转换值来解决。"}]
+
+Original SQL:
+SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999
+
+Optimized SQL:
+SELECT student_id, MAX(enrollment_date) latest_date
+FROM enrollments
+WHERE (enrollment_date > DATE '1993-11-26' OR enrollment_date < DATE '1991-11-26') AND student_id = 1999
+GROUP BY student_id
+
+[2025-06-12 16:56:06.244161] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "HAVING 条件下推：`HAVING student_id = 1999` 这个条件不依赖于任何聚合函数。将这个条件从 `HAVING` 子句移动到 `WHERE` 子句中，可以在分组和聚合操作之前过滤数据，从而减少处理的数据量，提高查询性能。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "隐式转换：WHERE子句中的 `enrollment_date > \'1993-11-26\'` 和 `enrollment_date < \'1991-11-26\'` 存在隐式类型转换，因为 `enrollment_date` 字段类型为 `DATE` 而 \'1993-11-26\' 和 \'1991-11-26\' 是字符串。这可能导致索引失效，可以通过显式转换值来解决。"}]\n\nOriginal SQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > \'1993-11-26\' OR enrollment_date < \'1991-11-26\' GROUP BY student_id HAVING student_id = 1999\n\nOptimized SQL:\nSELECT student_id, MAX(enrollment_date) latest_date\nFROM enrollments\nWHERE (enrollment_date > DATE \'1993-11-26\' OR enrollment_date < DATE \'1991-11-26\') AND student_id = 1999\nGROUP BY student_id\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 16:56:11.828333] [Model Answer]: {"matched_rule_ids": ["1", "2"]}
+[2025-06-12 16:56:11.828416] [8] Subjective Eval Case Judge o4-mini Correct Rules: ['1', '2']
+[2025-06-12 16:56:11.828429] [8] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 16:56:11.828440] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "HAVING 条件下推：`HAVING student_id = 1999` 这个条件不依赖于任何聚合函数。将这个条件从 `HAVING` 子句移动到 `WHERE` 子句中，可以在分组和聚合操作之前过滤数据，从而减少处理的数据量，提高查询性能。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "隐式转换：WHERE子句中的 `enrollment_date > '1993-11-26'` 和 `enrollment_date < '1991-11-26'` 存在隐式类型转换，因为 `enrollment_date` 字段类型为 `DATE` 而 '1993-11-26' 和 '1991-11-26' 是字符串。这可能导致索引失效，可以通过显式转换值来解决。"}]
+
+Original SQL:
+SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999
+
+Optimized SQL:
+SELECT student_id, MAX(enrollment_date) latest_date
+FROM enrollments
+WHERE (enrollment_date > DATE '1993-11-26' OR enrollment_date < DATE '1991-11-26') AND student_id = 1999
+GROUP BY student_id
+
+[2025-06-12 16:56:11.828530] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "HAVING 条件下推：`HAVING student_id = 1999` 这个条件不依赖于任何聚合函数。将这个条件从 `HAVING` 子句移动到 `WHERE` 子句中，可以在分组和聚合操作之前过滤数据，从而减少处理的数据量，提高查询性能。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "隐式转换：WHERE子句中的 `enrollment_date > \'1993-11-26\'` 和 `enrollment_date < \'1991-11-26\'` 存在隐式类型转换，因为 `enrollment_date` 字段类型为 `DATE` 而 \'1993-11-26\' 和 \'1991-11-26\' 是字符串。这可能导致索引失效，可以通过显式转换值来解决。"}]\n\nOriginal SQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > \'1993-11-26\' OR enrollment_date < \'1991-11-26\' GROUP BY student_id HAVING student_id = 1999\n\nOptimized SQL:\nSELECT student_id, MAX(enrollment_date) latest_date\nFROM enrollments\nWHERE (enrollment_date > DATE \'1993-11-26\' OR enrollment_date < DATE \'1991-11-26\') AND student_id = 1999\nGROUP BY student_id\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 16:56:19.962442] [Model Answer]: {"matched_rule_ids": ["1", "2"]}
+[2025-06-12 16:56:19.962560] [8] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1', '2']
+[2025-06-12 16:56:19.962726] [8] Subjective Eval Case Judge Final Correct Rules: ['1', '2']
+[2025-06-12 16:56:19.962764] [8] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 16:56:19.962775] [8] subjective Eval Case Rule[2] Final Result: True
+[2025-06-12 16:56:19.962802] 
+--- Case: 9 ---
+[2025-06-12 16:56:19.962828] [9] Case Run 1/1
+[2025-06-12 17:03:21.845887] [9] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 17:03:21.845918] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "GROUP BY 子句消除：主查询的 `GROUP BY student_id` 是不必要的。因为 `student_id` 是 `students` 表的主键，其列值是唯一的，并且在该 `SELECT` 语句的投影中没有使用聚合函数。因此可以消除这个 `GROUP BY` 子句，减少排序和分组的开销，提高查询性能。此外，`EXISTS` 子查询可以转换为 `INNER JOIN` 来优化查询。隐式转换已通过 `CAST` 显式转换日期字符串消除。"}]
+
+Original SQL:
+SELECT student_id FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id) AND s.gender = 'Female' AND s.date_of_birth <= CAST('2000-01-01' AS DATE) AND s.student_name != '张凯' GROUP BY student_id LIMIT 10;
+
+Optimized SQL:
+SELECT s.student_id FROM students s INNER JOIN enrollments e ON e.student_id = s.student_id WHERE s.gender = 'Female' AND s.date_of_birth <= CAST('2000-01-01' AS DATE) AND s.student_name != '张凯' GROUP BY s.student_id LIMIT 10;
+
+[2025-06-12 17:03:21.845991] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "GROUP BY 子句消除：主查询的 `GROUP BY student_id` 是不必要的。因为 `student_id` 是 `students` 表的主键，其列值是唯一的，并且在该 `SELECT` 语句的投影中没有使用聚合函数。因此可以消除这个 `GROUP BY` 子句，减少排序和分组的开销，提高查询性能。此外，`EXISTS` 子查询可以转换为 `INNER JOIN` 来优化查询。隐式转换已通过 `CAST` 显式转换日期字符串消除。"}]\n\nOriginal SQL:\nSELECT student_id FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id) AND s.gender = \'Female\' AND s.date_of_birth <= CAST(\'2000-01-01\' AS DATE) AND s.student_name != \'张凯\' GROUP BY student_id LIMIT 10;\n\nOptimized SQL:\nSELECT s.student_id FROM students s INNER JOIN enrollments e ON e.student_id = s.student_id WHERE s.gender = \'Female\' AND s.date_of_birth <= CAST(\'2000-01-01\' AS DATE) AND s.student_name != \'张凯\' GROUP BY s.student_id LIMIT 10;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:03:24.123360] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:03:24.123464] [9] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1']
+[2025-06-12 17:03:24.123477] [9] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 17:03:24.123489] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "GROUP BY 子句消除：主查询的 `GROUP BY student_id` 是不必要的。因为 `student_id` 是 `students` 表的主键，其列值是唯一的，并且在该 `SELECT` 语句的投影中没有使用聚合函数。因此可以消除这个 `GROUP BY` 子句，减少排序和分组的开销，提高查询性能。此外，`EXISTS` 子查询可以转换为 `INNER JOIN` 来优化查询。隐式转换已通过 `CAST` 显式转换日期字符串消除。"}]
+
+Original SQL:
+SELECT student_id FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id) AND s.gender = 'Female' AND s.date_of_birth <= CAST('2000-01-01' AS DATE) AND s.student_name != '张凯' GROUP BY student_id LIMIT 10;
+
+Optimized SQL:
+SELECT s.student_id FROM students s INNER JOIN enrollments e ON e.student_id = s.student_id WHERE s.gender = 'Female' AND s.date_of_birth <= CAST('2000-01-01' AS DATE) AND s.student_name != '张凯' GROUP BY s.student_id LIMIT 10;
+
+[2025-06-12 17:03:24.123556] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "GROUP BY 子句消除：主查询的 `GROUP BY student_id` 是不必要的。因为 `student_id` 是 `students` 表的主键，其列值是唯一的，并且在该 `SELECT` 语句的投影中没有使用聚合函数。因此可以消除这个 `GROUP BY` 子句，减少排序和分组的开销，提高查询性能。此外，`EXISTS` 子查询可以转换为 `INNER JOIN` 来优化查询。隐式转换已通过 `CAST` 显式转换日期字符串消除。"}]\n\nOriginal SQL:\nSELECT student_id FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id) AND s.gender = \'Female\' AND s.date_of_birth <= CAST(\'2000-01-01\' AS DATE) AND s.student_name != \'张凯\' GROUP BY student_id LIMIT 10;\n\nOptimized SQL:\nSELECT s.student_id FROM students s INNER JOIN enrollments e ON e.student_id = s.student_id WHERE s.gender = \'Female\' AND s.date_of_birth <= CAST(\'2000-01-01\' AS DATE) AND s.student_name != \'张凯\' GROUP BY s.student_id LIMIT 10;\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:03:38.444480] [Model Answer]: {"matched_rule_ids": []}
+[2025-06-12 17:03:38.444563] [9] Subjective Eval Case Judge o4-mini Correct Rules: []
+[2025-06-12 17:03:38.444575] [9] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 17:03:38.444588] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "GROUP BY 子句消除：主查询的 `GROUP BY student_id` 是不必要的。因为 `student_id` 是 `students` 表的主键，其列值是唯一的，并且在该 `SELECT` 语句的投影中没有使用聚合函数。因此可以消除这个 `GROUP BY` 子句，减少排序和分组的开销，提高查询性能。此外，`EXISTS` 子查询可以转换为 `INNER JOIN` 来优化查询。隐式转换已通过 `CAST` 显式转换日期字符串消除。"}]
+
+Original SQL:
+SELECT student_id FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id) AND s.gender = 'Female' AND s.date_of_birth <= CAST('2000-01-01' AS DATE) AND s.student_name != '张凯' GROUP BY student_id LIMIT 10;
+
+Optimized SQL:
+SELECT s.student_id FROM students s INNER JOIN enrollments e ON e.student_id = s.student_id WHERE s.gender = 'Female' AND s.date_of_birth <= CAST('2000-01-01' AS DATE) AND s.student_name != '张凯' GROUP BY s.student_id LIMIT 10;
+
+[2025-06-12 17:03:38.444677] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "GROUP BY 子句消除：主查询的 `GROUP BY student_id` 是不必要的。因为 `student_id` 是 `students` 表的主键，其列值是唯一的，并且在该 `SELECT` 语句的投影中没有使用聚合函数。因此可以消除这个 `GROUP BY` 子句，减少排序和分组的开销，提高查询性能。此外，`EXISTS` 子查询可以转换为 `INNER JOIN` 来优化查询。隐式转换已通过 `CAST` 显式转换日期字符串消除。"}]\n\nOriginal SQL:\nSELECT student_id FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id) AND s.gender = \'Female\' AND s.date_of_birth <= CAST(\'2000-01-01\' AS DATE) AND s.student_name != \'张凯\' GROUP BY student_id LIMIT 10;\n\nOptimized SQL:\nSELECT s.student_id FROM students s INNER JOIN enrollments e ON e.student_id = s.student_id WHERE s.gender = \'Female\' AND s.date_of_birth <= CAST(\'2000-01-01\' AS DATE) AND s.student_name != \'张凯\' GROUP BY s.student_id LIMIT 10;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:03:45.471215] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:03:45.471305] [9] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1']
+[2025-06-12 17:03:45.471465] [9] Subjective Eval Case Judge Final Correct Rules: ['1']
+[2025-06-12 17:03:45.471505] [9] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 17:03:45.471534] 
+--- Case: 10 ---
+[2025-06-12 17:03:45.471559] [10] Case Run 1/1
+[2025-06-12 17:07:46.451687] [10] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 17:07:46.451709] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "非关联子查询优化：`WHERE student_id IN (SELECT student_id FROM enrollments)` 是一个非关联子查询。由于 `students` 表和 `enrollments` 表都包含 `student_id` 字段，可以建立关联条件。通过将外部查询的 `student_id` 关联到子查询的 `student_id`，将其改写为关联子查询，可以减少重复计算，提升查询性能。"}]
+
+Original SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );
+
+Optimized SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );
+
+[2025-06-12 17:07:46.451759] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "非关联子查询优化：`WHERE student_id IN (SELECT student_id FROM enrollments)` 是一个非关联子查询。由于 `students` 表和 `enrollments` 表都包含 `student_id` 字段，可以建立关联条件。通过将外部查询的 `student_id` 关联到子查询的 `student_id`，将其改写为关联子查询，可以减少重复计算，提升查询性能。"}]\n\nOriginal SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );\n\nOptimized SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:07:48.806642] [Model Answer]: {
+  "matched_rule_ids": ["1"]
+}
+[2025-06-12 17:07:48.806766] [10] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1']
+[2025-06-12 17:07:48.806780] [10] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 17:07:48.806791] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "非关联子查询优化：`WHERE student_id IN (SELECT student_id FROM enrollments)` 是一个非关联子查询。由于 `students` 表和 `enrollments` 表都包含 `student_id` 字段，可以建立关联条件。通过将外部查询的 `student_id` 关联到子查询的 `student_id`，将其改写为关联子查询，可以减少重复计算，提升查询性能。"}]
+
+Original SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );
+
+Optimized SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );
+
+[2025-06-12 17:07:48.806855] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "非关联子查询优化：`WHERE student_id IN (SELECT student_id FROM enrollments)` 是一个非关联子查询。由于 `students` 表和 `enrollments` 表都包含 `student_id` 字段，可以建立关联条件。通过将外部查询的 `student_id` 关联到子查询的 `student_id`，将其改写为关联子查询，可以减少重复计算，提升查询性能。"}]\n\nOriginal SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );\n\nOptimized SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:07:55.289779] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:07:55.289825] [10] Subjective Eval Case Judge o4-mini Correct Rules: ['1']
+[2025-06-12 17:07:55.289830] [10] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 17:07:55.289836] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "非关联子查询优化：`WHERE student_id IN (SELECT student_id FROM enrollments)` 是一个非关联子查询。由于 `students` 表和 `enrollments` 表都包含 `student_id` 字段，可以建立关联条件。通过将外部查询的 `student_id` 关联到子查询的 `student_id`，将其改写为关联子查询，可以减少重复计算，提升查询性能。"}]
+
+Original SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );
+
+Optimized SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );
+
+[2025-06-12 17:07:55.289870] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "非关联子查询优化：`WHERE student_id IN (SELECT student_id FROM enrollments)` 是一个非关联子查询。由于 `students` 表和 `enrollments` 表都包含 `student_id` 字段，可以建立关联条件。通过将外部查询的 `student_id` 关联到子查询的 `student_id`，将其改写为关联子查询，可以减少重复计算，提升查询性能。"}]\n\nOriginal SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );\n\nOptimized SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:07:57.031561] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:07:57.031662] [10] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1']
+[2025-06-12 17:07:57.031797] [10] Subjective Eval Case Judge Final Correct Rules: ['1']
+[2025-06-12 17:07:57.031831] [10] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 17:21:54.675541] 
+--- Case: 11 ---
+[2025-06-12 17:21:54.675565] [11] Case Run 1/1
+[2025-06-12 17:30:56.289242] [11] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 17:30:56.289270] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "子查询聚合改写为窗口函数：存在子查询聚合`COUNT(*)`，且存在自连接，内表和外表都是`students`表，且通过`student_name`和`date_of_birth`字段进行等值关联。这些子查询可以改写为窗口函数`COUNT(*) OVER (PARTITION BY student_name ORDER BY student_name)`和`COUNT(*) OVER (PARTITION BY date_of_birth ORDER BY date_of_birth)`，以提升查询性能。"}]
+
+Original SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+Optimized SQL:
+SELECT T.student_name, T.date_of_birth
+FROM (
+    SELECT student_name, date_of_birth,
+        ROW_NUMBER() OVER (ORDER BY student_name) AS rn_name,
+        ROW_NUMBER() OVER (ORDER BY date_of_birth) AS rn_dob
+    FROM students
+) AS T
+WHERE rn_name <= 3 AND rn_dob <= 2
+ORDER BY T.student_name, T.date_of_birth;
+
+[2025-06-12 17:30:56.289347] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "子查询聚合改写为窗口函数：存在子查询聚合`COUNT(*)`，且存在自连接，内表和外表都是`students`表，且通过`student_name`和`date_of_birth`字段进行等值关联。这些子查询可以改写为窗口函数`COUNT(*) OVER (PARTITION BY student_name ORDER BY student_name)`和`COUNT(*) OVER (PARTITION BY date_of_birth ORDER BY date_of_birth)`，以提升查询性能。"}]\n\nOriginal SQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n\nOptimized SQL:\nSELECT T.student_name, T.date_of_birth\nFROM (\n    SELECT student_name, date_of_birth,\n        ROW_NUMBER() OVER (ORDER BY student_name) AS rn_name,\n        ROW_NUMBER() OVER (ORDER BY date_of_birth) AS rn_dob\n    FROM students\n) AS T\nWHERE rn_name <= 3 AND rn_dob <= 2\nORDER BY T.student_name, T.date_of_birth;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:30:58.493702] [Model Answer]: {
+    "matched_rule_ids": ["1"]
+}
+[2025-06-12 17:30:58.493793] [11] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1']
+[2025-06-12 17:30:58.493807] [11] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 17:30:58.493821] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "子查询聚合改写为窗口函数：存在子查询聚合`COUNT(*)`，且存在自连接，内表和外表都是`students`表，且通过`student_name`和`date_of_birth`字段进行等值关联。这些子查询可以改写为窗口函数`COUNT(*) OVER (PARTITION BY student_name ORDER BY student_name)`和`COUNT(*) OVER (PARTITION BY date_of_birth ORDER BY date_of_birth)`，以提升查询性能。"}]
+
+Original SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+Optimized SQL:
+SELECT T.student_name, T.date_of_birth
+FROM (
+    SELECT student_name, date_of_birth,
+        ROW_NUMBER() OVER (ORDER BY student_name) AS rn_name,
+        ROW_NUMBER() OVER (ORDER BY date_of_birth) AS rn_dob
+    FROM students
+) AS T
+WHERE rn_name <= 3 AND rn_dob <= 2
+ORDER BY T.student_name, T.date_of_birth;
+
+[2025-06-12 17:30:58.493894] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "子查询聚合改写为窗口函数：存在子查询聚合`COUNT(*)`，且存在自连接，内表和外表都是`students`表，且通过`student_name`和`date_of_birth`字段进行等值关联。这些子查询可以改写为窗口函数`COUNT(*) OVER (PARTITION BY student_name ORDER BY student_name)`和`COUNT(*) OVER (PARTITION BY date_of_birth ORDER BY date_of_birth)`，以提升查询性能。"}]\n\nOriginal SQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n\nOptimized SQL:\nSELECT T.student_name, T.date_of_birth\nFROM (\n    SELECT student_name, date_of_birth,\n        ROW_NUMBER() OVER (ORDER BY student_name) AS rn_name,\n        ROW_NUMBER() OVER (ORDER BY date_of_birth) AS rn_dob\n    FROM students\n) AS T\nWHERE rn_name <= 3 AND rn_dob <= 2\nORDER BY T.student_name, T.date_of_birth;\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:31:05.609373] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:31:05.609472] [11] Subjective Eval Case Judge o4-mini Correct Rules: ['1']
+[2025-06-12 17:31:05.609485] [11] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 17:31:05.609496] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "子查询聚合改写为窗口函数：存在子查询聚合`COUNT(*)`，且存在自连接，内表和外表都是`students`表，且通过`student_name`和`date_of_birth`字段进行等值关联。这些子查询可以改写为窗口函数`COUNT(*) OVER (PARTITION BY student_name ORDER BY student_name)`和`COUNT(*) OVER (PARTITION BY date_of_birth ORDER BY date_of_birth)`，以提升查询性能。"}]
+
+Original SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+Optimized SQL:
+SELECT T.student_name, T.date_of_birth
+FROM (
+    SELECT student_name, date_of_birth,
+        ROW_NUMBER() OVER (ORDER BY student_name) AS rn_name,
+        ROW_NUMBER() OVER (ORDER BY date_of_birth) AS rn_dob
+    FROM students
+) AS T
+WHERE rn_name <= 3 AND rn_dob <= 2
+ORDER BY T.student_name, T.date_of_birth;
+
+[2025-06-12 17:31:05.609567] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "子查询聚合改写为窗口函数：存在子查询聚合`COUNT(*)`，且存在自连接，内表和外表都是`students`表，且通过`student_name`和`date_of_birth`字段进行等值关联。这些子查询可以改写为窗口函数`COUNT(*) OVER (PARTITION BY student_name ORDER BY student_name)`和`COUNT(*) OVER (PARTITION BY date_of_birth ORDER BY date_of_birth)`，以提升查询性能。"}]\n\nOriginal SQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n\nOptimized SQL:\nSELECT T.student_name, T.date_of_birth\nFROM (\n    SELECT student_name, date_of_birth,\n        ROW_NUMBER() OVER (ORDER BY student_name) AS rn_name,\n        ROW_NUMBER() OVER (ORDER BY date_of_birth) AS rn_dob\n    FROM students\n) AS T\nWHERE rn_name <= 3 AND rn_dob <= 2\nORDER BY T.student_name, T.date_of_birth;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:31:06.909496] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:31:06.909584] [11] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1']
+[2025-06-12 17:31:06.909748] [11] Subjective Eval Case Judge Final Correct Rules: ['1']
+[2025-06-12 17:31:06.909788] [11] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 17:31:06.909822] 
+--- Case: 12 ---
+[2025-06-12 17:31:06.909850] [12] Case Run 1/1
+[2025-06-12 17:35:37.773427] [12] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 17:35:37.773457] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`WHERE student_name LIKE 'John%'` 和 `WHERE student_name LIKE 'Jane%'` 都是 `LIKE 'prefix%'` 形式的前缀匹配。`student_name` 字段是字符串类型，且LIKE右侧为常量前缀。可以将其改写为 `student_name >= 'John' AND student_name < 'Joko'` 和 `student_name >= 'Jane' AND student_name < 'Janf'`（这里假设下一个字典序值为'Joko'和'Janf'），利用索引的有序性，避免全表扫描，提升查询性能。"}]
+
+Original SQL:
+SELECT * FROM students WHERE student_name LIKE 'John%' UNION SELECT * FROM students WHERE student_name LIKE 'Jane%';
+
+Optimized SQL:
+SELECT * FROM students WHERE student_name >= 'John' AND student_name < 'Joho'
+UNION
+SELECT * FROM students WHERE student_name >= 'Jane' AND student_name < 'Janf';
+
+[2025-06-12 17:35:37.773531] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`WHERE student_name LIKE \'John%\'` 和 `WHERE student_name LIKE \'Jane%\'` 都是 `LIKE \'prefix%\'` 形式的前缀匹配。`student_name` 字段是字符串类型，且LIKE右侧为常量前缀。可以将其改写为 `student_name >= \'John\' AND student_name < \'Joko\'` 和 `student_name >= \'Jane\' AND student_name < \'Janf\'`（这里假设下一个字典序值为\'Joko\'和\'Janf\'），利用索引的有序性，避免全表扫描，提升查询性能。"}]\n\nOriginal SQL:\nSELECT * FROM students WHERE student_name LIKE \'John%\' UNION SELECT * FROM students WHERE student_name LIKE \'Jane%\';\n\nOptimized SQL:\nSELECT * FROM students WHERE student_name >= \'John\' AND student_name < \'Joho\'\nUNION\nSELECT * FROM students WHERE student_name >= \'Jane\' AND student_name < \'Janf\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:35:40.589780] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:35:40.589865] [12] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1']
+[2025-06-12 17:35:40.589877] [12] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 17:35:40.589889] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`WHERE student_name LIKE 'John%'` 和 `WHERE student_name LIKE 'Jane%'` 都是 `LIKE 'prefix%'` 形式的前缀匹配。`student_name` 字段是字符串类型，且LIKE右侧为常量前缀。可以将其改写为 `student_name >= 'John' AND student_name < 'Joko'` 和 `student_name >= 'Jane' AND student_name < 'Janf'`（这里假设下一个字典序值为'Joko'和'Janf'），利用索引的有序性，避免全表扫描，提升查询性能。"}]
+
+Original SQL:
+SELECT * FROM students WHERE student_name LIKE 'John%' UNION SELECT * FROM students WHERE student_name LIKE 'Jane%';
+
+Optimized SQL:
+SELECT * FROM students WHERE student_name >= 'John' AND student_name < 'Joho'
+UNION
+SELECT * FROM students WHERE student_name >= 'Jane' AND student_name < 'Janf';
+
+[2025-06-12 17:35:40.589953] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`WHERE student_name LIKE \'John%\'` 和 `WHERE student_name LIKE \'Jane%\'` 都是 `LIKE \'prefix%\'` 形式的前缀匹配。`student_name` 字段是字符串类型，且LIKE右侧为常量前缀。可以将其改写为 `student_name >= \'John\' AND student_name < \'Joko\'` 和 `student_name >= \'Jane\' AND student_name < \'Janf\'`（这里假设下一个字典序值为\'Joko\'和\'Janf\'），利用索引的有序性，避免全表扫描，提升查询性能。"}]\n\nOriginal SQL:\nSELECT * FROM students WHERE student_name LIKE \'John%\' UNION SELECT * FROM students WHERE student_name LIKE \'Jane%\';\n\nOptimized SQL:\nSELECT * FROM students WHERE student_name >= \'John\' AND student_name < \'Joho\'\nUNION\nSELECT * FROM students WHERE student_name >= \'Jane\' AND student_name < \'Janf\';\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:35:53.767553] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:35:53.767654] [12] Subjective Eval Case Judge o4-mini Correct Rules: ['1']
+[2025-06-12 17:35:53.767668] [12] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 17:35:53.767680] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`WHERE student_name LIKE 'John%'` 和 `WHERE student_name LIKE 'Jane%'` 都是 `LIKE 'prefix%'` 形式的前缀匹配。`student_name` 字段是字符串类型，且LIKE右侧为常量前缀。可以将其改写为 `student_name >= 'John' AND student_name < 'Joko'` 和 `student_name >= 'Jane' AND student_name < 'Janf'`（这里假设下一个字典序值为'Joko'和'Janf'），利用索引的有序性，避免全表扫描，提升查询性能。"}]
+
+Original SQL:
+SELECT * FROM students WHERE student_name LIKE 'John%' UNION SELECT * FROM students WHERE student_name LIKE 'Jane%';
+
+Optimized SQL:
+SELECT * FROM students WHERE student_name >= 'John' AND student_name < 'Joho'
+UNION
+SELECT * FROM students WHERE student_name >= 'Jane' AND student_name < 'Janf';
+
+[2025-06-12 17:35:53.767748] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "1", "rationale": "LIKE前缀查询优化：`WHERE student_name LIKE \'John%\'` 和 `WHERE student_name LIKE \'Jane%\'` 都是 `LIKE \'prefix%\'` 形式的前缀匹配。`student_name` 字段是字符串类型，且LIKE右侧为常量前缀。可以将其改写为 `student_name >= \'John\' AND student_name < \'Joko\'` 和 `student_name >= \'Jane\' AND student_name < \'Janf\'`（这里假设下一个字典序值为\'Joko\'和\'Janf\'），利用索引的有序性，避免全表扫描，提升查询性能。"}]\n\nOriginal SQL:\nSELECT * FROM students WHERE student_name LIKE \'John%\' UNION SELECT * FROM students WHERE student_name LIKE \'Jane%\';\n\nOptimized SQL:\nSELECT * FROM students WHERE student_name >= \'John\' AND student_name < \'Joho\'\nUNION\nSELECT * FROM students WHERE student_name >= \'Jane\' AND student_name < \'Janf\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:35:58.702318] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:35:58.702410] [12] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1']
+[2025-06-12 17:35:58.702538] [12] Subjective Eval Case Judge Final Correct Rules: ['1']
+[2025-06-12 17:35:58.702571] [12] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 17:35:58.702595] 
+--- Case: 13 ---
+[2025-06-12 17:35:58.702618] [13] Case Run 1/1
+[2025-06-12 17:45:00.044278] [13] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 17:45:00.044312] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "LIMIT下推至UNION分支：外部查询有一个`LIMIT 5`子句，没有`GROUP BY`，`FROM`只有一个子查询 (`mixed`)，没有其他条件。子查询是`UNION`连接的多个查询。这符合LIMIT下推的条件。可以将外部的`LIMIT`下推到`UNION`的各个分支中，减少中间结果集的大小，提高查询性能。需要注意的是，下推时要考虑`ORDER BY`，并且可能需要调整下推的`LIMIT`值以确保结果正确。"}]
+
+Original SQL:
+SELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;
+
+Optimized SQL:
+SELECT * FROM (
+  (SELECT name FROM users ORDER BY name LIMIT 5)
+  UNION
+  (SELECT title FROM articles ORDER BY title LIMIT 5)
+) AS mixed
+ORDER BY name
+LIMIT 5;
+
+[2025-06-12 17:45:00.044410] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "LIMIT下推至UNION分支：外部查询有一个`LIMIT 5`子句，没有`GROUP BY`，`FROM`只有一个子查询 (`mixed`)，没有其他条件。子查询是`UNION`连接的多个查询。这符合LIMIT下推的条件。可以将外部的`LIMIT`下推到`UNION`的各个分支中，减少中间结果集的大小，提高查询性能。需要注意的是，下推时要考虑`ORDER BY`，并且可能需要调整下推的`LIMIT`值以确保结果正确。"}]\n\nOriginal SQL:\nSELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;\n\nOptimized SQL:\nSELECT * FROM (\n  (SELECT name FROM users ORDER BY name LIMIT 5)\n  UNION\n  (SELECT title FROM articles ORDER BY title LIMIT 5)\n) AS mixed\nORDER BY name\nLIMIT 5;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:45:02.098303] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:45:02.098397] [13] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1']
+[2025-06-12 17:45:02.098410] [13] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 17:45:02.098421] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "LIMIT下推至UNION分支：外部查询有一个`LIMIT 5`子句，没有`GROUP BY`，`FROM`只有一个子查询 (`mixed`)，没有其他条件。子查询是`UNION`连接的多个查询。这符合LIMIT下推的条件。可以将外部的`LIMIT`下推到`UNION`的各个分支中，减少中间结果集的大小，提高查询性能。需要注意的是，下推时要考虑`ORDER BY`，并且可能需要调整下推的`LIMIT`值以确保结果正确。"}]
+
+Original SQL:
+SELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;
+
+Optimized SQL:
+SELECT * FROM (
+  (SELECT name FROM users ORDER BY name LIMIT 5)
+  UNION
+  (SELECT title FROM articles ORDER BY title LIMIT 5)
+) AS mixed
+ORDER BY name
+LIMIT 5;
+
+[2025-06-12 17:45:02.098482] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "LIMIT下推至UNION分支：外部查询有一个`LIMIT 5`子句，没有`GROUP BY`，`FROM`只有一个子查询 (`mixed`)，没有其他条件。子查询是`UNION`连接的多个查询。这符合LIMIT下推的条件。可以将外部的`LIMIT`下推到`UNION`的各个分支中，减少中间结果集的大小，提高查询性能。需要注意的是，下推时要考虑`ORDER BY`，并且可能需要调整下推的`LIMIT`值以确保结果正确。"}]\n\nOriginal SQL:\nSELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;\n\nOptimized SQL:\nSELECT * FROM (\n  (SELECT name FROM users ORDER BY name LIMIT 5)\n  UNION\n  (SELECT title FROM articles ORDER BY title LIMIT 5)\n) AS mixed\nORDER BY name\nLIMIT 5;\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:45:09.120245] [Model Answer]: {"matched_rule_ids": []}
+[2025-06-12 17:45:09.120325] [13] Subjective Eval Case Judge o4-mini Correct Rules: []
+[2025-06-12 17:45:09.120338] [13] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 17:45:09.120350] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "LIMIT下推至UNION分支：外部查询有一个`LIMIT 5`子句，没有`GROUP BY`，`FROM`只有一个子查询 (`mixed`)，没有其他条件。子查询是`UNION`连接的多个查询。这符合LIMIT下推的条件。可以将外部的`LIMIT`下推到`UNION`的各个分支中，减少中间结果集的大小，提高查询性能。需要注意的是，下推时要考虑`ORDER BY`，并且可能需要调整下推的`LIMIT`值以确保结果正确。"}]
+
+Original SQL:
+SELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;
+
+Optimized SQL:
+SELECT * FROM (
+  (SELECT name FROM users ORDER BY name LIMIT 5)
+  UNION
+  (SELECT title FROM articles ORDER BY title LIMIT 5)
+) AS mixed
+ORDER BY name
+LIMIT 5;
+
+[2025-06-12 17:45:09.120434] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "LIMIT下推至UNION分支：外部查询有一个`LIMIT 5`子句，没有`GROUP BY`，`FROM`只有一个子查询 (`mixed`)，没有其他条件。子查询是`UNION`连接的多个查询。这符合LIMIT下推的条件。可以将外部的`LIMIT`下推到`UNION`的各个分支中，减少中间结果集的大小，提高查询性能。需要注意的是，下推时要考虑`ORDER BY`，并且可能需要调整下推的`LIMIT`值以确保结果正确。"}]\n\nOriginal SQL:\nSELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;\n\nOptimized SQL:\nSELECT * FROM (\n  (SELECT name FROM users ORDER BY name LIMIT 5)\n  UNION\n  (SELECT title FROM articles ORDER BY title LIMIT 5)\n) AS mixed\nORDER BY name\nLIMIT 5;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:45:10.668536] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:45:10.668616] [13] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1']
+[2025-06-12 17:45:10.668773] [13] Subjective Eval Case Judge Final Correct Rules: ['1']
+[2025-06-12 17:45:10.668808] [13] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 17:45:10.668835] 
+--- Case: 14 ---
+[2025-06-12 17:45:10.668858] [14] Case Run 1/1
+[2025-06-12 17:49:41.637516] [14] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 17:49:41.637547] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "IN/ANY 子查询转标量子查询：子查询 `SELECT MAX(id) FROM students` 明确只返回一个聚合结果（最大ID），即最多返回一行。同时，该子查询不引用外部查询的列。因此，可以将 `IN` 子查询转换为 `=` 比较的标量子查询形式，以利用子查询物化，减少重复计算，提升查询性能。"}]
+
+Original SQL:
+SELECT * FROM students WHERE id IN ( SELECT MAX(id) FROM students );
+
+Optimized SQL:
+SELECT * FROM students WHERE id = ( SELECT MAX(id) FROM students );
+
+[2025-06-12 17:49:41.637621] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "IN/ANY 子查询转标量子查询：子查询 `SELECT MAX(id) FROM students` 明确只返回一个聚合结果（最大ID），即最多返回一行。同时，该子查询不引用外部查询的列。因此，可以将 `IN` 子查询转换为 `=` 比较的标量子查询形式，以利用子查询物化，减少重复计算，提升查询性能。"}]\n\nOriginal SQL:\nSELECT * FROM students WHERE id IN ( SELECT MAX(id) FROM students );\n\nOptimized SQL:\nSELECT * FROM students WHERE id = ( SELECT MAX(id) FROM students );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:49:45.565939] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:49:45.566020] [14] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1']
+[2025-06-12 17:49:45.566032] [14] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 17:49:45.566043] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "IN/ANY 子查询转标量子查询：子查询 `SELECT MAX(id) FROM students` 明确只返回一个聚合结果（最大ID），即最多返回一行。同时，该子查询不引用外部查询的列。因此，可以将 `IN` 子查询转换为 `=` 比较的标量子查询形式，以利用子查询物化，减少重复计算，提升查询性能。"}]
+
+Original SQL:
+SELECT * FROM students WHERE id IN ( SELECT MAX(id) FROM students );
+
+Optimized SQL:
+SELECT * FROM students WHERE id = ( SELECT MAX(id) FROM students );
+
+[2025-06-12 17:49:45.566103] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "IN/ANY 子查询转标量子查询：子查询 `SELECT MAX(id) FROM students` 明确只返回一个聚合结果（最大ID），即最多返回一行。同时，该子查询不引用外部查询的列。因此，可以将 `IN` 子查询转换为 `=` 比较的标量子查询形式，以利用子查询物化，减少重复计算，提升查询性能。"}]\n\nOriginal SQL:\nSELECT * FROM students WHERE id IN ( SELECT MAX(id) FROM students );\n\nOptimized SQL:\nSELECT * FROM students WHERE id = ( SELECT MAX(id) FROM students );\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:49:50.794428] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:49:50.794512] [14] Subjective Eval Case Judge o4-mini Correct Rules: ['1']
+[2025-06-12 17:49:50.794524] [14] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 17:49:50.794537] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "IN/ANY 子查询转标量子查询：子查询 `SELECT MAX(id) FROM students` 明确只返回一个聚合结果（最大ID），即最多返回一行。同时，该子查询不引用外部查询的列。因此，可以将 `IN` 子查询转换为 `=` 比较的标量子查询形式，以利用子查询物化，减少重复计算，提升查询性能。"}]
+
+Original SQL:
+SELECT * FROM students WHERE id IN ( SELECT MAX(id) FROM students );
+
+Optimized SQL:
+SELECT * FROM students WHERE id = ( SELECT MAX(id) FROM students );
+
+[2025-06-12 17:49:50.794601] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "IN/ANY 子查询转标量子查询：子查询 `SELECT MAX(id) FROM students` 明确只返回一个聚合结果（最大ID），即最多返回一行。同时，该子查询不引用外部查询的列。因此，可以将 `IN` 子查询转换为 `=` 比较的标量子查询形式，以利用子查询物化，减少重复计算，提升查询性能。"}]\n\nOriginal SQL:\nSELECT * FROM students WHERE id IN ( SELECT MAX(id) FROM students );\n\nOptimized SQL:\nSELECT * FROM students WHERE id = ( SELECT MAX(id) FROM students );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:49:54.680542] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 17:49:54.680588] [14] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1']
+[2025-06-12 17:49:54.680672] [14] Subjective Eval Case Judge Final Correct Rules: ['1']
+[2025-06-12 17:49:54.680688] [14] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 17:49:54.680701] 
+--- Case: 15 ---
+[2025-06-12 17:49:54.680714] [15] Case Run 1/1
+[2025-06-12 17:57:25.968752] [15] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 17:57:25.968784] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE enrollment_date >= '2023-01-01'` 条件可以下推到子查询 `SELECT student_id, enrollment_date FROM enrollments` 的 `enrollments` 表中，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, enrollment_date FROM enrollments WHERE student_id < 1000` 中的 `student_id` 列在外层 `SELECT COUNT(*)` 中没有被直接使用，但由于 `COUNT(*)` 仅关心行数，因此 `student_id` 列可以从投影中移除，替换为 `SELECT 1` 或仅保留必要的列，以减少IO和网络代价。"}, {"rule_id": "3", "difficulty_level": "2", "rationale": "子查询折叠：外部查询的运算级别不高于子查询，且没有别名冲突及其他限制，故可将子查询折叠以减少中间结果"}]
+
+Original SQL:
+SELECT COUNT(*) FROM ( SELECT student_id, enrollment_date FROM enrollments WHERE student_id < 1000 ) AS dt WHERE enrollment_date >= '2023-01-01';
+
+Optimized SQL:
+SELECT COUNT(*) FROM enrollments WHERE student_id < 1000 AND enrollment_date >= '2023-01-01';
+
+[2025-06-12 17:57:25.968859] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE enrollment_date >= \'2023-01-01\'` 条件可以下推到子查询 `SELECT student_id, enrollment_date FROM enrollments` 的 `enrollments` 表中，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, enrollment_date FROM enrollments WHERE student_id < 1000` 中的 `student_id` 列在外层 `SELECT COUNT(*)` 中没有被直接使用，但由于 `COUNT(*)` 仅关心行数，因此 `student_id` 列可以从投影中移除，替换为 `SELECT 1` 或仅保留必要的列，以减少IO和网络代价。"}, {"rule_id": "3", "difficulty_level": "2", "rationale": "子查询折叠：外部查询的运算级别不高于子查询，且没有别名冲突及其他限制，故可将子查询折叠以减少中间结果"}]\n\nOriginal SQL:\nSELECT COUNT(*) FROM ( SELECT student_id, enrollment_date FROM enrollments WHERE student_id < 1000 ) AS dt WHERE enrollment_date >= \'2023-01-01\';\n\nOptimized SQL:\nSELECT COUNT(*) FROM enrollments WHERE student_id < 1000 AND enrollment_date >= \'2023-01-01\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:57:30.097350] [Model Answer]: {
+  "matched_rule_ids": ["1", "3"]
+}
+[2025-06-12 17:57:30.097433] [15] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1', '3']
+[2025-06-12 17:57:30.097463] [15] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 17:57:30.097475] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE enrollment_date >= '2023-01-01'` 条件可以下推到子查询 `SELECT student_id, enrollment_date FROM enrollments` 的 `enrollments` 表中，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, enrollment_date FROM enrollments WHERE student_id < 1000` 中的 `student_id` 列在外层 `SELECT COUNT(*)` 中没有被直接使用，但由于 `COUNT(*)` 仅关心行数，因此 `student_id` 列可以从投影中移除，替换为 `SELECT 1` 或仅保留必要的列，以减少IO和网络代价。"}, {"rule_id": "3", "difficulty_level": "2", "rationale": "子查询折叠：外部查询的运算级别不高于子查询，且没有别名冲突及其他限制，故可将子查询折叠以减少中间结果"}]
+
+Original SQL:
+SELECT COUNT(*) FROM ( SELECT student_id, enrollment_date FROM enrollments WHERE student_id < 1000 ) AS dt WHERE enrollment_date >= '2023-01-01';
+
+Optimized SQL:
+SELECT COUNT(*) FROM enrollments WHERE student_id < 1000 AND enrollment_date >= '2023-01-01';
+
+[2025-06-12 17:57:30.097545] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE enrollment_date >= \'2023-01-01\'` 条件可以下推到子查询 `SELECT student_id, enrollment_date FROM enrollments` 的 `enrollments` 表中，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, enrollment_date FROM enrollments WHERE student_id < 1000` 中的 `student_id` 列在外层 `SELECT COUNT(*)` 中没有被直接使用，但由于 `COUNT(*)` 仅关心行数，因此 `student_id` 列可以从投影中移除，替换为 `SELECT 1` 或仅保留必要的列，以减少IO和网络代价。"}, {"rule_id": "3", "difficulty_level": "2", "rationale": "子查询折叠：外部查询的运算级别不高于子查询，且没有别名冲突及其他限制，故可将子查询折叠以减少中间结果"}]\n\nOriginal SQL:\nSELECT COUNT(*) FROM ( SELECT student_id, enrollment_date FROM enrollments WHERE student_id < 1000 ) AS dt WHERE enrollment_date >= \'2023-01-01\';\n\nOptimized SQL:\nSELECT COUNT(*) FROM enrollments WHERE student_id < 1000 AND enrollment_date >= \'2023-01-01\';\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:57:36.444940] [Model Answer]: {"matched_rule_ids": ["1", "3"]}
+[2025-06-12 17:57:36.445022] [15] Subjective Eval Case Judge o4-mini Correct Rules: ['1', '3']
+[2025-06-12 17:57:36.445035] [15] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 17:57:36.445047] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE enrollment_date >= '2023-01-01'` 条件可以下推到子查询 `SELECT student_id, enrollment_date FROM enrollments` 的 `enrollments` 表中，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, enrollment_date FROM enrollments WHERE student_id < 1000` 中的 `student_id` 列在外层 `SELECT COUNT(*)` 中没有被直接使用，但由于 `COUNT(*)` 仅关心行数，因此 `student_id` 列可以从投影中移除，替换为 `SELECT 1` 或仅保留必要的列，以减少IO和网络代价。"}, {"rule_id": "3", "difficulty_level": "2", "rationale": "子查询折叠：外部查询的运算级别不高于子查询，且没有别名冲突及其他限制，故可将子查询折叠以减少中间结果"}]
+
+Original SQL:
+SELECT COUNT(*) FROM ( SELECT student_id, enrollment_date FROM enrollments WHERE student_id < 1000 ) AS dt WHERE enrollment_date >= '2023-01-01';
+
+Optimized SQL:
+SELECT COUNT(*) FROM enrollments WHERE student_id < 1000 AND enrollment_date >= '2023-01-01';
+
+[2025-06-12 17:57:36.445117] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "谓词下推：外部查询的 `WHERE enrollment_date >= \'2023-01-01\'` 条件可以下推到子查询 `SELECT student_id, enrollment_date FROM enrollments` 的 `enrollments` 表中，从而在数据源处尽早过滤不必要的数据，减少处理量。"}, {"rule_id": "2", "difficulty_level": "1", "rationale": "投影下推：子查询 `SELECT student_id, enrollment_date FROM enrollments WHERE student_id < 1000` 中的 `student_id` 列在外层 `SELECT COUNT(*)` 中没有被直接使用，但由于 `COUNT(*)` 仅关心行数，因此 `student_id` 列可以从投影中移除，替换为 `SELECT 1` 或仅保留必要的列，以减少IO和网络代价。"}, {"rule_id": "3", "difficulty_level": "2", "rationale": "子查询折叠：外部查询的运算级别不高于子查询，且没有别名冲突及其他限制，故可将子查询折叠以减少中间结果"}]\n\nOriginal SQL:\nSELECT COUNT(*) FROM ( SELECT student_id, enrollment_date FROM enrollments WHERE student_id < 1000 ) AS dt WHERE enrollment_date >= \'2023-01-01\';\n\nOptimized SQL:\nSELECT COUNT(*) FROM enrollments WHERE student_id < 1000 AND enrollment_date >= \'2023-01-01\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 17:57:39.927949] [Model Answer]: {"matched_rule_ids": ["1", "3"]}
+[2025-06-12 17:57:39.928038] [15] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1', '3']
+[2025-06-12 17:57:39.928195] [15] Subjective Eval Case Judge Final Correct Rules: ['1', '3']
+[2025-06-12 17:57:39.928234] [15] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 17:57:39.928248] [15] subjective Eval Case Rule[2] Final Result: False
+[2025-06-12 17:57:39.928257] [15] subjective Eval Case Rule[3] Final Result: True
+[2025-06-12 19:19:55.059175] 
+--- Case: 16 ---
+[2025-06-12 19:19:55.059199] [16] Case Run 1/1
+[2025-06-12 19:25:56.258739] [16] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 19:25:56.258762] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]
+
+Original SQL:
+SELECT o.o_custkey FROM orders o LEFT JOIN customer ON c_custkey=o_custkey
+
+Optimized SQL:
+SELECT o.o_custkey FROM orders o
+
+[2025-06-12 19:25:56.258812] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]\n\nOriginal SQL:\nSELECT o.o_custkey FROM orders o LEFT JOIN customer ON c_custkey=o_custkey\n\nOptimized SQL:\nSELECT o.o_custkey FROM orders o\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 19:25:58.502538] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 19:25:58.502598] [16] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1']
+[2025-06-12 19:25:58.502606] [16] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 19:25:58.502615] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]
+
+Original SQL:
+SELECT o.o_custkey FROM orders o LEFT JOIN customer ON c_custkey=o_custkey
+
+Optimized SQL:
+SELECT o.o_custkey FROM orders o
+
+[2025-06-12 19:25:58.502672] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]\n\nOriginal SQL:\nSELECT o.o_custkey FROM orders o LEFT JOIN customer ON c_custkey=o_custkey\n\nOptimized SQL:\nSELECT o.o_custkey FROM orders o\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 19:26:01.342277] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 19:26:01.342365] [16] Subjective Eval Case Judge o4-mini Correct Rules: ['1']
+[2025-06-12 19:26:01.342378] [16] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 19:26:01.342410] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]
+
+Original SQL:
+SELECT o.o_custkey FROM orders o LEFT JOIN customer ON c_custkey=o_custkey
+
+Optimized SQL:
+SELECT o.o_custkey FROM orders o
+
+[2025-06-12 19:26:01.342482] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]\n\nOriginal SQL:\nSELECT o.o_custkey FROM orders o LEFT JOIN customer ON c_custkey=o_custkey\n\nOptimized SQL:\nSELECT o.o_custkey FROM orders o\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 19:27:24.226942] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]\n\nOriginal SQL:\nSELECT o.o_custkey FROM orders o LEFT JOIN customer ON c_custkey=o_custkey\n\nOptimized SQL:\nSELECT o.o_custkey FROM orders o\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 19:28:36.331903] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]\n\nOriginal SQL:\nSELECT o.o_custkey FROM orders o LEFT JOIN customer ON c_custkey=o_custkey\n\nOptimized SQL:\nSELECT o.o_custkey FROM orders o\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 19:28:47.335793] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 19:28:47.335854] [16] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1']
+[2025-06-12 19:28:47.335980] [16] Subjective Eval Case Judge Final Correct Rules: ['1']
+[2025-06-12 19:28:47.336006] [16] subjective Eval Case Rule[1] Final Result: True
+[2025-06-12 19:28:47.336031] 
+--- Case: 17 ---
+[2025-06-12 19:28:47.336049] [17] Case Run 1/1
+[2025-06-12 19:33:18.223656] [17] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 19:33:18.223678] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接（即 `ON` 条件中不能存在其他 `OR` 条件，且主要通过字段进行等值判断）。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]
+
+Original SQL:
+SELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey
+
+Optimized SQL:
+SELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey
+
+[2025-06-12 19:33:18.223728] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接（即 `ON` 条件中不能存在其他 `OR` 条件，且主要通过字段进行等值判断）。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]\n\nOriginal SQL:\nSELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey\n\nOptimized SQL:\nSELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 19:33:19.942606] [Model Answer]: {"matched_rule_ids": []}
+[2025-06-12 19:33:19.942699] [17] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: []
+[2025-06-12 19:33:19.942711] [17] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 19:33:19.942723] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接（即 `ON` 条件中不能存在其他 `OR` 条件，且主要通过字段进行等值判断）。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]
+
+Original SQL:
+SELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey
+
+Optimized SQL:
+SELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey
+
+[2025-06-12 19:33:19.942782] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接（即 `ON` 条件中不能存在其他 `OR` 条件，且主要通过字段进行等值判断）。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]\n\nOriginal SQL:\nSELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey\n\nOptimized SQL:\nSELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 19:33:24.454870] [Model Answer]: {"matched_rule_ids": []}
+[2025-06-12 19:33:24.454958] [17] Subjective Eval Case Judge o4-mini Correct Rules: []
+[2025-06-12 19:33:24.454972] [17] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 19:33:24.454985] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接（即 `ON` 条件中不能存在其他 `OR` 条件，且主要通过字段进行等值判断）。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]
+
+Original SQL:
+SELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey
+
+Optimized SQL:
+SELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey
+
+[2025-06-12 19:33:24.455057] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接（即 `ON` 条件中不能存在其他 `OR` 条件，且主要通过字段进行等值判断）。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]\n\nOriginal SQL:\nSELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey\n\nOptimized SQL:\nSELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 19:34:41.698431] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接（即 `ON` 条件中不能存在其他 `OR` 条件，且主要通过字段进行等值判断）。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]\n\nOriginal SQL:\nSELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey\n\nOptimized SQL:\nSELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 19:35:59.195853] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接（即 `ON` 条件中不能存在其他 `OR` 条件，且主要通过字段进行等值判断）。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]\n\nOriginal SQL:\nSELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey\n\nOptimized SQL:\nSELECT c.* FROM customer c LEFT JOIN orders o ON c.c_custkey > o.o_custkey\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 19:36:10.073358] [Model Answer]: {"matched_rule_ids": []}
+[2025-06-12 19:36:10.073444] [17] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: []
+[2025-06-12 19:36:10.073587] [17] Subjective Eval Case Judge Final Correct Rules: []
+[2025-06-12 19:36:10.073623] [17] subjective Eval Case Rule[1] Final Result: False
+[2025-06-12 20:19:01.895917] 
+--- Case: 18 ---
+[2025-06-12 20:19:01.895941] [18] Case Run 1/1
+[2025-06-12 20:28:33.267682] [18] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 20:28:33.267699] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]
+
+Original SQL:
+SELECT c.* FROM customer AS c LEFT JOIN orders AS o ON c.c_custkey > o.o_custkey
+
+Optimized SQL:
+SELECT c.* FROM customer AS c LEFT JOIN orders AS o ON c.c_custkey > o.o_custkey
+
+[2025-06-12 20:28:33.267737] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]\n\nOriginal SQL:\nSELECT c.* FROM customer AS c LEFT JOIN orders AS o ON c.c_custkey > o.o_custkey\n\nOptimized SQL:\nSELECT c.* FROM customer AS c LEFT JOIN orders AS o ON c.c_custkey > o.o_custkey\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 20:28:35.514441] [Model Answer]: {"matched_rule_ids": []}
+[2025-06-12 20:28:35.514519] [18] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: []
+[2025-06-12 20:28:35.514531] [18] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 20:28:35.514542] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]
+
+Original SQL:
+SELECT c.* FROM customer AS c LEFT JOIN orders AS o ON c.c_custkey > o.o_custkey
+
+Optimized SQL:
+SELECT c.* FROM customer AS c LEFT JOIN orders AS o ON c.c_custkey > o.o_custkey
+
+[2025-06-12 20:28:35.514603] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]\n\nOriginal SQL:\nSELECT c.* FROM customer AS c LEFT JOIN orders AS o ON c.c_custkey > o.o_custkey\n\nOptimized SQL:\nSELECT c.* FROM customer AS c LEFT JOIN orders AS o ON c.c_custkey > o.o_custkey\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 20:28:38.410650] [Model Answer]: {"matched_rule_ids": []}
+[2025-06-12 20:28:38.410730] [18] Subjective Eval Case Judge o4-mini Correct Rules: []
+[2025-06-12 20:28:38.410742] [18] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 20:28:38.410753] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]
+
+Original SQL:
+SELECT c.* FROM customer AS c LEFT JOIN orders AS o ON c.c_custkey > o.o_custkey
+
+Optimized SQL:
+SELECT c.* FROM customer AS c LEFT JOIN orders AS o ON c.c_custkey > o.o_custkey
+
+[2025-06-12 20:28:38.410818] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：该语句是 `LEFT JOIN`，但连接条件 `c.c_custkey > o.o_custkey` 是一个不等值连接。根据规则，外连接消除通常只适用于等值连接。因此，这种不等值连接不满足 `rule0003` 中两表是等值连接的条件，不能直接进行外连接消除。"}]\n\nOriginal SQL:\nSELECT c.* FROM customer AS c LEFT JOIN orders AS o ON c.c_custkey > o.o_custkey\n\nOptimized SQL:\nSELECT c.* FROM customer AS c LEFT JOIN orders AS o ON c.c_custkey > o.o_custkey\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 20:28:40.226392] [Model Answer]: {"matched_rule_ids": []}
+[2025-06-12 20:28:40.226465] [18] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: []
+[2025-06-12 20:28:40.226575] [18] Subjective Eval Case Judge Final Correct Rules: []
+[2025-06-12 20:28:40.226607] [18] subjective Eval Case Rule[1] Final Result: False
+[2025-06-12 21:02:27.587187] 
+--- Case: 19 ---
+[2025-06-12 21:02:27.587207] [19] Case Run 1/1
+[2025-06-12 21:09:28.710191] [19] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 21:09:28.710220] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：本用例为 `INNER JOIN`，而非 `LEFT JOIN` 或 `RIGHT JOIN`。`外连接表消除`规则 (rule0003) 明确适用于 `LEFT JOIN` 或 `RIGHT JOIN`，其目的是在满足特定条件时将外连接转换为内连接或直接消除。对于原始就是 `INNER JOIN` 的情况，该规则不直接适用，因为其连接语义已经是最严格的。因此，此SQL不符合 `rule0003` 的应用条件。"}]
+
+Original SQL:
+SELECT DISTINCT PatientRecords.PatientID, PatientRecords.Name, TreatmentHistory.TreatmentDate FROM PatientRecords INNER JOIN TreatmentHistory ON PatientRecords.PatientID = TreatmentHistory.PatientID ORDER BY TreatmentHistory.TreatmentDate DESC
+
+Optimized SQL:
+SELECT DISTINCT PatientRecords.PatientID, PatientRecords.Name, TreatmentHistory.TreatmentDate FROM PatientRecords INNER JOIN TreatmentHistory ON PatientRecords.PatientID = TreatmentHistory.PatientID ORDER BY TreatmentHistory.TreatmentDate DESC
+
+[2025-06-12 21:09:28.710295] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：本用例为 `INNER JOIN`，而非 `LEFT JOIN` 或 `RIGHT JOIN`。`外连接表消除`规则 (rule0003) 明确适用于 `LEFT JOIN` 或 `RIGHT JOIN`，其目的是在满足特定条件时将外连接转换为内连接或直接消除。对于原始就是 `INNER JOIN` 的情况，该规则不直接适用，因为其连接语义已经是最严格的。因此，此SQL不符合 `rule0003` 的应用条件。"}]\n\nOriginal SQL:\nSELECT DISTINCT PatientRecords.PatientID, PatientRecords.Name, TreatmentHistory.TreatmentDate FROM PatientRecords INNER JOIN TreatmentHistory ON PatientRecords.PatientID = TreatmentHistory.PatientID ORDER BY TreatmentHistory.TreatmentDate DESC\n\nOptimized SQL:\nSELECT DISTINCT PatientRecords.PatientID, PatientRecords.Name, TreatmentHistory.TreatmentDate FROM PatientRecords INNER JOIN TreatmentHistory ON PatientRecords.PatientID = TreatmentHistory.PatientID ORDER BY TreatmentHistory.TreatmentDate DESC\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 21:09:30.908847] [Model Answer]: {"matched_rule_ids": []}
+[2025-06-12 21:09:30.908932] [19] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: []
+[2025-06-12 21:09:30.908944] [19] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 21:09:30.908956] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：本用例为 `INNER JOIN`，而非 `LEFT JOIN` 或 `RIGHT JOIN`。`外连接表消除`规则 (rule0003) 明确适用于 `LEFT JOIN` 或 `RIGHT JOIN`，其目的是在满足特定条件时将外连接转换为内连接或直接消除。对于原始就是 `INNER JOIN` 的情况，该规则不直接适用，因为其连接语义已经是最严格的。因此，此SQL不符合 `rule0003` 的应用条件。"}]
+
+Original SQL:
+SELECT DISTINCT PatientRecords.PatientID, PatientRecords.Name, TreatmentHistory.TreatmentDate FROM PatientRecords INNER JOIN TreatmentHistory ON PatientRecords.PatientID = TreatmentHistory.PatientID ORDER BY TreatmentHistory.TreatmentDate DESC
+
+Optimized SQL:
+SELECT DISTINCT PatientRecords.PatientID, PatientRecords.Name, TreatmentHistory.TreatmentDate FROM PatientRecords INNER JOIN TreatmentHistory ON PatientRecords.PatientID = TreatmentHistory.PatientID ORDER BY TreatmentHistory.TreatmentDate DESC
+
+[2025-06-12 21:09:30.909022] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：本用例为 `INNER JOIN`，而非 `LEFT JOIN` 或 `RIGHT JOIN`。`外连接表消除`规则 (rule0003) 明确适用于 `LEFT JOIN` 或 `RIGHT JOIN`，其目的是在满足特定条件时将外连接转换为内连接或直接消除。对于原始就是 `INNER JOIN` 的情况，该规则不直接适用，因为其连接语义已经是最严格的。因此，此SQL不符合 `rule0003` 的应用条件。"}]\n\nOriginal SQL:\nSELECT DISTINCT PatientRecords.PatientID, PatientRecords.Name, TreatmentHistory.TreatmentDate FROM PatientRecords INNER JOIN TreatmentHistory ON PatientRecords.PatientID = TreatmentHistory.PatientID ORDER BY TreatmentHistory.TreatmentDate DESC\n\nOptimized SQL:\nSELECT DISTINCT PatientRecords.PatientID, PatientRecords.Name, TreatmentHistory.TreatmentDate FROM PatientRecords INNER JOIN TreatmentHistory ON PatientRecords.PatientID = TreatmentHistory.PatientID ORDER BY TreatmentHistory.TreatmentDate DESC\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 21:09:40.540209] [Model Answer]: {"matched_rule_ids": []}
+[2025-06-12 21:09:40.540289] [19] Subjective Eval Case Judge o4-mini Correct Rules: []
+[2025-06-12 21:09:40.540301] [19] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 21:09:40.540313] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：本用例为 `INNER JOIN`，而非 `LEFT JOIN` 或 `RIGHT JOIN`。`外连接表消除`规则 (rule0003) 明确适用于 `LEFT JOIN` 或 `RIGHT JOIN`，其目的是在满足特定条件时将外连接转换为内连接或直接消除。对于原始就是 `INNER JOIN` 的情况，该规则不直接适用，因为其连接语义已经是最严格的。因此，此SQL不符合 `rule0003` 的应用条件。"}]
+
+Original SQL:
+SELECT DISTINCT PatientRecords.PatientID, PatientRecords.Name, TreatmentHistory.TreatmentDate FROM PatientRecords INNER JOIN TreatmentHistory ON PatientRecords.PatientID = TreatmentHistory.PatientID ORDER BY TreatmentHistory.TreatmentDate DESC
+
+Optimized SQL:
+SELECT DISTINCT PatientRecords.PatientID, PatientRecords.Name, TreatmentHistory.TreatmentDate FROM PatientRecords INNER JOIN TreatmentHistory ON PatientRecords.PatientID = TreatmentHistory.PatientID ORDER BY TreatmentHistory.TreatmentDate DESC
+
+[2025-06-12 21:09:40.540384] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：本用例为 `INNER JOIN`，而非 `LEFT JOIN` 或 `RIGHT JOIN`。`外连接表消除`规则 (rule0003) 明确适用于 `LEFT JOIN` 或 `RIGHT JOIN`，其目的是在满足特定条件时将外连接转换为内连接或直接消除。对于原始就是 `INNER JOIN` 的情况，该规则不直接适用，因为其连接语义已经是最严格的。因此，此SQL不符合 `rule0003` 的应用条件。"}]\n\nOriginal SQL:\nSELECT DISTINCT PatientRecords.PatientID, PatientRecords.Name, TreatmentHistory.TreatmentDate FROM PatientRecords INNER JOIN TreatmentHistory ON PatientRecords.PatientID = TreatmentHistory.PatientID ORDER BY TreatmentHistory.TreatmentDate DESC\n\nOptimized SQL:\nSELECT DISTINCT PatientRecords.PatientID, PatientRecords.Name, TreatmentHistory.TreatmentDate FROM PatientRecords INNER JOIN TreatmentHistory ON PatientRecords.PatientID = TreatmentHistory.PatientID ORDER BY TreatmentHistory.TreatmentDate DESC\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 21:09:41.418644] [Model Answer]: {"matched_rule_ids": []}
+[2025-06-12 21:09:41.418728] [19] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: []
+[2025-06-12 21:09:41.418851] [19] Subjective Eval Case Judge Final Correct Rules: []
+[2025-06-12 21:09:41.418888] [19] subjective Eval Case Rule[1] Final Result: False
+[2025-06-12 21:38:24.733788] 
+--- Case: 20 ---
+[2025-06-12 21:38:24.733813] [20] Case Run 1/1
+[2025-06-12 21:47:56.097289] [20] Subjective Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-12 21:47:56.097341] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：与Case 5类似，`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]
+
+Original SQL:
+SELECT o_custkey FROM orders LEFT JOIN customer ON c_custkey=o_custkey
+
+Optimized SQL:
+SELECT o_custkey FROM orders
+
+[2025-06-12 21:47:56.097423] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：与Case 5类似，`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]\n\nOriginal SQL:\nSELECT o_custkey FROM orders LEFT JOIN customer ON c_custkey=o_custkey\n\nOptimized SQL:\nSELECT o_custkey FROM orders\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 21:47:58.503019] [Model Answer]: {
+  "matched_rule_ids": ["1"]
+}
+[2025-06-12 21:47:58.503100] [20] Subjective Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Correct Rules: ['1']
+[2025-06-12 21:47:58.503112] [20] Subjective Eval: Using Judge LLM 'o4-mini'
+[2025-06-12 21:47:58.503123] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：与Case 5类似，`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]
+
+Original SQL:
+SELECT o_custkey FROM orders LEFT JOIN customer ON c_custkey=o_custkey
+
+Optimized SQL:
+SELECT o_custkey FROM orders
+
+[2025-06-12 21:47:58.503184] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：与Case 5类似，`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]\n\nOriginal SQL:\nSELECT o_custkey FROM orders LEFT JOIN customer ON c_custkey=o_custkey\n\nOptimized SQL:\nSELECT o_custkey FROM orders\n'}], 'max_completion_tokens': 2500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 21:48:02.013681] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 21:48:02.013731] [20] Subjective Eval Case Judge o4-mini Correct Rules: ['1']
+[2025-06-12 21:48:02.013736] [20] Subjective Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-12 21:48:02.013742] [Model Prompt]: You are a SQL optimization judge.
+Given the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,
+identify which rule_id values have been applied correctly.
+Respond only with JSON in this format, with no extra text:
+
+{"matched_rule_ids": [<rule_id>, ...]}
+
+Optimization Rules:
+[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：与Case 5类似，`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]
+
+Original SQL:
+SELECT o_custkey FROM orders LEFT JOIN customer ON c_custkey=o_custkey
+
+Optimized SQL:
+SELECT o_custkey FROM orders
+
+[2025-06-12 21:48:02.013776] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a SQL optimization judge.\nGiven the list of optimization rules, the original SQL, and the optimized SQL produced by the assistant,\nidentify which rule_id values have been applied correctly.\nRespond only with JSON in this format, with no extra text:\n\n{"matched_rule_ids": [<rule_id>, ...]}\n\nOptimization Rules:\n[{"rule_id": "1", "difficulty_level": "2", "rationale": "外连接表消除：与Case 5类似，`LEFT JOIN customer` 是一个外连接。由于 `customer` 表的任何列没有在 `SELECT` 列表、`WHERE`、`GROUP BY`、`ORDER BY` 或 `HAVING` 子句中被引用（即被关联表没有被引用）。假设其为等值连接且未加锁，并且 `C_CUSTKEY` 是主键，满足“连表语句不会导致数据重复”的条件，因此这个 `LEFT JOIN` 可以被消除，只保留 `orders` 表。"}]\n\nOriginal SQL:\nSELECT o_custkey FROM orders LEFT JOIN customer ON c_custkey=o_custkey\n\nOptimized SQL:\nSELECT o_custkey FROM orders\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-12 21:48:02.735587] [Model Answer]: {"matched_rule_ids": ["1"]}
+[2025-06-12 21:48:02.735692] [20] Subjective Eval Case Judge gemini-2.0-flash Correct Rules: ['1']
+[2025-06-12 21:48:02.735835] [20] Subjective Eval Case Judge Final Correct Rules: ['1']
+[2025-06-12 21:48:02.735873] [20] subjective Eval Case Rule[1] Final Result: True
