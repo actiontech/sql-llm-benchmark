@@ -1,21 +1,4 @@
-import { Model } from "../types/ranking";
-
-export interface IndicatorModel {
-    rank: number;
-    modelId: string;
-    modelName: string;
-    score: number;
-    logoInfo: string;
-    modelType: string;
-    organization: string;
-    hasData: boolean;
-}
-
-export interface IndicatorRankingData {
-    dimension: string;
-    indicator: string;
-    models: IndicatorModel[];
-}
+import { Model, IndicatorModel, IndicatorRankingData } from "../types/ranking";
 
 /**
  * 获取指定维度的所有可用指标
@@ -69,6 +52,7 @@ export const generateIndicatorRanking = (
                 modelType: model.type,
                 organization: model.organization,
                 hasData: true,
+                new_model: model.new_model, // 添加新模型标识
             });
         }
     });

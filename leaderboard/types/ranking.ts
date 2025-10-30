@@ -37,6 +37,7 @@ export interface IndicatorModel {
     modelType: string;
     organization: string;
     hasData: boolean;
+    new_model?: boolean; // 新增字段：标识是否为当月新增模型
 }
 
 export interface IndicatorRankingData {
