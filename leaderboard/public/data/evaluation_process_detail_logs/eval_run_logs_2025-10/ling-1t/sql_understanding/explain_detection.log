@@ -1,0 +1,761 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20251029_190501_191
+Run Dimensions: sql_understanding
+Run Indicator: explain_detection
+Evaluation Timestamp: 2025-10-29T19:14:24.503776
+Target LLM: inclusionAI/Ling-1T
+Judge LLMs: Pro/deepseek-ai/DeepSeek-R1, o4-mini, gemini-2.5-pro
+-------------------------------------------------
+
+[2025-10-29 19:11:18.285628] Run Indicator: sql_understanding, Parameters size: 12345B
+[2025-10-29 19:11:18.288081] 
+--- Capability: sql_understanding Indicator explain_detection.jsonl Evaluating Type: objective  ---
+[2025-10-29 19:11:18.288333] 
+--- Case: 1 ---
+[2025-10-29 19:11:18.288468] [1] Case Run 1/1
+[2025-10-29 19:11:18.288795] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE students (id INT PRIMARY KEY, name VARCHAR(100), age INT, grade VARCHAR(10));
+
+Data Inserts:
+INSERT INTO students (id, name, age, grade) VALUES (1, 'Alice', 18, 'A'), (2, 'Bob', 19, 'B'), (3, 'Charlie', 18, 'A'), (4, 'David', 20, 'C');
+
+Query:
+SELECT name, age FROM students WHERE grade = 'B';
+
+[2025-10-29 19:11:18.289235] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE students (id INT PRIMARY KEY, name VARCHAR(100), age INT, grade VARCHAR(10));\n\nData Inserts:\nINSERT INTO students (id, name, age, grade) VALUES (1, \'Alice\', 18, \'A\'), (2, \'Bob\', 19, \'B\'), (3, \'Charlie\', 18, \'A\'), (4, \'David\', 20, \'C\');\n\nQuery:\nSELECT name, age FROM students WHERE grade = \'B\';\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:11:27.513439] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "4",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using where",
+  "filtered": "25.00"
+}
+[2025-10-29 19:11:27.513680] [1] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '25.00'}', Expected: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 25.0}'
+[2025-10-29 19:11:27.514254] [1] Objective Eval Case Results: True
+[2025-10-29 19:11:27.514465] [1] objective Eval Case Final Result: True
+[2025-10-29 19:11:27.514519] 
+--- Case: 2 ---
+[2025-10-29 19:11:27.514598] [2] Case Run 1/1
+[2025-10-29 19:11:27.514821] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2));
+
+Data Inserts:
+INSERT INTO products (product_id, product_name, price) VALUES (101, 'Laptop', 1200.00), (102, 'Mouse', 25.00), (103, 'Keyboard', 75.00);
+
+Query:
+INSERT INTO products (product_id, product_name, price) VALUES (104, 'Monitor', 300.00);
+
+[2025-10-29 19:11:27.515256] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2));\n\nData Inserts:\nINSERT INTO products (product_id, product_name, price) VALUES (101, \'Laptop\', 1200.00), (102, \'Mouse\', 25.00), (103, \'Keyboard\', 75.00);\n\nQuery:\nINSERT INTO products (product_id, product_name, price) VALUES (104, \'Monitor\', 300.00);\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:11:36.291349] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "INSERT",
+  "rows": 1,
+  "key": null,
+  "possible_keys": null,
+  "Extra": "",
+  "filtered": 100.00
+}
+[2025-10-29 19:11:36.300513] [2] Objective Eval: Format Model Answer: '{'type': 'INSERT', 'rows': 1, 'key': None, 'possible_keys': None, 'Extra': '', 'filtered': 100.0}', Expected: '{'type': 'ALL', 'rows': None, 'key': None, 'possible_keys': None, 'Extra': None, 'filtered': None}'
+[2025-10-29 19:11:36.300670] [2] Objective Eval Case Results: False
+[2025-10-29 19:11:36.300983] [2] objective Eval Case Final Result: False
+[2025-10-29 19:11:36.301059] 
+--- Case: 3 ---
+[2025-10-29 19:11:36.301202] [3] Case Run 1/1
+[2025-10-29 19:11:36.301434] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE employees (employee_id INT PRIMARY KEY, employee_name VARCHAR(100), salary DECIMAL(10, 2));
+
+Data Inserts:
+INSERT INTO employees (employee_id, employee_name, salary) VALUES (1, 'John Doe', 50000.00), (2, 'Jane Smith', 60000.00), (3, 'Peter Jones', 45000.00);
+
+Query:
+UPDATE employees SET salary = 55000.00 WHERE employee_name LIKE 'John%';
+
+[2025-10-29 19:11:36.301728] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE employees (employee_id INT PRIMARY KEY, employee_name VARCHAR(100), salary DECIMAL(10, 2));\n\nData Inserts:\nINSERT INTO employees (employee_id, employee_name, salary) VALUES (1, \'John Doe\', 50000.00), (2, \'Jane Smith\', 60000.00), (3, \'Peter Jones\', 45000.00);\n\nQuery:\nUPDATE employees SET salary = 55000.00 WHERE employee_name LIKE \'John%\';\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:11:45.046381] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "3",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using where",
+  "filtered": "100.00"
+}
+[2025-10-29 19:11:45.046579] [3] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '100.00'}', Expected: '{'type': 'index', 'rows': '3', 'key': 'PRIMARY', 'possible_keys': None, 'Extra': 'Using where', 'filtered': 100}'
+[2025-10-29 19:11:45.046706] [3] Objective Eval Case Results: False
+[2025-10-29 19:11:45.046853] [3] objective Eval Case Final Result: False
+[2025-10-29 19:11:45.046917] 
+--- Case: 4 ---
+[2025-10-29 19:11:45.046977] [4] Case Run 1/1
+[2025-10-29 19:11:45.047117] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE);
+
+Data Inserts:
+INSERT INTO orders (order_id, customer_id, order_date) VALUES (1, 10, '2023-01-15'), (2, 11, '2023-01-16'), (3, 10, '2023-01-17');
+
+Query:
+DELETE FROM orders WHERE customer_id = 10;
+
+[2025-10-29 19:11:45.047397] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE);\n\nData Inserts:\nINSERT INTO orders (order_id, customer_id, order_date) VALUES (1, 10, \'2023-01-15\'), (2, 11, \'2023-01-16\'), (3, 10, \'2023-01-17\');\n\nQuery:\nDELETE FROM orders WHERE customer_id = 10;\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:11:53.747362] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "3",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using where",
+  "filtered": "33.33"
+}
+[2025-10-29 19:11:53.747668] [4] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '33.33'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 100}'
+[2025-10-29 19:11:53.747878] [4] Objective Eval Case Results: False
+[2025-10-29 19:11:53.748272] [4] objective Eval Case Final Result: False
+[2025-10-29 19:11:53.748397] 
+--- Case: 5 ---
+[2025-10-29 19:11:53.748568] [5] Case Run 1/1
+[2025-10-29 19:11:53.749223] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE categories (category_id INT PRIMARY KEY, category_name VARCHAR(100));
+
+Data Inserts:
+INSERT INTO categories (category_id, category_name) VALUES (1, 'Electronics'), (2, 'Books'), (3, 'Food');
+
+Query:
+REPLACE INTO categories (category_id, category_name) VALUES (4, 'Clothing');
+
+[2025-10-29 19:11:53.749675] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE categories (category_id INT PRIMARY KEY, category_name VARCHAR(100));\n\nData Inserts:\nINSERT INTO categories (category_id, category_name) VALUES (1, \'Electronics\'), (2, \'Books\'), (3, \'Food\');\n\nQuery:\nREPLACE INTO categories (category_id, category_name) VALUES (4, \'Clothing\');\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:12:04.087200] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "3",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "",
+  "filtered": "100.00"
+}
+[2025-10-29 19:12:04.087395] [5] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': '', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': None, 'key': None, 'possible_keys': None, 'Extra': None, 'filtered': None}'
+[2025-10-29 19:12:04.088442] [5] Objective Eval Case Results: False
+[2025-10-29 19:12:04.088669] [5] objective Eval Case Final Result: False
+[2025-10-29 19:12:04.088752] 
+--- Case: 6 ---
+[2025-10-29 19:12:04.088870] [6] Case Run 1/1
+[2025-10-29 19:12:04.089125] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE fruits (fruit_id INT PRIMARY KEY, fruit_name VARCHAR(50), weight DECIMAL(5, 2));
+
+Data Inserts:
+INSERT INTO fruits (fruit_id, fruit_name, weight) VALUES (1, 'Apple', 0.2), (2, 'Banana', 0.15), (3, 'Orange', 0.25), (4, 'Grape', 0.05);
+
+Query:
+SELECT fruit_name FROM fruits WHERE fruit_name = 'Banana';
+
+[2025-10-29 19:12:04.089423] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE fruits (fruit_id INT PRIMARY KEY, fruit_name VARCHAR(50), weight DECIMAL(5, 2));\n\nData Inserts:\nINSERT INTO fruits (fruit_id, fruit_name, weight) VALUES (1, \'Apple\', 0.2), (2, \'Banana\', 0.15), (3, \'Orange\', 0.25), (4, \'Grape\', 0.05);\n\nQuery:\nSELECT fruit_name FROM fruits WHERE fruit_name = \'Banana\';\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:12:13.900703] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ref",
+  "rows": "1",
+  "key": "fruit_name",
+  "possible_keys": "fruit_name",
+  "Extra": "Using where",
+  "filtered": "100.00"
+}
+[2025-10-29 19:12:13.900946] [6] Objective Eval: Format Model Answer: '{'type': 'ref', 'rows': '1', 'key': 'fruit_name', 'possible_keys': 'fruit_name', 'Extra': 'Using where', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 25.0}'
+[2025-10-29 19:12:13.901122] [6] Objective Eval Case Results: False
+[2025-10-29 19:12:13.901415] [6] objective Eval Case Final Result: False
+[2025-10-29 19:12:13.901546] 
+--- Case: 7 ---
+[2025-10-29 19:12:13.901652] [7] Case Run 1/1
+[2025-10-29 19:12:13.901860] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE sales (sale_id INT PRIMARY KEY, product_id INT, sale_amount DECIMAL(10, 2), sale_date DATE);
+
+Data Inserts:
+INSERT INTO sales (sale_id, product_id, sale_amount, sale_date) VALUES (1, 101, 1200.00, '2023-01-01'), (2, 102, 25.00, '2023-01-01'), (3, 101, 300.00, '2023-01-02'), (4, 103, 75.00, '2023-01-02');
+
+Query:
+SELECT product_id, sale_amount FROM sales WHERE sale_amount < 100.00;
+
+[2025-10-29 19:12:13.902252] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE sales (sale_id INT PRIMARY KEY, product_id INT, sale_amount DECIMAL(10, 2), sale_date DATE);\n\nData Inserts:\nINSERT INTO sales (sale_id, product_id, sale_amount, sale_date) VALUES (1, 101, 1200.00, \'2023-01-01\'), (2, 102, 25.00, \'2023-01-01\'), (3, 101, 300.00, \'2023-01-02\'), (4, 103, 75.00, \'2023-01-02\');\n\nQuery:\nSELECT product_id, sale_amount FROM sales WHERE sale_amount < 100.00;\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:12:22.940162] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "4",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using where",
+  "filtered": "25.00"
+}
+[2025-10-29 19:12:22.940430] [7] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '25.00'}', Expected: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 33.33}'
+[2025-10-29 19:12:22.940603] [7] Objective Eval Case Results: False
+[2025-10-29 19:12:22.940861] [7] objective Eval Case Final Result: False
+[2025-10-29 19:12:22.940948] 
+--- Case: 8 ---
+[2025-10-29 19:12:22.941072] [8] Case Run 1/1
+[2025-10-29 19:12:22.941329] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE articles (article_id INT PRIMARY KEY, title VARCHAR(255), publish_date DATE);
+
+Data Inserts:
+INSERT INTO articles (article_id, title, publish_date) VALUES (1, 'Article A', '2023-01-01'), (2, 'Article B', '2023-01-05'), (3, 'Article C', '2023-01-10');
+
+Query:
+SELECT title FROM articles WHERE publish_date = '2023-01-05';
+
+[2025-10-29 19:12:22.941673] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE articles (article_id INT PRIMARY KEY, title VARCHAR(255), publish_date DATE);\n\nData Inserts:\nINSERT INTO articles (article_id, title, publish_date) VALUES (1, \'Article A\', \'2023-01-01\'), (2, \'Article B\', \'2023-01-05\'), (3, \'Article C\', \'2023-01-10\');\n\nQuery:\nSELECT title FROM articles WHERE publish_date = \'2023-01-05\';\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:12:31.405583] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "3",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using where",
+  "filtered": "33.33"
+}
+[2025-10-29 19:12:31.405790] [8] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '33.33'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 33.33}'
+[2025-10-29 19:12:31.405892] [8] Objective Eval Case Results: True
+[2025-10-29 19:12:31.406148] [8] objective Eval Case Final Result: True
+[2025-10-29 19:12:31.406465] 
+--- Case: 9 ---
+[2025-10-29 19:12:31.406568] [9] Case Run 1/1
+[2025-10-29 19:12:31.406726] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE books (book_id INT PRIMARY KEY, title VARCHAR(255), author VARCHAR(100));
+
+Data Inserts:
+INSERT INTO books (book_id, title, author) VALUES (1, 'The Great Gatsby', 'F. Scott Fitzgerald'), (2, '1984', 'George Orwell'), (3, 'To Kill a Mockingbird', 'Harper Lee');
+
+Query:
+SELECT book_id, title FROM books WHERE title LIKE '%Great%';
+
+[2025-10-29 19:12:31.407091] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE books (book_id INT PRIMARY KEY, title VARCHAR(255), author VARCHAR(100));\n\nData Inserts:\nINSERT INTO books (book_id, title, author) VALUES (1, \'The Great Gatsby\', \'F. Scott Fitzgerald\'), (2, \'1984\', \'George Orwell\'), (3, \'To Kill a Mockingbird\', \'Harper Lee\');\n\nQuery:\nSELECT book_id, title FROM books WHERE title LIKE \'%Great%\';\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:12:40.351823] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "3",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using where",
+  "filtered": "33.33"
+}
+[2025-10-29 19:12:40.351983] [9] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '33.33'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 33.33}'
+[2025-10-29 19:12:40.352067] [9] Objective Eval Case Results: True
+[2025-10-29 19:12:40.352234] [9] objective Eval Case Final Result: True
+[2025-10-29 19:12:40.352304] 
+--- Case: 10 ---
+[2025-10-29 19:12:40.352405] [10] Case Run 1/1
+[2025-10-29 19:12:40.352595] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(100));
+CREATE TABLE employees_v2 (emp_id INT PRIMARY KEY, emp_name VARCHAR(100), dept_id INT);
+
+Data Inserts:
+INSERT INTO departments (dept_id, dept_name) VALUES (1, 'HR'), (2, 'IT'), (3, 'Finance');
+INSERT INTO employees_v2 (emp_id, emp_name, dept_id) VALUES (101, 'Alice', 1), (102, 'Bob', 2), (103, 'Charlie', 1), (104, 'David', 3);
+
+Query:
+SELECT d.dept_name, COUNT(e.emp_id) FROM departments d LEFT JOIN employees_v2 e ON d.dept_id = e.dept_id GROUP BY d.dept_name ORDER BY d.dept_name;
+
+[2025-10-29 19:12:40.352985] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(100));\nCREATE TABLE employees_v2 (emp_id INT PRIMARY KEY, emp_name VARCHAR(100), dept_id INT);\n\nData Inserts:\nINSERT INTO departments (dept_id, dept_name) VALUES (1, \'HR\'), (2, \'IT\'), (3, \'Finance\');\nINSERT INTO employees_v2 (emp_id, emp_name, dept_id) VALUES (101, \'Alice\', 1), (102, \'Bob\', 2), (103, \'Charlie\', 1), (104, \'David\', 3);\n\nQuery:\nSELECT d.dept_name, COUNT(e.emp_id) FROM departments d LEFT JOIN employees_v2 e ON d.dept_id = e.dept_id GROUP BY d.dept_name ORDER BY d.dept_name;\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:12:49.621490] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "3",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using temporary; Using filesort",
+  "filtered": "100.00"
+}
+[2025-10-29 19:12:49.621707] [10] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': 100.0}'
+[2025-10-29 19:12:49.621842] [10] Objective Eval Case Results: True
+[2025-10-29 19:12:49.622147] [10] objective Eval Case Final Result: True
+[2025-10-29 19:12:49.622232] 
+--- Case: 11 ---
+[2025-10-29 19:12:49.622335] [11] Case Run 1/1
+[2025-10-29 19:12:49.622491] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE transactions (transaction_id INT PRIMARY KEY, account_id INT, amount DECIMAL(10, 2), transaction_date DATE);
+
+Data Inserts:
+INSERT INTO transactions (transaction_id, account_id, amount, transaction_date) VALUES (1, 10, 50.00, '2023-01-01'), (2, 11, 75.00, '2023-01-01'), (3, 10, 120.00, '2023-01-02');
+
+Query:
+SELECT transaction_date, SUM(amount) FROM transactions GROUP BY transaction_date ORDER BY transaction_date;
+
+[2025-10-29 19:12:49.622739] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE transactions (transaction_id INT PRIMARY KEY, account_id INT, amount DECIMAL(10, 2), transaction_date DATE);\n\nData Inserts:\nINSERT INTO transactions (transaction_id, account_id, amount, transaction_date) VALUES (1, 10, 50.00, \'2023-01-01\'), (2, 11, 75.00, \'2023-01-01\'), (3, 10, 120.00, \'2023-01-02\');\n\nQuery:\nSELECT transaction_date, SUM(amount) FROM transactions GROUP BY transaction_date ORDER BY transaction_date;\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:12:58.832701] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "3",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using temporary; Using filesort",
+  "filtered": "100.00"
+}
+[2025-10-29 19:12:58.832904] [11] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': 100}'
+[2025-10-29 19:12:58.833008] [11] Objective Eval Case Results: True
+[2025-10-29 19:12:58.833209] [11] objective Eval Case Final Result: True
+[2025-10-29 19:12:58.833275] 
+--- Case: 12 ---
+[2025-10-29 19:12:58.833357] [12] Case Run 1/1
+[2025-10-29 19:12:58.833829] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE sensor_data (id INT PRIMARY KEY AUTO_INCREMENT, sensor_type VARCHAR(50), value DECIMAL(10, 2), timestamp DATETIME);
+
+Data Inserts:
+INSERT INTO sensor_data (sensor_type, value, timestamp) VALUES ('Temperature', 25.5, '2023-01-01 10:00:00'), ('Humidity', 60.2, '2023-01-01 10:00:00'), ('Temperature', 26.1, '2023-01-01 10:05:00');
+
+Query:
+SELECT sensor_type, AVG(value) FROM sensor_data GROUP BY sensor_type;
+
+[2025-10-29 19:12:58.834104] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE sensor_data (id INT PRIMARY KEY AUTO_INCREMENT, sensor_type VARCHAR(50), value DECIMAL(10, 2), timestamp DATETIME);\n\nData Inserts:\nINSERT INTO sensor_data (sensor_type, value, timestamp) VALUES (\'Temperature\', 25.5, \'2023-01-01 10:00:00\'), (\'Humidity\', 60.2, \'2023-01-01 10:00:00\'), (\'Temperature\', 26.1, \'2023-01-01 10:05:00\');\n\nQuery:\nSELECT sensor_type, AVG(value) FROM sensor_data GROUP BY sensor_type;\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:13:08.452848] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "3",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using temporary; Using filesort",
+  "filtered": "100.00"
+}
+[2025-10-29 19:13:08.453045] [12] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary', 'filtered': 100}'
+[2025-10-29 19:13:08.453217] [12] Objective Eval Case Results: False
+[2025-10-29 19:13:08.453523] [12] objective Eval Case Final Result: False
+[2025-10-29 19:13:08.453592] 
+--- Case: 13 ---
+[2025-10-29 19:13:08.453674] [13] Case Run 1/1
+[2025-10-29 19:13:08.462553] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE products_2 (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2), category VARCHAR(50));
+
+Data Inserts:
+INSERT INTO products_2 (product_id, product_name, price, category) VALUES (1, 'Laptop', 1200.00, 'Electronics'), (2, 'Desk', 250.00, 'Furniture'), (3, 'Monitor', 300.00, 'Electronics'), (4, 'Chair', 150.00, 'Furniture');
+
+Query:
+SELECT product_name FROM products_2 WHERE category = 'Electronics';
+
+[2025-10-29 19:13:08.462906] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE products_2 (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2), category VARCHAR(50));\n\nData Inserts:\nINSERT INTO products_2 (product_id, product_name, price, category) VALUES (1, \'Laptop\', 1200.00, \'Electronics\'), (2, \'Desk\', 250.00, \'Furniture\'), (3, \'Monitor\', 300.00, \'Electronics\'), (4, \'Chair\', 150.00, \'Furniture\');\n\nQuery:\nSELECT product_name FROM products_2 WHERE category = \'Electronics\';\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:13:17.669180] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "4",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using where",
+  "filtered": "50.00"
+}
+[2025-10-29 19:13:17.669397] [13] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '50.00'}', Expected: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 25}'
+[2025-10-29 19:13:17.669551] [13] Objective Eval Case Results: False
+[2025-10-29 19:13:17.669819] [13] objective Eval Case Final Result: False
+[2025-10-29 19:13:17.669915] 
+--- Case: 14 ---
+[2025-10-29 19:13:17.670040] [14] Case Run 1/1
+[2025-10-29 19:13:17.670297] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE employees_v3 (emp_id INT PRIMARY KEY, emp_name VARCHAR(100), dept_id INT, salary DECIMAL(10, 2));
+CREATE TABLE departments_v2 (dept_id INT PRIMARY KEY, dept_name VARCHAR(100));
+
+Data Inserts:
+INSERT INTO employees_v3 (emp_id, emp_name, dept_id, salary) VALUES (1, 'Alice', 10, 60000.00), (2, 'Bob', 20, 75000.00), (3, 'Charlie', 10, 55000.00), (4, 'David', 30, 80000.00);
+INSERT INTO departments_v2 (dept_id, dept_name) VALUES (10, 'HR'), (20, 'IT'), (30, 'Finance');
+
+Query:
+SELECT e.emp_name, d.dept_name FROM employees_v3 e JOIN departments_v2 d ON e.dept_id = d.dept_id ORDER BY e.salary DESC;
+
+[2025-10-29 19:13:17.670704] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE employees_v3 (emp_id INT PRIMARY KEY, emp_name VARCHAR(100), dept_id INT, salary DECIMAL(10, 2));\nCREATE TABLE departments_v2 (dept_id INT PRIMARY KEY, dept_name VARCHAR(100));\n\nData Inserts:\nINSERT INTO employees_v3 (emp_id, emp_name, dept_id, salary) VALUES (1, \'Alice\', 10, 60000.00), (2, \'Bob\', 20, 75000.00), (3, \'Charlie\', 10, 55000.00), (4, \'David\', 30, 80000.00);\nINSERT INTO departments_v2 (dept_id, dept_name) VALUES (10, \'HR\'), (20, \'IT\'), (30, \'Finance\');\n\nQuery:\nSELECT e.emp_name, d.dept_name FROM employees_v3 e JOIN departments_v2 d ON e.dept_id = d.dept_id ORDER BY e.salary DESC;\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:13:29.048159] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "4",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using temporary; Using filesort",
+  "filtered": "100.00"
+}
+[2025-10-29 19:13:29.048471] [14] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': 'PRIMARY', 'Extra': 'Using temporary; Using filesort', 'filtered': 100.0}'
+[2025-10-29 19:13:29.048603] [14] Objective Eval Case Results: False
+[2025-10-29 19:13:29.048805] [14] objective Eval Case Final Result: False
+[2025-10-29 19:13:29.048872] 
+--- Case: 15 ---
+[2025-10-29 19:13:29.048994] [15] Case Run 1/1
+[2025-10-29 19:13:29.049190] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE customers_v2 (customer_id INT PRIMARY KEY, customer_name VARCHAR(100), signup_date DATE);
+
+Data Inserts:
+INSERT INTO customers_v2 (customer_id, customer_name, signup_date) VALUES (1, 'Alice', '2023-01-01'), (2, 'Bob', '2023-01-05'), (3, 'Charlie', '2023-01-10');
+
+Query:
+SELECT customer_name FROM customers_v2 WHERE signup_date = '2023-01-05';
+
+[2025-10-29 19:13:29.049480] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE customers_v2 (customer_id INT PRIMARY KEY, customer_name VARCHAR(100), signup_date DATE);\n\nData Inserts:\nINSERT INTO customers_v2 (customer_id, customer_name, signup_date) VALUES (1, \'Alice\', \'2023-01-01\'), (2, \'Bob\', \'2023-01-05\'), (3, \'Charlie\', \'2023-01-10\');\n\nQuery:\nSELECT customer_name FROM customers_v2 WHERE signup_date = \'2023-01-05\';\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:13:37.951575] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "3",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using where",
+  "filtered": "33.33"
+}
+[2025-10-29 19:13:37.951746] [15] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '33.33'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 33.33}'
+[2025-10-29 19:13:37.951847] [15] Objective Eval Case Results: True
+[2025-10-29 19:13:37.952072] [15] objective Eval Case Final Result: True
+[2025-10-29 19:13:37.952165] 
+--- Case: 16 ---
+[2025-10-29 19:13:37.952273] [16] Case Run 1/1
+[2025-10-29 19:13:37.952488] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE users_3 (id INT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100));
+CREATE TABLE orders_4 (order_id INT PRIMARY KEY, user_id INT, order_date DATE);
+
+Data Inserts:
+INSERT INTO users_3 (id, name, email) VALUES (1, 'Alice', 'alice@example.com'), (2, 'Bob', 'bob@example.com'), (3, 'Charlie', 'charlie@example.com');
+INSERT INTO orders_4 (order_id, user_id, order_date) VALUES (101, 1, '2023-01-01'), (102, 2, '2023-01-02'), (103, 1, '2023-01-03');
+
+Query:
+SELECT u.name, COUNT(o.order_id) FROM users_3 u LEFT JOIN orders_4 o ON u.id = o.user_id GROUP BY u.name ORDER BY u.name;
+
+[2025-10-29 19:13:37.952842] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE users_3 (id INT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100));\nCREATE TABLE orders_4 (order_id INT PRIMARY KEY, user_id INT, order_date DATE);\n\nData Inserts:\nINSERT INTO users_3 (id, name, email) VALUES (1, \'Alice\', \'alice@example.com\'), (2, \'Bob\', \'bob@example.com\'), (3, \'Charlie\', \'charlie@example.com\');\nINSERT INTO orders_4 (order_id, user_id, order_date) VALUES (101, 1, \'2023-01-01\'), (102, 2, \'2023-01-02\'), (103, 1, \'2023-01-03\');\n\nQuery:\nSELECT u.name, COUNT(o.order_id) FROM users_3 u LEFT JOIN orders_4 o ON u.id = o.user_id GROUP BY u.name ORDER BY u.name;\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:13:47.332292] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "3",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using temporary; Using filesort",
+  "filtered": "100.00"
+}
+[2025-10-29 19:13:47.332469] [16] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': 100.0}'
+[2025-10-29 19:13:47.332575] [16] Objective Eval Case Results: True
+[2025-10-29 19:13:47.332753] [16] objective Eval Case Final Result: True
+[2025-10-29 19:13:47.332802] 
+--- Case: 17 ---
+[2025-10-29 19:13:47.332877] [17] Case Run 1/1
+[2025-10-29 19:13:47.333762] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE employees_v4 (employee_id INT PRIMARY KEY, employee_name VARCHAR(100), manager_id INT);
+
+Data Inserts:
+INSERT INTO employees_v4 (employee_id, employee_name, manager_id) VALUES (1, 'Alice', NULL), (2, 'Bob', 1), (3, 'Charlie', 1), (4, 'David', 2);
+
+Query:
+SELECT employee_name FROM employees_v4 ORDER BY employee_name;
+
+[2025-10-29 19:13:47.334018] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE employees_v4 (employee_id INT PRIMARY KEY, employee_name VARCHAR(100), manager_id INT);\n\nData Inserts:\nINSERT INTO employees_v4 (employee_id, employee_name, manager_id) VALUES (1, \'Alice\', NULL), (2, \'Bob\', 1), (3, \'Charlie\', 1), (4, \'David\', 2);\n\nQuery:\nSELECT employee_name FROM employees_v4 ORDER BY employee_name;\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:13:57.375213] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "4",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using filesort",
+  "filtered": "100.00"
+}
+[2025-10-29 19:13:57.375413] [17] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using filesort', 'filtered': 100.0}'
+[2025-10-29 19:13:57.375588] [17] Objective Eval Case Results: True
+[2025-10-29 19:13:57.375895] [17] objective Eval Case Final Result: True
+[2025-10-29 19:13:57.375989] 
+--- Case: 18 ---
+[2025-10-29 19:13:57.376105] [18] Case Run 1/1
+[2025-10-29 19:13:57.376300] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE products_v4 (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2));
+
+Data Inserts:
+INSERT INTO products_v4 (product_id, product_name, price) VALUES (1, 'Laptop', 1200.00), (2, 'Desk', 250.00), (3, 'Monitor', 300.00);
+
+Query:
+SELECT product_name, price FROM products_v4 ORDER BY price DESC;
+
+[2025-10-29 19:13:57.376548] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE products_v4 (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2));\n\nData Inserts:\nINSERT INTO products_v4 (product_id, product_name, price) VALUES (1, \'Laptop\', 1200.00), (2, \'Desk\', 250.00), (3, \'Monitor\', 300.00);\n\nQuery:\nSELECT product_name, price FROM products_v4 ORDER BY price DESC;\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:14:06.642396] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "3",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using filesort",
+  "filtered": "100.00"
+}
+[2025-10-29 19:14:06.642572] [18] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using filesort', 'filtered': 100}'
+[2025-10-29 19:14:06.642705] [18] Objective Eval Case Results: True
+[2025-10-29 19:14:06.642922] [18] objective Eval Case Final Result: True
+[2025-10-29 19:14:06.642991] 
+--- Case: 19 ---
+[2025-10-29 19:14:06.643071] [19] Case Run 1/1
+[2025-10-29 19:14:06.643260] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE inventory (item_id INT PRIMARY KEY, item_name VARCHAR(100), stock_quantity INT);
+
+Data Inserts:
+INSERT INTO inventory (item_id, item_name, stock_quantity) VALUES (1, 'Pen', 100), (2, 'Notebook', 50), (3, 'Eraser', 75);
+
+Query:
+UPDATE inventory SET stock_quantity = 80 WHERE stock_quantity < 60;
+
+[2025-10-29 19:14:06.643571] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE inventory (item_id INT PRIMARY KEY, item_name VARCHAR(100), stock_quantity INT);\n\nData Inserts:\nINSERT INTO inventory (item_id, item_name, stock_quantity) VALUES (1, \'Pen\', 100), (2, \'Notebook\', 50), (3, \'Eraser\', 75);\n\nQuery:\nUPDATE inventory SET stock_quantity = 80 WHERE stock_quantity < 60;\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:14:15.406055] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "3",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using where",
+  "filtered": "33.33"
+}
+[2025-10-29 19:14:15.406304] [19] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '33.33'}', Expected: '{'type': 'index', 'rows': '3', 'key': 'PRIMARY', 'possible_keys': None, 'Extra': 'Using where', 'filtered': 100}'
+[2025-10-29 19:14:15.406468] [19] Objective Eval Case Results: False
+[2025-10-29 19:14:15.406741] [19] objective Eval Case Final Result: False
+[2025-10-29 19:14:15.406831] 
+--- Case: 20 ---
+[2025-10-29 19:14:15.406916] [20] Case Run 1/1
+[2025-10-29 19:14:15.407066] [Model Prompt]: You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+Table Definitions:
+CREATE TABLE events (event_id INT PRIMARY KEY, event_name VARCHAR(100), event_date DATE);
+
+Data Inserts:
+INSERT INTO events (event_id, event_name, event_date) VALUES (1, 'Meeting', '2023-06-01'), (2, 'Conference', '2023-06-15'), (3, 'Workshop', '2023-07-01');
+
+Query:
+SELECT event_name FROM events WHERE event_name = 'Meeting';
+
+[2025-10-29 19:14:15.407291] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a SQL execution plan expert.\nGiven the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.\nRespond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):\n\n{\n  "type": "<type>",\n  "rows": "<rows>",\n  "key": <key|null>,\n  "possible_keys": <possible_keys|null>,\n  "Extra": "<Extra>",\n  "filtered": "<filtered>"\n}\n\nTable Definitions:\nCREATE TABLE events (event_id INT PRIMARY KEY, event_name VARCHAR(100), event_date DATE);\n\nData Inserts:\nINSERT INTO events (event_id, event_name, event_date) VALUES (1, \'Meeting\', \'2023-06-01\'), (2, \'Conference\', \'2023-06-15\'), (3, \'Workshop\', \'2023-07-01\');\n\nQuery:\nSELECT event_name FROM events WHERE event_name = \'Meeting\';\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:14:24.502321] [inclusionAI/Ling-1T Model Answer]: {
+  "type": "ALL",
+  "rows": "3",
+  "key": null,
+  "possible_keys": null,
+  "Extra": "Using where",
+  "filtered": "33.33"
+}
+[2025-10-29 19:14:24.502521] [20] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '33.33'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 33.33}'
+[2025-10-29 19:14:24.502650] [20] Objective Eval Case Results: True
+[2025-10-29 19:14:24.502837] [20] objective Eval Case Final Result: True
