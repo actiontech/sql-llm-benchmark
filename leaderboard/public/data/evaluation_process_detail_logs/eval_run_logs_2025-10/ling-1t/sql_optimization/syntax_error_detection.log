@@ -1,0 +1,1014 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20251029_190501_191
+Run Dimensions: sql_optimization
+Run Indicator: syntax_error_detection
+Evaluation Timestamp: 2025-10-29T19:40:26.747242
+Target LLM: inclusionAI/Ling-1T
+Judge LLMs: Pro/deepseek-ai/DeepSeek-R1, o4-mini, gemini-2.5-pro
+-------------------------------------------------
+
+[2025-10-29 19:35:43.595485] Run Indicator: sql_optimization, Parameters size: 25890B
+[2025-10-29 19:35:43.596122] 
+--- Capability: sql_optimization Indicator syntax_error_detection.jsonl Evaluating Type: hybrid  ---
+[2025-10-29 19:35:43.596241] 
+--- Case: 1 ---
+[2025-10-29 19:35:43.596351] [1] Case Run 1/1
+[2025-10-29 19:35:43.596595] [Model Prompt]: You are a database expert in SQL performance optimization.
+Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
+Output only the optimized SQL as a single-line statement with no markdown or extra text.
+
+Table Definitions:
+CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) NOT NULL, gender ENUM('Male', 'Female', 'Other'), date_of_birth DATE );
+
+Explain Output in JSON:
+{"query_block": {"select_id": 1, "cost_info": {"query_cost": "2.40"}, "nested_loop": [{"table": {"table_name": "students", "access_type": "ALL", "possible_keys": ["PRIMARY"], "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["student_id", "student_name"]}}, {"table": {"table_name": "students", "access_type": "eq_ref", "possible_keys": ["PRIMARY"], "key": "PRIMARY", "used_key_parts": ["student_id"], "key_length": "4", "ref": ["test_db_case_1_1748591779.students.student_id"], "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "using_index": true, "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "2.40", "data_read_per_join": "112"}, "used_columns": ["student_id"]}}]}}
+
+Original SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+Optimized SQL:
+
+[2025-10-29 19:35:43.597390] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) NOT NULL, gender ENUM(\'Male\', \'Female\', \'Other\'), date_of_birth DATE );\n\nExplain Output in JSON:\n{"query_block": {"select_id": 1, "cost_info": {"query_cost": "2.40"}, "nested_loop": [{"table": {"table_name": "students", "access_type": "ALL", "possible_keys": ["PRIMARY"], "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["student_id", "student_name"]}}, {"table": {"table_name": "students", "access_type": "eq_ref", "possible_keys": ["PRIMARY"], "key": "PRIMARY", "used_key_parts": ["student_id"], "key_length": "4", "ref": ["test_db_case_1_1748591779.students.student_id"], "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "using_index": true, "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "2.40", "data_read_per_join": "112"}, "used_columns": ["student_id"]}}]}}\n\nOriginal SQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n\nOptimized SQL:\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:35:46.739126] [inclusionAI/Ling-1T Model Answer]: SELECT student_name FROM students WHERE student_id IN (SELECT student_id FROM students);
+[2025-10-29 19:35:46.739702] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_name FROM students WHERE student_id IN (SELECT student_id FROM students);
+
+[2025-10-29 19:35:46.749133] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_name FROM students WHERE student_id IN (SELECT student_id FROM students);\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:35:46.749276] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_name FROM students WHERE student_id IN (SELECT student_id FROM students);
+
+[2025-10-29 19:35:46.750746] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_name FROM students WHERE student_id IN (SELECT student_id FROM students);\n'}], 'max_completion_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:35:46.750473] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_name FROM students WHERE student_id IN (SELECT student_id FROM students);
+
+[2025-10-29 19:35:46.751625] Model Request Data: {'model': 'gemini-2.5-pro', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_name FROM students WHERE student_id IN (SELECT student_id FROM students);\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:35:50.033100] [Pro/deepseek-ai/DeepSeek-R1 Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:35:50.088628] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-10-29 19:35:51.709984] [gemini-2.5-pro Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:35:51.710574] [1] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-R1'
+[2025-10-29 19:35:51.710638] [1] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-R1 Results: True
+[2025-10-29 19:35:51.710719] [1] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-10-29 19:35:51.710815] [1] Hybrid Eval Case Judge o4-mini Results: True
+[2025-10-29 19:35:51.710913] [1] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro'
+[2025-10-29 19:35:51.711006] [1] Hybrid Eval Case Judge gemini-2.5-pro Results: True
+[2025-10-29 19:35:51.711254] [1] Hybrid Eval Case Judge Final Results: True
+[2025-10-29 19:35:51.711449] [1] hybrid Eval Case Final Result: True
+[2025-10-29 19:35:51.711516] 
+--- Case: 2 ---
+[2025-10-29 19:35:51.711624] [2] Case Run 1/1
+[2025-10-29 19:35:51.711813] [Model Prompt]: You are a database expert in SQL performance optimization.
+Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
+Output only the optimized SQL as a single-line statement with no markdown or extra text.
+
+Table Definitions:
+CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) NOT NULL, teacher_id INT );
+CREATE TABLE teachers ( teacher_id INT AUTO_INCREMENT PRIMARY KEY, teacher_name VARCHAR(100) NOT NULL, department VARCHAR(100) );
+
+Explain Output in JSON:
+{"query_block": {"select_id": 1, "cost_info": {"query_cost": "2.40"}, "nested_loop": [{"table": {"table_name": "s", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["teacher_id"], "attached_condition": "(`test_db_case_2_1748591779`.`s`.`teacher_id` is not null)"}}, {"table": {"table_name": "teachers", "access_type": "eq_ref", "possible_keys": ["PRIMARY"], "key": "PRIMARY", "used_key_parts": ["teacher_id"], "key_length": "4", "ref": ["test_db_case_2_1748591779.s.teacher_id"], "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "2.40", "data_read_per_join": "208"}, "used_columns": ["teacher_id", "teacher_name"], "attached_condition": "(`test_db_case_2_1748591779`.`teachers`.`teacher_name` like 'Dr. %')"}}]}}
+
+Original SQL:
+SELECT s.teacher_id, dt_teacher.teacher_name FROM students s JOIN (     SELECT teacher_id, teacher_name      FROM (         SELECT teacher_id, teacher_name, department          FROM (             SELECT teacher_id, teacher_name, department              FROM (                  SELECT teacher_id, teacher_name, department                  FROM teachers             ) AS inner_dt1         ) AS inner_dt2     ) AS inner_dt3 ) AS dt_teacher ON s.teacher_id = dt_teacher.teacher_id WHERE dt_teacher.teacher_name LIKE 'Dr. %';
+
+Optimized SQL:
+
+[2025-10-29 19:35:51.712255] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) NOT NULL, teacher_id INT );\nCREATE TABLE teachers ( teacher_id INT AUTO_INCREMENT PRIMARY KEY, teacher_name VARCHAR(100) NOT NULL, department VARCHAR(100) );\n\nExplain Output in JSON:\n{"query_block": {"select_id": 1, "cost_info": {"query_cost": "2.40"}, "nested_loop": [{"table": {"table_name": "s", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["teacher_id"], "attached_condition": "(`test_db_case_2_1748591779`.`s`.`teacher_id` is not null)"}}, {"table": {"table_name": "teachers", "access_type": "eq_ref", "possible_keys": ["PRIMARY"], "key": "PRIMARY", "used_key_parts": ["teacher_id"], "key_length": "4", "ref": ["test_db_case_2_1748591779.s.teacher_id"], "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "2.40", "data_read_per_join": "208"}, "used_columns": ["teacher_id", "teacher_name"], "attached_condition": "(`test_db_case_2_1748591779`.`teachers`.`teacher_name` like \'Dr. %\')"}}]}}\n\nOriginal SQL:\nSELECT s.teacher_id, dt_teacher.teacher_name FROM students s JOIN (     SELECT teacher_id, teacher_name      FROM (         SELECT teacher_id, teacher_name, department          FROM (             SELECT teacher_id, teacher_name, department              FROM (                  SELECT teacher_id, teacher_name, department                  FROM teachers             ) AS inner_dt1         ) AS inner_dt2     ) AS inner_dt3 ) AS dt_teacher ON s.teacher_id = dt_teacher.teacher_id WHERE dt_teacher.teacher_name LIKE \'Dr. %\';\n\nOptimized SQL:\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:35:57.874901] [inclusionAI/Ling-1T Model Answer]: SELECT s.teacher_id, t.teacher_name FROM students s JOIN teachers t ON s.teacher_id = t.teacher_id WHERE t.teacher_name LIKE 'Dr. %';
+[2025-10-29 19:35:57.875439] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.teacher_id, t.teacher_name FROM students s JOIN teachers t ON s.teacher_id = t.teacher_id WHERE t.teacher_name LIKE 'Dr. %';
+
+[2025-10-29 19:35:57.875653] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.teacher_id, t.teacher_name FROM students s JOIN teachers t ON s.teacher_id = t.teacher_id WHERE t.teacher_name LIKE \'Dr. %\';\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:35:57.875724] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.teacher_id, t.teacher_name FROM students s JOIN teachers t ON s.teacher_id = t.teacher_id WHERE t.teacher_name LIKE 'Dr. %';
+
+[2025-10-29 19:35:57.876722] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.teacher_id, t.teacher_name FROM students s JOIN teachers t ON s.teacher_id = t.teacher_id WHERE t.teacher_name LIKE \'Dr. %\';\n'}], 'max_completion_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:35:57.876373] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.teacher_id, t.teacher_name FROM students s JOIN teachers t ON s.teacher_id = t.teacher_id WHERE t.teacher_name LIKE 'Dr. %';
+
+[2025-10-29 19:35:57.877505] Model Request Data: {'model': 'gemini-2.5-pro', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.teacher_id, t.teacher_name FROM students s JOIN teachers t ON s.teacher_id = t.teacher_id WHERE t.teacher_name LIKE \'Dr. %\';\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:36:00.723222] [Pro/deepseek-ai/DeepSeek-R1 Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:36:01.906909] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-10-29 19:36:03.069751] [gemini-2.5-pro Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:36:03.070650] [2] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-R1'
+[2025-10-29 19:36:03.070769] [2] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-R1 Results: True
+[2025-10-29 19:36:03.070858] [2] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-10-29 19:36:03.070919] [2] Hybrid Eval Case Judge o4-mini Results: True
+[2025-10-29 19:36:03.070990] [2] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro'
+[2025-10-29 19:36:03.071058] [2] Hybrid Eval Case Judge gemini-2.5-pro Results: True
+[2025-10-29 19:36:03.071305] [2] Hybrid Eval Case Judge Final Results: True
+[2025-10-29 19:36:03.071511] [2] hybrid Eval Case Final Result: True
+[2025-10-29 19:36:03.071587] 
+--- Case: 3 ---
+[2025-10-29 19:36:03.071680] [3] Case Run 1/1
+[2025-10-29 19:36:03.071887] [Model Prompt]: You are a database expert in SQL performance optimization.
+Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
+Output only the optimized SQL as a single-line statement with no markdown or extra text.
+
+Table Definitions:
+CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) NOT NULL, gender ENUM('Male', 'Female', 'Other'), date_of_birth DATE );
+
+Explain Output in JSON:
+{"query_block": {"select_id": 1, "message": "no matching row in const table", "table": {"materialized_from_subquery": {"using_temporary_table": true, "dependent": false, "cacheable": true, "query_block": {"select_id": 3, "cost_info": {"query_cost": "1.20"}, "ordering_operation": {"using_filesort": false, "table": {"table_name": "students", "access_type": "index", "key": "PRIMARY", "used_key_parts": ["student_id"], "key_length": "4", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["student_id", "gender", "date_of_birth"]}}}}}}}
+
+Original SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'
+
+Optimized SQL:
+
+[2025-10-29 19:36:03.072152] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) NOT NULL, gender ENUM(\'Male\', \'Female\', \'Other\'), date_of_birth DATE );\n\nExplain Output in JSON:\n{"query_block": {"select_id": 1, "message": "no matching row in const table", "table": {"materialized_from_subquery": {"using_temporary_table": true, "dependent": false, "cacheable": true, "query_block": {"select_id": 3, "cost_info": {"query_cost": "1.20"}, "ordering_operation": {"using_filesort": false, "table": {"table_name": "students", "access_type": "index", "key": "PRIMARY", "used_key_parts": ["student_id"], "key_length": "4", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["student_id", "gender", "date_of_birth"]}}}}}}}\n\nOriginal SQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM ( SELECT student_id, gender, date_of_birth FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = \'MALE\'\n\nOptimized SQL:\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:36:08.089427] [inclusionAI/Ling-1T Model Answer]: SELECT student_id, student_name, date_of_birth FROM students WHERE gender = 'Male' ORDER BY student_id DESC LIMIT 1
+
+[2025-10-29 19:36:08.089950] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, student_name, date_of_birth FROM students WHERE gender = 'Male' ORDER BY student_id DESC LIMIT 1
+
+
+[2025-10-29 19:36:08.090184] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, student_name, date_of_birth FROM students WHERE gender = \'Male\' ORDER BY student_id DESC LIMIT 1\n\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:36:08.090260] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, student_name, date_of_birth FROM students WHERE gender = 'Male' ORDER BY student_id DESC LIMIT 1
+
+
+[2025-10-29 19:36:08.091244] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, student_name, date_of_birth FROM students WHERE gender = \'Male\' ORDER BY student_id DESC LIMIT 1\n\n'}], 'max_completion_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:36:08.090922] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, student_name, date_of_birth FROM students WHERE gender = 'Male' ORDER BY student_id DESC LIMIT 1
+
+
+[2025-10-29 19:36:08.091974] Model Request Data: {'model': 'gemini-2.5-pro', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, student_name, date_of_birth FROM students WHERE gender = \'Male\' ORDER BY student_id DESC LIMIT 1\n\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:36:10.583802] [Pro/deepseek-ai/DeepSeek-R1 Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:36:12.455840] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-10-29 19:36:14.757164] [gemini-2.5-pro Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:36:14.757839] [3] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-R1'
+[2025-10-29 19:36:14.757914] [3] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-R1 Results: True
+[2025-10-29 19:36:14.757997] [3] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-10-29 19:36:14.758092] [3] Hybrid Eval Case Judge o4-mini Results: True
+[2025-10-29 19:36:14.758190] [3] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro'
+[2025-10-29 19:36:14.758290] [3] Hybrid Eval Case Judge gemini-2.5-pro Results: True
+[2025-10-29 19:36:14.758599] [3] Hybrid Eval Case Judge Final Results: True
+[2025-10-29 19:36:14.758871] [3] hybrid Eval Case Final Result: True
+[2025-10-29 19:36:14.758984] 
+--- Case: 4 ---
+[2025-10-29 19:36:14.759116] [4] Case Run 1/1
+[2025-10-29 19:36:14.759360] [Model Prompt]: You are a database expert in SQL performance optimization.
+Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
+Output only the optimized SQL as a single-line statement with no markdown or extra text.
+
+Table Definitions:
+CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) NOT NULL, gender ENUM('Male', 'Female', 'Other'), date_of_birth DATE );
+CREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT, enrollment_date DATE );
+
+Explain Output in JSON:
+{"query_block": {"select_id": 1, "cost_info": {"query_cost": "4.80"}, "duplicates_removal": {"using_temporary_table": true, "nested_loop": [{"table": {"table_name": "e", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "24"}, "used_columns": ["student_id"]}}, {"table": {"table_name": "s", "access_type": "eq_ref", "possible_keys": ["PRIMARY"], "key": "PRIMARY", "used_key_parts": ["student_id"], "key_length": "4", "ref": ["test_db_case_5_1748591779.e.student_id"], "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "4.80", "data_read_per_join": "112"}, "used_columns": ["student_id", "student_name", "gender", "date_of_birth"], "attached_condition": "((`test_db_case_5_1748591779`.`s`.`gender` = 'Female') and (`test_db_case_5_1748591779`.`s`.`date_of_birth` <= '2000-01-01') and (`test_db_case_5_1748591779`.`s`.`student_name` <> 'TestName'))"}}]}}
+
+Original SQL:
+SELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = 'Female'  AND s.date_of_birth <= '2000-01-01'  AND s.student_name != 'TestName' LIMIT 10;
+
+Optimized SQL:
+
+[2025-10-29 19:36:14.759626] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) NOT NULL, gender ENUM(\'Male\', \'Female\', \'Other\'), date_of_birth DATE );\nCREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT, enrollment_date DATE );\n\nExplain Output in JSON:\n{"query_block": {"select_id": 1, "cost_info": {"query_cost": "4.80"}, "duplicates_removal": {"using_temporary_table": true, "nested_loop": [{"table": {"table_name": "e", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "24"}, "used_columns": ["student_id"]}}, {"table": {"table_name": "s", "access_type": "eq_ref", "possible_keys": ["PRIMARY"], "key": "PRIMARY", "used_key_parts": ["student_id"], "key_length": "4", "ref": ["test_db_case_5_1748591779.e.student_id"], "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "4.80", "data_read_per_join": "112"}, "used_columns": ["student_id", "student_name", "gender", "date_of_birth"], "attached_condition": "((`test_db_case_5_1748591779`.`s`.`gender` = \'Female\') and (`test_db_case_5_1748591779`.`s`.`date_of_birth` <= \'2000-01-01\') and (`test_db_case_5_1748591779`.`s`.`student_name` <> \'TestName\'))"}}]}}\n\nOriginal SQL:\nSELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = \'Female\'  AND s.date_of_birth <= \'2000-01-01\'  AND s.student_name != \'TestName\' LIMIT 10;\n\nOptimized SQL:\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:36:25.387298] [inclusionAI/Ling-1T Model Answer]: SELECT s.student_id FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id WHERE s.gender = 'Female' AND s.date_of_birth <= '2000-01-01' AND s.student_name != 'TestName' LIMIT 10;
+[2025-10-29 19:36:25.387868] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.student_id FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id WHERE s.gender = 'Female' AND s.date_of_birth <= '2000-01-01' AND s.student_name != 'TestName' LIMIT 10;
+
+[2025-10-29 19:36:25.388138] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id WHERE s.gender = \'Female\' AND s.date_of_birth <= \'2000-01-01\' AND s.student_name != \'TestName\' LIMIT 10;\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:36:25.388258] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.student_id FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id WHERE s.gender = 'Female' AND s.date_of_birth <= '2000-01-01' AND s.student_name != 'TestName' LIMIT 10;
+
+[2025-10-29 19:36:25.389358] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id WHERE s.gender = \'Female\' AND s.date_of_birth <= \'2000-01-01\' AND s.student_name != \'TestName\' LIMIT 10;\n'}], 'max_completion_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:36:25.389051] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.student_id FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id WHERE s.gender = 'Female' AND s.date_of_birth <= '2000-01-01' AND s.student_name != 'TestName' LIMIT 10;
+
+[2025-10-29 19:36:25.390097] Model Request Data: {'model': 'gemini-2.5-pro', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id FROM students s INNER JOIN enrollments e ON s.student_id = e.student_id WHERE s.gender = \'Female\' AND s.date_of_birth <= \'2000-01-01\' AND s.student_name != \'TestName\' LIMIT 10;\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:36:27.499807] [Pro/deepseek-ai/DeepSeek-R1 Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:36:30.060512] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-10-29 19:36:32.690074] [gemini-2.5-pro Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:36:32.690747] [4] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-R1'
+[2025-10-29 19:36:32.690841] [4] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-R1 Results: True
+[2025-10-29 19:36:32.690944] [4] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-10-29 19:36:32.691015] [4] Hybrid Eval Case Judge o4-mini Results: True
+[2025-10-29 19:36:32.691083] [4] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro'
+[2025-10-29 19:36:32.691173] [4] Hybrid Eval Case Judge gemini-2.5-pro Results: True
+[2025-10-29 19:36:32.691457] [4] Hybrid Eval Case Judge Final Results: True
+[2025-10-29 19:36:32.691623] [4] hybrid Eval Case Final Result: True
+[2025-10-29 19:36:32.691683] 
+--- Case: 5 ---
+[2025-10-29 19:36:32.691763] [5] Case Run 1/1
+[2025-10-29 19:36:32.691910] [Model Prompt]: You are a database expert in SQL performance optimization.
+Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
+Output only the optimized SQL as a single-line statement with no markdown or extra text.
+
+Table Definitions:
+CREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT, enrollment_date DATE );
+
+Explain Output in JSON:
+{"query_block": {"select_id": 1, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "enrollments", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "24"}, "used_columns": ["student_id"], "attached_condition": "(concat('id_',`test_db_case_6_1748591779`.`enrollments`.`student_id`) >= 'id_1000')"}}}
+
+Original SQL:
+SELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;
+
+Optimized SQL:
+
+[2025-10-29 19:36:32.692136] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT, enrollment_date DATE );\n\nExplain Output in JSON:\n{"query_block": {"select_id": 1, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "enrollments", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "24"}, "used_columns": ["student_id"], "attached_condition": "(concat(\'id_\',`test_db_case_6_1748591779`.`enrollments`.`student_id`) >= \'id_1000\')"}}}\n\nOriginal SQL:\nSELECT student_id, CONCAT("id_", student_id) as student_id2 FROM enrollments WHERE CONCAT("id_", student_id) >= "id_1000" LIMIT 10;\n\nOptimized SQL:\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:36:38.713904] [inclusionAI/Ling-1T Model Answer]: SELECT student_id, CONCAT('id_', student_id) AS student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;
+[2025-10-29 19:36:38.714492] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, CONCAT('id_', student_id) AS student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;
+
+[2025-10-29 19:36:38.714856] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, CONCAT(\'id_\', student_id) AS student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:36:38.714779] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, CONCAT('id_', student_id) AS student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;
+
+[2025-10-29 19:36:38.715866] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, CONCAT(\'id_\', student_id) AS student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;\n'}], 'max_completion_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:36:38.715697] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, CONCAT('id_', student_id) AS student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;
+
+[2025-10-29 19:36:38.716798] Model Request Data: {'model': 'gemini-2.5-pro', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, CONCAT(\'id_\', student_id) AS student_id2 FROM enrollments WHERE student_id >= 1000 LIMIT 10;\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:36:41.397242] [Pro/deepseek-ai/DeepSeek-R1 Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:36:42.648177] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-10-29 19:36:43.860426] [gemini-2.5-pro Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:36:43.861031] [5] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-R1'
+[2025-10-29 19:36:43.861121] [5] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-R1 Results: True
+[2025-10-29 19:36:43.861180] [5] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-10-29 19:36:43.861261] [5] Hybrid Eval Case Judge o4-mini Results: True
+[2025-10-29 19:36:43.861316] [5] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro'
+[2025-10-29 19:36:43.861420] [5] Hybrid Eval Case Judge gemini-2.5-pro Results: True
+[2025-10-29 19:36:43.861680] [5] Hybrid Eval Case Judge Final Results: True
+[2025-10-29 19:36:43.861894] [5] hybrid Eval Case Final Result: True
+[2025-10-29 19:36:43.861970] 
+--- Case: 6 ---
+[2025-10-29 19:36:43.862068] [6] Case Run 1/1
+[2025-10-29 19:36:43.862271] [Model Prompt]: You are a database expert in SQL performance optimization.
+Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
+Output only the optimized SQL as a single-line statement with no markdown or extra text.
+
+Table Definitions:
+CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) );
+CREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT, enrollment_date DATE );
+
+Explain Output in JSON:
+{"query_block": {"select_id": 1, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "students", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["student_id", "student_name"], "attached_condition": "((/* select#2 */ select count(0) from `test_db_case_7_1748591779`.`enrollments` where ((`test_db_case_7_1748591779`.`students`.`student_id` = `test_db_case_7_1748591779`.`enrollments`.`student_id`) and (`test_db_case_7_1748591779`.`enrollment_id` > 1000))) <= 0)", "attached_subqueries": [{"dependent": true, "cacheable": false, "query_block": {"select_id": 2, "cost_info": {"query_cost": "1.41"}, "table": {"table_name": "enrollments", "access_type": "range", "possible_keys": ["PRIMARY"], "key": "PRIMARY", "used_key_parts": ["enrollment_id"], "key_length": "4", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.21", "eval_cost": "0.20", "prefix_cost": "1.41", "data_read_per_join": "24"}, "used_columns": ["enrollment_id", "student_id"], "attached_condition": "((`test_db_case_7_1748591779`.`students`.`student_id` = `test_db_case_7_1748591779`.`enrollments`.`student_id`) and (`test_db_case_7_1748591779`.`enrollment_id` > 1000))"}}}]}}
+
+Original SQL:
+SELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;
+
+Optimized SQL:
+
+[2025-10-29 19:36:43.862630] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) );\nCREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT, enrollment_date DATE );\n\nExplain Output in JSON:\n{"query_block": {"select_id": 1, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "students", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["student_id", "student_name"], "attached_condition": "((/* select#2 */ select count(0) from `test_db_case_7_1748591779`.`enrollments` where ((`test_db_case_7_1748591779`.`students`.`student_id` = `test_db_case_7_1748591779`.`enrollments`.`student_id`) and (`test_db_case_7_1748591779`.`enrollment_id` > 1000))) <= 0)", "attached_subqueries": [{"dependent": true, "cacheable": false, "query_block": {"select_id": 2, "cost_info": {"query_cost": "1.41"}, "table": {"table_name": "enrollments", "access_type": "range", "possible_keys": ["PRIMARY"], "key": "PRIMARY", "used_key_parts": ["enrollment_id"], "key_length": "4", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.21", "eval_cost": "0.20", "prefix_cost": "1.41", "data_read_per_join": "24"}, "used_columns": ["enrollment_id", "student_id"], "attached_condition": "((`test_db_case_7_1748591779`.`students`.`student_id` = `test_db_case_7_1748591779`.`enrollments`.`student_id`) and (`test_db_case_7_1748591779`.`enrollment_id` > 1000))"}}}]}}\n\nOriginal SQL:\nSELECT * FROM students WHERE NOT ( SELECT count(*) FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 ) > 0;\n\nOptimized SQL:\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:36:51.147717] [inclusionAI/Ling-1T Model Answer]: SELECT s.student_id, s.student_name FROM students s WHERE NOT EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id AND e.enrollment_id > 1000);
+
+[2025-10-29 19:36:51.148367] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.student_id, s.student_name FROM students s WHERE NOT EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id AND e.enrollment_id > 1000);
+
+
+[2025-10-29 19:36:51.148813] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id, s.student_name FROM students s WHERE NOT EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id AND e.enrollment_id > 1000);\n\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:36:51.148724] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.student_id, s.student_name FROM students s WHERE NOT EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id AND e.enrollment_id > 1000);
+
+
+[2025-10-29 19:36:51.149986] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id, s.student_name FROM students s WHERE NOT EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id AND e.enrollment_id > 1000);\n\n'}], 'max_completion_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:36:51.149119] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.student_id, s.student_name FROM students s WHERE NOT EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id AND e.enrollment_id > 1000);
+
+
+[2025-10-29 19:36:51.150714] Model Request Data: {'model': 'gemini-2.5-pro', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id, s.student_name FROM students s WHERE NOT EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id AND e.enrollment_id > 1000);\n\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:36:53.212709] [Pro/deepseek-ai/DeepSeek-R1 Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:36:55.224527] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-10-29 19:36:57.737549] [gemini-2.5-pro Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:36:57.738358] [6] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-R1'
+[2025-10-29 19:36:57.738444] [6] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-R1 Results: True
+[2025-10-29 19:36:57.738508] [6] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-10-29 19:36:57.738604] [6] Hybrid Eval Case Judge o4-mini Results: True
+[2025-10-29 19:36:57.738679] [6] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro'
+[2025-10-29 19:36:57.738786] [6] Hybrid Eval Case Judge gemini-2.5-pro Results: True
+[2025-10-29 19:36:57.739158] [6] Hybrid Eval Case Judge Final Results: True
+[2025-10-29 19:36:57.739360] [6] hybrid Eval Case Final Result: True
+[2025-10-29 19:36:57.739458] 
+--- Case: 7 ---
+[2025-10-29 19:36:57.739609] [7] Case Run 1/1
+[2025-10-29 19:36:57.739804] [Model Prompt]: You are a database expert in SQL performance optimization.
+Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
+Output only the optimized SQL as a single-line statement with no markdown or extra text.
+
+Table Definitions:
+CREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT, enrollment_date DATE );
+
+Explain Output in JSON:
+{"query_block": {"select_id": 1, "cost_info": {"query_cost": "2.20"}, "grouping_operation": {"using_temporary_table": true, "using_filesort": true, "cost_info": {"sort_cost": "1.00"}, "table": {"table_name": "enrollments", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "24"}, "used_columns": ["enrollment_id", "student_id", "enrollment_date"], "attached_condition": "((`test_db_case_8_1748591779`.`enrollments`.`enrollment_date` > '1993-11-26') or (`test_db_case_8_1748591779`.`enrollments`.`enrollment_date` < '1991-11-26'))"}}}}
+
+Original SQL:
+SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > "1993-11-26" OR enrollment_date < "1991-11-26" GROUP BY student_id HAVING student_id = 1999
+
+Optimized SQL:
+
+[2025-10-29 19:36:57.740072] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT, enrollment_date DATE );\n\nExplain Output in JSON:\n{"query_block": {"select_id": 1, "cost_info": {"query_cost": "2.20"}, "grouping_operation": {"using_temporary_table": true, "using_filesort": true, "cost_info": {"sort_cost": "1.00"}, "table": {"table_name": "enrollments", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "24"}, "used_columns": ["enrollment_id", "student_id", "enrollment_date"], "attached_condition": "((`test_db_case_8_1748591779`.`enrollments`.`enrollment_date` > \'1993-11-26\') or (`test_db_case_8_1748591779`.`enrollments`.`enrollment_date` < \'1991-11-26\'))"}}}}\n\nOriginal SQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > "1993-11-26" OR enrollment_date < "1991-11-26" GROUP BY student_id HAVING student_id = 1999\n\nOptimized SQL:\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:37:08.024216] [inclusionAI/Ling-1T Model Answer]: SELECT student_id, MAX(enrollment_date) AS latest_date FROM enrollments WHERE student_id = 1999 AND (enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26') GROUP BY student_id
+[2025-10-29 19:37:08.024890] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, MAX(enrollment_date) AS latest_date FROM enrollments WHERE student_id = 1999 AND (enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26') GROUP BY student_id
+
+[2025-10-29 19:37:08.025230] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, MAX(enrollment_date) AS latest_date FROM enrollments WHERE student_id = 1999 AND (enrollment_date > \'1993-11-26\' OR enrollment_date < \'1991-11-26\') GROUP BY student_id\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:37:08.025161] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, MAX(enrollment_date) AS latest_date FROM enrollments WHERE student_id = 1999 AND (enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26') GROUP BY student_id
+
+[2025-10-29 19:37:08.026104] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, MAX(enrollment_date) AS latest_date FROM enrollments WHERE student_id = 1999 AND (enrollment_date > \'1993-11-26\' OR enrollment_date < \'1991-11-26\') GROUP BY student_id\n'}], 'max_completion_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:37:08.025803] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, MAX(enrollment_date) AS latest_date FROM enrollments WHERE student_id = 1999 AND (enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26') GROUP BY student_id
+
+[2025-10-29 19:37:08.026774] Model Request Data: {'model': 'gemini-2.5-pro', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, MAX(enrollment_date) AS latest_date FROM enrollments WHERE student_id = 1999 AND (enrollment_date > \'1993-11-26\' OR enrollment_date < \'1991-11-26\') GROUP BY student_id\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:37:10.222074] [Pro/deepseek-ai/DeepSeek-R1 Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:37:14.744307] [gemini-2.5-pro Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:37:15.084825] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-10-29 19:37:15.085470] [7] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-R1'
+[2025-10-29 19:37:15.085549] [7] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-R1 Results: True
+[2025-10-29 19:37:15.085659] [7] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-10-29 19:37:15.085760] [7] Hybrid Eval Case Judge o4-mini Results: True
+[2025-10-29 19:37:15.085870] [7] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro'
+[2025-10-29 19:37:15.085966] [7] Hybrid Eval Case Judge gemini-2.5-pro Results: True
+[2025-10-29 19:37:15.086278] [7] Hybrid Eval Case Judge Final Results: True
+[2025-10-29 19:37:15.086547] [7] hybrid Eval Case Final Result: True
+[2025-10-29 19:37:15.086645] 
+--- Case: 8 ---
+[2025-10-29 19:37:15.086744] [8] Case Run 1/1
+[2025-10-29 19:37:15.086933] [Model Prompt]: You are a database expert in SQL performance optimization.
+Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
+Output only the optimized SQL as a single-line statement with no markdown or extra text.
+
+Table Definitions:
+CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100), namespace VARCHAR(50) );
+
+Explain Output in JSON:
+{"query_block": {"select_id": 1, "cost_info": {"query_cost": "10.50"}, "table": {"table_name": "t1", "access_type": "ALL", "rows_examined_per_scan": 2, "rows_produced_per_join": 2, "filtered": "100.00", "cost_info": {"read_cost": "10.10", "eval_cost": "0.40", "prefix_cost": "10.50", "data_read_per_join": "336"}, "used_columns": ["student_id", "student_name", "namespace"], "materialized_from_subquery": {"using_temporary_table": true, "dependent": false, "cacheable": true, "query_block": {"select_id": 4, "cost_info": {"query_cost": "1.20"}, "ordering_operation": {"using_temporary_table": true, "using_filesort": true, "grouping_operation": {"using_filesort": false, "table": {"table_name": "students", "access_type": "index", "possible_keys": ["PRIMARY"], "key": "PRIMARY", "used_key_parts": ["student_id"], "key_length": "4", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "160"}, "used_columns": ["student_id", "student_name", "namespace"]}}}}}}}}
+
+Original SQL:
+SELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ORDER BY COUNT(namespace) ) AS t1 ) AS t2 ) AS t3;
+
+Optimized SQL:
+
+[2025-10-29 19:37:15.087183] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100), namespace VARCHAR(50) );\n\nExplain Output in JSON:\n{"query_block": {"select_id": 1, "cost_info": {"query_cost": "10.50"}, "table": {"table_name": "t1", "access_type": "ALL", "rows_examined_per_scan": 2, "rows_produced_per_join": 2, "filtered": "100.00", "cost_info": {"read_cost": "10.10", "eval_cost": "0.40", "prefix_cost": "10.50", "data_read_per_join": "336"}, "used_columns": ["student_id", "student_name", "namespace"], "materialized_from_subquery": {"using_temporary_table": true, "dependent": false, "cacheable": true, "query_block": {"select_id": 4, "cost_info": {"query_cost": "1.20"}, "ordering_operation": {"using_temporary_table": true, "using_filesort": true, "grouping_operation": {"using_filesort": false, "table": {"table_name": "students", "access_type": "index", "possible_keys": ["PRIMARY"], "key": "PRIMARY", "used_key_parts": ["student_id"], "key_length": "4", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "160"}, "used_columns": ["student_id", "student_name", "namespace"]}}}}}}}}\n\nOriginal SQL:\nSELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ORDER BY COUNT(namespace) ) AS t1 ) AS t2 ) AS t3;\n\nOptimized SQL:\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:37:18.319188] [inclusionAI/Ling-1T Model Answer]: SELECT student_id, student_name, namespace FROM students GROUP BY student_id;
+[2025-10-29 19:37:18.319838] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, student_name, namespace FROM students GROUP BY student_id;
+
+[2025-10-29 19:37:18.320102] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, student_name, namespace FROM students GROUP BY student_id;\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:37:18.320204] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, student_name, namespace FROM students GROUP BY student_id;
+
+[2025-10-29 19:37:18.321299] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, student_name, namespace FROM students GROUP BY student_id;\n'}], 'max_completion_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:37:18.321044] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, student_name, namespace FROM students GROUP BY student_id;
+
+[2025-10-29 19:37:18.321995] Model Request Data: {'model': 'gemini-2.5-pro', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, student_name, namespace FROM students GROUP BY student_id;\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:37:21.371384] [Pro/deepseek-ai/DeepSeek-R1 Model Answer]: {
+  "answer": "no"
+}
+[2025-10-29 19:37:21.781463] [o4-mini Model Answer]: {"answer":"no"}
+[2025-10-29 19:37:31.681401] [gemini-2.5-pro Model Answer]: {
+  "answer": "no"
+}
+[2025-10-29 19:37:31.682009] [8] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-R1'
+[2025-10-29 19:37:31.682114] [8] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-R1 Results: False
+[2025-10-29 19:37:31.682219] [8] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-10-29 19:37:31.682333] [8] Hybrid Eval Case Judge o4-mini Results: False
+[2025-10-29 19:37:31.682426] [8] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro'
+[2025-10-29 19:37:31.682540] [8] Hybrid Eval Case Judge gemini-2.5-pro Results: False
+[2025-10-29 19:37:31.682793] [8] Hybrid Eval Case Judge Final Results: False
+[2025-10-29 19:37:31.683084] [8] hybrid Eval Case Final Result: False
+[2025-10-29 19:37:31.683194] 
+--- Case: 9 ---
+[2025-10-29 19:37:31.683337] [9] Case Run 1/1
+[2025-10-29 19:37:31.683517] [Model Prompt]: You are a database expert in SQL performance optimization.
+Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
+Output only the optimized SQL as a single-line statement with no markdown or extra text.
+
+Table Definitions:
+CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) );
+CREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT );
+
+Explain Output in JSON:
+{"query_block": {"select_id": 1, "cost_info": {"query_cost": "4.80"}, "nested_loop": [{"table": {"table_name": "<subquery2>", "access_type": "ALL", "materialized_from_subquery": {"using_temporary_table": true, "query_block": {"table": {"table_name": "inner_dt", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "16"}, "used_columns": ["student_id"]}}}}}, {"table": {"table_name": "students", "access_type": "eq_ref", "possible_keys": ["PRIMARY"], "key": "PRIMARY", "used_key_parts": ["student_id"], "key_length": "4", "ref": ["<subquery2>.student_id"], "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "4.80", "data_read_per_join": "112"}, "used_columns": ["student_id", "student_name"]}}]}}
+
+Original SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );
+
+Optimized SQL:
+
+[2025-10-29 19:37:31.683761] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) );\nCREATE TABLE enrollments ( enrollment_id INT AUTO_INCREMENT PRIMARY KEY, student_id INT NOT NULL, course_id INT );\n\nExplain Output in JSON:\n{"query_block": {"select_id": 1, "cost_info": {"query_cost": "4.80"}, "nested_loop": [{"table": {"table_name": "<subquery2>", "access_type": "ALL", "materialized_from_subquery": {"using_temporary_table": true, "query_block": {"table": {"table_name": "inner_dt", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "16"}, "used_columns": ["student_id"]}}}}}, {"table": {"table_name": "students", "access_type": "eq_ref", "possible_keys": ["PRIMARY"], "key": "PRIMARY", "used_key_parts": ["student_id"], "key_length": "4", "ref": ["<subquery2>.student_id"], "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "4.80", "data_read_per_join": "112"}, "used_columns": ["student_id", "student_name"]}}]}}\n\nOriginal SQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt );\n\nOptimized SQL:\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:37:37.703839] [inclusionAI/Ling-1T Model Answer]: SELECT s.student_id, s.student_name FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id)
+
+[2025-10-29 19:37:37.704375] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.student_id, s.student_name FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id)
+
+
+[2025-10-29 19:37:37.704649] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id, s.student_name FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id)\n\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:37:37.705413] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.student_id, s.student_name FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id)
+
+
+[2025-10-29 19:37:37.705682] Model Request Data: {'model': 'gemini-2.5-pro', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id, s.student_name FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id)\n\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:37:37.704756] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.student_id, s.student_name FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id)
+
+
+[2025-10-29 19:37:37.706392] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id, s.student_name FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id)\n\n'}], 'max_completion_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:37:42.060348] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-10-29 19:37:43.625179] [gemini-2.5-pro Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:38:22.935908] [Pro/deepseek-ai/DeepSeek-R1 Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:38:22.936697] [9] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-R1'
+[2025-10-29 19:38:22.936804] [9] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-R1 Results: True
+[2025-10-29 19:38:22.936882] [9] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-10-29 19:38:22.936956] [9] Hybrid Eval Case Judge o4-mini Results: True
+[2025-10-29 19:38:22.937035] [9] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro'
+[2025-10-29 19:38:22.937114] [9] Hybrid Eval Case Judge gemini-2.5-pro Results: True
+[2025-10-29 19:38:22.937319] [9] Hybrid Eval Case Judge Final Results: True
+[2025-10-29 19:38:22.937499] [9] hybrid Eval Case Final Result: True
+[2025-10-29 19:38:22.937567] 
+--- Case: 10 ---
+[2025-10-29 19:38:22.937645] [10] Case Run 1/1
+[2025-10-29 19:38:22.937797] [Model Prompt]: You are a database expert in SQL performance optimization.
+Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
+Output only the optimized SQL as a single-line statement with no markdown or extra text.
+
+Table Definitions:
+CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100), date_of_birth DATE );
+
+Explain Output in JSON:
+{"query_block": {"select_id": 1, "cost_info": {"query_cost": "2.20"}, "ordering_operation": {"using_filesort": true, "cost_info": {"sort_cost": "1.00"}, "table": {"table_name": "T1", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["student_id", "student_name", "date_of_birth"], "attached_condition": "(((/* select#2 */ select count(0) from `test_db_case_11_1748591779`.`students` `T2` where (`test_db_case_11_1748591779`.`T2`.`student_name` <= `test_db_case_11_1748591779`.`T1`.`student_name`)) <= 3) and ((/* select#3 */ select count(0) from `test_db_case_11_1748591779`.`students` `T3` where (`test_db_case_11_1748591779`.`T3`.`date_of_birth` <= `test_db_case_11_1748591779`.`T1`.`date_of_birth`)) <= 2))", "attached_subqueries": [{"dependent": true, "cacheable": false, "query_block": {"select_id": 3, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "T3", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["date_of_birth"], "attached_condition": "(`test_db_case_11_1748591779`.`T3`.`date_of_birth` <= `test_db_case_11_1748591779`.`T1`.`date_of_birth`)"}}}, {"dependent": true, "cacheable": false, "query_block": {"select_id": 2, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "T2", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["student_name"], "attached_condition": "(`test_db_case_11_1748591779`.`T2`.`student_name` <= `test_db_case_11_1748591779`.`T1`.`student_name`)"}}}]}}}}
+
+Original SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+Optimized SQL:
+
+[2025-10-29 19:38:22.938086] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100), date_of_birth DATE );\n\nExplain Output in JSON:\n{"query_block": {"select_id": 1, "cost_info": {"query_cost": "2.20"}, "ordering_operation": {"using_filesort": true, "cost_info": {"sort_cost": "1.00"}, "table": {"table_name": "T1", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["student_id", "student_name", "date_of_birth"], "attached_condition": "(((/* select#2 */ select count(0) from `test_db_case_11_1748591779`.`students` `T2` where (`test_db_case_11_1748591779`.`T2`.`student_name` <= `test_db_case_11_1748591779`.`T1`.`student_name`)) <= 3) and ((/* select#3 */ select count(0) from `test_db_case_11_1748591779`.`students` `T3` where (`test_db_case_11_1748591779`.`T3`.`date_of_birth` <= `test_db_case_11_1748591779`.`T1`.`date_of_birth`)) <= 2))", "attached_subqueries": [{"dependent": true, "cacheable": false, "query_block": {"select_id": 3, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "T3", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["date_of_birth"], "attached_condition": "(`test_db_case_11_1748591779`.`T3`.`date_of_birth` <= `test_db_case_11_1748591779`.`T1`.`date_of_birth`)"}}}, {"dependent": true, "cacheable": false, "query_block": {"select_id": 2, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "T2", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["student_name"], "attached_condition": "(`test_db_case_11_1748591779`.`T2`.`student_name` <= `test_db_case_11_1748591779`.`T1`.`student_name`)"}}}]}}}}\n\nOriginal SQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n\nOptimized SQL:\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:38:54.175832] [inclusionAI/Ling-1T Model Answer]: SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+-- The query cannot be significantly rewritten due to its correlated subquery nature (finding students with <=3 names alphabetically and <=2 DOBs chronologically), but performance can be improved by adding composite indexes. However, since the instruction asks only for the optimized SQL statement (not schema changes) and the original logic must be preserved, the SQL remains the same. The EXPLAIN shows full table scans and filesort—ideal fix would be adding indexes: CREATE INDEX idx_name ON students(student_name); CREATE INDEX idx_dob ON students(date_of_birth); but as per requirements, only the SQL is output.
+[2025-10-29 19:38:54.176426] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+-- The query cannot be significantly rewritten due to its correlated subquery nature (finding students with <=3 names alphabetically and <=2 DOBs chronologically), but performance can be improved by adding composite indexes. However, since the instruction asks only for the optimized SQL statement (not schema changes) and the original logic must be preserved, the SQL remains the same. The EXPLAIN shows full table scans and filesort—ideal fix would be adding indexes: CREATE INDEX idx_name ON students(student_name); CREATE INDEX idx_dob ON students(date_of_birth); but as per requirements, only the SQL is output.
+
+[2025-10-29 19:38:54.176673] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n\n-- The query cannot be significantly rewritten due to its correlated subquery nature (finding students with <=3 names alphabetically and <=2 DOBs chronologically), but performance can be improved by adding composite indexes. However, since the instruction asks only for the optimized SQL statement (not schema changes) and the original logic must be preserved, the SQL remains the same. The EXPLAIN shows full table scans and filesort—ideal fix would be adding indexes: CREATE INDEX idx_name ON students(student_name); CREATE INDEX idx_dob ON students(date_of_birth); but as per requirements, only the SQL is output.\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:38:54.176762] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+-- The query cannot be significantly rewritten due to its correlated subquery nature (finding students with <=3 names alphabetically and <=2 DOBs chronologically), but performance can be improved by adding composite indexes. However, since the instruction asks only for the optimized SQL statement (not schema changes) and the original logic must be preserved, the SQL remains the same. The EXPLAIN shows full table scans and filesort—ideal fix would be adding indexes: CREATE INDEX idx_name ON students(student_name); CREATE INDEX idx_dob ON students(date_of_birth); but as per requirements, only the SQL is output.
+
+[2025-10-29 19:38:54.177788] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n\n-- The query cannot be significantly rewritten due to its correlated subquery nature (finding students with <=3 names alphabetically and <=2 DOBs chronologically), but performance can be improved by adding composite indexes. However, since the instruction asks only for the optimized SQL statement (not schema changes) and the original logic must be preserved, the SQL remains the same. The EXPLAIN shows full table scans and filesort—ideal fix would be adding indexes: CREATE INDEX idx_name ON students(student_name); CREATE INDEX idx_dob ON students(date_of_birth); but as per requirements, only the SQL is output.\n'}], 'max_completion_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:38:54.177623] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+-- The query cannot be significantly rewritten due to its correlated subquery nature (finding students with <=3 names alphabetically and <=2 DOBs chronologically), but performance can be improved by adding composite indexes. However, since the instruction asks only for the optimized SQL statement (not schema changes) and the original logic must be preserved, the SQL remains the same. The EXPLAIN shows full table scans and filesort—ideal fix would be adding indexes: CREATE INDEX idx_name ON students(student_name); CREATE INDEX idx_dob ON students(date_of_birth); but as per requirements, only the SQL is output.
+
+[2025-10-29 19:38:54.179063] Model Request Data: {'model': 'gemini-2.5-pro', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n\n-- The query cannot be significantly rewritten due to its correlated subquery nature (finding students with <=3 names alphabetically and <=2 DOBs chronologically), but performance can be improved by adding composite indexes. However, since the instruction asks only for the optimized SQL statement (not schema changes) and the original logic must be preserved, the SQL remains the same. The EXPLAIN shows full table scans and filesort—ideal fix would be adding indexes: CREATE INDEX idx_name ON students(student_name); CREATE INDEX idx_dob ON students(date_of_birth); but as per requirements, only the SQL is output.\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:39:00.526045] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-10-29 19:39:01.546582] [gemini-2.5-pro Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:39:15.101338] [Pro/deepseek-ai/DeepSeek-R1 Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:39:15.110534] [10] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-R1'
+[2025-10-29 19:39:15.110713] [10] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-R1 Results: True
+[2025-10-29 19:39:15.110829] [10] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-10-29 19:39:15.110914] [10] Hybrid Eval Case Judge o4-mini Results: True
+[2025-10-29 19:39:15.111011] [10] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro'
+[2025-10-29 19:39:15.111143] [10] Hybrid Eval Case Judge gemini-2.5-pro Results: True
+[2025-10-29 19:39:15.111413] [10] Hybrid Eval Case Judge Final Results: True
+[2025-10-29 19:39:15.111626] [10] hybrid Eval Case Final Result: True
+[2025-10-29 19:39:15.111689] 
+--- Case: 11 ---
+[2025-10-29 19:39:15.111775] [11] Case Run 1/1
+[2025-10-29 19:39:15.111955] [Model Prompt]: You are a database expert in SQL performance optimization.
+Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
+Output only the optimized SQL as a single-line statement with no markdown or extra text.
+
+Table Definitions:
+CREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100), major VARCHAR(100) );
+
+Explain Output in JSON:
+{"query_block": {"union_result": {"using_temporary_table": true, "table_name": "<union1,2>", "access_type": "ALL", "query_specifications": [{"dependent": false, "cacheable": true, "query_block": {"select_id": 1, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "students", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "208"}, "used_columns": ["student_id", "student_name", "major"], "attached_condition": "(`test_db_case_12_1748591779`.`students`.`student_name` like 'John%')"}}}, {"dependent": false, "cacheable": true, "query_block": {"select_id": 2, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "students", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "208"}, "used_columns": ["student_id", "student_name", "major"], "attached_condition": "(`test_db_case_12_1748591779`.`students`.`student_name` like 'Jane%')"}}}]}}}
+
+Original SQL:
+SELECT * FROM students WHERE student_name LIKE 'John%' UNION SELECT * FROM students WHERE student_name LIKE 'Jane%';
+
+Optimized SQL:
+
+[2025-10-29 19:39:15.112210] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( student_id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100), major VARCHAR(100) );\n\nExplain Output in JSON:\n{"query_block": {"union_result": {"using_temporary_table": true, "table_name": "<union1,2>", "access_type": "ALL", "query_specifications": [{"dependent": false, "cacheable": true, "query_block": {"select_id": 1, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "students", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "208"}, "used_columns": ["student_id", "student_name", "major"], "attached_condition": "(`test_db_case_12_1748591779`.`students`.`student_name` like \'John%\')"}}}, {"dependent": false, "cacheable": true, "query_block": {"select_id": 2, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "students", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "208"}, "used_columns": ["student_id", "student_name", "major"], "attached_condition": "(`test_db_case_12_1748591779`.`students`.`student_name` like \'Jane%\')"}}}]}}}\n\nOriginal SQL:\nSELECT * FROM students WHERE student_name LIKE \'John%\' UNION SELECT * FROM students WHERE student_name LIKE \'Jane%\';\n\nOptimized SQL:\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:39:18.610834] [inclusionAI/Ling-1T Model Answer]: SELECT * FROM students WHERE student_name LIKE 'John%' OR student_name LIKE 'Jane%';
+[2025-10-29 19:39:18.611332] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE student_name LIKE 'John%' OR student_name LIKE 'Jane%';
+
+[2025-10-29 19:39:18.611583] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE student_name LIKE \'John%\' OR student_name LIKE \'Jane%\';\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:39:18.611683] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE student_name LIKE 'John%' OR student_name LIKE 'Jane%';
+
+[2025-10-29 19:39:18.612597] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE student_name LIKE \'John%\' OR student_name LIKE \'Jane%\';\n'}], 'max_completion_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:39:18.612292] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE student_name LIKE 'John%' OR student_name LIKE 'Jane%';
+
+[2025-10-29 19:39:18.613333] Model Request Data: {'model': 'gemini-2.5-pro', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE student_name LIKE \'John%\' OR student_name LIKE \'Jane%\';\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:39:21.999203] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-10-29 19:39:25.269803] [gemini-2.5-pro Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:39:44.375758] [Pro/deepseek-ai/DeepSeek-R1 Model Answer]: {"answer": "yes"}
+[2025-10-29 19:39:44.376265] [11] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-R1'
+[2025-10-29 19:39:44.376346] [11] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-R1 Results: True
+[2025-10-29 19:39:44.376420] [11] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-10-29 19:39:44.376477] [11] Hybrid Eval Case Judge o4-mini Results: True
+[2025-10-29 19:39:44.376560] [11] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro'
+[2025-10-29 19:39:44.376627] [11] Hybrid Eval Case Judge gemini-2.5-pro Results: True
+[2025-10-29 19:39:44.376820] [11] Hybrid Eval Case Judge Final Results: True
+[2025-10-29 19:39:44.377034] [11] hybrid Eval Case Final Result: True
+[2025-10-29 19:39:44.377106] 
+--- Case: 12 ---
+[2025-10-29 19:39:44.377191] [12] Case Run 1/1
+[2025-10-29 19:39:44.377363] [Model Prompt]: You are a database expert in SQL performance optimization.
+Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
+Output only the optimized SQL as a single-line statement with no markdown or extra text.
+
+Table Definitions:
+CREATE TABLE users ( id INT PRIMARY KEY, name VARCHAR(100), reg_date DATE );
+CREATE TABLE articles ( id INT PRIMARY KEY, title VARCHAR(255), publish_time DATETIME );
+
+Explain Output in JSON:
+{"query_block": {"select_id": 1, "cost_info": {"query_cost": "15.00"}, "ordering_operation": {"using_filesort": true, "cost_info": {"sort_cost": "4.00"}, "table": {"table_name": "mixed", "access_type": "ALL", "rows_examined_per_scan": 4, "rows_produced_per_join": 4, "filtered": "100.00", "cost_info": {"read_cost": "10.20", "eval_cost": "0.80", "prefix_cost": "11.00", "data_read_per_join": "1K"}, "used_columns": ["name"], "materialized_from_subquery": {"using_temporary_table": true, "dependent": false, "cacheable": true, "query_block": {"union_result": {"using_temporary_table": true, "table_name": "<union2,3>", "access_type": "ALL", "query_specifications": [{"dependent": false, "cacheable": true, "query_block": {"select_id": 2, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "users", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["name", "reg_date"]}}}, {"dependent": false, "cacheable": true, "query_block": {"select_id": 3, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "articles", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "272"}, "used_columns": ["title", "publish_time"]}}}]}}}}}}
+
+Original SQL:
+SELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;
+
+Optimized SQL:
+
+[2025-10-29 19:39:44.377663] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE users ( id INT PRIMARY KEY, name VARCHAR(100), reg_date DATE );\nCREATE TABLE articles ( id INT PRIMARY KEY, title VARCHAR(255), publish_time DATETIME );\n\nExplain Output in JSON:\n{"query_block": {"select_id": 1, "cost_info": {"query_cost": "15.00"}, "ordering_operation": {"using_filesort": true, "cost_info": {"sort_cost": "4.00"}, "table": {"table_name": "mixed", "access_type": "ALL", "rows_examined_per_scan": 4, "rows_produced_per_join": 4, "filtered": "100.00", "cost_info": {"read_cost": "10.20", "eval_cost": "0.80", "prefix_cost": "11.00", "data_read_per_join": "1K"}, "used_columns": ["name"], "materialized_from_subquery": {"using_temporary_table": true, "dependent": false, "cacheable": true, "query_block": {"union_result": {"using_temporary_table": true, "table_name": "<union2,3>", "access_type": "ALL", "query_specifications": [{"dependent": false, "cacheable": true, "query_block": {"select_id": 2, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "users", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["name", "reg_date"]}}}, {"dependent": false, "cacheable": true, "query_block": {"select_id": 3, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "articles", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "272"}, "used_columns": ["title", "publish_time"]}}}]}}}}}}\n\nOriginal SQL:\nSELECT * FROM (  (SELECT name FROM users ORDER BY reg_date DESC)  UNION  (SELECT title FROM articles ORDER BY publish_time DESC) ) AS mixed  ORDER BY name LIMIT 5;\n\nOptimized SQL:\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:39:50.294895] [inclusionAI/Ling-1T Model Answer]: SELECT name FROM users ORDER BY reg_date DESC LIMIT 5
+UNION ALL
+SELECT title FROM articles ORDER BY publish_time DESC LIMIT 5
+ORDER BY name LIMIT 5;
+[2025-10-29 19:39:50.295464] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT name FROM users ORDER BY reg_date DESC LIMIT 5
+UNION ALL
+SELECT title FROM articles ORDER BY publish_time DESC LIMIT 5
+ORDER BY name LIMIT 5;
+
+[2025-10-29 19:39:50.295879] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT name FROM users ORDER BY reg_date DESC LIMIT 5\nUNION ALL\nSELECT title FROM articles ORDER BY publish_time DESC LIMIT 5\nORDER BY name LIMIT 5;\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:39:50.295804] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT name FROM users ORDER BY reg_date DESC LIMIT 5
+UNION ALL
+SELECT title FROM articles ORDER BY publish_time DESC LIMIT 5
+ORDER BY name LIMIT 5;
+
+[2025-10-29 19:39:50.296838] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT name FROM users ORDER BY reg_date DESC LIMIT 5\nUNION ALL\nSELECT title FROM articles ORDER BY publish_time DESC LIMIT 5\nORDER BY name LIMIT 5;\n'}], 'max_completion_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:39:50.296179] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT name FROM users ORDER BY reg_date DESC LIMIT 5
+UNION ALL
+SELECT title FROM articles ORDER BY publish_time DESC LIMIT 5
+ORDER BY name LIMIT 5;
+
+[2025-10-29 19:39:50.297594] Model Request Data: {'model': 'gemini-2.5-pro', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT name FROM users ORDER BY reg_date DESC LIMIT 5\nUNION ALL\nSELECT title FROM articles ORDER BY publish_time DESC LIMIT 5\nORDER BY name LIMIT 5;\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:39:52.919373] [Pro/deepseek-ai/DeepSeek-R1 Model Answer]: {
+  "answer": "no"
+}
+[2025-10-29 19:39:56.383987] [o4-mini Model Answer]: {"answer":"no"}
+[2025-10-29 19:40:09.218686] [gemini-2.5-pro Model Answer]: {
+  "answer": "no"
+}
+[2025-10-29 19:40:09.219284] [12] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-R1'
+[2025-10-29 19:40:09.219376] [12] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-R1 Results: False
+[2025-10-29 19:40:09.219448] [12] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-10-29 19:40:09.219534] [12] Hybrid Eval Case Judge o4-mini Results: False
+[2025-10-29 19:40:09.219601] [12] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro'
+[2025-10-29 19:40:09.219681] [12] Hybrid Eval Case Judge gemini-2.5-pro Results: False
+[2025-10-29 19:40:09.219923] [12] Hybrid Eval Case Judge Final Results: False
+[2025-10-29 19:40:09.220121] [12] hybrid Eval Case Final Result: False
+[2025-10-29 19:40:09.220185] 
+--- Case: 13 ---
+[2025-10-29 19:40:09.220261] [13] Case Run 1/1
+[2025-10-29 19:40:09.220413] [Model Prompt]: You are a database expert in SQL performance optimization.
+Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
+Output only the optimized SQL as a single-line statement with no markdown or extra text.
+
+Table Definitions:
+CREATE TABLE students ( id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) );
+CREATE TABLE A ( id INT PRIMARY KEY, value VARCHAR(100) );
+CREATE TABLE B ( id INT PRIMARY KEY, value VARCHAR(100) );
+
+Explain Output in JSON:
+{"query_block": {"select_id": 1, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "students", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["id", "student_name"], "attached_condition": "<in_optimizer>(`test_db_case_14_1748591779`.`students`.`id`,<exists>(/* select#2 */ select 1 from (/* select#3 */ select `test_db_case_14_1748591779`.`A`.`id` AS `id` from `test_db_case_14_1748591779`.`A` limit 1) `subA` where (<cache>(`test_db_case_14_1748591779`.`students`.`id`) = NULL) union all /* select#4 */ select 1 from (/* select#5 */ select `test_db_case_14_1748591779`.`B`.`id` AS `id` from `test_db_case_14_1748591779`.`B` limit 1) `subB` where (<cache>(`test_db_case_14_1748591779`.`students`.`id`) = NULL)))", "attached_subqueries": [{"dependent": true, "cacheable": false, "query_block": {"union_result": {"using_temporary_table": false, "query_specifications": [{"dependent": true, "cacheable": false, "query_block": {"select_id": 2, "message": "no matching row in const table", "table": {"materialized_from_subquery": {"using_temporary_table": true, "dependent": false, "cacheable": true, "query_block": {"select_id": 3, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "A", "access_type": "index", "key": "PRIMARY", "used_key_parts": ["id"], "key_length": "4", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "using_index": true, "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["id"]}}}}}}, {"dependent": true, "cacheable": false, "query_block": {"select_id": 4, "message": "no matching row in const table", "table": {"materialized_from_subquery": {"using_temporary_table": true, "dependent": false, "cacheable": true, "query_block": {"select_id": 5, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "B", "access_type": "index", "key": "PRIMARY", "used_key_parts": ["id"], "key_length": "4", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "using_index": true, "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["id"]}}}}}}]}}}}
+
+Original SQL:
+SELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );
+
+Optimized SQL:
+
+[2025-10-29 19:40:09.220722] Model Request Data: {'model': 'inclusionAI/Ling-1T', 'messages': [{'role': 'user', 'content': 'You are a database expert in SQL performance optimization.\nGiven the table definitions, explain output and the original SQL, apply appropriate optimizations.\nOutput only the optimized SQL as a single-line statement with no markdown or extra text.\n\nTable Definitions:\nCREATE TABLE students ( id INT AUTO_INCREMENT PRIMARY KEY, student_name VARCHAR(100) );\nCREATE TABLE A ( id INT PRIMARY KEY, value VARCHAR(100) );\nCREATE TABLE B ( id INT PRIMARY KEY, value VARCHAR(100) );\n\nExplain Output in JSON:\n{"query_block": {"select_id": 1, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "students", "access_type": "ALL", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["id", "student_name"], "attached_condition": "<in_optimizer>(`test_db_case_14_1748591779`.`students`.`id`,<exists>(/* select#2 */ select 1 from (/* select#3 */ select `test_db_case_14_1748591779`.`A`.`id` AS `id` from `test_db_case_14_1748591779`.`A` limit 1) `subA` where (<cache>(`test_db_case_14_1748591779`.`students`.`id`) = NULL) union all /* select#4 */ select 1 from (/* select#5 */ select `test_db_case_14_1748591779`.`B`.`id` AS `id` from `test_db_case_14_1748591779`.`B` limit 1) `subB` where (<cache>(`test_db_case_14_1748591779`.`students`.`id`) = NULL)))", "attached_subqueries": [{"dependent": true, "cacheable": false, "query_block": {"union_result": {"using_temporary_table": false, "query_specifications": [{"dependent": true, "cacheable": false, "query_block": {"select_id": 2, "message": "no matching row in const table", "table": {"materialized_from_subquery": {"using_temporary_table": true, "dependent": false, "cacheable": true, "query_block": {"select_id": 3, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "A", "access_type": "index", "key": "PRIMARY", "used_key_parts": ["id"], "key_length": "4", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "using_index": true, "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["id"]}}}}}}, {"dependent": true, "cacheable": false, "query_block": {"select_id": 4, "message": "no matching row in const table", "table": {"materialized_from_subquery": {"using_temporary_table": true, "dependent": false, "cacheable": true, "query_block": {"select_id": 5, "cost_info": {"query_cost": "1.20"}, "table": {"table_name": "B", "access_type": "index", "key": "PRIMARY", "used_key_parts": ["id"], "key_length": "4", "rows_examined_per_scan": 1, "rows_produced_per_join": 1, "filtered": "100.00", "using_index": true, "cost_info": {"read_cost": "1.00", "eval_cost": "0.20", "prefix_cost": "1.20", "data_read_per_join": "112"}, "used_columns": ["id"]}}}}}}]}}}}\n\nOriginal SQL:\nSELECT * FROM students WHERE id IN ( SELECT id FROM (SELECT id FROM A LIMIT 1) AS subA UNION ALL SELECT id FROM (SELECT id FROM B LIMIT 1) AS subB );\n\nOptimized SQL:\n'}], 'temperature': 0.6, 'max_tokens': 100000, 'stream': False, 'response_format': None}
+[2025-10-29 19:40:14.410702] [inclusionAI/Ling-1T Model Answer]: SELECT * FROM students WHERE id IN (SELECT id FROM A LIMIT 1) OR id IN (SELECT id FROM B LIMIT 1)
+[2025-10-29 19:40:14.411293] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE id IN (SELECT id FROM A LIMIT 1) OR id IN (SELECT id FROM B LIMIT 1)
+
+[2025-10-29 19:40:14.411662] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-R1', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE id IN (SELECT id FROM A LIMIT 1) OR id IN (SELECT id FROM B LIMIT 1)\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:40:14.411584] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE id IN (SELECT id FROM A LIMIT 1) OR id IN (SELECT id FROM B LIMIT 1)
+
+[2025-10-29 19:40:14.412734] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE id IN (SELECT id FROM A LIMIT 1) OR id IN (SELECT id FROM B LIMIT 1)\n'}], 'max_completion_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:40:14.411995] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE id IN (SELECT id FROM A LIMIT 1) OR id IN (SELECT id FROM B LIMIT 1)
+
+[2025-10-29 19:40:14.413395] Model Request Data: {'model': 'gemini-2.5-pro', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE id IN (SELECT id FROM A LIMIT 1) OR id IN (SELECT id FROM B LIMIT 1)\n'}], 'temperature': 0.4, 'max_tokens': 100000, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-10-29 19:40:16.727452] [Pro/deepseek-ai/DeepSeek-R1 Model Answer]: {
+  "answer": "no"
+}
+[2025-10-29 19:40:20.353400] [o4-mini Model Answer]: {"answer":"yes"}
+[2025-10-29 19:40:26.745664] [gemini-2.5-pro Model Answer]: {
+  "answer": "yes"
+}
+[2025-10-29 19:40:26.746192] [13] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-R1'
+[2025-10-29 19:40:26.746262] [13] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-R1 Results: False
+[2025-10-29 19:40:26.746319] [13] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-10-29 19:40:26.746372] [13] Hybrid Eval Case Judge o4-mini Results: True
+[2025-10-29 19:40:26.746433] [13] Hybrid Eval: Using Judge LLM 'gemini-2.5-pro'
+[2025-10-29 19:40:26.746483] [13] Hybrid Eval Case Judge gemini-2.5-pro Results: True
+[2025-10-29 19:40:26.746724] [13] Hybrid Eval Case Judge Final Results: True
+[2025-10-29 19:40:26.746930] [13] hybrid Eval Case Final Result: True
