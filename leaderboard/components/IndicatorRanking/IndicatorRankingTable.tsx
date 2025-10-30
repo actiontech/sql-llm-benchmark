@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { ProTable } from "@ant-design/pro-table";
-import { Button, Tooltip, Space, Card, Typography } from "antd";
+import { Button, Tooltip, Space, Card, Typography, Tag } from "antd";
 import { ActionType } from "@ant-design/pro-table";
 import { EyeOutlined, DownloadOutlined, TrophyFilled } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
@@ -90,6 +90,35 @@ export const IndicatorRankingTable: React.FC<IndicatorRankingTableProps> = ({
                         style={{ marginBottom: 0 }}
                     />
                     <span>{record.modelName}</span>
+                    {record.new_model && (
+                        <Tag
+                            color="#ff4d4f"
+                            style={{
+                                fontSize: '9px',
+                                fontWeight: 'bold',
+                                lineHeight: '14px',
+                                padding: '2px 7px',
+                                margin: '0 0 0 4px',
+                                borderRadius: '10px',
+                                border: '1px solid #ff1f1f',
+                                background: 'linear-gradient(145deg, #ff6b6b 0%, #ff4d4f 50%, #e63946 100%)',
+                                color: '#fff',
+                                boxShadow: `
+                                    0 2px 8px rgba(255, 77, 79, 0.2),
+                                    0 1px 3px rgba(0, 0, 0, 0.2),
+                                    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                                    inset 0 -1px 0 rgba(0, 0, 0, 0.1)
+                                `,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
+                                textShadow: '0 1px 1px rgba(0, 0, 0, 0.1)',
+                                position: 'relative',
+                                transform: 'translateY(-0.5px)'
+                            }}
+                        >
+                            {t("table.new_model_tag")}
+                        </Tag>
+                    )}
                 </Space>
             ),
         },
