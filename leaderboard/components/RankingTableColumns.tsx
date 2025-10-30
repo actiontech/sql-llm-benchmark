@@ -1,5 +1,5 @@
 import React from "react";
-import { Space, Button, Tooltip } from "antd";
+import { Space, Button, Tooltip, Tag } from "antd";
 import Link from "next/link";
 import { ProColumns } from "@ant-design/pro-table";
 import {
@@ -103,7 +103,40 @@ export const createRankingTableColumns = ({
             dataIndex: "real_model_namne",
             key: "real_model_namne",
             align: "center",
-            render: (text) => text,
+            render: (text, record) => (
+                <Space>
+                    <span>{text}</span>
+                    {record.new_model && (
+                        <Tag
+                            color="#ff4d4f"
+                            style={{
+                                fontSize: '9px',
+                                fontWeight: 'bold',
+                                lineHeight: '14px',
+                                padding: '2px 7px',
+                                margin: '0 0 0 4px',
+                                borderRadius: '10px',
+                                border: '1px solid #ff1f1f',
+                                background: 'linear-gradient(145deg, #ff6b6b 0%, #ff4d4f 50%, #e63946 100%)',
+                                color: '#fff',
+                                boxShadow: `
+                                    0 2px 8px rgba(255, 77, 79, 0.2),
+                                    0 1px 3px rgba(0, 0, 0, 0.2),
+                                    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                                    inset 0 -1px 0 rgba(0, 0, 0, 0.1)
+                                `,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
+                                textShadow: '0 1px 1px rgba(0, 0, 0, 0.1)',
+                                position: 'relative',
+                                transform: 'translateY(-0.5px)'
+                            }}
+                        >
+                            {t("table.new_model_tag")}
+                        </Tag>
+                    )}
+                </Space>
+            ),
             sorter: true,
             sortOrder:
                 sortedInfo.columnKey === "real_model_namne" ? sortedInfo.order : false,

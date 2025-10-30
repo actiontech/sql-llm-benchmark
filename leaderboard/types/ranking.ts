@@ -19,6 +19,7 @@ export interface Model {
         }
     >;
     total_score?: number;
+    new_model?: boolean; // 新增字段：标识是否为当月新增模型
 }
 
 export interface RankingPageProps {
