@@ -80,7 +80,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <meta name="author" content="ActionTech" />
 
           {/* 百度站点验证 */}
-          <meta name="baidu-site-verification" content="codeva-RpkKNtpLa8" />
+          <meta name="baidu-site-verification" content="codeva-JmWsVgyVSb" />
 
           {/* Open Graph / Facebook */}
           <meta property="og:type" content="website" />
