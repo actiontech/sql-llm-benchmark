@@ -30,11 +30,11 @@ class MyDocument extends Document<MyDocumentProps> {
     ctx.renderPage = () =>
       originalRenderPage({
         enhanceApp: (App) => (props) =>
-          (
-            <StyleProvider cache={cache}>
-              <App {...props} />
-            </StyleProvider>
-          ),
+        (
+          <StyleProvider cache={cache}>
+            <App {...props} />
+          </StyleProvider>
+        ),
       });
 
     const initialProps = await Document.getInitialProps(ctx);
@@ -78,6 +78,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=1500, initial-scale=1" />
           <meta name="author" content="ActionTech" />
+
+          {/* 百度站点验证 */}
+          <meta name="baidu-site-verification" content="codeva-RpkKNtpLa8" />
 
           {/* Open Graph / Facebook */}
           <meta property="og:type" content="website" />
