@@ -1,0 +1,839 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20250606_144100_791
+Run Dimensions: sql_optimization
+Run Indicator: syntax_error_detection
+Evaluation Timestamp: 2025-06-06T17:28:27.093335
+Target LLM: SQLFlash
+Judge LLMs: Pro/deepseek-ai/DeepSeek-V3, o4-mini, gemini-2.0-flash
+-------------------------------------------------
+
+[2025-06-06 16:07:34.238728] Run Indicator: sql_optimization, Parameters size: 25879B
+[2025-06-06 16:07:34.240811] 
+--- Capability: sql_optimization Indicator syntax_error_detection.jsonl Evaluating Type: hybrid  ---
+[2025-06-06 16:07:34.240850] 
+--- Case: 1 ---
+[2025-06-06 16:07:34.240983] [1] Case Run 1/1
+[2025-06-06 16:14:43.852860] [1] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 16:14:43.852917] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+[2025-06-06 16:14:43.853050] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:14:45.882961] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:14:45.883049] [1] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 16:14:45.883060] [1] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 16:14:45.883069] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+[2025-06-06 16:14:45.883104] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:14:52.269922] [Model Answer]: {"answer":"yes"}
+[2025-06-06 16:14:52.270117] [1] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 16:14:52.270147] [1] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 16:14:52.270170] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );
+
+[2025-06-06 16:14:52.270266] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_name FROM students WHERE student_id IN ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM ( SELECT student_id FROM students ) AS inner_dt2 ) AS inner_dt1 ) AS outer_dt );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:14:53.641984] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:14:53.642123] [1] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 16:14:53.642156] [1] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 16:14:53.642180] [1] hybrid Eval Case Final Result: True
+[2025-06-06 16:14:53.642199] 
+--- Case: 2 ---
+[2025-06-06 16:14:53.642248] [2] Case Run 1/1
+[2025-06-06 16:19:33.124041] [2] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 16:19:33.124111] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.teacher_id, dt_teacher.teacher_name
+FROM students s
+JOIN (
+    SELECT teacher_id, teacher_name
+    FROM (
+        SELECT teacher_id, teacher_name
+        FROM (
+            SELECT teacher_id, teacher_name
+            FROM (
+                SELECT teacher_id, teacher_name
+                FROM teachers
+            ) AS inner_dt1
+        ) AS inner_dt2
+    ) AS inner_dt3
+) AS dt_teacher
+ON s.teacher_id = dt_teacher.teacher_id
+WHERE dt_teacher.teacher_name LIKE 'Dr. %';
+
+[2025-06-06 16:19:33.124320] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.teacher_id, dt_teacher.teacher_name\nFROM students s\nJOIN (\n    SELECT teacher_id, teacher_name\n    FROM (\n        SELECT teacher_id, teacher_name\n        FROM (\n            SELECT teacher_id, teacher_name\n            FROM (\n                SELECT teacher_id, teacher_name\n                FROM teachers\n            ) AS inner_dt1\n        ) AS inner_dt2\n    ) AS inner_dt3\n) AS dt_teacher\nON s.teacher_id = dt_teacher.teacher_id\nWHERE dt_teacher.teacher_name LIKE \'Dr. %\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:19:35.306270] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:19:35.306452] [2] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 16:19:35.306471] [2] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 16:19:35.306487] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.teacher_id, dt_teacher.teacher_name
+FROM students s
+JOIN (
+    SELECT teacher_id, teacher_name
+    FROM (
+        SELECT teacher_id, teacher_name
+        FROM (
+            SELECT teacher_id, teacher_name
+            FROM (
+                SELECT teacher_id, teacher_name
+                FROM teachers
+            ) AS inner_dt1
+        ) AS inner_dt2
+    ) AS inner_dt3
+) AS dt_teacher
+ON s.teacher_id = dt_teacher.teacher_id
+WHERE dt_teacher.teacher_name LIKE 'Dr. %';
+
+[2025-06-06 16:19:35.306547] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.teacher_id, dt_teacher.teacher_name\nFROM students s\nJOIN (\n    SELECT teacher_id, teacher_name\n    FROM (\n        SELECT teacher_id, teacher_name\n        FROM (\n            SELECT teacher_id, teacher_name\n            FROM (\n                SELECT teacher_id, teacher_name\n                FROM teachers\n            ) AS inner_dt1\n        ) AS inner_dt2\n    ) AS inner_dt3\n) AS dt_teacher\nON s.teacher_id = dt_teacher.teacher_id\nWHERE dt_teacher.teacher_name LIKE \'Dr. %\';\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:19:40.251117] [Model Answer]: {"answer":"yes"}
+[2025-06-06 16:19:40.251240] [2] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 16:19:40.251255] [2] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 16:19:40.251269] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.teacher_id, dt_teacher.teacher_name
+FROM students s
+JOIN (
+    SELECT teacher_id, teacher_name
+    FROM (
+        SELECT teacher_id, teacher_name
+        FROM (
+            SELECT teacher_id, teacher_name
+            FROM (
+                SELECT teacher_id, teacher_name
+                FROM teachers
+            ) AS inner_dt1
+        ) AS inner_dt2
+    ) AS inner_dt3
+) AS dt_teacher
+ON s.teacher_id = dt_teacher.teacher_id
+WHERE dt_teacher.teacher_name LIKE 'Dr. %';
+
+[2025-06-06 16:19:40.251337] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.teacher_id, dt_teacher.teacher_name\nFROM students s\nJOIN (\n    SELECT teacher_id, teacher_name\n    FROM (\n        SELECT teacher_id, teacher_name\n        FROM (\n            SELECT teacher_id, teacher_name\n            FROM (\n                SELECT teacher_id, teacher_name\n                FROM teachers\n            ) AS inner_dt1\n        ) AS inner_dt2\n    ) AS inner_dt3\n) AS dt_teacher\nON s.teacher_id = dt_teacher.teacher_id\nWHERE dt_teacher.teacher_name LIKE \'Dr. %\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:19:41.479769] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:19:41.479871] [2] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 16:19:41.479891] [2] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 16:19:41.479904] [2] hybrid Eval Case Final Result: True
+[2025-06-06 16:19:41.479915] 
+--- Case: 4 ---
+[2025-06-06 16:19:41.479950] [4] Case Run 1/1
+[2025-06-06 16:28:28.974849] [4] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 16:28:28.974935] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'
+
+[2025-06-06 16:28:28.975139] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = \'MALE\'\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:28:31.272521] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:28:31.272742] [4] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 16:28:31.272768] [4] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 16:28:31.272789] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'
+
+[2025-06-06 16:28:31.272880] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = \'MALE\'\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:28:50.150277] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = \'MALE\'\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:29:06.583963] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = \'MALE\'\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:29:23.324504] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = \'MALE\'\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:29:35.737378] [Model Answer]: {"answer":"yes"}
+[2025-06-06 16:29:35.737583] [4] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 16:29:35.737635] [4] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 16:29:35.737667] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = 'MALE'
+
+[2025-06-06 16:29:35.737745] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT s.student_id, s.student_name, s.date_of_birth FROM students s JOIN ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM ( SELECT student_id, gender FROM students ORDER BY student_id DESC ) AS inner_dt3 ) AS inner_dt2 ORDER BY student_id DESC LIMIT 1 ) AS inner_dt1 ) dt ON s.student_id = dt.student_id WHERE dt.gender = \'MALE\'\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:29:37.635659] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:29:37.635726] [4] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 16:29:37.635743] [4] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 16:29:37.635752] [4] hybrid Eval Case Final Result: True
+[2025-06-06 16:29:37.635760] 
+--- Case: 5 ---
+[2025-06-06 16:29:37.635817] [5] Case Run 1/1
+[2025-06-06 16:36:28.898020] [5] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 16:36:28.898081] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = 'Female'  AND s.date_of_birth <= '2000-01-01'  AND s.student_name != 'TestName' LIMIT 10;
+
+[2025-06-06 16:36:28.898191] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = \'Female\'  AND s.date_of_birth <= \'2000-01-01\'  AND s.student_name != \'TestName\' LIMIT 10;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:36:33.510198] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:36:33.510305] [5] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 16:36:33.510316] [5] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 16:36:33.510325] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = 'Female'  AND s.date_of_birth <= '2000-01-01'  AND s.student_name != 'TestName' LIMIT 10;
+
+[2025-06-06 16:36:33.510359] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = \'Female\'  AND s.date_of_birth <= \'2000-01-01\'  AND s.student_name != \'TestName\' LIMIT 10;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:36:38.564269] [Model Answer]: {"answer":"yes"}
+[2025-06-06 16:36:38.564412] [5] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 16:36:38.564436] [5] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 16:36:38.564457] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = 'Female'  AND s.date_of_birth <= '2000-01-01'  AND s.student_name != 'TestName' LIMIT 10;
+
+[2025-06-06 16:36:38.564551] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id FROM students s WHERE s.student_id IN ( SELECT e.student_id FROM enrollments e WHERE e.student_id = s.student_id )  AND s.gender = \'Female\'  AND s.date_of_birth <= \'2000-01-01\'  AND s.student_name != \'TestName\' LIMIT 10;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:36:39.804370] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:36:39.804450] [5] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 16:36:39.804466] [5] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 16:36:39.804476] [5] hybrid Eval Case Final Result: True
+[2025-06-06 16:36:39.804504] 
+--- Case: 6 ---
+[2025-06-06 16:36:39.804536] [6] Case Run 1/1
+[2025-06-06 16:42:49.628002] [6] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 16:42:49.628097] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, CONCAT('id_', student_id) as student_id2
+FROM (
+    SELECT student_id
+    FROM enrollments
+    WHERE CONCAT('id_', student_id) >= 'id_1000'
+) AS dt
+LIMIT 10;
+
+[2025-06-06 16:42:49.628304] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, CONCAT(\'id_\', student_id) as student_id2\nFROM (\n    SELECT student_id\n    FROM enrollments\n    WHERE CONCAT(\'id_\', student_id) >= \'id_1000\'\n) AS dt\nLIMIT 10;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:42:53.016305] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:42:53.016542] [6] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 16:42:53.016573] [6] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 16:42:53.016597] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, CONCAT('id_', student_id) as student_id2
+FROM (
+    SELECT student_id
+    FROM enrollments
+    WHERE CONCAT('id_', student_id) >= 'id_1000'
+) AS dt
+LIMIT 10;
+
+[2025-06-06 16:42:53.016686] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, CONCAT(\'id_\', student_id) as student_id2\nFROM (\n    SELECT student_id\n    FROM enrollments\n    WHERE CONCAT(\'id_\', student_id) >= \'id_1000\'\n) AS dt\nLIMIT 10;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:42:59.556563] [Model Answer]: {"answer":"yes"}
+[2025-06-06 16:42:59.556710] [6] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 16:42:59.556737] [6] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 16:42:59.556760] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, CONCAT('id_', student_id) as student_id2
+FROM (
+    SELECT student_id
+    FROM enrollments
+    WHERE CONCAT('id_', student_id) >= 'id_1000'
+) AS dt
+LIMIT 10;
+
+[2025-06-06 16:42:59.556850] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, CONCAT(\'id_\', student_id) as student_id2\nFROM (\n    SELECT student_id\n    FROM enrollments\n    WHERE CONCAT(\'id_\', student_id) >= \'id_1000\'\n) AS dt\nLIMIT 10;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:43:00.787609] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:43:00.787757] [6] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 16:43:00.787856] [6] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 16:43:00.787886] [6] hybrid Eval Case Final Result: True
+[2025-06-06 16:43:00.787906] 
+--- Case: 7 ---
+[2025-06-06 16:43:00.787954] [7] Case Run 1/1
+[2025-06-06 16:48:06.970038] [7] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 16:48:06.970095] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );
+
+[2025-06-06 16:48:06.970202] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:48:08.919149] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:48:08.919312] [7] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 16:48:08.919332] [7] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 16:48:08.919345] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );
+
+[2025-06-06 16:48:08.919406] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:48:13.124569] [Model Answer]: {"answer":"yes"}
+[2025-06-06 16:48:13.124719] [7] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 16:48:13.124743] [7] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 16:48:13.124764] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );
+
+[2025-06-06 16:48:13.124858] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE student_id NOT IN ( SELECT student_id FROM enrollments WHERE students.student_id = enrollments.student_id AND enrollment_id > 1000 );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:48:14.295000] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:48:14.295165] [7] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 16:48:14.295201] [7] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 16:48:14.295229] [7] hybrid Eval Case Final Result: True
+[2025-06-06 16:48:14.295248] 
+--- Case: 8 ---
+[2025-06-06 16:48:14.295308] [8] Case Run 1/1
+[2025-06-06 16:52:23.889288] [8] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 16:52:23.889547] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999
+
+[2025-06-06 16:52:23.889801] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > \'1993-11-26\' OR enrollment_date < \'1991-11-26\' GROUP BY student_id HAVING student_id = 1999\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:52:26.610981] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:52:26.611199] [8] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 16:52:26.611244] [8] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 16:52:26.611267] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999
+
+[2025-06-06 16:52:26.611352] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > \'1993-11-26\' OR enrollment_date < \'1991-11-26\' GROUP BY student_id HAVING student_id = 1999\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:52:30.442248] [Model Answer]: {"answer":"yes"}
+[2025-06-06 16:52:30.442394] [8] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 16:52:30.442417] [8] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 16:52:30.442437] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > '1993-11-26' OR enrollment_date < '1991-11-26' GROUP BY student_id HAVING student_id = 1999
+
+[2025-06-06 16:52:30.442537] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT student_id, MAX(enrollment_date) latest_date FROM enrollments WHERE enrollment_date > \'1993-11-26\' OR enrollment_date < \'1991-11-26\' GROUP BY student_id HAVING student_id = 1999\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:52:31.572057] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:52:31.572198] [8] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 16:52:31.572276] [8] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 16:52:31.572301] [8] hybrid Eval Case Final Result: True
+[2025-06-06 16:52:31.572321] 
+--- Case: 9 ---
+[2025-06-06 16:52:31.572370] [9] Case Run 1/1
+[2025-06-06 16:57:48.101079] [9] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 16:57:48.101133] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ) AS t1 ) AS t2 ) AS t3;
+
+[2025-06-06 16:57:48.101259] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ) AS t1 ) AS t2 ) AS t3;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:57:50.491858] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:57:50.492044] [9] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 16:57:50.492068] [9] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 16:57:50.492090] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ) AS t1 ) AS t2 ) AS t3;
+
+[2025-06-06 16:57:50.492171] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ) AS t1 ) AS t2 ) AS t3;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:57:56.726895] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:57:56.727051] [9] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 16:57:56.727074] [9] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 16:57:56.727096] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ) AS t1 ) AS t2 ) AS t3;
+
+[2025-06-06 16:57:56.727185] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM ( SELECT * FROM ( SELECT * FROM ( SELECT * FROM students GROUP BY student_id ) AS t1 ) AS t2 ) AS t3;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 16:57:58.043744] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 16:57:58.043891] [9] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 16:57:58.043927] [9] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 16:57:58.043977] [9] hybrid Eval Case Final Result: True
+[2025-06-06 16:57:58.043999] 
+--- Case: 10 ---
+[2025-06-06 16:57:58.044048] [10] Case Run 1/1
+[2025-06-06 17:02:06.485709] [10] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 17:02:06.485767] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );
+
+[2025-06-06 17:02:06.485877] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:02:08.506799] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 17:02:08.506913] [10] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 17:02:08.506935] [10] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 17:02:08.506954] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );
+
+[2025-06-06 17:02:08.507023] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:02:38.835733] [Model Answer]: {"answer":"yes"}
+[2025-06-06 17:02:38.835842] [10] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 17:02:38.835863] [10] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 17:02:38.835883] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );
+
+[2025-06-06 17:02:38.835956] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE student_id IN ( SELECT student_id FROM enrollments AS inner_dt WHERE students.student_id = inner_dt.student_id );\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:02:40.140127] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 17:02:40.140276] [10] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 17:02:40.140310] [10] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 17:02:40.140334] [10] hybrid Eval Case Final Result: True
+[2025-06-06 17:02:40.140354] 
+--- Case: 11 ---
+[2025-06-06 17:02:40.140403] [11] Case Run 1/1
+[2025-06-06 17:10:13.134303] [11] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 17:10:13.134389] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+[2025-06-06 17:10:13.134574] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:10:15.209071] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 17:10:15.209274] [11] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 17:10:15.209300] [11] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 17:10:15.209322] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+[2025-06-06 17:10:15.209427] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:10:21.013659] [Model Answer]: {"answer":"yes"}
+[2025-06-06 17:10:21.013808] [11] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 17:10:21.013831] [11] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 17:10:21.013853] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;
+
+[2025-06-06 17:10:21.013945] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT T1.student_name, T1.date_of_birth FROM students AS T1 WHERE (SELECT COUNT(*) FROM students AS T2 WHERE T2.student_name <= T1.student_name) <= 3 AND (SELECT COUNT(*) FROM students AS T3 WHERE T3.date_of_birth <= T1.date_of_birth) <= 2 ORDER BY T1.student_name, T1.date_of_birth;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:10:22.148572] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 17:10:22.148744] [11] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 17:10:22.148783] [11] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 17:10:22.148807] [11] hybrid Eval Case Final Result: True
+[2025-06-06 17:10:22.148827] 
+--- Case: 12 ---
+[2025-06-06 17:10:22.148875] [12] Case Run 1/1
+[2025-06-06 17:17:28.059983] [12] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 17:17:28.060073] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE student_name >= 'John' AND student_name < 'Joho' UNION SELECT * FROM students WHERE student_name >= 'Jane' AND student_name < 'Janf';
+
+[2025-06-06 17:17:28.060262] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE student_name >= \'John\' AND student_name < \'Joho\' UNION SELECT * FROM students WHERE student_name >= \'Jane\' AND student_name < \'Janf\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:17:30.118258] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 17:17:30.118411] [12] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 17:17:30.118426] [12] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 17:17:30.118439] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE student_name >= 'John' AND student_name < 'Joho' UNION SELECT * FROM students WHERE student_name >= 'Jane' AND student_name < 'Janf';
+
+[2025-06-06 17:17:30.118498] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE student_name >= \'John\' AND student_name < \'Joho\' UNION SELECT * FROM students WHERE student_name >= \'Jane\' AND student_name < \'Janf\';\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:17:34.743113] [Model Answer]: {"answer":"yes"}
+[2025-06-06 17:17:34.743264] [12] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 17:17:34.743287] [12] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 17:17:34.743309] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE student_name >= 'John' AND student_name < 'Joho' UNION SELECT * FROM students WHERE student_name >= 'Jane' AND student_name < 'Janf';
+
+[2025-06-06 17:17:34.743400] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE student_name >= \'John\' AND student_name < \'Joho\' UNION SELECT * FROM students WHERE student_name >= \'Jane\' AND student_name < \'Janf\';\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:17:36.043612] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 17:17:36.043681] [12] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 17:17:36.043695] [12] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 17:17:36.043705] [12] hybrid Eval Case Final Result: True
+[2025-06-06 17:17:36.043713] 
+--- Case: 13 ---
+[2025-06-06 17:17:36.043736] [13] Case Run 1/1
+[2025-06-06 17:22:51.899069] [13] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 17:22:51.899161] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM (  (SELECT name FROM users)  UNION  (SELECT title FROM articles) ) AS mixed  ORDER BY name LIMIT 5;
+
+[2025-06-06 17:22:51.899362] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM (  (SELECT name FROM users)  UNION  (SELECT title FROM articles) ) AS mixed  ORDER BY name LIMIT 5;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:22:55.229734] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 17:22:55.229940] [13] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 17:22:55.229963] [13] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 17:22:55.229983] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM (  (SELECT name FROM users)  UNION  (SELECT title FROM articles) ) AS mixed  ORDER BY name LIMIT 5;
+
+[2025-06-06 17:22:55.230056] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM (  (SELECT name FROM users)  UNION  (SELECT title FROM articles) ) AS mixed  ORDER BY name LIMIT 5;\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:23:02.084710] [Model Answer]: {"answer":"yes"}
+[2025-06-06 17:23:02.084869] [13] Hybrid Eval Case Judge o4-mini Results: True
+[2025-06-06 17:23:02.084896] [13] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 17:23:02.084918] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM (  (SELECT name FROM users)  UNION  (SELECT title FROM articles) ) AS mixed  ORDER BY name LIMIT 5;
+
+[2025-06-06 17:23:02.085024] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM (  (SELECT name FROM users)  UNION  (SELECT title FROM articles) ) AS mixed  ORDER BY name LIMIT 5;\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:23:03.233293] [Model Answer]: {
+  "answer": "no"
+}
+[2025-06-06 17:23:03.233429] [13] Hybrid Eval Case Judge gemini-2.0-flash Results: False
+[2025-06-06 17:23:03.233462] [13] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 17:23:03.233486] [13] hybrid Eval Case Final Result: True
+[2025-06-06 17:23:03.233509] 
+--- Case: 14 ---
+[2025-06-06 17:23:03.233558] [14] Case Run 1/1
+[2025-06-06 17:28:15.047586] [14] Hybrid Eval: Using Judge LLM 'Pro/deepseek-ai/DeepSeek-V3'
+[2025-06-06 17:28:15.047675] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE id IN (
+    SELECT id FROM (SELECT id FROM A WHERE A.id = students.id LIMIT 1) AS subA
+    UNION ALL
+    SELECT id FROM (SELECT id FROM B WHERE B.id = students.id LIMIT 1) AS subB
+);
+
+[2025-06-06 17:28:15.047884] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE id IN (\n    SELECT id FROM (SELECT id FROM A WHERE A.id = students.id LIMIT 1) AS subA\n    UNION ALL\n    SELECT id FROM (SELECT id FROM B WHERE B.id = students.id LIMIT 1) AS subB\n);\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:28:17.270243] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 17:28:17.270391] [14] Hybrid Eval Case Judge Pro/deepseek-ai/DeepSeek-V3 Results: True
+[2025-06-06 17:28:17.270421] [14] Hybrid Eval: Using Judge LLM 'o4-mini'
+[2025-06-06 17:28:17.270440] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE id IN (
+    SELECT id FROM (SELECT id FROM A WHERE A.id = students.id LIMIT 1) AS subA
+    UNION ALL
+    SELECT id FROM (SELECT id FROM B WHERE B.id = students.id LIMIT 1) AS subB
+);
+
+[2025-06-06 17:28:17.270521] Model Request Data: {'model': 'o4-mini', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE id IN (\n    SELECT id FROM (SELECT id FROM A WHERE A.id = students.id LIMIT 1) AS subA\n    UNION ALL\n    SELECT id FROM (SELECT id FROM B WHERE B.id = students.id LIMIT 1) AS subB\n);\n'}], 'max_completion_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:28:25.758729] [Model Answer]: {"answer":"no"}
+[2025-06-06 17:28:25.758791] [14] Hybrid Eval Case Judge o4-mini Results: False
+[2025-06-06 17:28:25.758799] [14] Hybrid Eval: Using Judge LLM 'gemini-2.0-flash'
+[2025-06-06 17:28:25.758808] [Model Prompt]: You are a database expert. Determine whether the following SQL statement
+is syntactically valid and executable in a None database.
+Do **not** execute it; just check syntax correctness.
+Return **only** JSON in this format, with no extra text:
+
+{
+  "answer": "yes" | "no"
+}
+
+SQL:
+SELECT * FROM students WHERE id IN (
+    SELECT id FROM (SELECT id FROM A WHERE A.id = students.id LIMIT 1) AS subA
+    UNION ALL
+    SELECT id FROM (SELECT id FROM B WHERE B.id = students.id LIMIT 1) AS subB
+);
+
+[2025-06-06 17:28:25.758844] Model Request Data: {'model': 'gemini-2.0-flash', 'messages': [{'role': 'user', 'content': 'You are a database expert. Determine whether the following SQL statement\nis syntactically valid and executable in a None database.\nDo **not** execute it; just check syntax correctness.\nReturn **only** JSON in this format, with no extra text:\n\n{\n  "answer": "yes" | "no"\n}\n\nSQL:\nSELECT * FROM students WHERE id IN (\n    SELECT id FROM (SELECT id FROM A WHERE A.id = students.id LIMIT 1) AS subA\n    UNION ALL\n    SELECT id FROM (SELECT id FROM B WHERE B.id = students.id LIMIT 1) AS subB\n);\n'}], 'temperature': 0.3, 'max_tokens': 1500, 'stream': False, 'response_format': {'type': 'json_object'}}
+[2025-06-06 17:28:27.090426] [Model Answer]: {
+  "answer": "yes"
+}
+[2025-06-06 17:28:27.090499] [14] Hybrid Eval Case Judge gemini-2.0-flash Results: True
+[2025-06-06 17:28:27.090514] [14] Hybrid Eval Case Judge Final Results: True
+[2025-06-06 17:28:27.090523] [14] hybrid Eval Case Final Result: True
