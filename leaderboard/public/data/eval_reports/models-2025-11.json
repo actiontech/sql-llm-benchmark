@@ -1,0 +1,1431 @@
+{
+    "models": [
+        {
+            "id": "sqlflash",
+            "name": "SQLFlash",
+            "real_model_namne": "SQLFlash",
+            "type": "Application",
+            "parameters": 83144,
+            "website": "https://sqlflash.ai/?utm_source=scale",
+            "description": "Optimize Your SQL, Maximize Your Focus",
+            "organization": "SQLFlash",
+            "releaseDate": "2025/2/17",
+            "scores": {
+                "sql_optimization": {
+                    "ability_score": 88.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.2,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "sqlshift",
+            "name": "SQLShift",
+            "real_model_namne": "SQLShift",
+            "type": "Application",
+            "parameters": 69585,
+            "website": "https://sqlshift.cn/?utm_source=scale",
+            "description": "Say goodbye to stored procedure headaches in multi-source heterogenous database migration.",
+            "organization": "SQLShift",
+            "releaseDate": "2025/4/29",
+            "scores": {
+                "dialect_conversion": {
+                    "ability_score": 83.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 67.7,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 83.9,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 83.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "ling-1t",
+            "name": "inclusionAI/Ling-1T",
+            "real_model_namne": "Ling-1T",
+            "type": "Chat",
+            "parameters": 149766,
+            "website": "https://ling.tbox.cn/",
+            "description": "Ling-1T is the first flagship non-thinking model in the Ling 2.0 series, featuring 1 trillion total parameters with ≈ 50 billion active parameters per token. Built on the Ling 2.0 architecture, Ling-1T is designed to push the limits of efficient reasoning and scalable cognition.",
+            "organization": "Ant Group",
+            "releaseDate": "2025-10-09",
+            "new_model": true,
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 59.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 52.9,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 57.1,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 87.1,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 59.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 12.9,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 61.3,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 69.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 62.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 84.2,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 51.1,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 84.2,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "ring-1t",
+            "name": "inclusionAI/Ring-1T",
+            "real_model_namne": "Ring-1T",
+            "type": "Chat(Thinking)",
+            "parameters": 149766,
+            "website": "https://ling.tbox.cn/",
+            "description": "Ring-1T adopts the Ling 2.0 architecture and is trained on the Ling-1T-base foundation model, which contains 1 trillion total parameters with 50 billion activated parameters, supporting a context window of up to 128K tokens.",
+            "organization": "Ant Group",
+            "releaseDate": "2025-10-14",
+            "new_model": true,
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 78.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 84.3,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.7,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 67.1,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 69.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 41.9,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 94.7,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.0,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 73.8,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 70.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 84.2,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.0,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "DeepSeek-R1",
+            "name": "Pro/deepseek-ai/DeepSeek-R1",
+            "real_model_namne": "DeepSeek-R1",
+            "type": "Chat(Thinking)",
+            "parameters": 116012,
+            "website": "https://www.deepseek.com/",
+            "description": "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning",
+            "organization": "DeepSeek",
+            "releaseDate": "2025-05-28",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 80.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 84.3,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 64.3,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 74.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 48.4,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 74.2,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 92.9,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 71.6,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.0,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "qwen3-235b-a22b-thinking-2507",
+            "name": "Qwen/Qwen3-235B-A22B-Thinking-2507",
+            "real_model_namne": "Qwen3-235B-A22B-Thinking-2507",
+            "type": "Chat(Thinking)",
+            "parameters": 104027,
+            "website": "https://tongyi.aliyun.com/welcome",
+            "description": "Qwen3 full series models achieve effective integration of thinking and non-thinking modes, enabling mode switching during conversations.",
+            "organization": "Alibaba",
+            "releaseDate": "2025-07-25",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 77.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 84.3,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.7,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 65.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 76.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 58.1,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 97.4,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 80.6,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 66.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 69.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 63.2,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 66.7,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "o4-mini",
+            "name": "o4-mini",
+            "real_model_namne": "o4-mini",
+            "type": "Chat(Thinking)",
+            "parameters": 116012,
+            "website": "https://openai.com/index/introducing-o3-and-o4-mini/",
+            "description": "Our smartest and most capable models to date with full tool access",
+            "organization": "OpenAI",
+            "releaseDate": "2025/4/17",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 80.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 87.1,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 57.1,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 74.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 77.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 61.3,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 92.1,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 74.2,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 85.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 68.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 63.2,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 64.4,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 94.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "o1",
+            "name": "o1",
+            "real_model_namne": "o1",
+            "type": "Chat",
+            "parameters": 116012,
+            "website": "https://openai.com/o1/",
+            "description": "OpenAI o1 is a reflective generative pre-trained transformer (GPT).",
+            "organization": "OpenAI",
+            "releaseDate": "2024/9/12",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 81.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 87.1,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.7,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 74.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 77.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 58.1,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 92.1,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 80.6,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 83.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 65.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 78.9,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 55.6,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 94.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "qwen3-235b-a22b-instruct-2507",
+            "name": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+            "real_model_namne": "Qwen3-235B-A22B-Instruct-2507",
+            "type": "Chat",
+            "parameters": 220039,
+            "website": "https://tongyi.aliyun.com/welcome",
+            "description": "Qwen3 full series models achieve effective integration of thinking and non-thinking modes, enabling mode switching during conversations.",
+            "organization": "Alibaba",
+            "releaseDate": "2025-07-21",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 68.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 75.7,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 28.6,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 70.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 65.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 38.7,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 97.4,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 61.3,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 66.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 56.7,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 52.6,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 48.9,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "gpt-4o",
+            "name": "gpt-4o",
+            "real_model_namne": "GPT-4o",
+            "type": "Chat",
+            "parameters": 220039,
+            "website": "https://openai.com/index/gpt-4o-system-card/",
+            "description": "We’re announcing GPT‑4o, our new flagship model that can reason across audio, vision, and text in real time.",
+            "organization": "OpenAI",
+            "releaseDate": "2024/5/13",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 67.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 72.9,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 32.1,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 48.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 19.4,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 68.4,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 54.8,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 52.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 54.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 36.8,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 53.3,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 84.2,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "deepseek-v3.1",
+            "name": "Pro/deepseek-ai/DeepSeek-V3.1",
+            "real_model_namne": "DeepSeek-V3.1",
+            "type": "Chat(Thinking)",
+            "parameters": 149766,
+            "website": "https://www.deepseek.com/",
+            "description": "🧠 Hybrid inference: Think & Non-Think — one model, two modes⚡️ Faster thinking: DeepSeek-V3.1-Think reaches answers in less time vs. DeepSeek-R1-0528🛠️ Stronger agent skills: Post-training boosts tool use and multi-step agent tasks",
+            "organization": "DeepSeek",
+            "releaseDate": "2025-08-20",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 70.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 70.0,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 57.1,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 81.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 63.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 25.8,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.0,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 57.1,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 67.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 78.9,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 57.8,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 94.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "deepseek-v3",
+            "name": "Pro/deepseek-ai/DeepSeek-V3",
+            "real_model_namne": "DeepSeek-V3",
+            "type": "Chat",
+            "parameters": 220039,
+            "website": "https://www.deepseek.com/",
+            "description": "DeepSeek v3: Advanced AI Language Model",
+            "organization": "DeepSeek",
+            "releaseDate": "2025-03-24",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 73.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 75.7,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 46.4,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 85.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 62.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 29.0,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 97.4,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.0,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 50.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 62.9,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 47.4,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.0,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "gemini-3-pro-preview",
+            "name": "gemini-3-pro-preview",
+            "real_model_namne": "Gemini 3 Pro",
+            "type": "Chat(Thinking)",
+            "parameters": 104027,
+            "website": "https://deepmind.google/models/gemini/pro/",
+            "description": "Gemini 3 Pro Best for agentic and vibe coding to bring creative concepts to life",
+            "organization": "Google",
+            "releaseDate": "2025/11/18",
+            "new_model": true,
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 86.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 90.0,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 64.3,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 87.1,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 77.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 61.3,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 80.6,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 72.7,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 73.7,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 66.7,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "gemini-2.5-pro",
+            "name": "gemini-2.5-pro",
+            "real_model_namne": "Gemini 2.5 Pro",
+            "type": "Chat(Thinking)",
+            "parameters": 220039,
+            "website": "https://deepmind.google/models/gemini/",
+            "description": "Gemini 2.5 Pro is our most advanced reasoning Gemini model, capable of solving complex problems.",
+            "organization": "Google",
+            "releaseDate": "2025/6/17",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 82.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 87.1,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.7,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 77.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 54.8,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 94.7,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 77.4,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 85.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 68.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 78.9,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 57.8,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "gemini-2.5-flash",
+            "name": "gemini-2.5-flash",
+            "real_model_namne": "Gemini 2.5 Flash",
+            "type": "Chat",
+            "parameters": 220039,
+            "website": "https://deepmind.google/models/gemini/",
+            "description": "Gemini 2.5 Flash is our first Flash model model that features thinking capabilities, which lets you see the thinking process that the model goes through when generating its response.",
+            "organization": "Google",
+            "releaseDate": "2025/6/17",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 82.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 90.0,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 53.6,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 74.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 75.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 58.1,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 80.6,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 59.5,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 68.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 78.9,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 57.8,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "gemini-2.0-flash",
+            "name": "gemini-2.0-flash",
+            "real_model_namne": "Gemini 2.0 Flash",
+            "type": "Chat",
+            "parameters": 220039,
+            "website": "https://deepmind.google/models/gemini/",
+            "description": "Our most intelligent AI models",
+            "organization": "Google",
+            "releaseDate": "2025/2/05",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 60.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 60.0,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 35.7,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 84.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 58.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 19.4,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 84.2,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 61.3,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 59.6,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 63.2,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 51.1,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 94.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "claude-3-5-sonnet-20241022",
+            "name": "claude-3-5-sonnet-20241022",
+            "real_model_namne": "Claude 3.5 Sonnet",
+            "type": "Chat",
+            "parameters": 220039,
+            "website": "https://www.anthropic.com/news/claude-3-5-sonnet",
+            "description": "Claude 3.5 Sonnet helps across the entire software development lifecycle, from initial design to bug fixes, maintenance, and optimizations.",
+            "organization": "Anthropic",
+            "releaseDate": "2024-10-22",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 75.6,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 80.0,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 39.3,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 87.1,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 59.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 19.4,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 61.3,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 73.8,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 62.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 68.4,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 55.6,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 84.2,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "claude-sonnet-4-20250514-thinking",
+            "name": "claude-sonnet-4-20250514-thinking",
+            "real_model_namne": "Claude Sonnet 4",
+            "type": "Chat(Thinking)",
+            "parameters": 220039,
+            "website": "https://www.anthropic.com/claude/sonnet",
+            "description": "Claude Sonnet 4 hybrid reasoning model with superior intelligence for high-volume use cases, and 200K context window.",
+            "organization": "Anthropic",
+            "releaseDate": "2025-05-14",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 79.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 87.1,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 46.4,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 74.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 77.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 54.8,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 92.1,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 80.6,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 85.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 70.9,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.0,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 94.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "gpt-5-chat",
+            "name": "gpt-5-chat",
+            "real_model_namne": "GPT-5 chat",
+            "type": "Chat",
+            "parameters": 220039,
+            "website": "https://openai.com/index/introducing-gpt-5/",
+            "description": "Our smartest, fastest, most useful model yet, with built-in thinking that puts expert-level intelligence in everyone’s hands.",
+            "organization": "OpenAI",
+            "releaseDate": "2025-8-08",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 62.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 57.1,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.7,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 84.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 68.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 51.6,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 86.8,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.0,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 66.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 56.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 52.6,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 48.9,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 94.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "gpt-5-mini",
+            "name": "gpt-5-mini",
+            "real_model_namne": "GPT-5 mini",
+            "type": "Chat",
+            "parameters": 220039,
+            "website": "https://openai.com/index/introducing-gpt-5/",
+            "description": "Our smartest, fastest, most useful model yet, with built-in thinking that puts expert-level intelligence in everyone’s hands.",
+            "organization": "OpenAI",
+            "releaseDate": "2025-8-08",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 82.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 87.1,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.7,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 79.6,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 58.1,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 92.1,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 80.6,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 92.9,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 66.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 63.2,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.0,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "gpt-5-nano",
+            "name": "gpt-5-nano",
+            "real_model_namne": "GPT-5 nano",
+            "type": "Chat",
+            "parameters": 220039,
+            "website": "https://openai.com/index/introducing-gpt-5/",
+            "description": "Our smartest, fastest, most useful model yet, with built-in thinking that puts expert-level intelligence in everyone’s hands.",
+            "organization": "OpenAI",
+            "releaseDate": "2025-8-08",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 77.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 85.7,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 35.7,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 75.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 77.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 58.1,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 80.6,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 69.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 68.7,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 55.6,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "kimi-k2-instruct-0905",
+            "name": "Pro/moonshotai/Kimi-K2-Instruct-0905",
+            "real_model_namne": "Kimi-K2-Instruct-0905",
+            "type": "Chat",
+            "parameters": 149766,
+            "website": "https://moonshotai.github.io/Kimi-K2/",
+            "description": "Kimi K2 is our latest Mixture-of-Experts model with 32 billion activated parameters and 1 trillion total parameters. It achieves state-of-the-art performance in frontier knowledge, math, and coding among non-thinking models.",
+            "organization": "Moonshot AI",
+            "releaseDate": "2025-09-05",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 70.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 72.9,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 42.9,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.9,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 63.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 38.7,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 92.1,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 61.3,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 61.9,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 64.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 68.4,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 55.6,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
