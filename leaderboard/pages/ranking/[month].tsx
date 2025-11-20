@@ -38,6 +38,7 @@ import { getTopModelsByCategory, getMaxScoresByCategory } from "../../utils/rank
 import { SubmissionGuideModal } from "../../components/SubmissionGuideModal";
 import { Podium } from "../../components/Podium";
 import { createRankingTableColumns } from "../../components/RankingTableColumns";
+import { addRankingToModels } from "../../utils/rankingUtils";
 
 const { Search } = Input;
 const { Title, Paragraph, Text } = Typography;
@@ -158,7 +159,8 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
       m.real_model_namne.toLowerCase().includes(searchText.toLowerCase())
     );
 
-    return filteredData;
+    // 为过滤后的数据添加排名信息
+    return addRankingToModels(filteredData, sortedInfo);
   }, [models, searchText, sortedInfo]);
 
   const handleMonthChange = (newMonth: string) => {
