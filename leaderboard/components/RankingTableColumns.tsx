@@ -34,7 +34,8 @@ export const createRankingTableColumns = ({
             dataIndex: "rank",
             key: "rank",
             render: (_, record: Model, idx) => {
-                const rank = idx + 1;
+                // 使用record中的rank字段，如果没有则使用索引+1
+                const rank = (record as any).rank || (idx + 1);
                 let icon = null;
                 let color = "";
                 if (rank === 1) {

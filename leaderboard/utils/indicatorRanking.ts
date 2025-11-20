@@ -1,4 +1,5 @@
 import { Model, IndicatorModel, IndicatorRankingData } from "../types/ranking";
+import { calculateTiedRanks } from "./rankingUtils";
 
 /**
  * 获取指定维度的所有可用指标
@@ -57,13 +58,8 @@ export const generateIndicatorRanking = (
         }
     });
 
-    // 按分数降序排序并计算排名
-    rankingData.sort((a, b) => b.score - a.score);
-    rankingData.forEach((item, index) => {
-        item.rank = index + 1;
-    });
-
-    return rankingData;
+    // 使用并列排名计算
+    return calculateTiedRanks(rankingData, (item) => item.score);
 };
 
 /**
@@ -101,7 +97,7 @@ export const getAllIndicatorRankings = (
  * 根据搜索条件过滤指标排名数据
  * @param data 指标排名数据
  * @param searchText 搜索文本
- * @returns 过滤后的数据
+ * @returns 过滤后的数据（重新计算排名）
  */
 export const filterIndicatorRanking = (
     data: IndicatorModel[],
@@ -110,11 +106,14 @@ export const filterIndicatorRanking = (
     if (!searchText) return data;
 
     const lowerSearchText = searchText.toLowerCase();
-    return data.filter(item =>
+    const filteredData = data.filter(item =>
         item.modelName.toLowerCase().includes(lowerSearchText) ||
         item.organization.toLowerCase().includes(lowerSearchText) ||
         item.modelType.toLowerCase().includes(lowerSearchText)
     );
+
+    // 过滤后重新计算排名
+    return calculateTiedRanks(filteredData, (item) => item.score);
 };
 
 /**
