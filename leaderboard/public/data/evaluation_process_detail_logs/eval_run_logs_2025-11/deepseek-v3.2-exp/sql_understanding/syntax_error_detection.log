@@ -1,0 +1,577 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20251126_161411_670
+Run Dimensions: sql_understanding
+Run Indicator: syntax_error_detection
+Evaluation Timestamp: 2025-11-26T16:24:12.645267
+Target LLM: Pro/deepseek-ai/DeepSeek-V3.2-Exp
+Judge LLMs: Pro/deepseek-ai/DeepSeek-R1, o4-mini, gemini-2.5-pro
+-------------------------------------------------
+
+[2025-11-26 16:21:34.019732] Run Indicator: sql_understanding, Parameters size: 9097B
+[2025-11-26 16:21:34.020132] 
+--- Capability: sql_understanding Indicator syntax_error_detection.jsonl Evaluating Type: objective  ---
+[2025-11-26 16:21:34.020213] 
+--- Case: 1 ---
+[2025-11-26 16:21:34.020315] [1] Case Run 1/1
+[2025-11-26 16:21:34.020521] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT product_id, product_name FROM products WHERE category = 'Electronics';
+
+[2025-11-26 16:21:34.020679] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT product_id, product_name FROM products WHERE category = \'Electronics\';\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:21:37.833694] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {
+  "has_syntax_error": "no"
+}
+[2025-11-26 16:21:37.833841] [1] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:21:37.833916] [1] Objective Eval Case Results: True
+[2025-11-26 16:21:37.834135] [1] objective Eval Case Final Result: True
+[2025-11-26 16:21:37.834197] 
+--- Case: 2 ---
+[2025-11-26 16:21:37.834314] [2] Case Run 1/1
+[2025-11-26 16:21:37.834554] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+INSERT INTO users (username, email) VALUES ('john_doe', 'john.doe@example.com');
+
+[2025-11-26 16:21:37.834776] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nINSERT INTO users (username, email) VALUES (\'john_doe\', \'john.doe@example.com\');\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:21:46.559033] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:21:46.559181] [2] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:21:46.559266] [2] Objective Eval Case Results: True
+[2025-11-26 16:21:46.559487] [2] objective Eval Case Final Result: True
+[2025-11-26 16:21:46.559559] 
+--- Case: 3 ---
+[2025-11-26 16:21:46.559695] [3] Case Run 1/1
+[2025-11-26 16:21:46.559901] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+UPDATE orders SET status = 'Shipped' WHERE order_id = 500;
+
+[2025-11-26 16:21:46.560098] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nUPDATE orders SET status = \'Shipped\' WHERE order_id = 500;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:21:53.700413] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:21:53.700663] [3] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:21:53.700776] [3] Objective Eval Case Results: True
+[2025-11-26 16:21:53.701100] [3] objective Eval Case Final Result: True
+[2025-11-26 16:21:53.701207] 
+--- Case: 4 ---
+[2025-11-26 16:21:53.701334] [4] Case Run 1/1
+[2025-11-26 16:21:53.701586] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+DELETE FROM inactive_accounts WHERE last_login < '2024-01-01';
+
+[2025-11-26 16:21:53.701806] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nDELETE FROM inactive_accounts WHERE last_login < \'2024-01-01\';\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:21:59.072953] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {
+  "has_syntax_error": "no"
+}
+[2025-11-26 16:21:59.073156] [4] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:21:59.073240] [4] Objective Eval Case Results: True
+[2025-11-26 16:21:59.073462] [4] objective Eval Case Final Result: True
+[2025-11-26 16:21:59.073534] 
+--- Case: 5 ---
+[2025-11-26 16:21:59.073643] [5] Case Run 1/1
+[2025-11-26 16:21:59.073844] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+INSERT INTO logs (event_type, event_date) VALUS ('Login', CURRENT_DATE());
+
+[2025-11-26 16:21:59.074005] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nINSERT INTO logs (event_type, event_date) VALUS (\'Login\', CURRENT_DATE());\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:22:04.666250] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {
+  "has_syntax_error": "yes"
+}
+[2025-11-26 16:22:04.666449] [5] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-11-26 16:22:04.666540] [5] Objective Eval Case Results: True
+[2025-11-26 16:22:04.666822] [5] objective Eval Case Final Result: True
+[2025-11-26 16:22:04.666910] 
+--- Case: 6 ---
+[2025-11-26 16:22:04.667010] [6] Case Run 1/1
+[2025-11-26 16:22:04.667237] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT department_id, COUNT(employee_id) AS num_employees, AVG(salary) AS avg_salary FROM employees GROUP BY department_id HAVING AVG(salary) > 60000 ORDER BY avg_salary DESC;
+
+[2025-11-26 16:22:04.667440] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT department_id, COUNT(employee_id) AS num_employees, AVG(salary) AS avg_salary FROM employees GROUP BY department_id HAVING AVG(salary) > 60000 ORDER BY avg_salary DESC;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:22:08.756395] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {
+  "has_syntax_error": "no"
+}
+[2025-11-26 16:22:08.756576] [6] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:22:08.756691] [6] Objective Eval Case Results: True
+[2025-11-26 16:22:08.756958] [6] objective Eval Case Final Result: True
+[2025-11-26 16:22:08.757116] 
+--- Case: 7 ---
+[2025-11-26 16:22:08.757207] [7] Case Run 1/1
+[2025-11-26 16:22:08.757403] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT customer_name, order_date FROM customers JOIN orders ON customers.customer_id = orders.customer_id WHERE order_date BETWEEN '2024-01-01' AND '2024-03-31' ORDER BY order_date ASC LIMIT 20 OFFSET 5;
+
+[2025-11-26 16:22:08.757659] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT customer_name, order_date FROM customers JOIN orders ON customers.customer_id = orders.customer_id WHERE order_date BETWEEN \'2024-01-01\' AND \'2024-03-31\' ORDER BY order_date ASC LIMIT 20 OFFSET 5;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:22:16.776250] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {
+  "has_syntax_error": "no"
+}
+[2025-11-26 16:22:16.776387] [7] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:22:16.776453] [7] Objective Eval Case Results: True
+[2025-11-26 16:22:16.776647] [7] objective Eval Case Final Result: True
+[2025-11-26 16:22:16.776767] 
+--- Case: 8 ---
+[2025-11-26 16:22:16.776886] [8] Case Run 1/1
+[2025-11-26 16:22:16.777059] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT product_name, price, (price * 1.08) AS price_with_tax FROM products WHERE category IN ('Books', 'Movies') AND stock_quantity > 0;
+
+[2025-11-26 16:22:16.777236] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT product_name, price, (price * 1.08) AS price_with_tax FROM products WHERE category IN (\'Books\', \'Movies\') AND stock_quantity > 0;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:22:24.997241] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:22:24.997373] [8] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:22:24.997462] [8] Objective Eval Case Results: True
+[2025-11-26 16:22:24.997727] [8] objective Eval Case Final Result: True
+[2025-11-26 16:22:24.997926] 
+--- Case: 9 ---
+[2025-11-26 16:22:24.998057] [9] Case Run 1/1
+[2025-11-26 16:22:24.998253] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT LEFT(product_code, 2) AS category_prefix, SUM(quantity) AS total_sold FROM sales_items GROUP BY category_prefix HAVING SUM(quantity) > 100 ORDER BY total_sold DESC;
+
+[2025-11-26 16:22:24.998501] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT LEFT(product_code, 2) AS category_prefix, SUM(quantity) AS total_sold FROM sales_items GROUP BY category_prefix HAVING SUM(quantity) > 100 ORDER BY total_sold DESC;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:22:30.433741] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {
+  "has_syntax_error": "no"
+}
+[2025-11-26 16:22:30.433917] [9] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:22:30.434004] [9] Objective Eval Case Results: True
+[2025-11-26 16:22:30.434296] [9] objective Eval Case Final Result: True
+[2025-11-26 16:22:30.434384] 
+--- Case: 10 ---
+[2025-11-26 16:22:30.434470] [10] Case Run 1/1
+[2025-11-26 16:22:30.434667] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT employee_id, CONCAT(first_name, ' ', last_name) AS full_name, DATEDIFF(CURRENT_DATE(), hire_date) AS days_employed FROM employees WHERE DATEDIFF(CURRENT_DATE(), hire_date) > 3650;
+
+[2025-11-26 16:22:30.434846] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT employee_id, CONCAT(first_name, \' \', last_name) AS full_name, DATEDIFF(CURRENT_DATE(), hire_date) AS days_employed FROM employees WHERE DATEDIFF(CURRENT_DATE(), hire_date) > 3650;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:22:36.802794] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:22:36.803047] [10] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:22:36.803169] [10] Objective Eval Case Results: True
+[2025-11-26 16:22:36.803513] [10] objective Eval Case Final Result: True
+[2025-11-26 16:22:36.803603] 
+--- Case: 11 ---
+[2025-11-26 16:22:36.803715] [11] Case Run 1/1
+[2025-11-26 16:22:36.803908] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT MAX(score), MIN(score), AVG(score) FROM student_scores WHERE subject = 'Math' AND EXISTS (SELECT 1 FROM students WHERE student_id = student_scores.student_id AND grade_level = 10);
+
+[2025-11-26 16:22:36.804430] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT MAX(score), MIN(score), AVG(score) FROM student_scores WHERE subject = \'Math\' AND EXISTS (SELECT 1 FROM students WHERE student_id = student_scores.student_id AND grade_level = 10);\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:22:41.764283] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {
+  "has_syntax_error": "no"
+}
+[2025-11-26 16:22:41.764454] [11] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:22:41.764528] [11] Objective Eval Case Results: True
+[2025-11-26 16:22:41.764745] [11] objective Eval Case Final Result: True
+[2025-11-26 16:22:41.764807] 
+--- Case: 12 ---
+[2025-11-26 16:22:41.764874] [12] Case Run 1/1
+[2025-11-26 16:22:41.765024] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT COUNT(DISTINCT customer_id) AS unique_customers FROM orders WHERE order_date >= '2024-01-01' GROUP BY YEAR(order_date), MONTH(order_date);
+
+[2025-11-26 16:22:41.765192] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT COUNT(DISTINCT customer_id) AS unique_customers FROM orders WHERE order_date >= \'2024-01-01\' GROUP BY YEAR(order_date), MONTH(order_date);\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:22:44.972394] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "yes"}
+[2025-11-26 16:22:44.972553] [12] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:22:44.972671] [12] Objective Eval Case Results: False
+[2025-11-26 16:22:44.972908] [12] objective Eval Case Final Result: False
+[2025-11-26 16:22:44.973004] 
+--- Case: 13 ---
+[2025-11-26 16:22:44.973099] [13] Case Run 1/1
+[2025-11-26 16:22:44.973292] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT customer_name, LENGTH(customer_name) FROM customers WHERE LENGTH(customer_name) > 15 ORDER BY LENGTH(customer_name) DESC;
+
+[2025-11-26 16:22:44.973518] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT customer_name, LENGTH(customer_name) FROM customers WHERE LENGTH(customer_name) > 15 ORDER BY LENGTH(customer_name) DESC;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:22:46.585917] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:22:46.586058] [13] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:22:46.586168] [13] Objective Eval Case Results: True
+[2025-11-26 16:22:46.586446] [13] objective Eval Case Final Result: True
+[2025-11-26 16:22:46.586533] 
+--- Case: 14 ---
+[2025-11-26 16:22:46.586683] [14] Case Run 1/1
+[2025-11-26 16:22:46.586924] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT employee_id, CASE WHEN salary >= 80000 THEN 'High' WHEN salary >= 50000 THEN 'Medium' ELSE 'Low' END AS salary_level FROM employees ORDER BY salary_level DESC;
+
+[2025-11-26 16:22:46.587175] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT employee_id, CASE WHEN salary >= 80000 THEN \'High\' WHEN salary >= 50000 THEN \'Medium\' ELSE \'Low\' END AS salary_level FROM employees ORDER BY salary_level DESC;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:22:50.483195] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:22:50.483329] [14] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:22:50.483415] [14] Objective Eval Case Results: True
+[2025-11-26 16:22:50.483674] [14] objective Eval Case Final Result: True
+[2025-11-26 16:22:50.483747] 
+--- Case: 15 ---
+[2025-11-26 16:22:50.483843] [15] Case Run 1/1
+[2025-11-26 16:22:50.484085] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT region, SUM(amount) FROM sales_data WHERE sale_date BETWEEN '2024-01-01' AND '2024-01-31' GROUP BY region ORDER BY SUM(amount) DESC HAVING SUM(amount) > 50000;
+
+[2025-11-26 16:22:50.484327] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT region, SUM(amount) FROM sales_data WHERE sale_date BETWEEN \'2024-01-01\' AND \'2024-01-31\' GROUP BY region ORDER BY SUM(amount) DESC HAVING SUM(amount) > 50000;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:22:53.968635] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "yes"}
+[2025-11-26 16:22:53.968778] [15] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-11-26 16:22:53.968874] [15] Objective Eval Case Results: True
+[2025-11-26 16:22:53.969135] [15] objective Eval Case Final Result: True
+[2025-11-26 16:22:53.969218] 
+--- Case: 16 ---
+[2025-11-26 16:22:53.969325] [16] Case Run 1/1
+[2025-11-26 16:22:53.969565] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT c.customer_name, o.order_id, p.product_name, oi.quantity FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = 'Electronics' AND o.order_date > '2024-01-01' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id);
+
+[2025-11-26 16:22:53.969896] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT c.customer_name, o.order_id, p.product_name, oi.quantity FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = \'Electronics\' AND o.order_date > \'2024-01-01\' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id);\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:22:58.235995] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:22:58.236139] [16] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:22:58.236254] [16] Objective Eval Case Results: True
+[2025-11-26 16:22:58.236522] [16] objective Eval Case Final Result: True
+[2025-11-26 16:22:58.236601] 
+--- Case: 17 ---
+[2025-11-26 16:22:58.236701] [17] Case Run 1/1
+[2025-11-26 16:22:58.236879] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+WITH EmployeeSalaries AS (SELECT employee_id, department_id, salary FROM employees), DepartmentAvg AS (SELECT department_id, AVG(salary) AS avg_dept_salary FROM employees GROUP BY department_id) SELECT es.employee_id, es.salary, da.avg_dept_salary FROM EmployeeSalaries es JOIN DepartmentAvg da ON es.department_id = da.department_id WHERE es.salary > da.avg_dept_salary;
+
+[2025-11-26 16:22:58.237147] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nWITH EmployeeSalaries AS (SELECT employee_id, department_id, salary FROM employees), DepartmentAvg AS (SELECT department_id, AVG(salary) AS avg_dept_salary FROM employees GROUP BY department_id) SELECT es.employee_id, es.salary, da.avg_dept_salary FROM EmployeeSalaries es JOIN DepartmentAvg da ON es.department_id = da.department_id WHERE es.salary > da.avg_dept_salary;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:23:04.158552] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:23:04.158672] [17] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-11-26 16:23:04.158791] [17] Objective Eval Case Results: False
+[2025-11-26 16:23:04.159007] [17] objective Eval Case Final Result: False
+[2025-11-26 16:23:04.159089] 
+--- Case: 18 ---
+[2025-11-26 16:23:04.159176] [18] Case Run 1/1
+[2025-11-26 16:23:04.159358] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+INSERT INTO sales_archive (SELECT * FROM sales WHERE sale_date < '2023-01-01' AND status = 'Completed');
+
+[2025-11-26 16:23:04.159555] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nINSERT INTO sales_archive (SELECT * FROM sales WHERE sale_date < \'2023-01-01\' AND status = \'Completed\');\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:23:08.317398] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:23:08.317545] [18] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:23:08.317715] [18] Objective Eval Case Results: True
+[2025-11-26 16:23:08.317906] [18] objective Eval Case Final Result: True
+[2025-11-26 16:23:08.317986] 
+--- Case: 19 ---
+[2025-11-26 16:23:08.318114] [19] Case Run 1/1
+[2025-11-26 16:23:08.318343] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT p.product_name, p.price FROM products p WHERE p.product_id IN (SELECT oi.product_id FROM order_items oi GROUP BY oi.product_id HAVING COUNT(oi.order_id) > 10) AND p.category = 'Books' OR p.product_id IN (SELECT r.product_id FROM reviews r WHERE r.rating < 3 AND r.review_date > '2024-01-01') AND p.stock > 0;
+
+[2025-11-26 16:23:08.318625] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT p.product_name, p.price FROM products p WHERE p.product_id IN (SELECT oi.product_id FROM order_items oi GROUP BY oi.product_id HAVING COUNT(oi.order_id) > 10) AND p.category = \'Books\' OR p.product_id IN (SELECT r.product_id FROM reviews r WHERE r.rating < 3 AND r.review_date > \'2024-01-01\') AND p.stock > 0;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:23:12.690079] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:23:12.690348] [19] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:23:12.690475] [19] Objective Eval Case Results: True
+[2025-11-26 16:23:12.690781] [19] objective Eval Case Final Result: True
+[2025-11-26 16:23:12.690860] 
+--- Case: 20 ---
+[2025-11-26 16:23:12.690965] [20] Case Run 1/1
+[2025-11-26 16:23:12.691147] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT e.first_name, e.last_name, d.department_name FROM employees e LEFT JOIN departments d ON e.department_id = d.department_id WHERE e.employee_id NOT IN (SELECT manager_id FROM projects WHERE manager_id IS NOT NULL) UNION ALL SELECT c.contact_name, NULL, 'External Partner' FROM contacts c WHERE c.company_type = 'Supplier';
+
+[2025-11-26 16:23:12.691411] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT e.first_name, e.last_name, d.department_name FROM employees e LEFT JOIN departments d ON e.department_id = d.department_id WHERE e.employee_id NOT IN (SELECT manager_id FROM projects WHERE manager_id IS NOT NULL) UNION ALL SELECT c.contact_name, NULL, \'External Partner\' FROM contacts c WHERE c.company_type = \'Supplier\';\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:23:16.315385] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:23:16.315528] [20] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:23:16.315623] [20] Objective Eval Case Results: True
+[2025-11-26 16:23:16.315844] [20] objective Eval Case Final Result: True
+[2025-11-26 16:23:16.315927] 
+--- Case: 21 ---
+[2025-11-26 16:23:16.316046] [21] Case Run 1/1
+[2025-11-26 16:23:16.316277] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+CREATE VIEW high_value_customers AS SELECT c.customer_id, c.customer_name, SUM(o.total_amount) AS lifetime_value FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.customer_id, c.customer_name HAVING SUM(o.total_amount) > 1000 ORDER BY lifetime_value DESC;
+
+[2025-11-26 16:23:16.316547] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nCREATE VIEW high_value_customers AS SELECT c.customer_id, c.customer_name, SUM(o.total_amount) AS lifetime_value FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.customer_id, c.customer_name HAVING SUM(o.total_amount) > 1000 ORDER BY lifetime_value DESC;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:23:20.105336] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {
+  "has_syntax_error": "no"
+}
+[2025-11-26 16:23:20.105517] [21] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:23:20.105628] [21] Objective Eval Case Results: True
+[2025-11-26 16:23:20.105935] [21] objective Eval Case Final Result: True
+[2025-11-26 16:23:20.106050] 
+--- Case: 22 ---
+[2025-11-26 16:23:20.106170] [22] Case Run 1/1
+[2025-11-26 16:23:20.106433] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT T1.colA, T1.colB FROM table1 T1 WHERE T1.colC = (SELECT MAX(T2.colD) FROM table2 T2 WHERE T2.colE = T1.colA AND T2.colF IN ('status1', 'status2'));
+
+[2025-11-26 16:23:20.106711] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT T1.colA, T1.colB FROM table1 T1 WHERE T1.colC = (SELECT MAX(T2.colD) FROM table2 T2 WHERE T2.colE = T1.colA AND T2.colF IN (\'status1\', \'status2\'));\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:23:27.536747] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {
+  "has_syntax_error": "no"
+}
+[2025-11-26 16:23:27.536941] [22] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:23:27.537035] [22] Objective Eval Case Results: True
+[2025-11-26 16:23:27.537315] [22] objective Eval Case Final Result: True
+[2025-11-26 16:23:27.537425] 
+--- Case: 23 ---
+[2025-11-26 16:23:27.537556] [23] Case Run 1/1
+[2025-11-26 16:23:27.537813] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+BEGIN TRANSACTION; UPDATE accounts SET balance = balance - 100 WHERE account_id = 101; SAVEPOINT deduct_funds; INSERT INTO transactions (account_id, amount, type) VALUES (102, 100, 'deposit'); COMMIT;
+
+[2025-11-26 16:23:27.538028] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nBEGIN TRANSACTION; UPDATE accounts SET balance = balance - 100 WHERE account_id = 101; SAVEPOINT deduct_funds; INSERT INTO transactions (account_id, amount, type) VALUES (102, 100, \'deposit\'); COMMIT;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:23:35.425646] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:23:35.425793] [23] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:23:35.425876] [23] Objective Eval Case Results: True
+[2025-11-26 16:23:35.426081] [23] objective Eval Case Final Result: True
+[2025-11-26 16:23:35.426183] 
+--- Case: 24 ---
+[2025-11-26 16:23:35.426305] [24] Case Run 1/1
+[2025-11-26 16:23:35.426485] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT a.artist_name, COUNT(s.song_id) AS num_songs FROM artists a JOIN songs s ON a.artist_id = s.artist_id GROUP BY a.artist_name HAVING COUNT(s.song_id) > 5 AND a.genre = 'Rock' ORDER BY num_songs DESC LIMIT 10;
+
+[2025-11-26 16:23:35.426703] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT a.artist_name, COUNT(s.song_id) AS num_songs FROM artists a JOIN songs s ON a.artist_id = s.artist_id GROUP BY a.artist_name HAVING COUNT(s.song_id) > 5 AND a.genre = \'Rock\' ORDER BY num_songs DESC LIMIT 10;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:23:39.977580] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:23:39.977693] [24] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:23:39.977762] [24] Objective Eval Case Results: True
+[2025-11-26 16:23:39.977931] [24] objective Eval Case Final Result: True
+[2025-11-26 16:23:39.978002] 
+--- Case: 25 ---
+[2025-11-26 16:23:39.978080] [25] Case Run 1/1
+[2025-11-26 16:23:39.978268] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+WITH MonthlySales AS (SELECT DATE_TRUNC('month', sale_date) AS sale_month, SUM(amount) AS total_monthly_sales FROM sales GROUP BY DATE_TRUNC('month', sale_date)), AvgSales AS (SELECT AVG(total_monthly_sales) FROM MonthlySales) SELECT ms.sale_month, ms.total_monthly_sales FROM MonthlySales ms WHERE ms.total_monthly_sales > (SELECT * FROM AvgSales);
+
+[2025-11-26 16:23:39.978513] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nWITH MonthlySales AS (SELECT DATE_TRUNC(\'month\', sale_date) AS sale_month, SUM(amount) AS total_monthly_sales FROM sales GROUP BY DATE_TRUNC(\'month\', sale_date)), AvgSales AS (SELECT AVG(total_monthly_sales) FROM MonthlySales) SELECT ms.sale_month, ms.total_monthly_sales FROM MonthlySales ms WHERE ms.total_monthly_sales > (SELECT * FROM AvgSales);\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:23:45.615186] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:23:45.615320] [25] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-11-26 16:23:45.615435] [25] Objective Eval Case Results: False
+[2025-11-26 16:23:45.615659] [25] objective Eval Case Final Result: False
+[2025-11-26 16:23:45.615737] 
+--- Case: 26 ---
+[2025-11-26 16:23:45.615830] [26] Case Run 1/1
+[2025-11-26 16:23:45.616011] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT c.customer_name, o.order_id, p.product_name FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = 'Books' AND o.order_date > '2023-01-01' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id AND order_date BETWEEN '2023-01-01' AND '2023-12-31';
+
+[2025-11-26 16:23:45.616267] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT c.customer_name, o.order_id, p.product_name FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = \'Books\' AND o.order_date > \'2023-01-01\' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id AND order_date BETWEEN \'2023-01-01\' AND \'2023-12-31\';\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:23:49.719195] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {
+  "has_syntax_error": "yes"
+}
+[2025-11-26 16:23:49.719390] [26] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-11-26 16:23:49.719502] [26] Objective Eval Case Results: True
+[2025-11-26 16:23:49.719736] [26] objective Eval Case Final Result: True
+[2025-11-26 16:23:49.719880] 
+--- Case: 27 ---
+[2025-11-26 16:23:49.719969] [27] Case Run 1/1
+[2025-11-26 16:23:49.720245] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+UPDATE inventory SET stock = stock - 10 WHERE product_id IN (SELECT product_id FROM low_stock_alerts WHERE alert_date < CURRENT_DATE() AND alert_level = 'Critical') OR product_id IN (SELECT product_id FROM recent_sales WHERE sale_date > '2024-05-01' AND quantity_sold > 5 AND stock < 20);
+
+[2025-11-26 16:23:49.720500] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nUPDATE inventory SET stock = stock - 10 WHERE product_id IN (SELECT product_id FROM low_stock_alerts WHERE alert_date < CURRENT_DATE() AND alert_level = \'Critical\') OR product_id IN (SELECT product_id FROM recent_sales WHERE sale_date > \'2024-05-01\' AND quantity_sold > 5 AND stock < 20);\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:23:53.803649] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:23:53.803778] [27] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:23:53.803872] [27] Objective Eval Case Results: True
+[2025-11-26 16:23:53.804080] [27] objective Eval Case Final Result: True
+[2025-11-26 16:23:53.804156] 
+--- Case: 28 ---
+[2025-11-26 16:23:53.804255] [28] Case Run 1/1
+[2025-11-26 16:23:53.804450] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+SELECT emp_id, emp_name FROM employees WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = 'New York' AND dept_id NOT IN (SELECT dept_id FROM projects WHERE project_status = 'Completed' ORDER BY project_id));
+
+[2025-11-26 16:23:53.804610] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nSELECT emp_id, emp_name FROM employees WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = \'New York\' AND dept_id NOT IN (SELECT dept_id FROM projects WHERE project_status = \'Completed\' ORDER BY project_id));\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:24:01.784691] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "yes"}
+[2025-11-26 16:24:01.784879] [28] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:24:01.785059] [28] Objective Eval Case Results: False
+[2025-11-26 16:24:01.785422] [28] objective Eval Case Final Result: False
+[2025-11-26 16:24:01.785554] 
+--- Case: 29 ---
+[2025-11-26 16:24:01.785694] [29] Case Run 1/1
+[2025-11-26 16:24:01.785963] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+BEGIN TRANSACTION; INSERT INTO audit_log (action, timestamp) VALUES ('User login attempt', NOW()); UPDATE users SET last_login = NOW() WHERE username = 'testuser'; COMMIT TRANSACTION SELECT * FROM users WHERE username = 'testuser';
+
+[2025-11-26 16:24:01.786213] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nBEGIN TRANSACTION; INSERT INTO audit_log (action, timestamp) VALUES (\'User login attempt\', NOW()); UPDATE users SET last_login = NOW() WHERE username = \'testuser\'; COMMIT TRANSACTION SELECT * FROM users WHERE username = \'testuser\';\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:24:08.842616] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {
+  "has_syntax_error": "yes"
+}
+[2025-11-26 16:24:08.842828] [29] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-11-26 16:24:08.842954] [29] Objective Eval Case Results: True
+[2025-11-26 16:24:08.843253] [29] objective Eval Case Final Result: True
+[2025-11-26 16:24:08.843360] 
+--- Case: 30 ---
+[2025-11-26 16:24:08.843518] [30] Case Run 1/1
+[2025-11-26 16:24:08.843771] [Model Prompt]: 
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+SQL:
+CREATE VIEW popular_products_view AS SELECT p.product_id, p.product_name, SUM(oi.quantity) AS total_quantity_sold FROM products p JOIN order_items oi ON p.product_id = oi.product_id GROUP BY p.product_id, p.product_name HAVING SUM(oi.quantity) > 50 AND p.category = 'Gadgets' AND (SELECT COUNT(review_id) FROM reviews WHERE product_id = p.product_id) > 10 ORDER BY total_quantity_sold DESC;
+
+[2025-11-26 16:24:08.844085] Model Request Data: {'model': 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', 'messages': [{'role': 'user', 'content': '\nYou are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:\n\n{\n  "has_syntax_error": "yes|no"\n}\n\nSQL:\nCREATE VIEW popular_products_view AS SELECT p.product_id, p.product_name, SUM(oi.quantity) AS total_quantity_sold FROM products p JOIN order_items oi ON p.product_id = oi.product_id GROUP BY p.product_id, p.product_name HAVING SUM(oi.quantity) > 50 AND p.category = \'Gadgets\' AND (SELECT COUNT(review_id) FROM reviews WHERE product_id = p.product_id) > 10 ORDER BY total_quantity_sold DESC;\n'}], 'temperature': 0.6, 'max_tokens': 62000, 'stream': False, 'response_format': None}
+[2025-11-26 16:24:12.644448] [Pro/deepseek-ai/DeepSeek-V3.2-Exp Model Answer]: {"has_syntax_error": "no"}
+[2025-11-26 16:24:12.644587] [30] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-11-26 16:24:12.644695] [30] Objective Eval Case Results: True
+[2025-11-26 16:24:12.644925] [30] objective Eval Case Final Result: True
