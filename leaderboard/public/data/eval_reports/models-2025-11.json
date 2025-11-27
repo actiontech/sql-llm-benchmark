@@ -271,6 +271,74 @@
             }
         },
         {
+            "id": "deepseek-v3.2-exp",
+            "name": "Pro/deepseek-ai/DeepSeek-V3.2-Exp",
+            "real_model_namne": "DeepSeek-V3.2-Exp",
+            "type": "Chat(Thinking)",
+            "parameters": 175390,
+            "website": "https://api-docs.deepseek.com/news/news250929",
+            "description": "Built on V3.1-Terminus, it debuts DeepSeek Sparse Attention (DSA) for faster, more efficient training & inference on long context.",
+            "organization": "DeepSeek",
+            "releaseDate": "2025/09/29",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 66.7,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 68.6,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 35.7,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 84.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 58.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 29.0,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 92.1,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 64.5,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 45.2,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 61.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 68.4,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 53.3,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "id": "qwen3-235b-a22b-thinking-2507",
             "name": "Qwen/Qwen3-235B-A22B-Thinking-2507",
             "real_model_namne": "Qwen3-235B-A22B-Thinking-2507",
