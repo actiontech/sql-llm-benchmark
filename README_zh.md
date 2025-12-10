@@ -39,7 +39,8 @@ LLM 测评脚本负责核心的测评逻辑、数据处理和报告生成。支�
     - Python 3.10+
     - 安装必要的 Python 库:
       ```bash
-      pip install requests openai playwright python-dotenv mcp
+      cd evaluator
+      pip install -r requirements.txt
       ```
       
       安装 playwright 后，还需要安装浏览器二进制文件：
@@ -49,7 +50,8 @@ LLM 测评脚本负责核心的测评逻辑、数据处理和报告生成。支�
 
 2.  **配置**:
 
-    - 编辑 [`evaluator/config/llm_config.py`](evaluator/config/llm_config.py) 配置您要测评的目标 LLM 和裁判 LLM 的 API 密钥、模型名称等信息。
+    - 编辑 [`evaluator/env.py`](evaluator/env.py) 配置您的 API 密钥和端点。
+    - 编辑 [`evaluator/config/llm_config.py`](evaluator/config/llm_config.py) 配置您要测评的目标 LLM 和裁判 LLM。使用 `generator_key` 引用 `env.py` 中定义的模型实例。
     - 编辑 [`evaluator/config/dataset_config.py`](evaluator/config/dataset_config.py) 配置数据集的提示词以及指标或案例的权重。
     - 编辑 [`evaluator/config/mcp_config.py`](evaluator/config/mcp_config.py) 配置 MCP 网络搜索功能，包括启用的测评维度和搜索引擎设置。
 
