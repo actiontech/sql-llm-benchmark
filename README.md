@@ -39,7 +39,8 @@ The Leaderboard UI is responsible for displaying evaluation reports, the leaderb
     - Python 3.10+
     - Install necessary Python libraries:
       ```bash
-      pip install requests openai playwright python-dotenv mcp
+      cd evaluator
+      pip install -r requirements.txt
       ```
       
       After installing playwright, you also need to install browser binaries:
@@ -49,7 +50,8 @@ The Leaderboard UI is responsible for displaying evaluation reports, the leaderb
 
 2.  **Configuration**:
 
-    - Edit [`evaluator/config/llm_config.py`](evaluator/config/llm_config.py) to configure API keys, model names, and other information for your target LLM and judge LLM.
+    - Edit [`evaluator/env.py`](evaluator/env.py) to configure your API keys and endpoints .
+    - Edit [`evaluator/config/llm_config.py`](evaluator/config/llm_config.py) to configure your target LLMs and judge LLMs. Use `generator_key` to reference model instances defined in `env.py`.
     - Edit [`evaluator/config/dataset_config.py`](evaluator/config/dataset_config.py) to configure dataset prompts and weights for metrics or cases.
     - Edit [`evaluator/config/mcp_config.py`](evaluator/config/mcp_config.py) to configure MCP network search functionality, including enabled evaluation dimensions and search engine settings.
 
