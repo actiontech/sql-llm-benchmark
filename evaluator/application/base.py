@@ -3,7 +3,8 @@ import time
 import logging
 import requests
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Callable
+from typing import Dict, Any, Callable, List
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,8 @@ class BaseApplicationClient(ABC):
         token = self.config.get("api_key")
         if token:
             self.headers["Authorization"] = f"Bearer {token}"
+        # 并发线程数配置（默认 3）
+        self.max_concurrent_requests = config.get("max_concurrent_requests", 3)
         self._initialize()
 
     @abstractmethod
@@ -41,14 +44,22 @@ class BaseApplicationClient(ABC):
         result_extractor: Callable[[Dict[str, Any]], str],
         max_retry_time: int = 20 * 60,
         retry_interval: int = 30,
+        case_id: str = None
     ) -> Dict[str, Any]:
-        """Generic polling function to retrieve results from a task-based API."""
-        logger.info(f"Querying results for task_id: {task_id}")
+        """
+        Generic polling function to retrieve results from a task-based API.
+        
+        Args:
+            case_id: Case ID
+        """
+        prefix = f"[Case:{case_id}] " if case_id else ""
+        logger.info(f"{prefix}Querying results for task_id: {task_id}")
         start_time = time.time()
 
         while True:
             elapsed_time = time.time() - start_time
             if elapsed_time >= max_retry_time:
+                logger.error(f"{prefix}轮询超时 (>{max_retry_time}s)")
                 return {
                     "status": "error",
                     "message": "Fetching result timed out",
@@ -60,23 +71,21 @@ class BaseApplicationClient(ABC):
                 response = requests.get(get_url, headers=self.headers)
                 response.raise_for_status()
                 response_data = response.json()
-                logger.info(
-                    f"Received result query response, raw response: {response_data}"
-                )
-
+                
                 status = status_checker(response_data)
+                
                 if status == "running":
+                    logger.info(f"{prefix}任务仍在运行，等待 {retry_interval}s 后重试...")
                     time.sleep(retry_interval)
                     continue
                 elif status == "complete":
+                    logger.info(f"{prefix}任务完成，提取结果")
                     return {
                         "status": "success",
                         "result": result_extractor(response_data),
                     }
                 else:  # failed or other statuses
-                    logger.error(
-                    f"failed or other statuses, raw response: {response_data}"
-                    )
+                    logger.error(f"{prefix}任务失败或状态异常: {response_data}")
                     return {
                         "status": "error",
                         "message": response_data.get("message", "Task failed"),
@@ -84,16 +93,27 @@ class BaseApplicationClient(ABC):
                     }
 
             except requests.exceptions.RequestException as e:
-                logger.error(f"Result query exception: {str(e)}")
+                logger.error(f"{prefix}结果查询异常: {str(e)}")
                 return {
                     "status": "error",
                     "message": str(e),
                     "code": getattr(e.response, "status_code", 500),
                 }
 
-    def _submit_task(self, url: str, data: Dict[str, Any], method: str = "POST") -> Dict[str, Any]:
-        """Submits a task and returns the task ID."""
-        logger.info(f"Submitting task to {url} with data: {data}")
+    def _submit_task(self, url: str, data: Dict[str, Any], method: str = "POST", case_id: str = None) -> Dict[str, Any]:
+        """
+        Submits a task and returns the task ID.
+        
+        Args:
+            url: API URL
+            data: 请求数据
+            method: HTTP 方法
+            case_id: Case ID
+        """
+        prefix = f"[Case:{case_id}] " if case_id else ""
+        logger.info(f"{prefix}Submitting task to {url}")
+        logger.debug(f"{prefix}Request data: {data}")
+        
         try:
             request_headers = self.headers.copy()
             request_headers["Content-Type"] = "application/x-www-form-urlencoded"
@@ -102,21 +122,79 @@ class BaseApplicationClient(ABC):
 
             response_data = response.json()
             if response_data.get("code") != 0:
+                logger.error(f"{prefix}Task submission failed: {response_data.get('message')}")
                 return {
                     "status": "error",
                     "message": response_data.get("message", "Unknown error"),
                     "code": int(response_data.get("code", -1)),
                 }
 
+            task_id = response_data.get("data", {}).get("task_id", "")
+            logger.info(f"{prefix}Task submitted successfully, task_id: {task_id}")
             return {
                 "status": "success",
-                "task_id": response_data.get("data", {}).get("task_id", ""),
+                "task_id": task_id,
             }
 
         except requests.exceptions.RequestException as e:
-            logger.error(f"Task submission exception: {str(e)}")
+            logger.error(f"{prefix}Task submission exception: {str(e)}")
             return {
                 "status": "error",
                 "message": str(e),
                 "code": getattr(e.response, "status_code", 500),
-            } 
+            }
+
+    def request_batch_optimization(self, cases: List[Dict[str, Any]], optimization_type: str = "sql") -> List[Any]:
+        """
+        批量并发处理多个 case 的优化请求
+        
+        Args:
+            cases: case 列表
+            optimization_type: 优化类型，"sql" 或 "dialect"（默认 "sql"）
+        
+        Returns:
+            结果列表，顺序与输入 cases 对应
+        """
+        if not cases:
+            return []
+        
+        # 根据优化类型选择对应的请求方法
+        if optimization_type == "sql":
+            request_method = self.request_sql_optimization
+        elif optimization_type == "dialect":
+            request_method = self.request_dialect_conversion
+        else:
+            logger.error(f"Unknown optimization_type: {optimization_type}")
+            return [{"status": "error", "message": f"Unknown optimization_type: {optimization_type}"} for _ in cases]
+        
+        logger.info(f"Starting batch optimization with {len(cases)} cases, max_workers={self.max_concurrent_requests}")
+        
+        results = [None] * len(cases)  # 预分配结果列表
+        
+        with ThreadPoolExecutor(max_workers=self.max_concurrent_requests) as executor:
+            # 提交所有任务，保存 (future, index) 映射
+            future_to_index = {
+                executor.submit(request_method, case): idx
+                for idx, case in enumerate(cases)
+            }
+            
+            # 等待任务完成并按原顺序收集结果
+            completed_count = 0
+            for future in as_completed(future_to_index):
+                idx = future_to_index[future]
+                try:
+                    result = future.result()
+                    results[idx] = result
+                    completed_count += 1
+                    logger.info(f"Case {idx + 1}/{len(cases)} completed")
+                except Exception as e:
+                    logger.error(f"Case {idx + 1} failed with exception: {str(e)}")
+                    results[idx] = {
+                        "status": "error",
+                        "message": f"Exception during processing: {str(e)}",
+                        "code": 500
+                    }
+                    completed_count += 1
+        
+        logger.info(f"Batch optimization completed: {completed_count}/{len(cases)} cases processed")
+        return results 
