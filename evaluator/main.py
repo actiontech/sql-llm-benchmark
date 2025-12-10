@@ -36,14 +36,28 @@ def setup_logging(output_dir: Path) -> None:
 
 def validate_llm_configs(configs: list[dict], label: str) -> None:
     """
-    Warn if any LLM configuration appears to use placeholder values.
+    验证配置是否完整
+    
+    - LLM: 必需 generator_key, alias, type
+    - Application: 必需 name, alias, type, api_url, api_key
     """
     for cfg in configs:
-        if not all(cfg.get(k) for k in ("name", "api_url", "api_key")):
-            logging.warning(
-                f"{label} configuration may contain placeholders: {cfg.get('name', 'Unnamed')}"
-            )
-            break
+        if cfg.get("type") == "Application":
+            # Application 配置
+            required = ["name", "alias", "api_url", "api_key"]
+            missing = [k for k in required if not cfg.get(k)]
+            if missing:
+                logging.warning(
+                    f"{label} '{cfg.get('alias', 'Unnamed')}' missing fields: {', '.join(missing)}"
+                )
+        elif cfg.get("type") == "Chat" or cfg.get("type") == "Chat(Thinking)":
+            # LLM 配置
+            required = ["generator_key", "alias"]
+            missing = [k for k in required if not cfg.get(k)]
+            if missing:
+                logging.warning(
+                    f"{label} '{cfg.get('alias', 'Unnamed')}' missing fields: {', '.join(missing)}"
+                )
 
 
 def main():
@@ -59,15 +73,18 @@ def main():
 
     # Merge target LLMs and applications
     targets = list(TARGET_LLM_CONFIG) + list(TARGET_APPLICATION)
-    target_names = [t.get('name', 'N/A') for t in TARGET_LLM_CONFIG]
-    judge_names = [j.get('name', 'N/A') for j in JUDGE_LLM_CONFIGS]
-
-    logging.info(f"Target LLMs: {', '.join(target_names) or 'None'}")
-    logging.info(f"Judge LLMs: {', '.join(judge_names) or 'None'}")
+    
+    # 提取名称用于日志
+    llm_names = [t.get('alias', 'N/A') for t in TARGET_LLM_CONFIG]
+    app_names = [t.get('alias', 'N/A') for t in TARGET_APPLICATION]
+    
+    logging.info(f"Target LLMs: {', '.join(llm_names) or 'None'}")
+    logging.info(f"Target Applications: {', '.join(app_names) or 'None'}")
+    logging.info(f"Judge LLMs: {', '.join(JUDGE_LLM_CONFIGS)}")
 
     # Validate configurations
     validate_llm_configs(TARGET_LLM_CONFIG, 'Target LLM')
-    validate_llm_configs(JUDGE_LLM_CONFIGS, 'Judge LLM')
+    validate_llm_configs(TARGET_APPLICATION, 'Target Application')
 
     all_results = []
     mcp_client_initialized = False
@@ -86,14 +103,17 @@ def main():
         else:
             logging.info("No MCP dimensions enabled, skipping MCP client initialization.")
         
-        for llm in targets:
-            name = llm.get('name', 'Unknown')
-            logging.info(f"Running evaluations for model: {name}")
-            score, params = run_all_evaluations(timestamp_str, llm)
+        for target in targets:
+            # 统一使用 alias 字段
+            name = target.get('alias', 'Unknown')
+            target_type = target.get('type', 'Unknown')
+            logging.info(f"Running evaluations for {target_type}: {name}")
+            
+            score, params = run_all_evaluations(timestamp_str, target)
             all_results.append({
                 'model_score': score,
                 'parameters': params,
-                'target_llm': llm,
+                'target_llm': target,
             })
             logging.info(f"[{name}] Evaluation completed. Score: {score}.")
     
