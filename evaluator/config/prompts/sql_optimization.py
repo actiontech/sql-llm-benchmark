@@ -14,16 +14,16 @@ def prompt_for_optimization(case: dict) -> str:
 Given the table definitions, explain output and the original SQL, apply appropriate optimizations.
 Output only the optimized SQL as a single-line statement with no markdown or extra text.
 
-Table Definitions:
+## Table Definitions:
 {tables}
 
-Explain Output in JSON:
+## Explain Output in JSON:
 {explain}
 
-Original SQL:
+## Original SQL:
 {sql}
 
-Optimized SQL:
+## Optimized SQL:
 """
 
 
@@ -32,6 +32,7 @@ def prompt_for_optimization_rule_judge(case: dict, model_answer: str) -> str:
     Generate the prompt to judge whether the optimized SQL correctly applies the rule,
     including both the original and optimized SQL.
     """
+    db_type = case.get("db_type", "")
     rule = case.get("optimization_rule", "")
     original_sql = case.get("sql", "")
     optimized_sql = model_answer
@@ -39,23 +40,26 @@ def prompt_for_optimization_rule_judge(case: dict, model_answer: str) -> str:
 Given the optimization rule below, the original SQL, and the optimized SQL, determine if the optimized SQL correctly applies the rule.
 Do **not** execute it; just reason about whether the transformation follows the rule.
 Return **only** JSON in this format, with no extra text:
-
+```json
 {{
   "answer": "yes" | "no"
 }}
+```
+## Database Type:
+{db_type}
 
-Optimization Rule:
+## Optimization Rule:
 {rule}
 
-Original SQL:
+## Original SQL:
 {original_sql}
 
-Optimized SQL:
+## Optimized SQL:
 {optimized_sql}
 """
 
 
-def prompt_for_judge_depth__rules(model_name: str, case: dict, model_answer: str) -> str:
+def prompt_for_judge_depth_rules(model_name: str, case: dict, model_answer: str) -> str:
     """
     Generate the prompt to judge which optimization rules were applied,
     including both the original and optimized SQL.
@@ -100,16 +104,16 @@ Return **only** JSON in this format, with no extra text:
   "answer": "yes" | "no"
 }}
 
-Original SQL:
+## Original SQL:
 {original}
 
-Table Definitions:
+##Table Definitions:
 {tables}
 
-Explain Output in JSON:
+##Explain Output in JSON:
 {explain}
 
-Translated SQL:
+##Translated SQL:
 {translated}
 """
 
