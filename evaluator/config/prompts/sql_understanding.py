@@ -28,13 +28,13 @@ Respond **only** with valid JSON matching this structure exactly (no extra field
 
 {template}
 ---
-Schema:
+## Schema:
 {schema}
 
-Data:
+## Data:
 {data}
 
-Query:
+## Query:
 {query}
 """
 
@@ -49,7 +49,7 @@ You are a database expert in SQL analysis. Analyze the SQL statement below and r
   "statement_type": "SELECT|INSERT|UPDATE|DELETE|MERGE|CREATE|ALTER|DROP|RENAME|TRUNCATE|GRANT|REVOKE|BEGIN|COMMIT|SAVEPOINT|ROLLBACK"
 }}
 
-SQL:
+## SQL:
 {query}
 """
 
@@ -63,7 +63,7 @@ You are a SQL syntax checker. Check if the following SQL statement has syntax er
   "has_syntax_error": "yes|no"
 }}
 
-SQL:
+## SQL:
 {query}
 """
 
@@ -89,12 +89,12 @@ Respond only with JSON matching exactly this structure (no extra text, no markdo
   "filtered": "<filtered>"
 }}
 
-Table Definitions:
+## Table Definitions:
 {tables}
 
-Data Inserts:
+## Data Inserts:
 {inserts}
 
-Query:
+## Query:
 {sql}
 """ 

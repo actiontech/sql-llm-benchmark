@@ -11,7 +11,7 @@ from .prompts import (
     prompt_for_conversion_judge,
     prompt_for_optimization,
     prompt_for_optimization_rule_judge,
-    prompt_for_judge_depth__rules,
+    prompt_for_judge_depth_rules,
     prompt_for_optimization_equivalence_judge,
     prompt_for_executable_judge_optimization
 )
@@ -81,7 +81,7 @@ DATASET_CONFIG = {
         },
         'optimization_depth.jsonl': {
             'target_model_prompt': prompt_for_optimization,
-            'judge_model_prompt': prompt_for_judge_depth__rules,
+            'judge_model_prompt': prompt_for_judge_depth_rules,
             'evaluation_type': "subjective",
             'indicator_ability_weights': 4
         }
