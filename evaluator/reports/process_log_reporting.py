@@ -16,7 +16,9 @@ def generate_process_log_reports(target_llm_config: dict, run_id: str, capabilit
     indicator_name = Path(indicator).stem
     run_output_dir = os.path.join(OUTPUT_DIR, "evaluation_process_detail_logs",
                                   f"eval_run_logs_{now_time}", f"{target_llm_config.get('alias')}", f"{capability}")
-    name = target_llm_config.get("name", "Unknown Target LLM")
+    
+    # 统一使用 alias 字段
+    name = target_llm_config.get("alias", "Unknown Target")
     os.makedirs(run_output_dir, exist_ok=True)
 
     process_report_path = os.path.join(
@@ -28,8 +30,8 @@ def generate_process_log_reports(target_llm_config: dict, run_id: str, capabilit
             logger.error(
                 f"WARNING: Failed to remove existing log file {process_report_path}: {e}")
 
-    judge_names = [j.get('name', 'N/A')
-                   for j in JUDGE_LLM_CONFIGS if JUDGE_LLM_CONFIGS]
+    # JUDGE_LLM_CONFIGS 是字符串列表（generator keys）
+    judge_names = JUDGE_LLM_CONFIGS if JUDGE_LLM_CONFIGS else []
 
     # Construct a more detailed header for the process log
     report_header = f"""
@@ -40,7 +42,7 @@ Run ID: {run_id}
 Run Dimensions: {capability}
 Run Indicator: {indicator_name}
 Evaluation Timestamp: {datetime.now().isoformat()}
-Target LLM: {name}
+Target: {name}
 Judge LLMs: {', '.join(judge_names) if judge_names else 'None'}
 -------------------------------------------------
 
