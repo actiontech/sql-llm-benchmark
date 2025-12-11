@@ -15,7 +15,7 @@ Return **only** the translated SQL statement(**no extra text**, **no markdown fe
 Source SQL:
 {sql}
 
-Translated SQL ({tgt}):
+## Translated SQL ({tgt}):
 """
 
 
@@ -38,7 +38,7 @@ Respond **only** with a JSON object in this exact format (no extra text or forma
   "answer": "yes" | "no"
 }}
 
-SQL to validate:
+## SQL to validate:
 {translated_sql}
 """
 

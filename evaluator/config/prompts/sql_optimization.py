@@ -77,13 +77,13 @@ Respond only with JSON in this format, with no extra text:
 
 {{"matched_rule_ids": [<rule_id>, ...]}}
 
-Optimization Rules:
+## Optimization Rules:
 {rules}
 
-Original SQL:
+## Original SQL:
 {original_sql}
 
-Optimized SQL:
+## Optimized SQL:
 {optimized_sql}
 """
 
@@ -96,8 +96,7 @@ def prompt_for_optimization_equivalence_judge(model_name: str, case: dict, model
     tables = "\n".join(case.get("create_table_statements", []))
     explain = case.get("explain", "")
     translated = model_answer
-    return f"""You are a database expert. Assess whether these two SQL statementsare logically equivalent—that is, 
-they produce the same results given the specified table definitions and considering the execution plan's implications on how the query is processed.
+    return f"""You are a database expert. Assess whether the "Original SQL" and "Translated SQL" below are logically equivalent—that is, they produce the same results given the specified table definitions and considering the execution plan's implications on how the query is processed.
 Return **only** JSON in this format, with no extra text:
 
 {{
@@ -107,13 +106,13 @@ Return **only** JSON in this format, with no extra text:
 ## Original SQL:
 {original}
 
-##Table Definitions:
+## Table Definitions:
 {tables}
 
-##Explain Output in JSON:
+## Explain Output in JSON:
 {explain}
 
-##Translated SQL:
+## Translated SQL:
 {translated}
 """
 
@@ -133,6 +132,6 @@ Return **only** JSON in this format, with no extra text:
   "answer": "yes" | "no"
 }}
 
-SQL:
+## SQL:
 {translated_sql}
 """ 
