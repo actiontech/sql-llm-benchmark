@@ -75,6 +75,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             }}
           />
           {/* End Google Tag Manager */}
+
+          {/* 百度统计 */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?5a5835c49033f6e49397df9f1b654ed0";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();`,
+            }}
+          />
+          {/* End 百度统计 */}
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=1500, initial-scale=1" />
           <meta name="author" content="ActionTech" />
