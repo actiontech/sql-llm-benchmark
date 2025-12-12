@@ -20,7 +20,7 @@ class BaseApplicationClient(ABC):
         if token:
             self.headers["Authorization"] = f"Bearer {token}"
         # 并发线程数配置（默认 3）
-        self.max_concurrent_requests = config.get("max_concurrent_requests", 3)
+        self.max_concurrent_requests = config.get("max_concurrent_requests", 1)
         self._initialize()
 
     @abstractmethod
@@ -42,7 +42,7 @@ class BaseApplicationClient(ABC):
         get_url_builder: Callable[[str], str],
         status_checker: Callable[[Dict[str, Any]], str],
         result_extractor: Callable[[Dict[str, Any]], str],
-        max_retry_time: int = 20 * 60,
+        max_retry_time: int = 60 * 60,  # 最大轮询时长（秒），默认 60 分钟
         retry_interval: int = 30,
         case_id: str = None
     ) -> Dict[str, Any]:
@@ -109,40 +109,73 @@ class BaseApplicationClient(ABC):
             data: 请求数据
             method: HTTP 方法
             case_id: Case ID
+        
+        Returns:
+            包含 status 和 task_id（成功时）或 error 信息的字典
         """
         prefix = f"[Case:{case_id}] " if case_id else ""
-        logger.info(f"{prefix}Submitting task to {url}")
-        logger.debug(f"{prefix}Request data: {data}")
+        max_retries = 3
+        retry_delay = 2  # 重试延迟（秒）
         
-        try:
-            request_headers = self.headers.copy()
-            request_headers["Content-Type"] = "application/x-www-form-urlencoded"
-            response = requests.request(method, url, data=data, headers=request_headers)
-            response.raise_for_status()
+        for attempt in range(max_retries + 1):  # 初始尝试 + 3次重试
+            if attempt > 0:
+                logger.info(f"{prefix}Retrying task submission (attempt {attempt}/{max_retries})...")
+                time.sleep(retry_delay)
+            else:
+                logger.info(f"{prefix}Submitting task to {url}")
+            
+            logger.debug(f"{prefix}Request data: {data}")
+            
+            try:
+                request_headers = self.headers.copy()
+                request_headers["Content-Type"] = "application/x-www-form-urlencoded"
+                response = requests.request(method, url, data=data, headers=request_headers)
+                response.raise_for_status()
 
-            response_data = response.json()
-            if response_data.get("code") != 0:
-                logger.error(f"{prefix}Task submission failed: {response_data.get('message')}")
+                response_data = response.json()
+                if response_data.get("code") != 0:
+                    error_msg = response_data.get("message", "Unknown error")
+                    error_code = int(response_data.get("code", -1))
+                    logger.error(f"{prefix}Task submission failed: {error_msg}")
+                    
+                    # 如果是最后一次尝试，直接返回错误
+                    if attempt >= max_retries:
+                        return {
+                            "status": "error",
+                            "message": error_msg,
+                            "code": error_code,
+                        }
+                    # 否则继续重试
+                    continue
+
+                task_id = response_data.get("data", {}).get("task_id", "")
+                logger.info(f"{prefix}Task submitted successfully, task_id: {task_id}")
                 return {
-                    "status": "error",
-                    "message": response_data.get("message", "Unknown error"),
-                    "code": int(response_data.get("code", -1)),
+                    "status": "success",
+                    "task_id": task_id,
                 }
 
-            task_id = response_data.get("data", {}).get("task_id", "")
-            logger.info(f"{prefix}Task submitted successfully, task_id: {task_id}")
-            return {
-                "status": "success",
-                "task_id": task_id,
-            }
-
-        except requests.exceptions.RequestException as e:
-            logger.error(f"{prefix}Task submission exception: {str(e)}")
-            return {
-                "status": "error",
-                "message": str(e),
-                "code": getattr(e.response, "status_code", 500),
-            }
+            except requests.exceptions.RequestException as e:
+                error_msg = str(e)
+                error_code = getattr(e.response, "status_code", 500)
+                logger.error(f"{prefix}Task submission exception: {error_msg}")
+                
+                # 如果是最后一次尝试，直接返回错误
+                if attempt >= max_retries:
+                    return {
+                        "status": "error",
+                        "message": error_msg,
+                        "code": error_code,
+                    }
+                # 否则继续重试
+                continue
+        
+        # 理论上不会到达这里，但为了代码完整性
+        return {
+            "status": "error",
+            "message": "Task submission failed after all retries",
+            "code": -1,
+        }
 
     def request_batch_optimization(self, cases: List[Dict[str, Any]], optimization_type: str = "sql") -> List[Any]:
         """
