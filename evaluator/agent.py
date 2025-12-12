@@ -58,7 +58,13 @@ class BaseAgent:
         
         # 构建 Pipeline
         self.pipe = Pipeline()
-        self.pipe.add_component("prompt_builder", PromptBuilder(template=prompt_template))
+        self.pipe.add_component(
+            "prompt_builder", 
+            PromptBuilder(
+                template=prompt_template,
+                required_variables=self.required_variables if self.required_variables else None
+            )
+        )
         
         # 获取并添加 generator 实例
         try:
