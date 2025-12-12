@@ -7,7 +7,7 @@ import Document, {
 } from "next/document";
 import { createCache, extractStyle, StyleProvider } from "@ant-design/cssinjs";
 import type { EmotionCache } from "@emotion/cache";
-import i18n from "../lib/i18n"; // 导入 i18n 实例
+import i18n from "../lib/i18n";
 
 interface SeoData {
   title: string;
@@ -25,7 +25,22 @@ class MyDocument extends Document<MyDocumentProps> {
   static async getInitialProps(ctx: DocumentContext) {
     const cache = createCache();
     const originalRenderPage = ctx.renderPage;
-    const locale = ctx.locale || "zh"; // 获取当前语言环境，默认为中文
+
+    // 在服务端通过请求头检测浏览器语言
+    let locale = "en";
+    if (ctx.req?.headers) {
+      const acceptLanguage = ctx.req.headers['accept-language'] as string | undefined;
+      // 检测是否为中文（zh, zh-CN, zh-TW 等）
+      if (acceptLanguage) {
+        const lang = acceptLanguage.toLowerCase().split(',')[0].trim();
+        if (lang.startsWith('zh')) {
+          locale = "zh";
+        }
+      }
+    }
+
+    // 在渲染页面之前设置 i18n 语言
+    await i18n.changeLanguage(locale);
 
     ctx.renderPage = () =>
       originalRenderPage({
@@ -40,8 +55,7 @@ class MyDocument extends Document<MyDocumentProps> {
     const initialProps = await Document.getInitialProps(ctx);
     const style = extractStyle(cache, true);
 
-    // 切换 i18n 语言以加载正确的翻译
-    await i18n.changeLanguage(locale);
+    // 获取 SEO 数据（此时 i18n 已经设置为正确的语言）
     const seoData: SeoData = i18n.t("seo", { returnObjects: true }) as SeoData;
 
     return {

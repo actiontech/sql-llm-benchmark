@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "antd";
+import { useTranslation } from "react-i18next";
 import "../lib/i18n"; // 导入i18n配置
 import "../styles/globals.css";
 import Router from "next/router";
@@ -18,11 +19,12 @@ Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
 function MyApp({ Component, pageProps }: AppProps) {
-  // 检查是否在客户端环境
   const [isMounted, setIsMounted] = React.useState(false);
+  const { i18n } = useTranslation();
 
   React.useEffect(() => {
     setIsMounted(true);
+    // i18n 在初始化时已经根据浏览器语言设置了，这里不需要再次设置
   }, []);
 
   // 在服务器端渲染时，不渲染BrowserRouter
