@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 from typing import Dict, Any, Callable, List
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from evaluator.config.llm_config import RETRY_TIMES
+from config.llm_config import RETRY_TIMES
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ class BaseApplicationClient(ABC):
         if token:
             self.headers["Authorization"] = f"Bearer {token}"
         # 并发线程数配置（默认 3）
-        self.max_concurrent_requests = config.get("max_concurrent_requests", 3)
+        self.max_concurrent_requests = config.get("max_concurrent_requests", 1)
         self._initialize()
 
     @abstractmethod
