@@ -6,6 +6,8 @@ from abc import ABC, abstractmethod
 from typing import Dict, Any, Callable, List
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+from evaluator.config.llm_config import RETRY_TIMES
+
 logger = logging.getLogger(__name__)
 
 
@@ -20,7 +22,7 @@ class BaseApplicationClient(ABC):
         if token:
             self.headers["Authorization"] = f"Bearer {token}"
         # 并发线程数配置（默认 3）
-        self.max_concurrent_requests = config.get("max_concurrent_requests", 1)
+        self.max_concurrent_requests = config.get("max_concurrent_requests", 3)
         self._initialize()
 
     @abstractmethod
@@ -114,7 +116,7 @@ class BaseApplicationClient(ABC):
             包含 status 和 task_id（成功时）或 error 信息的字典
         """
         prefix = f"[Case:{case_id}] " if case_id else ""
-        max_retries = 3
+        max_retries = RETRY_TIMES
         retry_delay = 2  # 重试延迟（秒）
         
         for attempt in range(max_retries + 1):  # 初始尝试 + 3次重试
