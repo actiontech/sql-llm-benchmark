@@ -77,13 +77,13 @@ DATASET_CONFIG = {
             'target_model_prompt': prompt_for_optimization,
             'judge_model_prompt': prompt_for_executable_judge_optimization,
             'evaluation_type': "hybrid",
-            'indicator_ability_weights': 2
+            'indicator_ability_weights': 3
         },
         'optimization_depth.jsonl': {
             'target_model_prompt': prompt_for_optimization,
             'judge_model_prompt': prompt_for_judge_depth_rules,
             'evaluation_type': "subjective",
-            'indicator_ability_weights': 4
+            'indicator_ability_weights': 2
         }
     }
 }
