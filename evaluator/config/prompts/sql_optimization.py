@@ -42,7 +42,8 @@ Do **not** execute it; just reason about whether the transformation follows the 
 Return **only** JSON in this format, with no extra text:
 ```json
 {{
-  "answer": "yes" | "no"
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
 }}
 ```
 ## Database Type:
@@ -75,7 +76,10 @@ Given the list of optimization rules, the original SQL, and the optimized SQL pr
 identify which rule_id values have been applied correctly.
 Respond only with JSON in this format, with no extra text:
 
-{{"matched_rule_ids": [<rule_id>, ...]}}
+{{
+  "matched_rule_ids": [<rule_id>, ...],
+  "reason": "Briefly explain the reasons for unmatched rule_ids only, or an empty string if all matched."
+}}
 
 ## Optimization Rules:
 {rules}
@@ -100,7 +104,8 @@ def prompt_for_optimization_equivalence_judge(model_name: str, case: dict, model
 Return **only** JSON in this format, with no extra text:
 
 {{
-  "answer": "yes" | "no"
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
 }}
 
 ## Original SQL:
@@ -129,7 +134,8 @@ Do **not** execute it; just check syntax correctness.
 Return **only** JSON in this format, with no extra text:
 
 {{
-  "answer": "yes" | "no"
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
 }}
 
 ## SQL:
