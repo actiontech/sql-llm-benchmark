@@ -35,7 +35,8 @@ you do **not** need to run it.
 Respond **only** with a JSON object in this exact format (no extra text or formatting):
 
 {{
-  "answer": "yes" | "no"
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
 }}
 
 ## SQL to validate:
@@ -64,7 +65,8 @@ You need to verify two things:
 Return **only** a JSON object with this format, without any additional commentary:
 
 {{
-  "answer": "yes" | "no"
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
 }}
 
 **-- Original SQL ({src}) --**
@@ -98,7 +100,8 @@ Do **not** execute the SQL—judge solely based on inspection.
 Return **only** a JSON object in this exact format (no extra text):
 
 {{
-  "answer": "yes" | "no"
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
 }}
 
 **-- Original SQL ({src}) --**

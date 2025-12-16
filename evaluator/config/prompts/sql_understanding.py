@@ -60,7 +60,8 @@ def prompt_for_syntax_error_detection(case: dict) -> str:
 You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
 
 {{
-  "has_syntax_error": "yes|no"
+  "has_syntax_error": "yes|no",
+  "reason": "If has_syntax_error is no, briefly explain the reason."
 }}
 
 ## SQL:
