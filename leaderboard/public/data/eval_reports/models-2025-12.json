@@ -270,6 +270,74 @@
             }
         },
         {
+            "id": "deepseek-v3.2",
+            "name": "Pro/deepseek-ai/DeepSeek-V3.2",
+            "real_model_namne": "DeepSeek-V3.2",
+            "type": "Chat",
+            "parameters": 25624,
+            "website": "https://www.deepseek.com/",
+            "description": "We introduce DeepSeek-V3.2, a model that harmonizes high computational efficiency with superior reasoning and agent performance.",
+            "organization": "DeepSeek",
+            "releaseDate": "2025/12/01",
+            "scores": {
+                "dialect_conversion": {
+                    "ability_score": 51.6,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 29.0,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 73.7,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 67.7,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 31.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 51.6,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 47.4,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 39.2,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 76.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_understanding": {
+                    "ability_score": 62.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 62.9,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 39.3,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 77.1,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "id": "qwen3-235b-a22b-instruct-2507",
             "name": "Qwen/Qwen3-235B-A22B-Instruct-2507",
             "real_model_namne": "Qwen3-235B-A22B-Instruct-2507",
