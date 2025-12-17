@@ -134,6 +134,74 @@
             }
         },
         {
+            "id": "deepseek-r1",
+            "name": "Pro/deepseek-ai/DeepSeek-R1",
+            "real_model_namne": "DeepSeek-R1",
+            "type": "Chat(Thinking)",
+            "parameters": 116012,
+            "website": "https://www.deepseek.com/",
+            "description": "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning",
+            "organization": "DeepSeek",
+            "releaseDate": "2025-05-28",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 80.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 84.3,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 64.3,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 74.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 48.4,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 74.2,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 92.9,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 57.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 70.1,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 36.7,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 79.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "id": "deepseek-v3.1",
             "name": "Pro/deepseek-ai/DeepSeek-V3.1",
             "real_model_namne": "DeepSeek-V3.1",
