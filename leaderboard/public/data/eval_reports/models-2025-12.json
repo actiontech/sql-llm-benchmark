@@ -268,6 +268,74 @@
                     ]
                 }
             }
+        },
+        {
+            "id": "claude-sonnet-4-5-20250929-thinking",
+            "name": "claude-sonnet-4-5-20250929-thinking",
+            "real_model_namne": "Claude Sonnet 4.5",
+            "type": "Chat(Thinking)",
+            "parameters": 45739,
+            "website": "https://www.anthropic.com/claude/sonnet",
+            "description": "Claude Sonnet 4.5 is the best coding model in the world. It's the strongest model for building complex agents. It’s the best model at using computers. And it shows substantial gains in reasoning and math.",
+            "organization": "Anthropic",
+            "releaseDate": "2025-09-29",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 81.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 90.0,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 46.4,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 74.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 72.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 71.0,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 73.7,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.0,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 73.8,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 60.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 60.8,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 46.7,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.5,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
         }
     ]
 }
