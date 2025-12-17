@@ -77,7 +77,7 @@ class BaseAgent:
             raise
     
     @classmethod
-    def retry(cls, times: int, delay: int):
+    def retry(cls, times: int, delay: int,case_id: str):
         """
         重试装饰器
         
@@ -99,12 +99,12 @@ class BaseAgent:
                         last_exception = e
                         
                         if attempt >= times:
-                            logger.error(f"达到最大重试次数 {times}，放弃")
+                            logger.error(f"[{case_id}] 达到最大重试次数 {times}，放弃")
                             raise last_exception
                         
                         traceback.print_exc()
                         logger.error(
-                            f"第 {attempt}/{times} 次重试，错误：{e}，等待 {delay} 秒..."
+                            f"[{case_id}] 第 {attempt}/{times} 次重试，错误：{e}，等待 {delay} 秒..."
                         )
                         time.sleep(delay)
                 
@@ -233,7 +233,7 @@ class BaseAgent:
         Raises:
             Exception: 达到最大重试次数后仍失败
         """
-        @self.retry(times=self.retry_times, delay=self.retry_delay)
+        @self.retry(times=self.retry_times, delay=self.retry_delay,case_id=case_id)
         def _run_with_retry():
             data = {"prompt_builder": kwargs}
             raw_response = self._run_pipeline(data, case_id=case_id, run_idx=run_idx)
