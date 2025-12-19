@@ -1,0 +1,582 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20251219_140546_260
+Run Dimensions: sql_understanding
+Run Indicator: explain_detection
+Evaluation Timestamp: 2025-12-19T14:08:33.407102
+Target: o4-mini-high
+Judge LLMs: deepseek-r1, o4-mini, gemini-2.5-pro
+-------------------------------------------------
+
+[2025-12-19 14:06:59.365340] Run Indicator: sql_understanding, Parameters size: 12345B
+[2025-12-19 14:06:59.366006] 
+--- Capability: sql_understanding Indicator explain_detection.jsonl Evaluating Type: objective  ---
+[2025-12-19 14:06:59.366177] Concurrency: 3 concurrent cases, 3 concurrent judges
+[2025-12-19 14:07:01.612149] [Case:1][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE students (id INT PRIMARY KEY, name VARCHAR(100), age INT, grade VARCHAR(10));
+
+## Data Inserts:
+INSERT INTO students (id, name, age, grade) VALUES (1, 'Alice', 18, 'A'), (2, 'Bob', 19, 'B'), (3, 'Charlie', 18, 'A'), (4, 'David', 20, 'C');
+
+## Query:
+SELECT name, age FROM students WHERE grade = 'B';
+
+[2025-12-19 14:07:01.612978] [Case:2][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2));
+
+## Data Inserts:
+INSERT INTO products (product_id, product_name, price) VALUES (101, 'Laptop', 1200.00), (102, 'Mouse', 25.00), (103, 'Keyboard', 75.00);
+
+## Query:
+INSERT INTO products (product_id, product_name, price) VALUES (104, 'Monitor', 300.00);
+
+[2025-12-19 14:07:01.613776] [Case:3][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE employees (employee_id INT PRIMARY KEY, employee_name VARCHAR(100), salary DECIMAL(10, 2));
+
+## Data Inserts:
+INSERT INTO employees (employee_id, employee_name, salary) VALUES (1, 'John Doe', 50000.00), (2, 'Jane Smith', 60000.00), (3, 'Peter Jones', 45000.00);
+
+## Query:
+UPDATE employees SET salary = 55000.00 WHERE employee_name LIKE 'John%';
+
+[2025-12-19 14:07:09.375428] [Case:3][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"3","key":null,"possible_keys":null,"Extra":"Using where","filtered":"33.33"}
+[2025-12-19 14:07:09.375709] [3] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '33.33'}', Expected: '{'type': 'index', 'rows': '3', 'key': 'PRIMARY', 'possible_keys': None, 'Extra': 'Using where', 'filtered': 100}'
+[2025-12-19 14:07:09.375901] [3] Objective Eval Case Results: False
+[2025-12-19 14:07:09.376963] [Case:4][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE);
+
+## Data Inserts:
+INSERT INTO orders (order_id, customer_id, order_date) VALUES (1, 10, '2023-01-15'), (2, 11, '2023-01-16'), (3, 10, '2023-01-17');
+
+## Query:
+DELETE FROM orders WHERE customer_id = 10;
+
+[2025-12-19 14:07:09.711582] [Case:1][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"4","key":null,"possible_keys":null,"Extra":"Using where","filtered":"25.00"}
+[2025-12-19 14:07:09.711814] [1] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '25.00'}', Expected: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 25.0}'
+[2025-12-19 14:07:09.712234] [1] Objective Eval Case Results: True
+[2025-12-19 14:07:09.713561] [Case:5][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE categories (category_id INT PRIMARY KEY, category_name VARCHAR(100));
+
+## Data Inserts:
+INSERT INTO categories (category_id, category_name) VALUES (1, 'Electronics'), (2, 'Books'), (3, 'Food');
+
+## Query:
+REPLACE INTO categories (category_id, category_name) VALUES (4, 'Clothing');
+
+[2025-12-19 14:07:13.566585] [Case:4][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"3","key":null,"possible_keys":null,"Extra":"Using where","filtered":"66.67"}
+[2025-12-19 14:07:13.566821] [4] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '66.67'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 100}'
+[2025-12-19 14:07:13.567031] [4] Objective Eval Case Results: False
+[2025-12-19 14:07:13.568171] [Case:6][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE fruits (fruit_id INT PRIMARY KEY, fruit_name VARCHAR(50), weight DECIMAL(5, 2));
+
+## Data Inserts:
+INSERT INTO fruits (fruit_id, fruit_name, weight) VALUES (1, 'Apple', 0.2), (2, 'Banana', 0.15), (3, 'Orange', 0.25), (4, 'Grape', 0.05);
+
+## Query:
+SELECT fruit_name FROM fruits WHERE fruit_name = 'Banana';
+
+[2025-12-19 14:07:17.705951] [Case:6][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"4","key":null,"possible_keys":null,"Extra":"Using where","filtered":"25.00"}
+[2025-12-19 14:07:17.706208] [6] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '25.00'}', Expected: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 25.0}'
+[2025-12-19 14:07:17.706415] [6] Objective Eval Case Results: True
+[2025-12-19 14:07:17.707518] [Case:7][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE sales (sale_id INT PRIMARY KEY, product_id INT, sale_amount DECIMAL(10, 2), sale_date DATE);
+
+## Data Inserts:
+INSERT INTO sales (sale_id, product_id, sale_amount, sale_date) VALUES (1, 101, 1200.00, '2023-01-01'), (2, 102, 25.00, '2023-01-01'), (3, 101, 300.00, '2023-01-02'), (4, 103, 75.00, '2023-01-02');
+
+## Query:
+SELECT product_id, sale_amount FROM sales WHERE sale_amount < 100.00;
+
+[2025-12-19 14:07:20.918390] [Case:7][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"4","key":null,"possible_keys":null,"Extra":"Using where","filtered":"50.00"}
+[2025-12-19 14:07:20.918662] [7] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '50.00'}', Expected: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 33.33}'
+[2025-12-19 14:07:20.918892] [7] Objective Eval Case Results: False
+[2025-12-19 14:07:20.920302] [Case:8][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE articles (article_id INT PRIMARY KEY, title VARCHAR(255), publish_date DATE);
+
+## Data Inserts:
+INSERT INTO articles (article_id, title, publish_date) VALUES (1, 'Article A', '2023-01-01'), (2, 'Article B', '2023-01-05'), (3, 'Article C', '2023-01-10');
+
+## Query:
+SELECT title FROM articles WHERE publish_date = '2023-01-05';
+
+[2025-12-19 14:07:30.168045] [Case:8][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"3","key":null,"possible_keys":null,"Extra":"Using where","filtered":"33.33"}
+[2025-12-19 14:07:30.168212] [8] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '33.33'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 33.33}'
+[2025-12-19 14:07:30.168366] [8] Objective Eval Case Results: True
+[2025-12-19 14:07:30.169155] [Case:9][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE books (book_id INT PRIMARY KEY, title VARCHAR(255), author VARCHAR(100));
+
+## Data Inserts:
+INSERT INTO books (book_id, title, author) VALUES (1, 'The Great Gatsby', 'F. Scott Fitzgerald'), (2, '1984', 'George Orwell'), (3, 'To Kill a Mockingbird', 'Harper Lee');
+
+## Query:
+SELECT book_id, title FROM books WHERE title LIKE '%Great%';
+
+[2025-12-19 14:07:33.415251] [Case:2][Run:1] [o4-mini-high] Model Output Response:
+{"type":"const","rows":"1","key":"PRIMARY","possible_keys":"PRIMARY","Extra":"","filtered":"100.00"}
+[2025-12-19 14:07:33.415424] [2] Objective Eval: Format Model Answer: '{'type': 'const', 'rows': '1', 'key': 'PRIMARY', 'possible_keys': 'PRIMARY', 'Extra': '', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': None, 'key': None, 'possible_keys': None, 'Extra': None, 'filtered': None}'
+[2025-12-19 14:07:33.415568] [2] Objective Eval Case Results: False
+[2025-12-19 14:07:33.416401] [Case:10][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(100));
+CREATE TABLE employees_v2 (emp_id INT PRIMARY KEY, emp_name VARCHAR(100), dept_id INT);
+
+## Data Inserts:
+INSERT INTO departments (dept_id, dept_name) VALUES (1, 'HR'), (2, 'IT'), (3, 'Finance');
+INSERT INTO employees_v2 (emp_id, emp_name, dept_id) VALUES (101, 'Alice', 1), (102, 'Bob', 2), (103, 'Charlie', 1), (104, 'David', 3);
+
+## Query:
+SELECT d.dept_name, COUNT(e.emp_id) FROM departments d LEFT JOIN employees_v2 e ON d.dept_id = e.dept_id GROUP BY d.dept_name ORDER BY d.dept_name;
+
+[2025-12-19 14:07:36.390733] [Case:5][Run:1] [o4-mini-high] Model Output Response:
+{"type":"const","rows":"1","key":"PRIMARY","possible_keys":"PRIMARY","Extra":"","filtered":"100.00"}
+[2025-12-19 14:07:36.390939] [5] Objective Eval: Format Model Answer: '{'type': 'const', 'rows': '1', 'key': 'PRIMARY', 'possible_keys': 'PRIMARY', 'Extra': '', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': None, 'key': None, 'possible_keys': None, 'Extra': None, 'filtered': None}'
+[2025-12-19 14:07:36.391103] [5] Objective Eval Case Results: False
+[2025-12-19 14:07:36.392100] [Case:11][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE transactions (transaction_id INT PRIMARY KEY, account_id INT, amount DECIMAL(10, 2), transaction_date DATE);
+
+## Data Inserts:
+INSERT INTO transactions (transaction_id, account_id, amount, transaction_date) VALUES (1, 10, 50.00, '2023-01-01'), (2, 11, 75.00, '2023-01-01'), (3, 10, 120.00, '2023-01-02');
+
+## Query:
+SELECT transaction_date, SUM(amount) FROM transactions GROUP BY transaction_date ORDER BY transaction_date;
+
+[2025-12-19 14:07:36.930724] [Case:9][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"3","key":null,"possible_keys":null,"Extra":"Using where","filtered":"10.00"}
+[2025-12-19 14:07:36.930947] [9] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '10.00'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 33.33}'
+[2025-12-19 14:07:36.931122] [9] Objective Eval Case Results: False
+[2025-12-19 14:07:36.932061] [Case:12][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE sensor_data (id INT PRIMARY KEY AUTO_INCREMENT, sensor_type VARCHAR(50), value DECIMAL(10, 2), timestamp DATETIME);
+
+## Data Inserts:
+INSERT INTO sensor_data (sensor_type, value, timestamp) VALUES ('Temperature', 25.5, '2023-01-01 10:00:00'), ('Humidity', 60.2, '2023-01-01 10:00:00'), ('Temperature', 26.1, '2023-01-01 10:05:00');
+
+## Query:
+SELECT sensor_type, AVG(value) FROM sensor_data GROUP BY sensor_type;
+
+[2025-12-19 14:07:43.502762] [Case:12][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"3","key":null,"possible_keys":null,"Extra":"Using temporary; Using filesort","filtered":"100.00"}
+[2025-12-19 14:07:43.502897] [12] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary', 'filtered': 100}'
+[2025-12-19 14:07:43.503087] [12] Objective Eval Case Results: False
+[2025-12-19 14:07:43.503930] [Case:13][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE products_2 (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2), category VARCHAR(50));
+
+## Data Inserts:
+INSERT INTO products_2 (product_id, product_name, price, category) VALUES (1, 'Laptop', 1200.00, 'Electronics'), (2, 'Desk', 250.00, 'Furniture'), (3, 'Monitor', 300.00, 'Electronics'), (4, 'Chair', 150.00, 'Furniture');
+
+## Query:
+SELECT product_name FROM products_2 WHERE category = 'Electronics';
+
+[2025-12-19 14:07:48.265439] [Case:11][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"3","key":null,"possible_keys":null,"Extra":"Using temporary; Using filesort","filtered":"100.00"}
+[2025-12-19 14:07:48.265639] [11] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': 100}'
+[2025-12-19 14:07:48.265809] [11] Objective Eval Case Results: True
+[2025-12-19 14:07:48.266599] [Case:14][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE employees_v3 (emp_id INT PRIMARY KEY, emp_name VARCHAR(100), dept_id INT, salary DECIMAL(10, 2));
+CREATE TABLE departments_v2 (dept_id INT PRIMARY KEY, dept_name VARCHAR(100));
+
+## Data Inserts:
+INSERT INTO employees_v3 (emp_id, emp_name, dept_id, salary) VALUES (1, 'Alice', 10, 60000.00), (2, 'Bob', 20, 75000.00), (3, 'Charlie', 10, 55000.00), (4, 'David', 30, 80000.00);
+INSERT INTO departments_v2 (dept_id, dept_name) VALUES (10, 'HR'), (20, 'IT'), (30, 'Finance');
+
+## Query:
+SELECT e.emp_name, d.dept_name FROM employees_v3 e JOIN departments_v2 d ON e.dept_id = d.dept_id ORDER BY e.salary DESC;
+
+[2025-12-19 14:07:50.172785] [Case:13][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"4","key":null,"possible_keys":null,"Extra":"Using where","filtered":"50.00"}
+[2025-12-19 14:07:50.172967] [13] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '50.00'}', Expected: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 25}'
+[2025-12-19 14:07:50.173136] [13] Objective Eval Case Results: False
+[2025-12-19 14:07:50.174029] [Case:15][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE customers_v2 (customer_id INT PRIMARY KEY, customer_name VARCHAR(100), signup_date DATE);
+
+## Data Inserts:
+INSERT INTO customers_v2 (customer_id, customer_name, signup_date) VALUES (1, 'Alice', '2023-01-01'), (2, 'Bob', '2023-01-05'), (3, 'Charlie', '2023-01-10');
+
+## Query:
+SELECT customer_name FROM customers_v2 WHERE signup_date = '2023-01-05';
+
+[2025-12-19 14:07:58.633663] [Case:15][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"3","key":null,"possible_keys":null,"Extra":"Using where","filtered":"33.33"}
+[2025-12-19 14:07:58.633853] [15] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '33.33'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 33.33}'
+[2025-12-19 14:07:58.634021] [15] Objective Eval Case Results: True
+[2025-12-19 14:07:58.634973] [Case:16][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE users_3 (id INT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100));
+CREATE TABLE orders_4 (order_id INT PRIMARY KEY, user_id INT, order_date DATE);
+
+## Data Inserts:
+INSERT INTO users_3 (id, name, email) VALUES (1, 'Alice', 'alice@example.com'), (2, 'Bob', 'bob@example.com'), (3, 'Charlie', 'charlie@example.com');
+INSERT INTO orders_4 (order_id, user_id, order_date) VALUES (101, 1, '2023-01-01'), (102, 2, '2023-01-02'), (103, 1, '2023-01-03');
+
+## Query:
+SELECT u.name, COUNT(o.order_id) FROM users_3 u LEFT JOIN orders_4 o ON u.id = o.user_id GROUP BY u.name ORDER BY u.name;
+
+[2025-12-19 14:08:07.514462] [Case:10][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"3","key":null,"possible_keys":null,"Extra":"Using temporary; Using filesort","filtered":"100.00"}
+[2025-12-19 14:08:07.514698] [10] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': 100.0}'
+[2025-12-19 14:08:07.514896] [10] Objective Eval Case Results: True
+[2025-12-19 14:08:07.515864] [Case:17][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE employees_v4 (employee_id INT PRIMARY KEY, employee_name VARCHAR(100), manager_id INT);
+
+## Data Inserts:
+INSERT INTO employees_v4 (employee_id, employee_name, manager_id) VALUES (1, 'Alice', NULL), (2, 'Bob', 1), (3, 'Charlie', 1), (4, 'David', 2);
+
+## Query:
+SELECT employee_name FROM employees_v4 ORDER BY employee_name;
+
+[2025-12-19 14:08:16.183468] [Case:17][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"4","key":null,"possible_keys":null,"Extra":"Using filesort","filtered":"100.00"}
+[2025-12-19 14:08:16.183743] [17] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using filesort', 'filtered': 100.0}'
+[2025-12-19 14:08:16.183956] [17] Objective Eval Case Results: True
+[2025-12-19 14:08:16.185015] [Case:18][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE products_v4 (product_id INT PRIMARY KEY, product_name VARCHAR(100), price DECIMAL(10, 2));
+
+## Data Inserts:
+INSERT INTO products_v4 (product_id, product_name, price) VALUES (1, 'Laptop', 1200.00), (2, 'Desk', 250.00), (3, 'Monitor', 300.00);
+
+## Query:
+SELECT product_name, price FROM products_v4 ORDER BY price DESC;
+
+[2025-12-19 14:08:18.130038] [Case:16][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"3","key":null,"possible_keys":"PRIMARY","Extra":"Using temporary; Using filesort","filtered":"100.00"}
+[2025-12-19 14:08:18.130301] [16] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': 'PRIMARY', 'Extra': 'Using temporary; Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using temporary; Using filesort', 'filtered': 100.0}'
+[2025-12-19 14:08:18.130556] [16] Objective Eval Case Results: False
+[2025-12-19 14:08:18.131754] [Case:19][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE inventory (item_id INT PRIMARY KEY, item_name VARCHAR(100), stock_quantity INT);
+
+## Data Inserts:
+INSERT INTO inventory (item_id, item_name, stock_quantity) VALUES (1, 'Pen', 100), (2, 'Notebook', 50), (3, 'Eraser', 75);
+
+## Query:
+UPDATE inventory SET stock_quantity = 80 WHERE stock_quantity < 60;
+
+[2025-12-19 14:08:23.391224] [Case:14][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"4","key":null,"possible_keys":null,"Extra":"Using filesort","filtered":"100.00"}
+[2025-12-19 14:08:23.391440] [14] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '4', 'key': None, 'possible_keys': None, 'Extra': 'Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': 'PRIMARY', 'Extra': 'Using temporary; Using filesort', 'filtered': 100.0}'
+[2025-12-19 14:08:23.391651] [14] Objective Eval Case Results: False
+[2025-12-19 14:08:23.392627] [Case:20][Run:1] [o4-mini-high] Model Input Prompt:
+You are a SQL execution plan expert.
+Given the table schema, data inserts, and a SQL query (in MySQL dialect), produce the execution plan as returned by EXPLAIN.
+Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
+
+{
+  "type": "<type>",
+  "rows": "<rows>",
+  "key": <key|null>,
+  "possible_keys": <possible_keys|null>,
+  "Extra": "<Extra>",
+  "filtered": "<filtered>"
+}
+
+## Table Definitions:
+CREATE TABLE events (event_id INT PRIMARY KEY, event_name VARCHAR(100), event_date DATE);
+
+## Data Inserts:
+INSERT INTO events (event_id, event_name, event_date) VALUES (1, 'Meeting', '2023-06-01'), (2, 'Conference', '2023-06-15'), (3, 'Workshop', '2023-07-01');
+
+## Query:
+SELECT event_name FROM events WHERE event_name = 'Meeting';
+
+[2025-12-19 14:08:24.279249] [Case:18][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"3","key":null,"possible_keys":null,"Extra":"Using filesort","filtered":"100.00"}
+[2025-12-19 14:08:24.279485] [18] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using filesort', 'filtered': '100.00'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using filesort', 'filtered': 100}'
+[2025-12-19 14:08:24.279715] [18] Objective Eval Case Results: True
+[2025-12-19 14:08:27.275298] [Case:20][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"3","key":null,"possible_keys":null,"Extra":"Using where","filtered":"33.33"}
+[2025-12-19 14:08:27.275546] [20] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '33.33'}', Expected: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': 33.33}'
+[2025-12-19 14:08:27.275732] [20] Objective Eval Case Results: True
+[2025-12-19 14:08:33.399309] [Case:19][Run:1] [o4-mini-high] Model Output Response:
+{"type":"ALL","rows":"3","key":null,"possible_keys":null,"Extra":"Using where","filtered":"33.33"}
+[2025-12-19 14:08:33.399492] [19] Objective Eval: Format Model Answer: '{'type': 'ALL', 'rows': '3', 'key': None, 'possible_keys': None, 'Extra': 'Using where', 'filtered': '33.33'}', Expected: '{'type': 'index', 'rows': '3', 'key': 'PRIMARY', 'possible_keys': None, 'Extra': 'Using where', 'filtered': 100}'
+[2025-12-19 14:08:33.399674] [19] Objective Eval Case Results: False
+[2025-12-19 14:08:33.401277] [1] objective Eval Case Final Result: True
+[2025-12-19 14:08:33.401566] [2] objective Eval Case Final Result: False
+[2025-12-19 14:08:33.401830] [3] objective Eval Case Final Result: False
+[2025-12-19 14:08:33.402157] [4] objective Eval Case Final Result: False
+[2025-12-19 14:08:33.402450] [5] objective Eval Case Final Result: False
+[2025-12-19 14:08:33.402729] [6] objective Eval Case Final Result: True
+[2025-12-19 14:08:33.403160] [7] objective Eval Case Final Result: False
+[2025-12-19 14:08:33.403538] [8] objective Eval Case Final Result: True
+[2025-12-19 14:08:33.403806] [9] objective Eval Case Final Result: False
+[2025-12-19 14:08:33.404073] [10] objective Eval Case Final Result: True
+[2025-12-19 14:08:33.404334] [11] objective Eval Case Final Result: True
+[2025-12-19 14:08:33.404598] [12] objective Eval Case Final Result: False
+[2025-12-19 14:08:33.404859] [13] objective Eval Case Final Result: False
+[2025-12-19 14:08:33.405123] [14] objective Eval Case Final Result: False
+[2025-12-19 14:08:33.405373] [15] objective Eval Case Final Result: True
+[2025-12-19 14:08:33.405647] [16] objective Eval Case Final Result: False
+[2025-12-19 14:08:33.405902] [17] objective Eval Case Final Result: True
+[2025-12-19 14:08:33.406164] [18] objective Eval Case Final Result: True
+[2025-12-19 14:08:33.406395] [19] objective Eval Case Final Result: False
+[2025-12-19 14:08:33.406646] [20] objective Eval Case Final Result: True
