@@ -202,6 +202,142 @@
             }
         },
         {
+            "id": "gemini-2.5-flash",
+            "name": "gemini-2.5-flash",
+            "real_model_namne": "Gemini 2.5 Flash",
+            "type": "Chat",
+            "parameters": 220039,
+            "website": "https://deepmind.google/models/gemini/",
+            "description": "Gemini 2.5 Flash is our first Flash model model that features thinking capabilities, which lets you see the thinking process that the model goes through when generating its response.",
+            "organization": "Google",
+            "releaseDate": "2025/6/17",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 82.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 90.0,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 53.6,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 74.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 75.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 58.1,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 80.6,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 59.5,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 57.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 58.8,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 42.5,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 79.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "gemini-2.0-flash",
+            "name": "gemini-2.0-flash",
+            "real_model_namne": "Gemini 2.0 Flash",
+            "type": "Chat",
+            "parameters": 220039,
+            "website": "https://deepmind.google/models/gemini/",
+            "description": "Our most intelligent AI models",
+            "organization": "Google",
+            "releaseDate": "2025/2/05",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 60.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 60.0,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 35.7,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 84.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 58.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 19.4,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 84.2,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 61.3,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 50.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 45.4,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 34.2,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.5,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "id": "deepseek-r1",
             "name": "Pro/deepseek-ai/DeepSeek-R1",
             "real_model_namne": "DeepSeek-R1",
@@ -817,7 +953,7 @@
             "id": "gpt-5-2025-08-07",
             "name": "gpt-5-2025-08-07",
             "real_model_namne": "GPT-5",
-            "type": "Chat",
+            "type": "Chat(Thinking)",
             "parameters": 301912,
             "website": "https://openai.com/zh-Hans-CN/gpt-5/",
             "description": "GPT-5 is smarter in every way, delivering more practical responses across mathematics, science, finance, law, and beyond. It's like having a team of experts on standby, ready to answer any question you throw at it.",
