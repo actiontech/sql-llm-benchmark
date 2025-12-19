@@ -134,6 +134,74 @@
             }
         },
         {
+            "id": "gemini-2.5-pro",
+            "name": "gemini-2.5-pro",
+            "real_model_namne": "Gemini 2.5 Pro",
+            "type": "Chat(Thinking)",
+            "parameters": 220039,
+            "website": "https://deepmind.google/models/gemini/",
+            "description": "Gemini 2.5 Pro is our most advanced reasoning Gemini model, capable of solving complex problems.",
+            "organization": "Google",
+            "releaseDate": "2025/6/17",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 82.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 87.1,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.7,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 77.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 54.8,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 94.7,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 77.4,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 85.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 56.7,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 49.5,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 44.2,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 84.5,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "id": "deepseek-r1",
             "name": "Pro/deepseek-ai/DeepSeek-R1",
             "real_model_namne": "DeepSeek-R1",
@@ -807,6 +875,74 @@
                         },
                         {
                             "indicator_actual_score": 85.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "o4-mini-high",
+            "name": "o4-mini-high",
+            "real_model_namne": "o4-mini-high",
+            "type": "Chat(Thinking)",
+            "parameters": 884835,
+            "website": "https://openai.com/zh-Hans-CN/index/introducing-o3-and-o4-mini/",
+            "description": "Our smartest and most capable models to date with full tool access.",
+            "organization": "OpenAI",
+            "releaseDate": "2025/04/01",
+            "scores": {
+                "dialect_conversion": {
+                    "ability_score": 74.7,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 61.3,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 92.1,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 74.2,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_understanding": {
+                    "ability_score": 80.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 87.1,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 46.4,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.9,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 62.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 47.4,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 53.3,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 90.7,
                             "indicator_name": "syntax_error_detection.jsonl"
                         }
                     ]
