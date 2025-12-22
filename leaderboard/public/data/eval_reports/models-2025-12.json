@@ -1152,6 +1152,74 @@
                     ]
                 }
             }
+        },
+        {
+            "id": "ling-flash-2.0",
+            "name": "ling-flash-2.0",
+            "real_model_namne": "ling-flash-2.0",
+            "type": "Chat",
+            "parameters": 884835,
+            "website": "https://ling.tbox.cn/chat",
+            "description": "Ling-flash-2.0 is the third model in the Ling 2.0 architecture series released by Ant Group's Ling Team. It is a Model of Experts (MoE) architecture with a total parameter count of 100 billion, though only 6.1 billion parameters are activated per token (4.8 billion for non-word vectors).",
+            "organization": "Ant Group",
+            "releaseDate": "2025/09/17",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 58.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 61.4,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 14.3,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 81.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 52.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 53.6,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 34.2,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 80.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 43.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 6.5,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 84.2,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 54.8,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 26.2,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
         }
     ]
 }
