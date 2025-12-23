@@ -43,7 +43,13 @@ import { addRankingToModels } from "../../utils/rankingUtils";
 const { Search } = Input;
 const { Title, Paragraph, Text } = Typography;
 
-
+// 获取系统当前月份（格式：YYYY-MM）
+const getCurrentSystemMonth = (): string => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  return `${year}-${month}`;
+};
 
 const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
   const { t, i18n } = useTranslation("common");
@@ -53,8 +59,15 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
     ? currentMonthParam[0]
     : currentMonthParam || months[0]; // 确保 currentMonth 有值
 
+  // 获取系统当前月份
+  const systemCurrentMonth = getCurrentSystemMonth();
+  // 判断最新月份是否为系统当前月份
+  const latestMonth = months[0];
+  const isLatestMonthCurrent = latestMonth === systemCurrentMonth;
+
   const actionRef = useRef<ActionType | undefined>(undefined);
   const [models, setModels] = useState<Model[]>([]); // 客户端状态管理 models
+  const [monthSelectOpen, setMonthSelectOpen] = useState<boolean>(false); // 控制月份选择框下拉列表的展开状态
   const [searchText, setSearchText] = useState<string>("");
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(true);
   const [isFormulaModalVisible, setIsFormulaModalVisible] =
@@ -590,26 +603,74 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
             </div>
           </div>
 
-          {/* 表格控件 */}
-          <Space
+          {/* 日期选择框和搜索框 - 表格上方 */}
+          <div
             style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
               marginBottom: 24,
-              justifyContent: "flex-end",
-              width: "100%",
               padding: "0 24px",
+              gap: "16px",
             }}
           >
             <Select
               key="month"
               value={currentMonth}
               onChange={handleMonthChange}
-              style={{ width: 150 }}
+              open={monthSelectOpen}
+              onDropdownVisibleChange={setMonthSelectOpen}
+              suffixIcon={
+                monthSelectOpen ? (
+                  <UpOutlined
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMonthSelectOpen(false);
+                    }}
+                    style={{
+                      fontSize: "16px",
+                      color: "#1890ff",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                      pointerEvents: "auto",
+                    }}
+                  />
+                ) : (
+                  <DownOutlined
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMonthSelectOpen(true);
+                    }}
+                    style={{
+                      fontSize: "16px",
+                      color: "#1890ff",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                      pointerEvents: "auto",
+                    }}
+                  />
+                )
+              }
+              style={{
+                width: 200,
+                fontSize: "15px",
+                fontWeight: 500,
+              }}
+              size="large"
+              bordered={true}
+              className={styles.monthSelectEnhanced}
             >
-              {months.map((m) => (
-                <Select.Option key={m} value={m}>
-                  {m}
-                </Select.Option>
-              ))}
+              {months.map((m) => {
+                const isLatestMonth = m === latestMonth;
+                // 判断是否为最新月份且最新月份等于系统当前月份
+                const isRealTime = isLatestMonth && isLatestMonthCurrent;
+
+                return (
+                  <Select.Option key={m} value={m}>
+                    {isRealTime ? t("ranking.current_month_realtime") : m}
+                  </Select.Option>
+                );
+              })}
             </Select>
             <Search
               key="search"
@@ -621,7 +682,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
               }}
               style={{ width: 300 }}
             />
-          </Space>
+          </div>
 
           {/* 对比模式提示 */}
           {showCompareMode && (

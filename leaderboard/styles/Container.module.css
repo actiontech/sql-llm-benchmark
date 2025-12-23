@@ -301,3 +301,25 @@
   animation: none !important;
   box-shadow: none !important;
 }
+
+/* 优化月份选择框的下拉箭头 */
+.monthSelectEnhanced :global(.ant-select-arrow) {
+  color: #1890ff !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.monthSelectEnhanced :global(.ant-select-arrow .anticon) {
+  color: #1890ff !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* 确保整个选择框区域都可以点击 */
+.monthSelectEnhanced :global(.ant-select-selector) {
+  cursor: pointer !important;
+}
