@@ -678,6 +678,74 @@
             }
         },
         {
+            "id": "qwq-32b",
+            "name": "qwq-32b",
+            "real_model_namne": "QwQ-32B",
+            "type": "Chat(Thinking)",
+            "parameters": 884835,
+            "website": "https://www.deepseek.com/",
+            "description": "QwQ is an inference model in the Qwen series. Compared to traditional fine-tuned models, QwQ possesses thinking and reasoning capabilities, enabling significantly enhanced performance in downstream tasks, particularly when tackling challenging problems.",
+            "organization": "Alibaba",
+            "releaseDate": "2025/03/06",
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 75.6,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 81.4,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 42.9,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 51.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 44.3,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 39.2,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 58.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 16.1,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 94.7,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.0,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 52.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "id": "claude_opus_4.5",
             "name": "claude_opus_4.5",
             "real_model_namne": "Claude Opus 4.5",
