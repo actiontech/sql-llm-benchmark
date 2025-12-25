@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { GithubOutlined } from "@ant-design/icons"; // 导入GithubOutlined图标
 
 const Footer: React.FC = () => {
   const { t } = useTranslation("common");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // 服务器端渲染时使用默认内容，避免Hydration错误
+  const copyright = mounted ? t("footer.copyright") : "© Copyright 2025 上海爱可生信息技术股份有限公司 版权所有";
+  const beian = mounted ? t("footer.beian") : "沪ICP备12003970号-1";
 
   return (
     <footer
@@ -25,7 +34,7 @@ const Footer: React.FC = () => {
           gap: "10px",
         }}
       >
-        <span>{t("footer.copyright")}</span>
+        <span>{copyright}</span>
         <span>|</span>
         <Link
           href="https://beian.miit.gov.cn/"
@@ -33,7 +42,7 @@ const Footer: React.FC = () => {
           rel="noopener noreferrer"
           style={{ color: "#888" }}
         >
-          {t("footer.beian")}
+          {beian}
         </Link>
         <span>|</span>
         <Link
