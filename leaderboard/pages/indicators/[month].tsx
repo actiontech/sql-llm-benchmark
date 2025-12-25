@@ -7,12 +7,9 @@ import { useRouter } from "next/router";
 import NProgress from "nprogress";
 import {
     Spin,
-    Button,
-    Tooltip,
 } from "antd";
 import { useTranslation } from "react-i18next";
 import { ActionType } from "@ant-design/pro-table";
-import { ArrowLeftOutlined } from "@ant-design/icons";
 
 import styles from "../../styles/Container.module.css";
 import cardStyles from "../../styles/Card.module.css";
@@ -47,13 +44,6 @@ const IndicatorRankingPage: React.FC<IndicatorRankingPageProps> = ({
     );
     const [loading, setLoading] = useState<boolean>(false);
 
-    // 处理语言切换
-    const handleLanguageChange = () => {
-        const newLang = i18n.language === "en" ? "zh" : "en";
-        i18n.changeLanguage(newLang);
-    };
-
-    // 处理返回按钮
     // 客户端数据获取函数
     const fetchModels = async (month: string) => {
         NProgress.start();
@@ -143,51 +133,6 @@ const IndicatorRankingPage: React.FC<IndicatorRankingPageProps> = ({
                     justifyContent: "space-between",
                 }}
             >
-                <Link
-                    href={sourceModelId ? `/models/${sourceModelId}/${currentMonth}` : `/ranking/${currentMonth}`}
-                    onClick={() => NProgress.start()}
-                >
-                    <Button
-                        type="default"
-                        icon={<ArrowLeftOutlined />}
-                        size="large"
-                        shape="round"
-                        style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                    >
-                        {sourceModelId ? t("common.back_to_detail") : t("common.back_to_ranking")}
-                    </Button>
-                </Link>
-                <div
-                    style={{
-                        position: "absolute",
-                        top: "20px",
-                        right: "30px",
-                        zIndex: 3,
-                    }}
-                >
-                    <Tooltip title={t("actions.toggle_language")}>
-                        <Button
-                            type="text"
-                            onClick={handleLanguageChange}
-                            style={{
-                                width: "40px",
-                                height: "40px",
-                                padding: 0,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                border: "none",
-                                background: "transparent",
-                            }}
-                        >
-                            <img
-                                src="/icons/language-switch.svg"
-                                alt="Language Switch"
-                                style={{ width: "24px", height: "24px" }}
-                            />
-                        </Button>
-                    </Tooltip>
-                </div>
             </div>
 
             {/* 页面标题 */}

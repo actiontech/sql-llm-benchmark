@@ -22,7 +22,6 @@ import {
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import {
-    ArrowLeftOutlined,
     BarChartOutlined,
     RadarChartOutlined,
     HeatMapOutlined,
@@ -209,11 +208,6 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
         return availableModels.filter(model => !modelIds.includes(model.id));
     }, [availableModels, modelIds]);
 
-    const handleLanguageChange = () => {
-        const newLang = i18n.language === "en" ? "zh" : "en";
-        i18n.changeLanguage(newLang);
-    };
-
     if (!modelIds.length || modelIds.length < 2) {
         return (
             <div className={`${styles.container} ${cardStyles.pageContainer}`}>
@@ -222,17 +216,6 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
                     className={`${cardStyles.standardCard} ${cardStyles.errorCenter}`}
                 >
                     <Title level={3}>{t("compare.minimum_models_required")}</Title>
-                    <Link href={`/ranking/${currentMonth}`}>
-                        <Button
-                            type="default"
-                            icon={<ArrowLeftOutlined />}
-                            size="large"
-                            shape="round"
-                            style={{ display: "flex", alignItems: "center", gap: "8px", margin: "0 auto" }}
-                        >
-                            {t("compare.back_to_ranking")}
-                        </Button>
-                    </Link>
                 </Card>
             </div>
         );
@@ -248,61 +231,6 @@ const ComparePage: React.FC<ComparePageProps> = ({ months, logoInfo }) => {
                 <meta name="description" content={pageDescription} />
             </Head>
             <div className={`${styles.container} ${cardStyles.pageContainer}`}>
-                {/* 顶部导航栏 */}
-                <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: "24px",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <Link href={`/ranking/${currentMonth}`} onClick={() => NProgress.start()}>
-                        <Button
-                            type="default"
-                            icon={<ArrowLeftOutlined />}
-                            size="large"
-                            shape="round"
-                            style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                        >
-                            {t("compare.back_to_ranking")}
-                        </Button>
-                    </Link>
-                    <div
-                        style={{
-                            position: "absolute",
-                            top: "20px",
-                            right: "30px",
-                            zIndex: 3,
-                        }}
-                    >
-                        <Space>
-
-                            <Tooltip title={t("compare.switch_language")}>
-                                <Button
-                                    type="text"
-                                    onClick={handleLanguageChange}
-                                    style={{
-                                        width: "40px",
-                                        height: "40px",
-                                        padding: 0,
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        border: "none",
-                                        background: "transparent",
-                                    }}
-                                >
-                                    <img
-                                        src="/icons/language-switch.svg"
-                                        alt="Language Switch"
-                                        style={{ width: "24px", height: "24px" }}
-                                    />
-                                </Button>
-                            </Tooltip>
-                        </Space>
-                    </div>
-                </div>
 
                 {/* 页面标题 */}
                 <Card
