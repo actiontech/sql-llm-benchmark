@@ -11,11 +11,12 @@ html,
 body {
   margin: 0;
   padding: 0;
-  overflow-y: scroll;
-  /* 强制显示垂直滚动条 */
+  overflow-y: auto;
+  /* 只在需要时显示垂直滚动条，避免占用空间 */
+  overflow-x: hidden;
+  /* 隐藏水平滚动条 */
   box-sizing: border-box;
   /* 确保padding不会增加总宽度 */
-  /* 隐藏水平滚动条 */
 }
 
 #root,
@@ -32,6 +33,15 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   box-sizing: border-box;
   /* 确保padding不会增加总宽度 */
+  padding-top: 56px;
+  /* 为固定导航栏留出空间 */
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 52px;
+    /* 移动端导航栏高度 */
+  }
 }
 
 a {

@@ -9,6 +9,7 @@ import "../styles/globals.css";
 import Router from "next/router";
 import NProgress from "nprogress"; // 导入 NProgress
 import "nprogress/nprogress.css"; // 导入 NProgress 样式
+import Header from "../components/Header"; // 导入Header组件
 import Footer from "../components/Footer"; // 导入Footer组件
 
 // 配置 NProgress
@@ -43,6 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               minHeight: "100vh",
             }}
           >
+            <Header />
             <Component {...pageProps} />
             <Footer />
           </div>
@@ -63,6 +65,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
         >
           <BrowserRouter>
+            <Header />
             <Component {...pageProps} />
           </BrowserRouter>
           <Footer />
