@@ -1,0 +1,227 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(43, 59, 79, 0.65);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.header.scrolled {
+    background: rgba(43, 59, 79, 0.5);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.headerContainer {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    transition: all 0.3s ease;
+}
+
+.header.scrolled .headerContainer {
+    height: 48px;
+    padding: 0 24px;
+}
+
+/* Logo - Left */
+.logo {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.logoText {
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.header.scrolled .logoText {
+    font-size: 20px;
+}
+
+.logo:hover .logoText {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Header Right Section - Navigation and Language Button */
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.navLink {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    letter-spacing: 0.3px;
+}
+
+.header.scrolled .navLink {
+    padding: 6px 16px;
+    font-size: 14px;
+}
+
+.navLink:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.navLink.active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+}
+
+/* 移除底部指示条，使用更简洁的样式 */
+.navLink.active::after {
+    display: none;
+}
+
+.navIcon {
+    font-size: 22px;
+    transition: all 0.3s ease;
+    color: inherit;
+}
+
+.header.scrolled .navIcon {
+    font-size: 18px;
+}
+
+.navLink:hover .navIcon {
+    transform: scale(1.05);
+}
+
+.headerActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.languageButton {
+    height: 36px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+}
+
+.header.scrolled .languageButton {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 13px;
+}
+
+.languageButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.languageButton :global(.anticon) {
+    color: inherit;
+}
+
+.languageText {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .headerContainer {
+        padding: 0 16px;
+        height: 52px;
+    }
+
+    .header.scrolled .headerContainer {
+        height: 44px;
+        padding: 0 12px;
+    }
+
+    .headerRight {
+        gap: 12px;
+    }
+
+    .logoText {
+        font-size: 18px;
+    }
+
+    .header.scrolled .logoText {
+        font-size: 16px;
+    }
+
+    .navLink span {
+        display: none;
+    }
+
+    .navLink {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    .header.scrolled .navLink {
+        padding: 4px 10px;
+        font-size: 13px;
+    }
+
+    .navIcon {
+        font-size: 16px;
+    }
+
+    .header.scrolled .navIcon {
+        font-size: 14px;
+    }
+
+    .languageButton {
+        padding: 0 10px;
+        height: 32px;
+    }
+
+    .header.scrolled .languageButton {
+        height: 28px;
+        padding: 0 8px;
+    }
+
+    .languageText {
+        display: none;
+    }
+}

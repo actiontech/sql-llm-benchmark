@@ -15,7 +15,6 @@ import {
   Tabs,
   Modal,
   Select,
-  Tooltip, // 新增导入 Tooltip
 } from "antd";
 import { ProTable } from "@ant-design/pro-table";
 import { useTranslation } from "react-i18next";
@@ -25,7 +24,6 @@ import styles from "../../../styles/Container.module.css";
 import cardStyles from "../../../styles/Card.module.css";
 import Link from "next/link";
 import {
-  ArrowLeftOutlined,
   BarChartOutlined,
   ExportOutlined,
 } from "@ant-design/icons";
@@ -337,57 +335,6 @@ const Detail: React.FC<DetailProps> = ({
       </Head>
       <div className={`${styles.container} ${cardStyles.pageContainer}`}>
         {/* 顶部导航栏 */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "24px",
-            justifyContent: "space-between",
-          }}
-        >
-          <Link href={`/ranking/${date}`} onClick={() => NProgress.start()}>
-            <Button
-              type="default"
-              icon={<ArrowLeftOutlined />}
-              size="large"
-              shape="round"
-              style={{ display: "flex", alignItems: "center", gap: "8px" }}
-            >
-              {t("actions.back")}
-            </Button>
-          </Link>
-          <div
-            style={{
-              position: "absolute",
-              top: "20px",
-              right: "30px",
-              zIndex: 3,
-            }}
-          >
-            <Tooltip title={t("actions.toggle_language")}>
-              <Button
-                type="text"
-                onClick={handleLanguageChange}
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  padding: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: "none",
-                  background: "transparent",
-                }}
-              >
-                <img
-                  src="/icons/language-switch.svg"
-                  alt="Language Switch"
-                  style={{ width: "24px", height: "24px" }}
-                />
-              </Button>
-            </Tooltip>
-          </div>
-        </div>
 
         {/* 模型详情卡片 */}
         <ModelDetailCard model={model} />

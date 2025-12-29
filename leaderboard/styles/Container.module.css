@@ -21,9 +21,14 @@
   width: 100%;
   /* 调整宽度为100% */
   max-width: none;
-  padding: 24px;
-  /* 调整padding */
+  padding: 0;
+  /* 移除顶部padding，让内容紧靠导航栏 */
   box-sizing: border-box;
+}
+
+/* 为需要padding的页面内容添加padding */
+.container>*:first-child {
+  padding-top: 0;
 }
 
 .tableRowOdd {

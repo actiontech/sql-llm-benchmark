@@ -180,10 +180,6 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
     router.push(`/ranking/${newMonth}`);
   };
 
-  const handleLanguageChange = () => {
-    const newLang = i18n.language === "en" ? "zh" : "en";
-    i18n.changeLanguage(newLang);
-  };
 
   const showFormulaModal = () => {
     setIsFormulaModalVisible(true);
@@ -388,7 +384,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
               display: "flex",
               flexDirection: "row",
               alignItems: "stretch",
-              padding: "60px",
+              padding: "40px 60px",
               position: "relative",
               overflow: "hidden",
               gap: "60px",
@@ -397,37 +393,6 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
             {/* 背景光效 */}
             <div className={styles.heroGlow1}></div>
             <div className={styles.heroGlow2}></div>
-            <div
-              style={{
-                position: "absolute",
-                top: "20px",
-                right: "30px",
-                zIndex: 3,
-              }}
-            >
-              <Tooltip title={t("actions.toggle_language")}>
-                <Button
-                  type="text"
-                  onClick={handleLanguageChange}
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    padding: 0,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    border: "none",
-                    background: "transparent",
-                  }}
-                >
-                  <img
-                    src="/icons/language-switch.svg"
-                    alt="Language Switch"
-                    style={{ width: "24px", height: "24px" }}
-                  />
-                </Button>
-              </Tooltip>
-            </div>
 
             {/* 左侧栏: 包含标题、简述和领奖台 */}
             <div
@@ -510,6 +475,100 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                     {t("ranking.description_part3_trigger")}
                   </Button>
                 </Paragraph>
+
+                {/* Scale博客入口 - 已注释 */}
+                {/* <div style={{ marginTop: "24px", marginBottom: "15px", width: "fit-content" }}>
+                  <Link
+                    href="https://opensource.actionsky.com/category/%e5%bc%80%e6%ba%90%e4%ba%a7%e5%93%81/scale/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "block",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <div
+                      style={{
+                        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                        padding: "20px 32px",
+                        borderRadius: "12px",
+                        boxShadow: "0 8px 24px rgba(102, 126, 234, 0.3)",
+                        transition: "all 0.3s ease",
+                        cursor: "pointer",
+                        position: "relative",
+                        overflow: "hidden",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "translateY(-4px)";
+                        e.currentTarget.style.boxShadow = "0 12px 32px rgba(102, 126, 234, 0.4)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "translateY(0)";
+                        e.currentTarget.style.boxShadow = "0 8px 24px rgba(102, 126, 234, 0.3)";
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "-50%",
+                          right: "-10%",
+                          width: "200px",
+                          height: "200px",
+                          background: "rgba(255, 255, 255, 0.1)",
+                          borderRadius: "50%",
+                          pointerEvents: "none",
+                        }}
+                      />
+
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          position: "relative",
+                          zIndex: 1,
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                          <FormOutlined
+                            style={{
+                              fontSize: "28px",
+                              color: "#ffffff",
+                            }}
+                          />
+                          <div>
+                            <div
+                              style={{
+                                color: "#ffffff",
+                                fontSize: "20px",
+                                fontWeight: "700",
+                                lineHeight: "1.3",
+                                marginBottom: "4px",
+                              }}
+                            >
+                              {t("blog.viewBlog")}
+                            </div>
+                            <div
+                              style={{
+                                color: "rgba(255, 255, 255, 0.9)",
+                                fontSize: "14px",
+                                fontWeight: "400",
+                              }}
+                            >
+                              {t("blog.description")}
+                            </div>
+                          </div>
+                        </div>
+                        <RightOutlined
+                          style={{
+                            fontSize: "20px",
+                            color: "#ffffff",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                </div> */}
               </div>
 
               {/* 领奖台模块 */}
