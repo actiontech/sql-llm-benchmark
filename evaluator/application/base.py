@@ -117,7 +117,7 @@ class BaseApplicationClient(ABC):
         """
         prefix = f"[Case:{case_id}] " if case_id else ""
         max_retries = RETRY_TIMES
-        retry_delay = 2  # 重试延迟（秒）
+        retry_delay = 10  # 重试延迟（秒）
         
         for attempt in range(max_retries + 1):  # 初始尝试 + 3次重试
             if attempt > 0:
