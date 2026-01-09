@@ -263,6 +263,170 @@ class CaseWorker:
             )
 
 
+class ApplicationWorker:
+    """
+    Application Worker
+    
+    负责处理单个 case 的完整流程（Application）：
+    1. 调用 Application Client 获取答案（执行多次 CASE_EXECUTION_TIMES）
+    2. 对每次结果进行评估（如需裁判，则并发调用裁判）
+    3. 聚合最终结果
+    """
+    
+    def __init__(
+        self,
+        app_client,  # Application Client
+        judge_pool: JudgeWorkerPool,
+        evaluator: Callable,  # 评估函数
+        aggregator: Callable,  # 聚合函数
+        optimization_type: str = "sql"  # 优化类型
+    ):
+        """
+        初始化 Worker
+        
+        Args:
+            app_client: Application Client 实例
+            judge_pool: 裁判池
+            evaluator: 评估函数（根据 eval_type 不同而不同）
+            aggregator: 聚合函数（majority_bool 或 majority_consensus）
+            optimization_type: 优化类型（sql/dialect/index_advice）
+        """
+        self.app_client = app_client
+        self.judge_pool = judge_pool
+        self.evaluator = evaluator
+        self.aggregator = aggregator
+        self.optimization_type = optimization_type
+    
+    def _get_application_answer(self, case: Dict[str, Any], case_id: str, run_idx: int) -> str:
+        """
+        调用 Application 获取答案
+        
+        Args:
+            case: case 数据
+            case_id: case ID
+            run_idx: 执行次数索引
+        
+        Returns:
+            Application 返回的答案
+        """
+        if self.optimization_type == "index_advice":
+            return self.app_client.request_index_advice(case)
+        elif self.optimization_type == "sql":
+            return self.app_client.request_sql_optimization(case)
+        elif self.optimization_type == "dialect":
+            return self.app_client.request_dialect_conversion(case)
+        else:
+            raise ValueError(f"Unknown optimization_type: {self.optimization_type}")
+    
+    def process_case(
+        self,
+        case: Dict[str, Any],
+        case_index: int,
+        prompt: str,  # 保持接口一致，但 Application 不使用
+        eval_type: str,
+        category_name: str,
+        **eval_kwargs
+    ) -> CaseResult:
+        """
+        处理单个 case
+        
+        Args:
+            case: case 数据
+            case_index: case 在原始列表中的索引
+            prompt: 不使用（保持接口一致）
+            eval_type: 评估类型（objective/hybrid/subjective）
+            category_name: 能力维度名称
+            **eval_kwargs: 评估函数的额外参数
+        
+        Returns:
+            CaseResult 对象
+        """
+        case_id = case.get("case_id")
+        logger.info(f"[{case_id}] 开始处理 case (index: {case_index})")
+        
+        try:
+            model_answers = []
+            evaluation_results = []
+            
+            # 执行多次
+            for run_idx in range(CASE_EXECUTION_TIMES):
+                logger.info(f"[{case_id}] Run {run_idx + 1}/{CASE_EXECUTION_TIMES}")
+                
+                # 1. 调用 Application 获取答案
+                try:
+                    answer = self._get_application_answer(case, case_id, run_idx)
+                    model_answers.append({
+                        "case_evaluation_count": run_idx + 1,
+                        "model_answer": answer
+                    })
+                    logger.info(f"[{case_id}] Run {run_idx + 1} Application 答案获取成功")
+                except Exception as e:
+                    logger.error(f"[{case_id}] Run {run_idx + 1} Application 调用失败: {e}")
+                    model_answers.append({
+                        "case_evaluation_count": run_idx + 1,
+                        "model_answer": f"ERROR: {str(e)}"
+                    })
+                    evaluation_results.append(None)
+                    continue
+                
+                # 2. 立即评估答案
+                try:
+                    eval_result = self.evaluator(
+                        answer=answer,
+                        case=case,
+                        case_id=case_id,
+                        run_idx=run_idx,
+                        eval_type=eval_type,
+                        judge_pool=self.judge_pool,
+                        category_name=category_name,
+                        **eval_kwargs
+                    )
+                    evaluation_results.append(eval_result)
+                    logger.info(f"[{case_id}] Run {run_idx + 1} 评估完成: {eval_result}")
+                except Exception as e:
+                    logger.error(f"[{case_id}] Run {run_idx + 1} 评估失败: {e}")
+                    evaluation_results.append(None)
+            
+            # 3. 聚合结果
+            valid_results = [r for r in evaluation_results if r is not None]
+            if not valid_results:
+                logger.error(f"[{case_id}] 所有 run 都失败")
+                return CaseResult(
+                    case_id=case_id,
+                    case_index=case_index,
+                    success=False,
+                    model_answers=model_answers,
+                    evaluation_results=evaluation_results,
+                    final_result=None,
+                    error="All runs failed"
+                )
+            
+            final_result = self.aggregator(valid_results)
+            logger.info(f"[{case_id}] 最终结果: {final_result}")
+            
+            return CaseResult(
+                case_id=case_id,
+                case_index=case_index,
+                success=True,
+                model_answers=model_answers,
+                evaluation_results=evaluation_results,
+                final_result=final_result,
+                error=None
+            )
+        
+        except Exception as e:
+            logger.error(f"[{case_id}] 处理失败: {e}", exc_info=True)
+            return CaseResult(
+                case_id=case_id,
+                case_index=case_index,
+                success=False,
+                model_answers=[],
+                evaluation_results=[],
+                final_result=None,
+                error=str(e)
+            )
+
+
 class CaseQueue:
     """
     Case 队列
