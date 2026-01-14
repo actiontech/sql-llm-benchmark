@@ -90,11 +90,46 @@ class SQLFlashClient(BaseApplicationClient):
 
         task_id = submit_result["task_id"]
         
+        def _status_checker(resp: Dict[str, Any]) -> str:
+            """
+            自定义状态检查：
+            - done -> complete
+            - failed -> 若最后一步存在（或可提取出 SQL）则视为 complete，否则 failed
+            - 其他 -> running
+            """
+            try:
+                if self._is_optimization_complete(resp):
+                    return "complete"
+
+                data = resp.get("data", {})
+                optimize = data.get("optimize", {})
+                state = optimize.get("state")
+
+                if state == "failed":
+                    steps = optimize.get("steps", [])
+                    last_step = steps[-1] if steps else None
+                    # 若有最后一步且非空（或包含 optimized_sql），视为可用结果
+                    if last_step:
+                        if isinstance(last_step, dict):
+                            if last_step.get("optimized_sql"):
+                                return "complete"
+                        else:
+                            return "complete"
+                    # 兜底：若仍可提取出 SQL，也视为完成
+                    extracted_sql = self._extract_optimized_sql(resp)
+                    if extracted_sql:
+                        return "complete"
+                    return "failed"
+
+                return "running"
+            except Exception:
+                return "running"
+        
         # 轮询结果，使用新的查询路径和状态检查器
         result = self._poll_for_result(
             task_id=task_id,
             get_url_builder=lambda tid: f"{self.base_url}{self.query_result_path}/{tid}",
-            status_checker=lambda resp: "running" if not self._is_optimization_complete(resp) else "complete",
+            status_checker=_status_checker,
             result_extractor=lambda resp: self._extract_optimized_sql(resp),
             case_id=case_id
         )
@@ -103,7 +138,7 @@ class SQLFlashClient(BaseApplicationClient):
     
     def request_batch_sql_optimization(self, cases: list[Dict[str, Any]]) -> list[Any]:
         """
-        批量并发请求 SQL 优化（便捷方法）
+        批量并发请求 SQL 优化
         
         Args:
             cases: case 列表，每个 case 包含 sql, create_table_statements, explain 等字段
