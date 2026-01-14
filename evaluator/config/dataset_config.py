@@ -10,6 +10,8 @@ from .prompts import (
     prompt_for_equivalence_judge,
     prompt_for_conversion_judge,
     prompt_for_optimization,
+    prompt_for_index_advice,
+    prompt_for_index_advice_judge,
     prompt_for_optimization_rule_judge,
     prompt_for_judge_depth_rules,
     prompt_for_optimization_equivalence_judge,
@@ -85,7 +87,13 @@ DATASET_CONFIG = {
             'judge_model_prompt': prompt_for_judge_depth_rules,
             'evaluation_type': "subjective",
             'indicator_ability_weights': 2
-        }
+        },
+        'index_advice.jsonl': {
+            'target_model_prompt': prompt_for_index_advice,
+            'judge_model_prompt': prompt_for_index_advice_judge,
+            'evaluation_type': "hybrid",
+            'indicator_ability_weights': 2
+        },
     }
 }
 

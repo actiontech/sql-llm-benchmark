@@ -13,6 +13,8 @@ from .dialect_conversion import (
 )
 from .sql_optimization import (
     prompt_for_optimization,
+    prompt_for_index_advice,
+    prompt_for_index_advice_judge,
     prompt_for_optimization_rule_judge,
     prompt_for_judge_depth_rules,
     prompt_for_optimization_equivalence_judge,
@@ -29,6 +31,8 @@ __all__ = [
     'prompt_for_equivalence_judge',
     'prompt_for_conversion_judge',
     'prompt_for_optimization',
+    'prompt_for_index_advice',
+    'prompt_for_index_advice_judge',
     'prompt_for_optimization_rule_judge',
     'prompt_for_judge_depth_rules',
     'prompt_for_optimization_equivalence_judge',
