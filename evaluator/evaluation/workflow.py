@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Dict, Any, List
 
 from agent import ModelAgent
-from task_queue import CaseQueue, CaseWorker, JudgeWorkerPool, CaseResult
+from task_queue import CaseQueue, CaseWorker, ApplicationWorker, JudgeWorkerPool, CaseResult
 from application import get_application_result
 from reports.process_log_reporting import generate_process_log_reports
 from reports.case_reporting import generate_case_reports
@@ -357,7 +357,7 @@ def run_evaluation_category_application(
     """
     运行 Application 的评测
     
-    使用批量并发接口获取答案，然后使用统一的评估和聚合逻辑处理结果。
+    使用 ApplicationWorker 和 CaseQueue 并发处理，每个 case 出结果后立即评估。
     
     Args:
         category_name: 能力维度名称
@@ -380,145 +380,81 @@ def run_evaluation_category_application(
     # 1. 获取 Application Client
     client = get_application_client(target_llm_config)
     
-    # 2. 准备批量请求：收集所有需要执行的请求（case × CASE_EXECUTION_TIMES）
-    batch_requests = []
-    request_metadata = []  # 记录每个请求对应的 case 和 run_idx
-    
-    for case_idx, case in enumerate(test_cases):
-        case_id = case.get("case_id")
-        for run_idx in range(CASE_EXECUTION_TIMES):
-            batch_requests.append(case)
-            request_metadata.append({
-                'case_idx': case_idx,
-                'run_idx': run_idx,
-                'case_id': case_id
-            })
-    
-    logger.info(f"准备批量调用 Application：{len(batch_requests)} 个请求 ({len(test_cases)} cases × {CASE_EXECUTION_TIMES} runs)")
-    log_process_detail(f"批量并发调用 Application：{len(batch_requests)} 个请求")
-    
-    # 3. 批量并发调用 Application
-    try:
-        if category_name == "sql_optimization":
-            batch_results = client.request_batch_optimization(batch_requests, optimization_type="sql")
-        elif category_name == "dialect_conversion":
-            batch_results = client.request_batch_optimization(batch_requests, optimization_type="dialect")
-        else:
-            logger.info(f"Unknown category: {category_name}")
-            log_process_detail(f"Unknown category: {category_name}")
-            return {}
-
-    except Exception as e:
-        logger.error(f"批量调用 Application 失败: {e}")
+    # 2. 确定优化类型
+    indicator_name = test_cases_file.stem  # 获取文件名（不含扩展名）
+    if indicator_name == "index_advice":
+        optimization_type = "index_advice"
+    elif category_name == "sql_optimization":
+        optimization_type = "sql"
+    elif category_name == "dialect_conversion":
+        optimization_type = "dialect"
+    else:
+        logger.error(f"Unknown category: {category_name}")
         return {}
     
-    # 4. 按 case 分组答案
-    case_answers_map = {}  # {case_idx: [(run_idx, answer), ...]}
+    logger.info(f"使用 {optimization_type} 接口处理 {indicator_name}")
+    log_process_detail(f"Application 测评：{len(test_cases)} cases，optimization_type={optimization_type}")
     
-    for idx, (answer, metadata) in enumerate(zip(batch_results, request_metadata)):
-        case_idx = metadata['case_idx']
-        run_idx = metadata['run_idx']
-        case_id = metadata['case_id']
-        
-        if case_idx not in case_answers_map:
-            case_answers_map[case_idx] = []
-        
-        case_answers_map[case_idx].append((run_idx, answer))
-        logger.debug(f"[{case_id}] Run {run_idx+1}/{CASE_EXECUTION_TIMES} 答案已获取")
-    
-    # 5. 创建统一的评估组件
+    # 3. 创建 JudgeWorkerPool
     judge_pool = JudgeWorkerPool() if eval_type in ("hybrid", "subjective") else None
+    
+    # 4. 创建评估和聚合函数
     evaluator = create_evaluator(eval_type, test_cases_file.name, category_name)
     aggregator = create_aggregator(eval_type)
     
-    # 6. 对每个 case 进行评估和聚合
-    cases_eval_detail = []
+    # 5. 创建 ApplicationWorker
+    worker = ApplicationWorker(
+        app_client=client,
+        judge_pool=judge_pool,
+        evaluator=evaluator,
+        aggregator=aggregator,
+        optimization_type=optimization_type
+    )
     
-    for case_idx, case in enumerate(test_cases):
-        case_id = case.get("case_id")
-        logger.info(f"[{case_id}] 开始评估 (case {case_idx + 1}/{len(test_cases)})")
-        
-        # 获取该 case 的所有 run 答案
-        if case_idx not in case_answers_map:
-            logger.warning(f"[{case_id}] 没有答案")
+    # 6. 创建 CaseQueue 并处理
+    case_queue = CaseQueue(max_workers=MAX_CONCURRENT_CASES)
+    
+    # Prompt 生成函数（Application 不使用 prompt，但保持接口一致）
+    def prompt_generator(case):
+        return case.get("sql") or case.get("original_sql", "N/A")
+    
+    # 并发处理所有 case（每个 case 出结果后立即评估）
+    case_results = case_queue.process_cases(
+        cases=test_cases,
+        worker=worker,
+        prompt_generator=prompt_generator,
+        eval_type=eval_type,
+        category_name=category_name,
+        target_model_name=target_llm_config.get("alias", "")
+    )
+    
+    # 7. 构建 cases_eval_detail
+    cases_eval_detail = []
+    for case_result, case in zip(case_results, test_cases):
+        if not case_result.success:
+            logger.warning(f"[{case_result.case_id}] 处理失败: {case_result.error}")
             continue
         
-        run_answers = sorted(case_answers_map[case_idx], key=lambda x: x[0])  # 按 run_idx 排序
+        # 生成 prompt（用于报告）
+        prompt = case.get("sql") or case.get("original_sql", "N/A")
         
-        try:
-            # 构建 model_answers
-            model_answers = []
-            evaluation_results = []
-            
-            # 对每个 run 的答案进行评估
-            for run_idx, answer in run_answers:
-                model_answers.append({
-                    "case_evaluation_count": run_idx + 1,
-                    "model_answer": answer
-                })
-                
-                # 使用 evaluator 评估答案
-                try:
-                    eval_result = evaluator(
-                        answer=answer,
-                        case=case,
-                        case_id=case_id,
-                        run_idx=run_idx,
-                        eval_type=eval_type,
-                        judge_pool=judge_pool,
-                        category_name=category_name,
-                        target_model_name=target_llm_config.get("alias", "")
-                    )
-                    evaluation_results.append(eval_result)
-                except Exception as e:
-                    logger.error(f"[{case_id}] Run {run_idx + 1} 评估失败: {e}")
-                    evaluation_results.append(None)
-            
-            # 过滤有效结果
-            valid_results = [r for r in evaluation_results if r is not None]
-            if not valid_results:
-                logger.warning(f"[{case_id}] 所有 run 评估都失败")
-                continue
-            
-            # 使用 aggregator 聚合结果
-            final_result = aggregator(valid_results)
-            
-            # 生成 prompt（用于报告）
-            prompt = case.get("sql") or case.get("original_sql", "N/A")
-            
-            # 构建评测详情
-            if eval_type in ("objective", "hybrid"):
-                logger.info(f"[{case_id}] {eval_type.capitalize()} Eval Final Result: {final_result}")
-                log_process_detail(f"[{case_id}] {eval_type} Eval Final Result: {final_result}")
-                
-                cases_eval_detail.append({
-                    "mode_question": prompt,
-                    "model_answer": model_answers,
-                    "case": case,
-                    "difficulty_level": case.get("difficulty_level", "0"),
-                    "model_answer_result": final_result,
-                })
-            
-            else:  # subjective
-                rules = case.get("expected", {}).get("optimization_rules", [])
-                for rule in rules:
-                    rid = rule.get("rule_id")
-                    rule_result = rid in final_result
-                    logger.info(f"[{case_id}] Subjective Eval Case Rule[{rid}] Final Result: {rule_result}")
-                    log_process_detail(f"[{case_id}] {eval_type} Eval Case Rule[{rid}] Final Result: {rule_result}")
-                    
-                    cases_eval_detail.append({
-                        "mode_question": prompt,
-                        "model_answer": model_answers,
-                        "case": case,
-                        "rule_id": rid,
-                        "difficulty_level": rule.get("difficulty_level", "0"),
-                        "model_answer_result": rule_result,
-                    })
+        # 构建详情
+        detail = build_cases_eval_detail(case_result, case, prompt, eval_type)
+        cases_eval_detail.extend(detail)
         
-        except Exception as e:
-            logger.error(f"[{case_id}] 处理异常: {e}")
-            continue
+        # 记录日志
+        if eval_type in ("objective", "hybrid"):
+            logger.info(f"[{case_result.case_id}] {eval_type.capitalize()} Eval Case Final Result: {case_result.final_result}")
+            log_process_detail(
+                f"[{case_result.case_id}] {eval_type} Eval Case Final Result: {case_result.final_result}")
+        else:  # subjective
+            rules = case.get("expected", {}).get("optimization_rules", [])
+            for rule in rules:
+                rid = rule.get("rule_id")
+                rule_result = rid in case_result.final_result
+                logger.info(f"[{case_result.case_id}] Subjective Eval Case Rule[{rid}] Final Result: {rule_result}")
+                log_process_detail(
+                    f"[{case_result.case_id}] {eval_type} Eval Case Rule[{rid}] Final Result: {rule_result}")
     
     return {
         "evaluation_type": eval_type,
@@ -539,8 +475,8 @@ def run_all_evaluations(run_id: str, target_llm_config: dict):
     scores = {}
     base_dir = os.path.dirname(os.path.abspath(__file__))
     test_categories = {
-        "sql_understanding": os.path.join(base_dir, "..", "dataset","sql_understanding"),
-        "dialect_conversion": os.path.join(base_dir, "..", "dataset/dialect_conversion"),
+        # "sql_understanding": os.path.join(base_dir, "..", "dataset","sql_understanding"),
+        # "dialect_conversion": os.path.join(base_dir, "..", "dataset/dialect_conversion"),
         "sql_optimization": os.path.join(base_dir, "..", "dataset/sql_optimization")
     }
 

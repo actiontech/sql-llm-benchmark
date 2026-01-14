@@ -13,6 +13,7 @@ def get_application_result(
     category_name: str, test_cases_file: str, case: dict, config: dict
 ):
     from utils import log_process_detail
+    from pathlib import Path
     
     app_name = config.get("alias") or config.get("name", "Unknown App")
     case_id = case.get("case_id", "unknown")
@@ -24,8 +25,14 @@ def get_application_result(
     
     client = get_application_client(config)
     
+    # 根据指标文件名判断调用类型
+    indicator_name = Path(test_cases_file).stem if test_cases_file else ""
+    
     # 调用并记录输出
-    if category_name == "sql_optimization":
+    if indicator_name == "index_advice":
+        # 索引推荐指标
+        result = client.request_index_advice(case)
+    elif category_name == "sql_optimization":
         result = client.request_sql_optimization(case)
     elif category_name == "dialect_conversion":
         result = client.request_dialect_conversion(case)
