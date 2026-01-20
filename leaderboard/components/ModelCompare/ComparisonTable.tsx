@@ -24,9 +24,9 @@ export const ComparisonTable: React.FC<ComparisonTableProps> = ({
 
         // 维度数据
         const capabilities = [
-            { key: 'sql_optimization', name: 'SQL优化' },
-            { key: 'dialect_conversion', name: '方言转换' },
-            { key: 'sql_understanding', name: 'SQL理解' },
+          { key: 'sql_optimization', name: t('table.sql_optimization') },
+          { key: 'dialect_conversion', name: t('table.dialect_conversion') },
+          { key: 'sql_understanding', name: t('table.sql_understanding') },
         ];
 
         capabilities.forEach(capability => {
