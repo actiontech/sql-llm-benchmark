@@ -6,6 +6,7 @@ interface LogoImageProps {
     height: number;
     style?: React.CSSProperties;
     logoInfo: Record<string, string>;
+    modelLogoInfo?: Record<string, { ext: string; originalName: string }>;
 }
 
 export const LogoImage: React.FC<LogoImageProps> = ({
@@ -13,11 +14,25 @@ export const LogoImage: React.FC<LogoImageProps> = ({
     width,
     height,
     style,
-    logoInfo
+    logoInfo,
+    modelLogoInfo = {}
 }) => {
     const orgKey = organization.toLowerCase().replace(/\s/g, "-");
-    const ext = logoInfo[orgKey];
-    const src = ext ? `/logos/${orgKey}.${ext}` : "";
+    
+    // 优先使用 modelLogo 文件夹中的图标
+    let src = "";
+    const modelLogoData = modelLogoInfo[orgKey];
+    
+    if (modelLogoData) {
+        // 使用原始文件名构建路径（保留大小写）
+        src = `/modelLogo/${modelLogoData.originalName}.${modelLogoData.ext}`;
+    } else {
+        // 如果 modelLogo 中没有，回退到 logos 文件夹
+        const ext = logoInfo[orgKey];
+        if (ext) {
+            src = `/logos/${orgKey}.${ext}`;
+        }
+    }
 
     if (!src) {
         return (

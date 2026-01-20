@@ -23,8 +23,25 @@ export interface Model {
 }
 
 export interface RankingPageProps {
-    months: string[];
-    logoInfo: Record<string, string>;
+  months: string[];
+  logoInfo: Record<string, string>;
+  modelLogoInfo?: Record<string, { ext: string; originalName: string }>;
+  zhNewsPost?: {
+    slug: string;
+    title: string;
+    date: string;
+    author: string;
+    excerpt: string;
+    language: 'zh';
+  } | null;
+  enNewsPost?: {
+    slug: string;
+    title: string;
+    date: string;
+    author: string;
+    excerpt: string;
+    language: 'en';
+  } | null;
 }
 
 // 指标排名相关类型
