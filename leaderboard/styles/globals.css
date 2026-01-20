@@ -1,3 +1,17 @@
+@import 'tailwindcss';
+
+/* Tailwind v4 边框颜色兼容性配置 */
+@layer base {
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
 @font-face {
   font-family: 'Share Tech Mono';
   src: url('/fonts/ShareTechMono-Regular.woff2') format('woff2'),
@@ -11,10 +25,6 @@ html,
 body {
   margin: 0;
   padding: 0;
-  overflow-y: auto;
-  /* 只在需要时显示垂直滚动条，避免占用空间 */
-  overflow-x: hidden;
-  /* 隐藏水平滚动条 */
   box-sizing: border-box;
   /* 确保padding不会增加总宽度 */
 }
@@ -33,13 +43,13 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   box-sizing: border-box;
   /* 确保padding不会增加总宽度 */
-  padding-top: 56px;
+  padding-top: 64px;
   /* 为固定导航栏留出空间 */
 }
 
 @media (max-width: 768px) {
   body {
-    padding-top: 52px;
+    padding-top: 56px;
     /* 移动端导航栏高度 */
   }
 }

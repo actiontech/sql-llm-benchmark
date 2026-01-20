@@ -18,8 +18,6 @@
 }
 
 .headerContainer {
-    max-width: 1400px;
-    margin: 0 auto;
     padding: 0 32px;
     display: flex;
     align-items: center;
@@ -58,24 +56,73 @@
     color: rgba(255, 255, 255, 0.9);
 }
 
-/* Header Right Section - Navigation and Language Button */
+/* Header Left Section - Navigation */
+.headerLeft {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+/* Header Right Section - Actions */
 .headerRight {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 12px;
 }
 
 .nav {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
+    flex: 1;
+    }
+
+    /* 月份选择器包装器 */
+    .selectorWrapper {
+        display: flex;
+        align-items: center;
+        margin: 0 4px;
+    }
+
+    /* 月份选择器样式 */
+    .monthSelector :global(.ant-select-selector) {
+        background: rgba(255, 255, 255, 0.25) !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+        border-radius: 6px !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        height: 36px !important;
+    }
+
+    .monthSelector :global(.ant-select-arrow) {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .monthSelector:hover :global(.ant-select-arrow) {
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* 分隔线 */
+    .divider {
+        width: 1px;
+        height: 24px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 0 8px;
+    }
+
+    .header.scrolled .divider {
+        height: 20px;
 }
 
+/* 导航链接样式（首页、News等） */
 .navLink {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 20px;
+    padding: 4px 14px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 15px;
@@ -84,10 +131,11 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     letter-spacing: 0.3px;
+    border: 1px solid transparent;
 }
 
 .header.scrolled .navLink {
-    padding: 6px 16px;
+    padding: 6px 14px;
     font-size: 14px;
 }
 
@@ -108,17 +156,60 @@
 }
 
 .navIcon {
-    font-size: 22px;
+    font-size: 18px;
     transition: all 0.3s ease;
     color: inherit;
 }
 
 .header.scrolled .navIcon {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .navLink:hover .navIcon {
     transform: scale(1.05);
+}
+
+/* 操作按钮样式（榜单规则、贡献测评集等） */
+.actionButton {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    color: rgba(255, 255, 255, 0.85);
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+.header.scrolled .actionButton {
+    padding: 6px 14px;
+    font-size: 14px;
+}
+
+.actionButton:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.actionButton:active {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.actionIcon {
+    font-size: 18px;
+    transition: all 0.3s ease;
+    color: inherit;
+}
+
+.header.scrolled .actionIcon {
+    font-size: 16px;
 }
 
 .headerActions {
@@ -165,63 +256,47 @@
     font-weight: 500;
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
-    .headerContainer {
-        padding: 0 16px;
-        height: 52px;
-    }
+/* 月份选择器下拉菜单样式 */
+:global(.ant-select-dropdown).monthSelectorDropdown {
+    background: rgba(43, 59, 79, 0.95) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+    padding: 4px !important;
+}
 
-    .header.scrolled .headerContainer {
-        height: 44px;
-        padding: 0 12px;
-    }
+:global(.ant-select-dropdown).monthSelectorDropdown :global(.rc-virtual-list-holder) {
+    max-height: 300px !important;
+}
 
-    .headerRight {
-        gap: 12px;
-    }
+:global(.ant-select-dropdown).monthSelectorDropdown :global(.ant-select-item) {
+    color: rgba(255, 255, 255, 0.85) !important;
+    background: transparent !important;
+    border-radius: 6px !important;
+    margin: 2px 0 !important;
+    padding: 8px 12px !important;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
 
-    .logoText {
-        font-size: 18px;
-    }
+:global(.ant-select-dropdown).monthSelectorDropdown :global(.ant-select-item:hover) {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+}
 
-    .header.scrolled .logoText {
-        font-size: 16px;
-    }
+:global(.ant-select-dropdown).monthSelectorDropdown :global(.ant-select-item-option-selected) {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
 
-    .navLink span {
-        display: none;
-    }
+:global(.ant-select-dropdown).monthSelectorDropdown :global(.ant-select-item-option-selected:hover) {
+    background: rgba(255, 255, 255, 0.25) !important;
+}
 
-    .navLink {
-        padding: 6px 12px;
-        font-size: 14px;
-    }
-
-    .header.scrolled .navLink {
-        padding: 4px 10px;
-        font-size: 13px;
-    }
-
-    .navIcon {
-        font-size: 16px;
-    }
-
-    .header.scrolled .navIcon {
-        font-size: 14px;
-    }
-
-    .languageButton {
-        padding: 0 10px;
-        height: 32px;
-    }
-
-    .header.scrolled .languageButton {
-        height: 28px;
-        padding: 0 8px;
-    }
-
-    .languageText {
-        display: none;
-    }
+:global(.ant-select-dropdown).monthSelectorDropdown :global(.ant-select-item-option-active) {
+    background: rgba(255, 255, 255, 0.12) !important;
 }
