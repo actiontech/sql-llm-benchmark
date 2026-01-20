@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import NProgress from "nprogress"; // 导入 NProgress
+import NProgress from 'nprogress'; // 导入 NProgress
 import {
   Button,
   Select,
@@ -16,12 +16,12 @@ import {
   Modal,
   Checkbox,
   Badge,
-} from "antd";
+} from 'antd';
 
-import { useTranslation } from "react-i18next";
-import styles from "../../styles/Container.module.css";
-import Link from "next/link";
-import { ActionType, ProTable } from "@ant-design/pro-table";
+import { useTranslation } from 'react-i18next';
+import styles from '../../styles/Container.module.css';
+import Link from 'next/link';
+import { ActionType, ProTable } from '@ant-design/pro-table';
 import {
   UpOutlined,
   DownOutlined,
@@ -30,15 +30,20 @@ import {
   FormOutlined, // 导入 FormOutlined 图标
   SwapOutlined,
   CloseOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons';
 
 // 导入拆分的组件和工具
-import { Model, RankingPageProps } from "../../types/ranking";
-import { getTopModelsByCategory, getMaxScoresByCategory } from "../../utils/ranking";
-import { SubmissionGuideModal } from "../../components/SubmissionGuideModal";
-import { Podium } from "../../components/Podium";
-import { createRankingTableColumns } from "../../components/RankingTableColumns";
-import { addRankingToModels } from "../../utils/rankingUtils";
+import { Model, RankingPageProps } from '../../types/ranking';
+import { getNewsPost } from '../../utils/newsUtils';
+import {
+  getTopModelsByCategory,
+  getMaxScoresByCategory,
+} from '../../utils/ranking';
+import { SubmissionGuideModal } from '../../components/SubmissionGuideModal';
+import { FormulaRuleModal } from '../../components/FormulaRuleModal';
+import { Podium } from '../../components/Podium';
+import { createRankingTableColumns } from '../../components/RankingTableColumns';
+import { addRankingToModels } from '../../utils/rankingUtils';
 
 const { Search } = Input;
 const { Title, Paragraph, Text } = Typography;
@@ -47,12 +52,18 @@ const { Title, Paragraph, Text } = Typography;
 const getCurrentSystemMonth = (): string => {
   const now = new Date();
   const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, '0');
   return `${year}-${month}`;
 };
 
-const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
-  const { t, i18n } = useTranslation("common");
+const RankingPage: React.FC<RankingPageProps> = ({
+  months,
+  logoInfo,
+  modelLogoInfo = {} as Record<string, { ext: string; originalName: string }>,
+  zhNewsPost,
+  enNewsPost,
+}) => {
+  const { t, i18n } = useTranslation('common');
   const router = useRouter();
   const { month: currentMonthParam } = router.query;
   const currentMonth = Array.isArray(currentMonthParam)
@@ -67,12 +78,11 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
 
   const actionRef = useRef<ActionType | undefined>(undefined);
   const [models, setModels] = useState<Model[]>([]); // 客户端状态管理 models
-  const [monthSelectOpen, setMonthSelectOpen] = useState<boolean>(false); // 控制月份选择框下拉列表的展开状态
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>('');
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(true);
-  const [isFormulaModalVisible, setIsFormulaModalVisible] =
-    useState<boolean>(false); // 控制计算公式弹窗
   const [isSubmissionGuideVisible, setIsSubmissionGuideVisible] =
+    useState<boolean>(false);
+  const [isFormulaModalVisible, setIsFormulaModalVisible] =
     useState<boolean>(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
   const [sortedInfo, setSortedInfo] = useState<any>({});
@@ -97,7 +107,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
       );
       setModels(sortedModels);
     } catch (error) {
-      console.error("Error fetching models:", error);
+      console.error('Error fetching models:', error);
       setModels([]); // 清空数据或显示错误状态
     } finally {
       NProgress.done();
@@ -138,8 +148,10 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
     [models]
   );
 
-  const maxScoresByCategory = useMemo(() =>
-    getMaxScoresByCategory(models), [models]);
+  const maxScoresByCategory = useMemo(
+    () => getMaxScoresByCategory(models),
+    [models]
+  );
 
   const filteredModels = useMemo(() => {
     let data = [...models];
@@ -148,23 +160,23 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
       data.sort((a, b) => {
         const { columnKey, order } = sortedInfo;
 
-        if (columnKey === "real_model_namne") {
+        if (columnKey === 'real_model_namne') {
           const valA = a.real_model_namne;
           const valB = b.real_model_namne;
           const compare = valA.localeCompare(valB);
-          return order === "descend" ? compare : -compare;
+          return order === 'descend' ? compare : -compare;
         }
 
-        if (columnKey === "releaseDate") {
+        if (columnKey === 'releaseDate') {
           const valA = new Date(a.releaseDate).getTime();
           const valB = new Date(b.releaseDate).getTime();
-          return order === "descend" ? valA - valB : valB - valA;
+          return order === 'descend' ? valA - valB : valB - valA;
         }
 
         const scoreA = a.scores?.[columnKey]?.ability_score ?? -1;
         const scoreB = b.scores?.[columnKey]?.ability_score ?? -1;
 
-        return order === "descend" ? scoreB - scoreA : scoreA - scoreB;
+        return order === 'descend' ? scoreB - scoreA : scoreA - scoreB;
       });
     }
 
@@ -176,10 +188,13 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
     return addRankingToModels(filteredData, sortedInfo);
   }, [models, searchText, sortedInfo]);
 
-  const handleMonthChange = (newMonth: string) => {
-    router.push(`/ranking/${newMonth}`);
+  const showSubmissionGuide = () => {
+    setIsSubmissionGuideVisible(true);
   };
 
+  const handleSubmissionGuideCancel = () => {
+    setIsSubmissionGuideVisible(false);
+  };
 
   const showFormulaModal = () => {
     setIsFormulaModalVisible(true);
@@ -189,18 +204,16 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
     setIsFormulaModalVisible(false);
   };
 
-  const showSubmissionGuide = () => {
-    setIsSubmissionGuideVisible(true);
-  };
-
-  const handleSubmissionGuideCancel = () => {
-    setIsSubmissionGuideVisible(false);
+  const handleMonthChange = (newMonth: string) => {
+    NProgress.start();
+    router.push(`/ranking/${newMonth}`);
   };
 
   const handleModelSelect = (modelId: string, checked: boolean) => {
     const newSelected = new Set(selectedModels);
     if (checked) {
-      if (newSelected.size < 5) { // 最多选择5个模型
+      if (newSelected.size < 5) {
+        // 最多选择5个模型
         newSelected.add(modelId);
       } else {
         // 已达到最大选择数量，给用户提示
@@ -247,7 +260,7 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
       // 在多选模式下，添加复选框列到表格开头
       return [
         {
-          title: '选择',
+          title: t('table.select'),
           dataIndex: 'select',
           key: 'select',
           width: 60,
@@ -260,17 +273,19 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
               <Tooltip
                 title={
                   isDisabled
-                    ? t("compare.checkbox_tooltip.max_reached")
+                    ? t('compare.checkbox_tooltip.max_reached')
                     : isSelected
-                      ? t("compare.checkbox_tooltip.deselect")
-                      : t("compare.checkbox_tooltip.select")
+                      ? t('compare.checkbox_tooltip.deselect')
+                      : t('compare.checkbox_tooltip.select')
                 }
                 placement="top"
               >
                 <Checkbox
                   checked={isSelected}
                   disabled={isDisabled}
-                  onChange={(e) => handleModelSelect(record.id, e.target.checked)}
+                  onChange={(e) =>
+                    handleModelSelect(record.id, e.target.checked)
+                  }
                 />
               </Tooltip>
             );
@@ -281,76 +296,22 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
     }
 
     return baseColumns;
-  }, [logoInfo, sortedInfo, maxScoresByCategory, currentMonth, t, showCompareMode, selectedModels]);
+  }, [
+    logoInfo,
+    sortedInfo,
+    maxScoresByCategory,
+    currentMonth,
+    t,
+    showCompareMode,
+    selectedModels,
+  ]);
 
-  const pageTitle = t("seo.ranking_page.title", { month: currentMonth });
-  const pageDescription = t("seo.ranking_page.description", {
+  const pageTitle = t('seo.ranking_page.title', { month: currentMonth });
+  const pageDescription = t('seo.ranking_page.description', {
     month: currentMonth,
   });
-  const pageKeywords = t("seo.ranking_page.keywords", { month: currentMonth });
+  const pageKeywords = t('seo.ranking_page.keywords', { month: currentMonth });
   const canonicalUrl = `http://sql-llm-leaderboard.com/ranking/${currentMonth}`;
-
-  const renderFormulaContent = () => (
-    <div>
-      <Typography.Title level={4} style={{ marginBottom: "8px" }}>
-        {t("evaluation_cases.formula_tip.title")}
-      </Typography.Title>
-      <ol style={{ paddingLeft: "20px", margin: 0 }}>
-        <li>
-          <Typography.Text strong>
-            {t("evaluation_cases.formula_tip.basic_elements.title")}:
-          </Typography.Text>
-          <ul style={{ paddingLeft: "20px", margin: 0 }}>
-            <li>{t("evaluation_cases.formula_tip.basic_elements.item1")}</li>
-            <li>{t("evaluation_cases.formula_tip.basic_elements.item2")}</li>
-            <li>{t("evaluation_cases.formula_tip.basic_elements.item3")}</li>
-          </ul>
-        </li>
-        <li>
-          <Typography.Text strong>
-            {t("evaluation_cases.formula_tip.weight_settings.title")}:
-          </Typography.Text>
-          <ul style={{ paddingLeft: "20px", margin: 0 }}>
-            <li>{t("evaluation_cases.formula_tip.weight_settings.item1")}</li>
-            <li>{t("evaluation_cases.formula_tip.weight_settings.item2")}</li>
-          </ul>
-        </li>
-        <li>
-          <Typography.Text strong>
-            {t("evaluation_cases.formula_tip.scoring_steps.title")}:
-          </Typography.Text>
-          <ol type="a" style={{ paddingLeft: "20px", margin: 0 }}>
-            <li>{t("evaluation_cases.formula_tip.scoring_steps.item1")}</li>
-            <li>{t("evaluation_cases.formula_tip.scoring_steps.item2")}</li>
-            <li>{t("evaluation_cases.formula_tip.scoring_steps.item3")}</li>
-            <li>{t("evaluation_cases.formula_tip.scoring_steps.item4")}</li>
-            <li>{t("evaluation_cases.formula_tip.scoring_steps.item5")}</li>
-          </ol>
-        </li>
-        <li>
-          <Typography.Text strong>
-            {t("evaluation_cases.formula_tip.special_cases.title")}:
-          </Typography.Text>
-          <ul style={{ paddingLeft: "20px", margin: 0 }}>
-            <li>{t("evaluation_cases.formula_tip.special_cases.item1")}</li>
-            <li>{t("evaluation_cases.formula_tip.special_cases.item2")}</li>
-          </ul>
-        </li>
-        <li>
-          <Typography.Text strong>
-            {t("evaluation_cases.formula_tip.example.title")}:
-          </Typography.Text>
-          <ul style={{ paddingLeft: "20px", margin: 0 }}>
-            <li>{t("evaluation_cases.formula_tip.example.item1")}</li>
-            <li>{t("evaluation_cases.formula_tip.example.item2")}</li>
-            <li>{t("evaluation_cases.formula_tip.example.item3")}</li>
-            <li>{t("evaluation_cases.formula_tip.example.item4")}</li>
-            <li>{t("evaluation_cases.formula_tip.example.item5")}</li>
-          </ul>
-        </li>
-      </ol>
-    </div>
-  );
 
   return (
     <>
@@ -373,21 +334,21 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
           variant="borderless"
           style={{
             borderRadius: 12,
-            boxShadow: "0 6px 20px rgba(0, 0, 0, 0.08)",
-            marginBottom: "32px",
-            background: "linear-gradient(135deg, #f6f8fa 0%, #e9eef4 100%)",
-            overflow: "hidden",
+            boxShadow: '0 6px 20px rgba(0, 0, 0, 0.08)',
+            marginBottom: '32px',
+            background: 'linear-gradient(135deg, #f6f8fa 0%, #e9eef4 100%)',
+            overflow: 'hidden',
           }}
         >
           <div
             style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "stretch",
-              padding: "40px 60px",
-              position: "relative",
-              overflow: "hidden",
-              gap: "60px",
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'stretch',
+              padding: '40px 60px',
+              position: 'relative',
+              overflow: 'hidden',
+              gap: '60px',
             }}
           >
             {/* 背景光效 */}
@@ -398,81 +359,87 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
             <div
               style={{
                 flex: 1.5,
-                display: "flex",
-                flexDirection: "column",
+                display: 'flex',
+                flexDirection: 'column',
                 zIndex: 2,
               }}
             >
-              <div style={{ textAlign: "left", marginBottom: "40px" }}>
+              <div style={{ textAlign: 'left', marginBottom: '40px' }}>
                 <Title
                   level={1}
                   className={styles.scaleTitle}
                   style={{
                     margin: 0,
-                    fontSize: "230px",
+                    fontSize: '230px',
                     fontWeight: 900,
-                    color: "#2c3e50",
-                    letterSpacing: "-2px",
+                    color: '#2c3e50',
+                    letterSpacing: '-2px',
                     lineHeight: 1,
-                    textShadow: "4px 4px 8px rgba(0, 0, 0, 0.1)",
-                    whiteSpace: "nowrap",
+                    textShadow: '4px 4px 8px rgba(0, 0, 0, 0.1)',
+                    whiteSpace: 'nowrap',
                   }}
                 >
-                  {t("ranking.title")}
+                  {t('ranking.title')}
                 </Title>
                 <Title
                   level={2}
                   style={{
-                    margin: "10px 0 24px 0",
-                    fontSize: "24px",
+                    margin: '10px 0 24px 0',
+                    fontSize: '24px',
                     fontWeight: 600,
-                    color: "#34495e",
-                    textAlign: "left",
-                    lineHeight: "1.3",
+                    color: '#34495e',
+                    textAlign: 'left',
+                    lineHeight: '1.3',
                   }}
                 >
                   <span>
-                    <span style={{ color: "#1890ff", fontWeight: 800 }}>S</span>QL{" "}
-                    <span style={{ color: "#1890ff", fontWeight: 800 }}>Ca</span>pability{" "}
-                    <span style={{ color: "#1890ff", fontWeight: 800 }}>Le</span>aderboard for{" "}
-                    LLMs
+                    <span style={{ color: '#1890ff', fontWeight: 800 }}>S</span>
+                    QL{' '}
+                    <span style={{ color: '#1890ff', fontWeight: 800 }}>
+                      Ca
+                    </span>
+                    pability{' '}
+                    <span style={{ color: '#1890ff', fontWeight: 800 }}>
+                      Le
+                    </span>
+                    aderboard for LLMs
                   </span>
                 </Title>
                 <Paragraph
                   style={{
-                    fontSize: "18px",
-                    color: "#555",
-                    lineHeight: "1.7",
+                    fontSize: '18px',
+                    color: '#555',
+                    lineHeight: '1.7',
                   }}
                 >
-                  {t("ranking.description_part1")}{" "}
+                  {t('ranking.description_part1')}{' '}
                   <Link
                     href="https://github.com/actiontech/sql-llm-benchmark"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
-                      color: "#1890ff",
-                      fontSize: "25px",
-                      fontWeight: "bold",
+                      color: '#1890ff',
+                      fontSize: '25px',
+                      fontWeight: 'bold',
                     }}
                   >
                     GitHub
                   </Link>
-                  {t("ranking.description_part2")}{" "}
+                  {t('ranking.description_part2')}{' '}
                   <Button
                     type="link"
                     onClick={showSubmissionGuide}
                     style={{
                       padding: 0,
-                      fontSize: "18px",
-                      height: "auto",
-                      lineHeight: "inherit",
-                      color: "#1890ff",
-                      fontWeight: "bold",
-                      verticalAlign: "baseline",
+                      fontSize: '18px',
+                      height: 'auto',
+                      lineHeight: 'inherit',
+                      color: '#1890ff',
+                      fontWeight: 'bold',
+                      verticalAlign: 'baseline',
                     }}
                   >
-                    {t("ranking.description_part3_trigger")}
+                    {t('ranking.description_part3_trigger')}
                   </Button>
                 </Paragraph>
 
@@ -575,10 +542,11 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
               <Podium
                 topModelsByCategory={topModelsByCategory}
                 logoInfo={logoInfo}
+                modelLogoInfo={modelLogoInfo}
                 onCategoryClick={(category) => {
                   setSortedInfo({
                     columnKey: category,
-                    order: "descend",
+                    order: 'descend',
                   });
                 }}
               />
@@ -589,151 +557,197 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
               style={{
                 flex: 1,
                 zIndex: 2,
-                display: "flex",
-                flexDirection: "column",
+                display: 'flex',
+                flexDirection: 'column',
                 minHeight: 0,
               }}
             >
               <div className={styles.descriptionWrapper}>
                 <div
                   ref={descriptionRef}
-                  className={`${styles.descriptionContent} ${isDescriptionExpanded ? styles.expanded : ""}`}
+                  className={`${styles.descriptionContent} ${isDescriptionExpanded ? styles.expanded : ''}`}
                   style={{
                     maxHeight: isDescriptionExpanded
                       ? `${descriptionRef.current?.scrollHeight || 'none'}px`
-                      : "120px",
-                    position: 'relative'
+                      : '120px',
+                    position: 'relative',
                   }}
                 >
                   <Paragraph
                     style={{
-                      fontSize: "16px",
-                      color: "#34495e",
-                      lineHeight: "1.7",
+                      fontSize: '16px',
+                      color: '#34495e',
+                      lineHeight: '1.7',
                       margin: 0,
                     }}
                     className={styles.descriptionText}
                   >
-                    {t("ranking.full_description")}
+                    {t('ranking.full_description')}
                   </Paragraph>
                   {!isDescriptionExpanded && (
                     <div className={styles.descriptionMask} />
                   )}
                 </div>
-                {descriptionRef.current && descriptionRef.current.scrollHeight > 120 && isDescriptionExpanded && (
-                  <div style={{ textAlign: "center" }}>
-                    <Button
-                      type="link"
-                      shape="round"
-                      icon={<UpOutlined className={styles.expandIcon} />}
-                      onClick={() => setIsDescriptionExpanded(false)}
-                      style={{
-                        marginTop: "15px",
-                        background: "rgba(24,114,255, 0.1)",
-                        color: "#1890ff",
-                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
-                        transition: "all 0.3s ease",
-                      }}
-                    >
-                      {t("actions.collapse")}
-                    </Button>
-                  </div>
-                )}
-                {descriptionRef.current && descriptionRef.current.scrollHeight > 120 && !isDescriptionExpanded && (
-                  <div style={{ textAlign: "center" }}>
-                    <Button
-                      type="link"
-                      shape="round"
-                      icon={<DownOutlined className={styles.expandIcon} />}
-                      onClick={() => setIsDescriptionExpanded(true)}
-                      style={{
-                        marginTop: "15px",
-                        background: "rgba(24,114,255, 0.1)",
-                        color: "#1890ff",
-                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
-                        transition: "all 0.3s ease",
-                      }}
-                    >
-                      {t("actions.expand")}
-                    </Button>
-                  </div>
-                )}
+                {descriptionRef.current &&
+                  descriptionRef.current.scrollHeight > 120 &&
+                  isDescriptionExpanded && (
+                    <div style={{ textAlign: 'center' }}>
+                      <Button
+                        type="link"
+                        shape="round"
+                        icon={<UpOutlined className={styles.expandIcon} />}
+                        onClick={() => setIsDescriptionExpanded(false)}
+                        style={{
+                          marginTop: '15px',
+                          background: 'rgba(24,114,255, 0.1)',
+                          color: '#1890ff',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+                          transition: 'all 0.3s ease',
+                        }}
+                      >
+                        {t('actions.collapse')}
+                      </Button>
+                    </div>
+                  )}
+                {descriptionRef.current &&
+                  descriptionRef.current.scrollHeight > 120 &&
+                  !isDescriptionExpanded && (
+                    <div style={{ textAlign: 'center' }}>
+                      <Button
+                        type="link"
+                        shape="round"
+                        icon={<DownOutlined className={styles.expandIcon} />}
+                        onClick={() => setIsDescriptionExpanded(true)}
+                        style={{
+                          marginTop: '15px',
+                          background: 'rgba(24,114,255, 0.1)',
+                          color: '#1890ff',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+                          transition: 'all 0.3s ease',
+                        }}
+                      >
+                        {t('actions.expand')}
+                      </Button>
+                    </div>
+                  )}
               </div>
+
+              {/* 当月测评文章卡片 */}
+              {(() => {
+                // 根据当前语言选择对应的博客
+                const currentLang = i18n.language
+                  ?.toLowerCase()
+                  .startsWith('zh')
+                  ? 'zh'
+                  : 'en';
+                const monthlyNewsPost =
+                  currentLang === 'zh' ? zhNewsPost : enNewsPost;
+                // 如果当前语言没有，尝试使用另一种语言
+                const displayPost = monthlyNewsPost || zhNewsPost || enNewsPost;
+
+                return displayPost ? (
+                  <Link
+                    href={`/news/${displayPost.slug}`}
+                    style={{
+                      display: 'block',
+                      textDecoration: 'none',
+                      marginTop: '24px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: 'relative',
+                        width: '100%',
+                        height: '180px',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-4px)';
+                        e.currentTarget.style.boxShadow =
+                          '0 8px 24px rgba(0, 0, 0, 0.15)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow =
+                          '0 4px 12px rgba(0, 0, 0, 0.1)';
+                      }}
+                    >
+                      {/* 背景图片 */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%',
+                          backgroundImage: "url('/blog/images/news.png')",
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'left center',
+                          backgroundRepeat: 'no-repeat',
+                        }}
+                      />
+
+                      {/* 文字内容 */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%',
+                          transform: 'translate(-50%, -50%)',
+                          width: '90%',
+                          textAlign: 'center',
+                          color: '#ffffff',
+                          zIndex: 1,
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: '18px',
+                            fontWeight: 700,
+                            lineHeight: '1.4',
+                            textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                          }}
+                        >
+                          {displayPost.title}
+                        </div>
+                        <div
+                          style={{
+                            marginTop: '12px',
+                            fontSize: '14px',
+                            opacity: 0.9,
+                            fontWeight: 400,
+                          }}
+                        >
+                          {currentLang === 'zh'
+                            ? '点击查看详情'
+                            : 'Click to view details'}{' '}
+                          →
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ) : null;
+              })()}
             </div>
           </div>
 
-          {/* 日期选择框和搜索框 - 表格上方 */}
+          {/* 搜索框 - 表格上方 */}
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
               marginBottom: 24,
-              padding: "0 24px",
-              gap: "16px",
+              padding: '0 24px',
             }}
           >
-            <Select
-              key="month"
-              value={currentMonth}
-              onChange={handleMonthChange}
-              open={monthSelectOpen}
-              onDropdownVisibleChange={setMonthSelectOpen}
-              suffixIcon={
-                monthSelectOpen ? (
-                  <UpOutlined
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setMonthSelectOpen(false);
-                    }}
-                    style={{
-                      fontSize: "16px",
-                      color: "#1890ff",
-                      fontWeight: "bold",
-                      cursor: "pointer",
-                      pointerEvents: "auto",
-                    }}
-                  />
-                ) : (
-                  <DownOutlined
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setMonthSelectOpen(true);
-                    }}
-                    style={{
-                      fontSize: "16px",
-                      color: "#1890ff",
-                      fontWeight: "bold",
-                      cursor: "pointer",
-                      pointerEvents: "auto",
-                    }}
-                  />
-                )
-              }
-              style={{
-                width: 200,
-                fontSize: "15px",
-                fontWeight: 500,
-              }}
-              size="large"
-              bordered={true}
-              className={styles.monthSelectEnhanced}
-            >
-              {months.map((m) => {
-                const isLatestMonth = m === latestMonth;
-                // 判断是否为最新月份且最新月份等于系统当前月份
-                const isRealTime = isLatestMonth && isLatestMonthCurrent;
-
-                return (
-                  <Select.Option key={m} value={m}>
-                    {isRealTime ? t("ranking.current_month_realtime") : m}
-                  </Select.Option>
-                );
-              })}
-            </Select>
             <Search
               key="search"
-              placeholder={t("search model name")}
+              placeholder={t('search model name')}
               allowClear
               onSearch={(val) => {
                 setSearchText(val);
@@ -745,22 +759,26 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
 
           {/* 对比模式提示 */}
           {showCompareMode && (
-            <Card style={{
-              marginBottom: '16px',
-              backgroundColor: '#f0f9ff',
-              border: '1px solid #91caff'
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#1890ff',
-                fontSize: '14px'
-              }}>
-                <SwapOutlined style={{ marginRight: '8px', fontSize: '16px' }} />
-                <span>
-                  {t("compare.compare_mode_tip")}
-                </span>
+            <Card
+              style={{
+                marginBottom: '16px',
+                backgroundColor: '#f0f9ff',
+                border: '1px solid #91caff',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#1890ff',
+                  fontSize: '14px',
+                }}
+              >
+                <SwapOutlined
+                  style={{ marginRight: '8px', fontSize: '16px' }}
+                />
+                <span>{t('compare.compare_mode_tip')}</span>
               </div>
             </Card>
           )}
@@ -780,81 +798,93 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
             }}
             onChange={handleTableChange}
             headerTitle={
-              <Space>
-                <Button
-                  key="formula-button"
-                  type="primary"
-                  ghost
-                  onClick={showFormulaModal}
-                  icon={<FormOutlined />}
-                  style={{
-                    fontWeight: "bold",
-                    borderRadius: "4px",
-                    padding: "4px 12px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4px",
-                  }}
+              <Space size="middle">
+                {/* 日期选择器 */}
+                <Select
+                  value={currentMonth}
+                  onChange={handleMonthChange}
+                  style={{ width: 180 }}
+                  size="middle"
                 >
-                  {t("evaluation_cases.formula_button")}
-                  <RightOutlined style={{ fontSize: "12px" }} />
+                  {months.map((m) => {
+                    const isLatestMonth = m === latestMonth;
+                    const isRealTime = isLatestMonth && isLatestMonthCurrent;
+
+                    return (
+                      <Select.Option key={m} value={m}>
+                        {isRealTime ? t('ranking.current_month_realtime') : m}
+                      </Select.Option>
+                    );
+                  })}
+                </Select>
+
+                {/* 榜单规则按钮 */}
+                <Button icon={<FormOutlined />} onClick={showFormulaModal}>
+                  {t('evaluation_cases.formula_button')}
                 </Button>
-                <Button
-                  key="submit-guide-button"
-                  type="primary"
-                  ghost
-                  icon={<GithubOutlined />}
-                  onClick={showSubmissionGuide}
+
+                {/* 贡献测评集按钮 */}
+                <Button icon={<GithubOutlined />} onClick={showSubmissionGuide}>
+                  {t('nav.contribute_evaluation')}
+                </Button>
+
+                {/* 分隔线 */}
+                <div
                   style={{
-                    fontWeight: "bold",
-                    borderRadius: "4px",
-                    padding: "4px 12px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4px",
+                    width: 1,
+                    height: 24,
+                    background: '#d9d9d9',
+                    margin: '0 8px',
                   }}
-                >
-                  {t("actions.submit_report")}
-                  <RightOutlined style={{ fontSize: "12px" }} />
-                </Button>
+                />
+
+                {/* 模型对比按钮 */}
                 <Button
                   key="compare-toggle"
-                  type={showCompareMode ? "default" : "primary"}
+                  type={showCompareMode ? 'default' : 'primary'}
                   onClick={toggleCompareMode}
                   icon={showCompareMode ? <CloseOutlined /> : <SwapOutlined />}
                   style={{
-                    fontWeight: "bold",
-                    borderRadius: "4px",
-                    padding: "4px 12px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4px",
+                    fontWeight: 'bold',
+                    borderRadius: '4px',
+                    padding: '4px 12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
                   }}
                 >
-                  {showCompareMode ? t("compare.exit_compare_mode") : t("compare.toggle_compare_mode")}
+                  {showCompareMode
+                    ? t('compare.exit_compare_mode')
+                    : t('compare.toggle_compare_mode')}
                 </Button>
                 {showCompareMode && (
                   <>
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      backgroundColor: '#f0f9ff',
-                      padding: '4px 12px',
-                      borderRadius: '6px',
-                      border: '1px solid #91caff'
-                    }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        backgroundColor: '#f0f9ff',
+                        padding: '4px 12px',
+                        borderRadius: '6px',
+                        border: '1px solid #91caff',
+                      }}
+                    >
                       <Badge
                         count={selectedModels.size}
                         showZero
                         style={{ backgroundColor: '#1890ff' }}
                       />
-                      <span style={{
-                        marginLeft: '8px',
-                        fontSize: '14px',
-                        color: '#1890ff',
-                        fontWeight: 'bold'
-                      }}>
-                        {t("compare.selected_models_count", { count: selectedModels.size })}
+                      <span
+                        style={{
+                          marginLeft: '8px',
+                          fontSize: '14px',
+                          color: '#1890ff',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {t('compare.selected_models_count', {
+                          count: selectedModels.size,
+                        })}
                       </span>
                     </div>
                     {selectedModels.size >= 2 && (
@@ -863,12 +893,14 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                         type="primary"
                         onClick={handleCompare}
                         style={{
-                          fontWeight: "bold",
-                          borderRadius: "4px",
-                          padding: "4px 12px",
+                          fontWeight: 'bold',
+                          borderRadius: '4px',
+                          padding: '4px 12px',
                         }}
                       >
-                        {t("compare.start_compare", { count: selectedModels.size })}
+                        {t('compare.start_compare', {
+                          count: selectedModels.size,
+                        })}
                       </Button>
                     )}
                   </>
@@ -884,7 +916,10 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
               if (rank === 1) classes.push(styles.rank1Row);
               else if (rank === 2) classes.push(styles.rank2Row);
               else if (rank === 3) classes.push(styles.rank3Row);
-              else classes.push(idx % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven);
+              else
+                classes.push(
+                  idx % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven
+                );
 
               // 在多选模式下添加额外样式
               if (showCompareMode) {
@@ -899,9 +934,9 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
             }}
             tableStyle={{
               borderRadius: 12,
-              overflow: "hidden",
-              boxShadow: "0 10px 10px rgba(0, 0, 0, 0.1)",
-              border: "1px solid #e8e8e8",
+              overflow: 'hidden',
+              boxShadow: '0 10px 10px rgba(0, 0, 0, 0.1)',
+              border: '1px solid #e8e8e8',
             }}
             cardProps={{
               bodyStyle: { padding: 0 },
@@ -914,8 +949,10 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                   // 在多选模式下，让整行点击切换选择状态
                   if (showCompareMode) {
                     // 如果点击的是复选框本身，让其正常工作，不重复处理
-                    if (target.closest("input[type='checkbox']") ||
-                      target.closest(".ant-checkbox")) {
+                    if (
+                      target.closest("input[type='checkbox']") ||
+                      target.closest('.ant-checkbox')
+                    ) {
                       return;
                     }
                     // 整行点击时切换选择状态
@@ -925,43 +962,37 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
                   }
 
                   // 如果点击的是按钮、链接或复选框相关元素，不跳转
-                  if (target.closest("button") ||
-                    target.closest("a") ||
+                  if (
+                    target.closest('button') ||
+                    target.closest('a') ||
                     target.closest("input[type='checkbox']") ||
-                    target.closest(".ant-checkbox")) {
+                    target.closest('.ant-checkbox')
+                  ) {
                     return;
                   }
 
                   NProgress.start();
                   router.push(`/models/${record.id}/${currentMonth}`);
                 },
-                style: showCompareMode ? {
-                  cursor: 'pointer',
-                  userSelect: 'none'
-                } : undefined,
+                style: showCompareMode
+                  ? {
+                      cursor: 'pointer',
+                      userSelect: 'none',
+                    }
+                  : undefined,
               };
             }}
           />
         </Card>
 
-        {/* 公式解释模块 */}
-        <Modal
-          open={isFormulaModalVisible}
-          onCancel={handleFormulaModalCancel}
-          footer={[
-            <Button key="close" onClick={handleFormulaModalCancel}>
-              {t("actions.close")}
-            </Button>,
-          ]}
-          width="30%"
-          style={{ top: 50 }}
-        >
-          {renderFormulaContent()}
-        </Modal>
-
         <SubmissionGuideModal
           visible={isSubmissionGuideVisible}
           onClose={handleSubmissionGuideCancel}
+        />
+
+        <FormulaRuleModal
+          visible={isFormulaModalVisible}
+          onClose={handleFormulaModalCancel}
         />
       </div>
     </>
@@ -969,12 +1000,12 @@ const RankingPage: React.FC<RankingPageProps> = ({ months, logoInfo }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const dataDir = path.join(process.cwd(), "public", "data", "eval_reports");
+  const dataDir = path.join(process.cwd(), 'public', 'data', 'eval_reports');
   const filenames = fs.readdirSync(dataDir);
 
   const months = filenames
-    .filter((name) => name.startsWith("models-") && name.endsWith(".json"))
-    .map((name) => name.replace("models-", "").replace(".json", ""));
+    .filter((name) => name.startsWith('models-') && name.endsWith('.json'))
+    .map((name) => name.replace('models-', '').replace('.json', ''));
 
   const paths = months.map((month) => ({
     params: { month },
@@ -986,31 +1017,88 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<RankingPageProps> = async () => {
-  const dataDir = path.join(process.cwd(), "public", "data", "eval_reports");
+export const getStaticProps: GetStaticProps<RankingPageProps> = async (
+  context
+) => {
+  const dataDir = path.join(process.cwd(), 'public', 'data', 'eval_reports');
   const filenames = fs.readdirSync(dataDir);
 
   const months = filenames
-    .filter((name) => name.startsWith("models-") && name.endsWith(".json"))
-    .map((name) => name.replace("models-", "").replace(".json", ""))
+    .filter((name) => name.startsWith('models-') && name.endsWith('.json'))
+    .map((name) => name.replace('models-', '').replace('.json', ''))
     .sort((a, b) => b.localeCompare(a));
 
-  const logosDir = path.join(process.cwd(), "public", "logos");
+  const logosDir = path.join(process.cwd(), 'public', 'logos');
   const logoFiles = fs.readdirSync(logosDir);
   const logoInfo: Record<string, string> = {};
 
   logoFiles.forEach((file) => {
     const name = path.parse(file).name;
     const ext = path.parse(file).ext.substring(1);
-    if (!logoInfo[name] || ext === "svg") {
+    if (!logoInfo[name] || ext === 'svg') {
       logoInfo[name] = ext;
     }
   });
+
+  // 读取 modelLogo 文件夹中的图标（优先使用）
+  const modelLogoDir = path.join(process.cwd(), 'public', 'modelLogo');
+  const modelLogoInfo: Record<string, { ext: string; originalName: string }> =
+    {};
+
+  if (fs.existsSync(modelLogoDir)) {
+    const modelLogoFiles = fs.readdirSync(modelLogoDir);
+    modelLogoFiles.forEach((file) => {
+      const name = path.parse(file).name;
+      const nameLower = name.toLowerCase().replace(/\s/g, '-');
+      const ext = path.parse(file).ext.substring(1);
+      // 使用小写作为键，存储扩展名和原始文件名
+      if (!modelLogoInfo[nameLower] || ext === 'svg') {
+        modelLogoInfo[nameLower] = { ext, originalName: name };
+      }
+    });
+  }
+
+  // 读取当月的博客文章（中文和英文版本）
+  const month = context.params?.month as string;
+  let zhNewsPost = null;
+  let enNewsPost = null;
+
+  if (month) {
+    const newsSlug = `scale-${month.replace('-', '')}`;
+
+    // 使用 getNewsPost 获取文章，它已经处理了新的目录结构和 index.md
+    const zhPost = getNewsPost(newsSlug, 'zh');
+    if (zhPost) {
+      zhNewsPost = {
+        slug: zhPost.slug,
+        title: zhPost.title,
+        date: zhPost.date,
+        author: zhPost.author,
+        excerpt: zhPost.excerpt,
+        language: 'zh' as const,
+      };
+    }
+
+    const enPost = getNewsPost(newsSlug, 'en');
+    if (enPost) {
+      enNewsPost = {
+        slug: enPost.slug,
+        title: enPost.title,
+        date: enPost.date,
+        author: enPost.author,
+        excerpt: enPost.excerpt,
+        language: 'en' as const,
+      };
+    }
+  }
 
   return {
     props: {
       months,
       logoInfo,
+      modelLogoInfo,
+      zhNewsPost,
+      enNewsPost,
     },
   };
 };

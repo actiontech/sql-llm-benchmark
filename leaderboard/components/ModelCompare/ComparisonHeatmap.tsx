@@ -57,132 +57,158 @@ export const ComparisonHeatmap: React.FC<ComparisonHeatmapProps> = ({
         const minScore = scores.length > 0 ? Math.min(...scores) : 0;
 
         return {
-            title: {
-                text: getTitle ? getTitle(selectedCapability) : (selectedCapability === 'all' ?
-                    (t ? t('compare.chart_titles.model_indicator_heatmap') : '模型指标热力图') :
-                    `${t ? t(`table.${selectedCapability}`) : selectedCapability}${t ? t('compare.heatmap_suffix') : '热力图'}`),
-                left: 'center',
-                textStyle: {
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                },
+          title: {
+            text: getTitle
+              ? getTitle(selectedCapability)
+              : selectedCapability === 'all'
+                ? t
+                  ? t('compare.chart_titles.model_indicator_heatmap')
+                  : '模型指标热力图'
+                : `${t ? t(`table.${selectedCapability}`) : selectedCapability}${t ? t('compare.heatmap_suffix') : '热力图'}`,
+            left: 'center',
+            textStyle: {
+              fontSize: 16,
+              fontWeight: 'bold',
             },
-            tooltip: {
-                position: 'top',
-                formatter: (params: any) => {
-                    const [indicatorIndex, modelIndex, score] = params.value;
-                    const fullIndicator = indicators[indicatorIndex];
-                    const parts = fullIndicator.split('|--|');
-                    const scoreLabel = t ? t("evaluation_cases.score") : "得分";
-                    if (parts.length > 1) {
-                        const capability = parts[0]; // 已经是翻译后的维度名
-                        const indicatorName = parts[1];
-                        const translatedIndicator = t ? t(`indicator.${indicatorName}`) : indicatorName;
-                        return `${models[modelIndex]}<br/>${capability} - ${translatedIndicator}<br/>${scoreLabel}: ${score.toFixed(1)}`;
-                    }
-                    return `${models[modelIndex]}<br/>${indicators[indicatorIndex]}<br/>${scoreLabel}: ${score.toFixed(1)}`;
-                },
+          },
+          tooltip: {
+            position: 'top',
+            formatter: (params: any) => {
+              const [indicatorIndex, modelIndex, score] = params.value;
+              const fullIndicator = indicators[indicatorIndex];
+              const parts = fullIndicator.split('|--|');
+              const scoreLabel = t ? t('evaluation_cases.score') : '得分';
+              if (parts.length > 1) {
+                const capability = parts[0]; // 已经是翻译后的维度名
+                const indicatorName = parts[1];
+                const translatedIndicator = t
+                  ? t(`indicator.${indicatorName}`)
+                  : indicatorName;
+                return `${models[modelIndex]}<br/>${capability} - ${translatedIndicator}<br/>${scoreLabel}: ${score.toFixed(1)}`;
+              }
+              return `${models[modelIndex]}<br/>${indicators[indicatorIndex]}<br/>${scoreLabel}: ${score.toFixed(1)}`;
             },
-            grid: {
-                height: '50%',
-                top: '15%',
-                left: '20%',
-                right: '10%',
-                bottom: '25%',
-                containLabel: false,
-            },
-            xAxis: {
-                type: 'category',
-                data: indicators.map(indicator => {
-                    const parts = indicator.split('|--|');
-                    if (parts.length > 1) {
-                        const capabilityName = parts[0]; // 已经是翻译后的维度名
-                        const indicatorName = parts[1];
-                        const translatedIndicator = t ? t(`indicator.${indicatorName}`) : indicatorName;
-                        const fullLabel = `${capabilityName} - ${translatedIndicator}`;
+          },
+          grid: {
+            height: '50%',
+            top: '15%',
+            left: '20%',
+            right: '10%',
+            bottom: '25%',
+            containLabel: false,
+          },
+          xAxis: {
+            type: 'category',
+            data: indicators.map((indicator) => {
+              const parts = indicator.split('|--|');
+              if (parts.length > 1) {
+                const capabilityName = parts[0]; // 已经是翻译后的维度名
+                const indicatorName = parts[1];
+                const translatedIndicator = t
+                  ? t(`indicator.${indicatorName}`)
+                  : indicatorName;
+                const fullLabel = `${capabilityName} - ${translatedIndicator}`;
 
-                        // 如果标签过长（超过25个字符），使用更紧凑的格式
-                        if (fullLabel.length > 25) {
-                            // 使用缩写格式：维度名缩写 - 指标名
-                            const capabilityAbbr = capabilityName.split(' ').map(word => word.charAt(0)).join('');
-                            return `${capabilityAbbr} - ${translatedIndicator}`;
-                        }
-                        return fullLabel;
-                    }
-                    return t ? t(`indicator.${indicator}`) : indicator;
-                }),
-                splitArea: {
-                    show: true,
-                },
-                axisLabel: {
-                    rotate: 35,
-                    interval: 0,
-                    fontSize: 12, // 减小字体大小
-                    margin: 20, // 增加底部边距
-                    textStyle: {
-                        overflow: 'breakAll',
-                        width: 80, // 限制标签宽度
-                        ellipsis: '...' // 超出部分显示省略号
-                    }
-                },
+                // 如果标签过长（超过25个字符），使用更紧凑的格式
+                if (fullLabel.length > 25) {
+                  // 使用缩写格式：维度名缩写 - 指标名
+                  const capabilityAbbr = capabilityName
+                    .split(' ')
+                    .map((word) => word.charAt(0))
+                    .join('');
+                  return `${capabilityAbbr} - ${translatedIndicator}`;
+                }
+                return fullLabel;
+              }
+              return t ? t(`indicator.${indicator}`) : indicator;
+            }),
+            splitArea: {
+              show: true,
             },
-            yAxis: {
-                type: 'category',
-                data: models,
-                splitArea: {
-                    show: true,
-                },
-                axisLabel: {
-                    fontSize: 12,
-                    margin: 15,
-                },
+            axisLabel: {
+              rotate: 35,
+              interval: 0,
+              fontSize: 12, // 减小字体大小
+              margin: 20, // 增加底部边距
+              textStyle: {
+                overflow: 'breakAll',
+                width: 80, // 限制标签宽度
+                ellipsis: '...', // 超出部分显示省略号
+              },
             },
-            visualMap: {
-                min: minScore,
-                max: maxScore,
-                calculable: true,
-                orient: 'horizontal',
-                left: 'center',
-                bottom: '2%',
-                inRange: {
-                    color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'],
-                },
-                text: [t ? t('compare.high_score') : '高分', t ? t('compare.low_score') : '低分'],
-                textStyle: {
-                    color: '#333',
-                },
+          },
+          yAxis: {
+            type: 'category',
+            data: models,
+            splitArea: {
+              show: true,
             },
-            series: [
-                {
-                    name: '得分',
-                    type: 'heatmap',
-                    data: heatmapData,
-                    label: {
-                        show: true,
-                        formatter: (params: any) => params.value[2].toFixed(1),
-                        fontSize: 12,
-                        fontWeight: 'bold',
-                        color: '#2c3e50', // 统一使用深色，更稳定可读
-                        textBorderColor: '#ffffff',
-                        textBorderWidth: 1,
-                    },
-                    itemStyle: {
-                        borderColor: '#fff',
-                        borderWidth: 1,
-                        borderRadius: 3,
-                        shadowColor: 'rgba(0, 0, 0, 0.2)',
-                        shadowBlur: 4,
-                        shadowOffsetY: 1,
-                        shadowOffsetX: 1,
-                    },
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    },
-                },
+            axisLabel: {
+              fontSize: 12,
+              margin: 15,
+            },
+          },
+          visualMap: {
+            min: minScore,
+            max: maxScore,
+            calculable: true,
+            orient: 'horizontal',
+            left: 'center',
+            bottom: '2%',
+            inRange: {
+              color: [
+                '#313695',
+                '#4575b4',
+                '#74add1',
+                '#abd9e9',
+                '#e0f3f8',
+                '#ffffbf',
+                '#fee090',
+                '#fdae61',
+                '#f46d43',
+                '#d73027',
+                '#a50026',
+              ],
+            },
+            text: [
+              t ? t('compare.high_score') : '高分',
+              t ? t('compare.low_score') : '低分',
             ],
+            textStyle: {
+              color: '#333',
+            },
+          },
+          series: [
+            {
+              name: t ? t('evaluation_cases.score') : '得分',
+              type: 'heatmap',
+              data: heatmapData,
+              label: {
+                show: true,
+                formatter: (params: any) => params.value[2].toFixed(1),
+                fontSize: 12,
+                fontWeight: 'bold',
+                color: '#2c3e50', // 统一使用深色，更稳定可读
+                textBorderColor: '#ffffff',
+                textBorderWidth: 1,
+              },
+              itemStyle: {
+                borderColor: '#fff',
+                borderWidth: 1,
+                borderRadius: 3,
+                shadowColor: 'rgba(0, 0, 0, 0.2)',
+                shadowBlur: 4,
+                shadowOffsetY: 1,
+                shadowOffsetX: 1,
+              },
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)',
+                },
+              },
+            },
+          ],
         };
     }, [data, selectedCapability, getTitle, t]);
 
