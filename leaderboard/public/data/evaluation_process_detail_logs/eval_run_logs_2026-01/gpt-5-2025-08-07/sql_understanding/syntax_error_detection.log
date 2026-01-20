@@ -1,0 +1,546 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20251218_160725_887
+Run Dimensions: sql_understanding
+Run Indicator: syntax_error_detection
+Evaluation Timestamp: 2025-12-18T16:12:41.366070
+Target: GPT-5
+Judge LLMs: deepseek-r1, o4-mini, gemini-2.5-pro
+-------------------------------------------------
+
+[2025-12-18 16:10:57.972042] Run Indicator: sql_understanding, Parameters size: 9097B
+[2025-12-18 16:10:57.972800] 
+--- Capability: sql_understanding Indicator syntax_error_detection.jsonl Evaluating Type: objective  ---
+[2025-12-18 16:10:57.972950] Concurrency: 3 concurrent cases, 3 concurrent judges
+[2025-12-18 16:11:00.055841] [Case:1][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT product_id, product_name FROM products WHERE category = 'Electronics';
+
+[2025-12-18 16:11:00.056452] [Case:2][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+INSERT INTO users (username, email) VALUES ('john_doe', 'john.doe@example.com');
+
+[2025-12-18 16:11:00.057671] [Case:3][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+UPDATE orders SET status = 'Shipped' WHERE order_id = 500;
+
+[2025-12-18 16:11:02.092477] [Case:3][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:02.092701] [3] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:02.092832] [3] Objective Eval Case Results: True
+[2025-12-18 16:11:02.094058] [Case:4][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+DELETE FROM inactive_accounts WHERE last_login < '2024-01-01';
+
+[2025-12-18 16:11:02.371829] [Case:1][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:02.372049] [1] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:02.372188] [1] Objective Eval Case Results: True
+[2025-12-18 16:11:02.373172] [Case:5][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+INSERT INTO logs (event_type, event_date) VALUS ('Login', CURRENT_DATE());
+
+[2025-12-18 16:11:04.301313] [Case:4][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:04.301489] [4] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:04.301592] [4] Objective Eval Case Results: True
+[2025-12-18 16:11:04.302724] [Case:6][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT department_id, COUNT(employee_id) AS num_employees, AVG(salary) AS avg_salary FROM employees GROUP BY department_id HAVING AVG(salary) > 60000 ORDER BY avg_salary DESC;
+
+[2025-12-18 16:11:07.001505] [Case:5][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "yes"
+}
+[2025-12-18 16:11:07.001804] [5] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-12-18 16:11:07.001991] [5] Objective Eval Case Results: True
+[2025-12-18 16:11:07.003066] [Case:7][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT customer_name, order_date FROM customers JOIN orders ON customers.customer_id = orders.customer_id WHERE order_date BETWEEN '2024-01-01' AND '2024-03-31' ORDER BY order_date ASC LIMIT 20 OFFSET 5;
+
+[2025-12-18 16:11:08.216916] [Case:6][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:08.217139] [6] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:08.217307] [6] Objective Eval Case Results: True
+[2025-12-18 16:11:08.218348] [Case:8][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT product_name, price, (price * 1.08) AS price_with_tax FROM products WHERE category IN ('Books', 'Movies') AND stock_quantity > 0;
+
+[2025-12-18 16:11:11.571351] [Case:8][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:11.571625] [8] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:11.571781] [8] Objective Eval Case Results: True
+[2025-12-18 16:11:11.572775] [Case:9][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT LEFT(product_code, 2) AS category_prefix, SUM(quantity) AS total_sold FROM sales_items GROUP BY category_prefix HAVING SUM(quantity) > 100 ORDER BY total_sold DESC;
+
+[2025-12-18 16:11:12.486686] [Case:7][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{"has_syntax_error":"no"}
+[2025-12-18 16:11:12.486957] [7] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:12.487223] [7] Objective Eval Case Results: True
+[2025-12-18 16:11:12.488418] [Case:10][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT employee_id, CONCAT(first_name, ' ', last_name) AS full_name, DATEDIFF(CURRENT_DATE(), hire_date) AS days_employed FROM employees WHERE DATEDIFF(CURRENT_DATE(), hire_date) > 3650;
+
+[2025-12-18 16:11:12.587100] [Case:2][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:12.587313] [2] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:12.587427] [2] Objective Eval Case Results: True
+[2025-12-18 16:11:12.588408] [Case:11][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT MAX(score), MIN(score), AVG(score) FROM student_scores WHERE subject = 'Math' AND EXISTS (SELECT 1 FROM students WHERE student_id = student_scores.student_id AND grade_level = 10);
+
+[2025-12-18 16:11:16.141665] [Case:11][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:16.141874] [11] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:16.142002] [11] Objective Eval Case Results: True
+[2025-12-18 16:11:16.142908] [Case:12][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT COUNT(DISTINCT customer_id) AS unique_customers FROM orders WHERE order_date >= '2024-01-01' GROUP BY YEAR(order_date), MONTH(order_date);
+
+[2025-12-18 16:11:18.767456] [Case:9][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:18.767783] [9] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:18.767965] [9] Objective Eval Case Results: True
+[2025-12-18 16:11:18.769146] [Case:13][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT customer_name, LENGTH(customer_name) FROM customers WHERE LENGTH(customer_name) > 15 ORDER BY LENGTH(customer_name) DESC;
+
+[2025-12-18 16:11:21.709928] [Case:13][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:21.710246] [13] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:21.710467] [13] Objective Eval Case Results: True
+[2025-12-18 16:11:21.711656] [Case:14][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT employee_id, CASE WHEN salary >= 80000 THEN 'High' WHEN salary >= 50000 THEN 'Medium' ELSE 'Low' END AS salary_level FROM employees ORDER BY salary_level DESC;
+
+[2025-12-18 16:11:23.215155] [Case:10][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:23.215374] [10] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:23.215551] [10] Objective Eval Case Results: True
+[2025-12-18 16:11:23.216725] [Case:15][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT region, SUM(amount) FROM sales_data WHERE sale_date BETWEEN '2024-01-01' AND '2024-01-31' GROUP BY region ORDER BY SUM(amount) DESC HAVING SUM(amount) > 50000;
+
+[2025-12-18 16:11:24.997053] [Case:14][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:24.997344] [14] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:24.997474] [14] Objective Eval Case Results: True
+[2025-12-18 16:11:24.998679] [Case:16][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT c.customer_name, o.order_id, p.product_name, oi.quantity FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = 'Electronics' AND o.order_date > '2024-01-01' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id);
+
+[2025-12-18 16:11:28.102819] [Case:16][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:28.103087] [16] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:28.103244] [16] Objective Eval Case Results: True
+[2025-12-18 16:11:28.104240] [Case:17][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+WITH EmployeeSalaries AS (SELECT employee_id, department_id, salary FROM employees), DepartmentAvg AS (SELECT department_id, AVG(salary) AS avg_dept_salary FROM employees GROUP BY department_id) SELECT es.employee_id, es.salary, da.avg_dept_salary FROM EmployeeSalaries es JOIN DepartmentAvg da ON es.department_id = da.department_id WHERE es.salary > da.avg_dept_salary;
+
+[2025-12-18 16:11:32.849639] [Case:17][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:32.849848] [17] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-12-18 16:11:32.850021] [17] Objective Eval Case Results: False
+[2025-12-18 16:11:32.851073] [Case:18][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+INSERT INTO sales_archive (SELECT * FROM sales WHERE sale_date < '2023-01-01' AND status = 'Completed');
+
+[2025-12-18 16:11:49.152102] [Case:15][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "yes"
+}
+[2025-12-18 16:11:49.152291] [15] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-12-18 16:11:49.152404] [15] Objective Eval Case Results: True
+[2025-12-18 16:11:49.153420] [Case:19][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT p.product_name, p.price FROM products p WHERE p.product_id IN (SELECT oi.product_id FROM order_items oi GROUP BY oi.product_id HAVING COUNT(oi.order_id) > 10) AND p.category = 'Books' OR p.product_id IN (SELECT r.product_id FROM reviews r WHERE r.rating < 3 AND r.review_date > '2024-01-01') AND p.stock > 0;
+
+[2025-12-18 16:11:50.654876] [Case:18][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{"has_syntax_error":"yes"}
+[2025-12-18 16:11:50.655067] [18] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:50.655203] [18] Objective Eval Case Results: False
+[2025-12-18 16:11:50.656298] [Case:20][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT e.first_name, e.last_name, d.department_name FROM employees e LEFT JOIN departments d ON e.department_id = d.department_id WHERE e.employee_id NOT IN (SELECT manager_id FROM projects WHERE manager_id IS NOT NULL) UNION ALL SELECT c.contact_name, NULL, 'External Partner' FROM contacts c WHERE c.company_type = 'Supplier';
+
+[2025-12-18 16:11:54.304985] [Case:20][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:54.305177] [20] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:54.305315] [20] Objective Eval Case Results: True
+[2025-12-18 16:11:54.306511] [Case:21][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+CREATE VIEW high_value_customers AS SELECT c.customer_id, c.customer_name, SUM(o.total_amount) AS lifetime_value FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.customer_id, c.customer_name HAVING SUM(o.total_amount) > 1000 ORDER BY lifetime_value DESC;
+
+[2025-12-18 16:11:55.682952] [Case:19][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:55.683147] [19] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:55.683266] [19] Objective Eval Case Results: True
+[2025-12-18 16:11:55.684200] [Case:22][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT T1.colA, T1.colB FROM table1 T1 WHERE T1.colC = (SELECT MAX(T2.colD) FROM table2 T2 WHERE T2.colE = T1.colA AND T2.colF IN ('status1', 'status2'));
+
+[2025-12-18 16:11:56.159969] [Case:12][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:11:56.160179] [12] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:11:56.160301] [12] Objective Eval Case Results: True
+[2025-12-18 16:11:56.161195] [Case:23][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+BEGIN TRANSACTION; UPDATE accounts SET balance = balance - 100 WHERE account_id = 101; SAVEPOINT deduct_funds; INSERT INTO transactions (account_id, amount, type) VALUES (102, 100, 'deposit'); COMMIT;
+
+[2025-12-18 16:12:00.988787] [Case:22][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{"has_syntax_error":"no"}
+[2025-12-18 16:12:00.989045] [22] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:12:00.989216] [22] Objective Eval Case Results: True
+[2025-12-18 16:12:00.990560] [Case:24][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT a.artist_name, COUNT(s.song_id) AS num_songs FROM artists a JOIN songs s ON a.artist_id = s.artist_id GROUP BY a.artist_name HAVING COUNT(s.song_id) > 5 AND a.genre = 'Rock' ORDER BY num_songs DESC LIMIT 10;
+
+[2025-12-18 16:12:06.668552] [Case:24][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{"has_syntax_error":"no"}
+[2025-12-18 16:12:06.668746] [24] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:12:06.668884] [24] Objective Eval Case Results: True
+[2025-12-18 16:12:06.670151] [Case:25][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+WITH MonthlySales AS (SELECT DATE_TRUNC('month', sale_date) AS sale_month, SUM(amount) AS total_monthly_sales FROM sales GROUP BY DATE_TRUNC('month', sale_date)), AvgSales AS (SELECT AVG(total_monthly_sales) FROM MonthlySales) SELECT ms.sale_month, ms.total_monthly_sales FROM MonthlySales ms WHERE ms.total_monthly_sales > (SELECT * FROM AvgSales);
+
+[2025-12-18 16:12:08.810836] [Case:23][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{"has_syntax_error":"no"}
+[2025-12-18 16:12:08.811003] [23] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:12:08.811108] [23] Objective Eval Case Results: True
+[2025-12-18 16:12:08.812150] [Case:26][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT c.customer_name, o.order_id, p.product_name FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = 'Books' AND o.order_date > '2023-01-01' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id AND order_date BETWEEN '2023-01-01' AND '2023-12-31';
+
+[2025-12-18 16:12:16.533337] [Case:26][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "yes"
+}
+[2025-12-18 16:12:16.533544] [26] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-12-18 16:12:16.533676] [26] Objective Eval Case Results: True
+[2025-12-18 16:12:16.535015] [Case:27][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+UPDATE inventory SET stock = stock - 10 WHERE product_id IN (SELECT product_id FROM low_stock_alerts WHERE alert_date < CURRENT_DATE() AND alert_level = 'Critical') OR product_id IN (SELECT product_id FROM recent_sales WHERE sale_date > '2024-05-01' AND quantity_sold > 5 AND stock < 20);
+
+[2025-12-18 16:12:17.705103] [Case:21][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:12:17.705299] [21] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:12:17.705493] [21] Objective Eval Case Results: True
+[2025-12-18 16:12:17.706583] [Case:28][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT emp_id, emp_name FROM employees WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = 'New York' AND dept_id NOT IN (SELECT dept_id FROM projects WHERE project_status = 'Completed' ORDER BY project_id));
+
+[2025-12-18 16:12:18.765935] [Case:25][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:12:18.766210] [25] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-12-18 16:12:18.766408] [25] Objective Eval Case Results: False
+[2025-12-18 16:12:18.767554] [Case:29][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+BEGIN TRANSACTION; INSERT INTO audit_log (action, timestamp) VALUES ('User login attempt', NOW()); UPDATE users SET last_login = NOW() WHERE username = 'testuser'; COMMIT TRANSACTION SELECT * FROM users WHERE username = 'testuser';
+
+[2025-12-18 16:12:28.671486] [Case:28][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "yes"
+}
+[2025-12-18 16:12:28.671773] [28] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:12:28.672011] [28] Objective Eval Case Results: False
+[2025-12-18 16:12:28.673200] [Case:30][Run:1] [gpt-5-2025-08-07] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+CREATE VIEW popular_products_view AS SELECT p.product_id, p.product_name, SUM(oi.quantity) AS total_quantity_sold FROM products p JOIN order_items oi ON p.product_id = oi.product_id GROUP BY p.product_id, p.product_name HAVING SUM(oi.quantity) > 50 AND p.category = 'Gadgets' AND (SELECT COUNT(review_id) FROM reviews WHERE product_id = p.product_id) > 10 ORDER BY total_quantity_sold DESC;
+
+[2025-12-18 16:12:32.285196] [Case:27][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:12:32.285441] [27] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:12:32.285563] [27] Objective Eval Case Results: True
+[2025-12-18 16:12:38.647228] [Case:29][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "yes"
+}
+[2025-12-18 16:12:38.647518] [29] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-12-18 16:12:38.647662] [29] Objective Eval Case Results: True
+[2025-12-18 16:12:41.355322] [Case:30][Run:1] [gpt-5-2025-08-07] Model Output Response:
+{
+  "has_syntax_error": "no"
+}
+[2025-12-18 16:12:41.355533] [30] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-18 16:12:41.355672] [30] Objective Eval Case Results: True
+[2025-12-18 16:12:41.357264] [1] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.357525] [2] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.357798] [3] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.358111] [4] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.358369] [5] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.358694] [6] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.359021] [7] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.359322] [8] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.359548] [9] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.359787] [10] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.360019] [11] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.360258] [12] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.360486] [13] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.360705] [14] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.360939] [15] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.361285] [16] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.361630] [17] objective Eval Case Final Result: False
+[2025-12-18 16:12:41.361923] [18] objective Eval Case Final Result: False
+[2025-12-18 16:12:41.362227] [19] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.362549] [20] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.362844] [21] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.363102] [22] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.363432] [23] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.363761] [24] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.364135] [25] objective Eval Case Final Result: False
+[2025-12-18 16:12:41.364443] [26] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.364759] [27] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.365034] [28] objective Eval Case Final Result: False
+[2025-12-18 16:12:41.365305] [29] objective Eval Case Final Result: True
+[2025-12-18 16:12:41.365632] [30] objective Eval Case Final Result: True
