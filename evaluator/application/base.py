@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 from typing import Dict, Any, Callable, List
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from config.llm_config import RETRY_TIMES
+from config.llm_config import MAX_APPLICATION_CONCURRENT_CASES, RETRY_TIMES
 
 logger = logging.getLogger(__name__)
 
@@ -21,8 +21,8 @@ class BaseApplicationClient(ABC):
         token = self.config.get("api_key")
         if token:
             self.headers["Authorization"] = f"Bearer {token}"
-        # 并发线程数配置（默认 3）
-        self.max_concurrent_requests = config.get("max_concurrent_requests", 1)
+        # 并发线程数配置
+        self.max_concurrent_requests = config.get("max_concurrent_requests", MAX_APPLICATION_CONCURRENT_CASES)
         self._initialize()
 
     @abstractmethod
@@ -36,6 +36,10 @@ class BaseApplicationClient(ABC):
 
     def request_dialect_conversion(self, case: Dict[str, Any]) -> Any:
         """Sends a request for dialect conversion"""
+        raise NotImplementedError
+
+    def request_index_advice(self, case: Dict[str, Any]) -> Any:
+        """Sends a request for index advice"""
         raise NotImplementedError
 
     def _poll_for_result(
@@ -117,7 +121,7 @@ class BaseApplicationClient(ABC):
         """
         prefix = f"[Case:{case_id}] " if case_id else ""
         max_retries = RETRY_TIMES
-        retry_delay = 2  # 重试延迟（秒）
+        retry_delay = 10  # 重试延迟（秒）
         
         for attempt in range(max_retries + 1):  # 初始尝试 + 3次重试
             if attempt > 0:
@@ -185,7 +189,7 @@ class BaseApplicationClient(ABC):
         
         Args:
             cases: case 列表
-            optimization_type: 优化类型，"sql" 或 "dialect"（默认 "sql"）
+            optimization_type: 优化类型，"sql"、"dialect" 或 "index_advice"（默认 "sql"）
         
         Returns:
             结果列表，顺序与输入 cases 对应
@@ -198,6 +202,8 @@ class BaseApplicationClient(ABC):
             request_method = self.request_sql_optimization
         elif optimization_type == "dialect":
             request_method = self.request_dialect_conversion
+        elif optimization_type == "index_advice":
+            request_method = self.request_index_advice
         else:
             logger.error(f"Unknown optimization_type: {optimization_type}")
             return [{"status": "error", "message": f"Unknown optimization_type: {optimization_type}"} for _ in cases]
