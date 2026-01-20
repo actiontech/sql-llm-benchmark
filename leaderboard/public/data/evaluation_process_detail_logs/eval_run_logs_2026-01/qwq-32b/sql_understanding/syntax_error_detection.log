@@ -1,0 +1,611 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20251222_181855_676
+Run Dimensions: sql_understanding
+Run Indicator: syntax_error_detection
+Evaluation Timestamp: 2025-12-23T09:51:32.444284
+Target: QwQ-32B
+Judge LLMs: deepseek-r1, o4-mini, gemini-2.5-pro
+-------------------------------------------------
+
+[2025-12-22 19:26:16.444291] Run Indicator: sql_understanding, Parameters size: 9097B
+[2025-12-22 19:26:16.445363] 
+--- Capability: sql_understanding Indicator syntax_error_detection.jsonl Evaluating Type: objective  ---
+[2025-12-22 19:26:16.445857] Concurrency: 3 concurrent cases, 3 concurrent judges
+[2025-12-22 19:26:18.797585] [Case:1][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT product_id, product_name FROM products WHERE category = 'Electronics';
+
+[2025-12-22 19:26:18.798411] [Case:2][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+INSERT INTO users (username, email) VALUES ('john_doe', 'john.doe@example.com');
+
+[2025-12-22 19:26:18.798589] [Case:3][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+UPDATE orders SET status = 'Shipped' WHERE order_id = 500;
+
+[2025-12-22 19:26:23.380882] [Case:2][Run:1] [qwq-32b] Model Output Response:
+
+
+{
+  "has_syntax_error": "no"
+}
+[2025-12-22 19:26:23.381214] [2] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 19:26:23.381329] [2] Objective Eval Case Results: True
+[2025-12-22 19:26:23.382454] [Case:4][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+DELETE FROM inactive_accounts WHERE last_login < '2024-01-01';
+
+[2025-12-22 19:28:13.307308] [Case:3][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "no"}
+[2025-12-22 19:28:13.307553] [3] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 19:28:13.307695] [3] Objective Eval Case Results: True
+[2025-12-22 19:28:13.308913] [Case:5][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+INSERT INTO logs (event_type, event_date) VALUS ('Login', CURRENT_DATE());
+
+[2025-12-22 19:31:24.015876] [Case:1][Run:1] [qwq-32b] Model Output Response:
+
+
+{
+  "has_syntax_error": "no"
+}
+[2025-12-22 19:31:24.016128] [1] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 19:31:24.016247] [1] Objective Eval Case Results: True
+[2025-12-22 19:31:24.017451] [Case:6][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT department_id, COUNT(employee_id) AS num_employees, AVG(salary) AS avg_salary FROM employees GROUP BY department_id HAVING AVG(salary) > 60000 ORDER BY avg_salary DESC;
+
+[2025-12-22 19:41:40.428644] [Case:4][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "no"}
+[2025-12-22 19:41:40.428911] [4] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 19:41:40.429047] [4] Objective Eval Case Results: True
+[2025-12-22 19:41:40.430232] [Case:7][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT customer_name, order_date FROM customers JOIN orders ON customers.customer_id = orders.customer_id WHERE order_date BETWEEN '2024-01-01' AND '2024-03-31' ORDER BY order_date ASC LIMIT 20 OFFSET 5;
+
+[2025-12-22 19:43:36.490991] [Case:5][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "yes"}
+[2025-12-22 19:43:36.491203] [5] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-12-22 19:43:36.491325] [5] Objective Eval Case Results: True
+[2025-12-22 19:43:36.492387] [Case:8][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT product_name, price, (price * 1.08) AS price_with_tax FROM products WHERE category IN ('Books', 'Movies') AND stock_quantity > 0;
+
+[2025-12-22 19:47:48.116307] [Case:7][Run:1] [qwq-32b] Model Output Response:
+
+
+{
+  "has_syntax_error": "no"
+}
+[2025-12-22 19:47:48.116524] [7] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 19:47:48.116629] [7] Objective Eval Case Results: True
+[2025-12-22 19:47:48.117606] [Case:9][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT LEFT(product_code, 2) AS category_prefix, SUM(quantity) AS total_sold FROM sales_items GROUP BY category_prefix HAVING SUM(quantity) > 100 ORDER BY total_sold DESC;
+
+[2025-12-22 19:47:57.448232] [Case:9][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "no"}
+[2025-12-22 19:47:57.448463] [9] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 19:47:57.448610] [9] Objective Eval Case Results: True
+[2025-12-22 19:47:57.449908] [Case:10][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT employee_id, CONCAT(first_name, ' ', last_name) AS full_name, DATEDIFF(CURRENT_DATE(), hire_date) AS days_employed FROM employees WHERE DATEDIFF(CURRENT_DATE(), hire_date) > 3650;
+
+[2025-12-22 19:53:03.674924] [Case:10][Run:1] [qwq-32b] Model Output Response:
+
+
+{
+  "has_syntax_error": "no"
+}
+[2025-12-22 19:53:03.675192] [10] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 19:53:03.675341] [10] Objective Eval Case Results: True
+[2025-12-22 19:53:03.676570] [Case:11][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT MAX(score), MIN(score), AVG(score) FROM student_scores WHERE subject = 'Math' AND EXISTS (SELECT 1 FROM students WHERE student_id = student_scores.student_id AND grade_level = 10);
+
+[2025-12-22 19:53:42.290474] [Case:8][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "no"}
+[2025-12-22 19:53:42.290712] [8] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 19:53:42.290862] [8] Objective Eval Case Results: True
+[2025-12-22 19:53:42.291894] [Case:12][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT COUNT(DISTINCT customer_id) AS unique_customers FROM orders WHERE order_date >= '2024-01-01' GROUP BY YEAR(order_date), MONTH(order_date);
+
+[2025-12-22 19:54:13.395461] [Case:12][Run:1] [qwq-32b] Model Output Response:
+
+
+{
+  "has_syntax_error": "no"
+}
+[2025-12-22 19:54:13.395812] [12] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 19:54:13.395949] [12] Objective Eval Case Results: True
+[2025-12-22 19:54:13.396995] [Case:13][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT customer_name, LENGTH(customer_name) FROM customers WHERE LENGTH(customer_name) > 15 ORDER BY LENGTH(customer_name) DESC;
+
+[2025-12-22 19:57:14.072947] [Case:6][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "no"}
+[2025-12-22 19:57:14.073120] [6] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 19:57:14.073304] [6] Objective Eval Case Results: True
+[2025-12-22 19:57:14.074521] [Case:14][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT employee_id, CASE WHEN salary >= 80000 THEN 'High' WHEN salary >= 50000 THEN 'Medium' ELSE 'Low' END AS salary_level FROM employees ORDER BY salary_level DESC;
+
+[2025-12-22 19:57:39.837263] [Case:14][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "no"}
+[2025-12-22 19:57:39.837505] [14] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 19:57:39.837617] [14] Objective Eval Case Results: True
+[2025-12-22 19:57:39.838881] [Case:15][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT region, SUM(amount) FROM sales_data WHERE sale_date BETWEEN '2024-01-01' AND '2024-01-31' GROUP BY region ORDER BY SUM(amount) DESC HAVING SUM(amount) > 50000;
+
+[2025-12-22 19:58:19.151349] [Case:15][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "yes"}
+[2025-12-22 19:58:19.151554] [15] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-12-22 19:58:19.151660] [15] Objective Eval Case Results: True
+[2025-12-22 19:58:19.152800] [Case:16][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT c.customer_name, o.order_id, p.product_name, oi.quantity FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = 'Electronics' AND o.order_date > '2024-01-01' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id);
+
+[2025-12-22 19:58:33.311170] [Case:16][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "no"}
+[2025-12-22 19:58:33.311359] [16] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 19:58:33.311460] [16] Objective Eval Case Results: True
+[2025-12-22 19:58:33.312532] [Case:17][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+WITH EmployeeSalaries AS (SELECT employee_id, department_id, salary FROM employees), DepartmentAvg AS (SELECT department_id, AVG(salary) AS avg_dept_salary FROM employees GROUP BY department_id) SELECT es.employee_id, es.salary, da.avg_dept_salary FROM EmployeeSalaries es JOIN DepartmentAvg da ON es.department_id = da.department_id WHERE es.salary > da.avg_dept_salary;
+
+[2025-12-22 19:59:07.112557] [Case:17][Run:1] [qwq-32b] Model Output Response:
+
+
+{
+  "has_syntax_error": "no"
+}
+[2025-12-22 19:59:07.112790] [17] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-12-22 19:59:07.112976] [17] Objective Eval Case Results: False
+[2025-12-22 19:59:07.114274] [Case:18][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+INSERT INTO sales_archive (SELECT * FROM sales WHERE sale_date < '2023-01-01' AND status = 'Completed');
+
+[2025-12-22 20:03:13.094088] [Case:11][Run:1] [qwq-32b] Model Output Response:
+
+
+{
+  "has_syntax_error": "no"
+}
+[2025-12-22 20:03:13.094431] [11] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 20:03:13.094572] [11] Objective Eval Case Results: True
+[2025-12-22 20:03:13.095779] [Case:19][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT p.product_name, p.price FROM products p WHERE p.product_id IN (SELECT oi.product_id FROM order_items oi GROUP BY oi.product_id HAVING COUNT(oi.order_id) > 10) AND p.category = 'Books' OR p.product_id IN (SELECT r.product_id FROM reviews r WHERE r.rating < 3 AND r.review_date > '2024-01-01') AND p.stock > 0;
+
+[2025-12-22 20:03:42.721882] [Case:19][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "no"}
+[2025-12-22 20:03:42.722138] [19] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 20:03:42.722257] [19] Objective Eval Case Results: True
+[2025-12-22 20:03:42.723404] [Case:20][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT e.first_name, e.last_name, d.department_name FROM employees e LEFT JOIN departments d ON e.department_id = d.department_id WHERE e.employee_id NOT IN (SELECT manager_id FROM projects WHERE manager_id IS NOT NULL) UNION ALL SELECT c.contact_name, NULL, 'External Partner' FROM contacts c WHERE c.company_type = 'Supplier';
+
+[2025-12-22 20:03:52.196882] [Case:20][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "no"}
+[2025-12-22 20:03:52.197075] [20] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 20:03:52.197219] [20] Objective Eval Case Results: True
+[2025-12-22 20:03:52.198348] [Case:21][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+CREATE VIEW high_value_customers AS SELECT c.customer_id, c.customer_name, SUM(o.total_amount) AS lifetime_value FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.customer_id, c.customer_name HAVING SUM(o.total_amount) > 1000 ORDER BY lifetime_value DESC;
+
+[2025-12-22 20:04:21.482166] [Case:13][Run:1] [qwq-32b] Model Output Response:
+
+
+{
+  "has_syntax_error": "no"
+}
+[2025-12-22 20:04:21.482433] [13] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 20:04:21.482568] [13] Objective Eval Case Results: True
+[2025-12-22 20:04:21.483734] [Case:22][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT T1.colA, T1.colB FROM table1 T1 WHERE T1.colC = (SELECT MAX(T2.colD) FROM table2 T2 WHERE T2.colE = T1.colA AND T2.colF IN ('status1', 'status2'));
+
+[2025-12-22 20:04:49.915600] [Case:22][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "no"}
+[2025-12-22 20:04:49.915897] [22] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 20:04:49.916035] [22] Objective Eval Case Results: True
+[2025-12-22 20:04:49.917301] [Case:23][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+BEGIN TRANSACTION; UPDATE accounts SET balance = balance - 100 WHERE account_id = 101; SAVEPOINT deduct_funds; INSERT INTO transactions (account_id, amount, type) VALUES (102, 100, 'deposit'); COMMIT;
+
+[2025-12-22 20:07:47.304837] [Case:18][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "yes"}
+[2025-12-22 20:07:47.305033] [18] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 20:07:47.305156] [18] Objective Eval Case Results: False
+[2025-12-22 20:07:47.306332] [Case:24][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT a.artist_name, COUNT(s.song_id) AS num_songs FROM artists a JOIN songs s ON a.artist_id = s.artist_id GROUP BY a.artist_name HAVING COUNT(s.song_id) > 5 AND a.genre = 'Rock' ORDER BY num_songs DESC LIMIT 10;
+
+[2025-12-22 20:07:58.358172] [Case:23][Run:1] [qwq-32b] Model Output Response:
+
+
+{
+  "has_syntax_error": "no"
+}
+[2025-12-22 20:07:58.358407] [23] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-22 20:07:58.358507] [23] Objective Eval Case Results: True
+[2025-12-22 20:07:58.359452] [Case:25][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+WITH MonthlySales AS (SELECT DATE_TRUNC('month', sale_date) AS sale_month, SUM(amount) AS total_monthly_sales FROM sales GROUP BY DATE_TRUNC('month', sale_date)), AvgSales AS (SELECT AVG(total_monthly_sales) FROM MonthlySales) SELECT ms.sale_month, ms.total_monthly_sales FROM MonthlySales ms WHERE ms.total_monthly_sales > (SELECT * FROM AvgSales);
+
+[2025-12-23 09:30:59.894710] [Case:21][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+CREATE VIEW high_value_customers AS SELECT c.customer_id, c.customer_name, SUM(o.total_amount) AS lifetime_value FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.customer_id, c.customer_name HAVING SUM(o.total_amount) > 1000 ORDER BY lifetime_value DESC;
+
+[2025-12-23 09:30:59.894834] [Case:25][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+WITH MonthlySales AS (SELECT DATE_TRUNC('month', sale_date) AS sale_month, SUM(amount) AS total_monthly_sales FROM sales GROUP BY DATE_TRUNC('month', sale_date)), AvgSales AS (SELECT AVG(total_monthly_sales) FROM MonthlySales) SELECT ms.sale_month, ms.total_monthly_sales FROM MonthlySales ms WHERE ms.total_monthly_sales > (SELECT * FROM AvgSales);
+
+[2025-12-23 09:30:59.904011] [Case:24][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT a.artist_name, COUNT(s.song_id) AS num_songs FROM artists a JOIN songs s ON a.artist_id = s.artist_id GROUP BY a.artist_name HAVING COUNT(s.song_id) > 5 AND a.genre = 'Rock' ORDER BY num_songs DESC LIMIT 10;
+
+[2025-12-23 09:36:10.623157] [Case:24][Run:1] [qwq-32b] Model Output Response:
+
+
+{
+  "has_syntax_error": "no"
+}
+[2025-12-23 09:36:10.623731] [24] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-23 09:36:10.623991] [24] Objective Eval Case Results: True
+[2025-12-23 09:36:10.626181] [Case:26][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT c.customer_name, o.order_id, p.product_name FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id JOIN products p ON oi.product_id = p.product_id WHERE p.category = 'Books' AND o.order_date > '2023-01-01' AND oi.quantity > (SELECT AVG(quantity) FROM order_items WHERE product_id = p.product_id AND order_date BETWEEN '2023-01-01' AND '2023-12-31';
+
+[2025-12-23 09:36:27.613163] [Case:26][Run:1] [qwq-32b] Model Output Response:
+
+
+{
+  "has_syntax_error": "yes"
+}
+[2025-12-23 09:36:27.613483] [26] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-12-23 09:36:27.613631] [26] Objective Eval Case Results: True
+[2025-12-23 09:36:27.614918] [Case:27][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+UPDATE inventory SET stock = stock - 10 WHERE product_id IN (SELECT product_id FROM low_stock_alerts WHERE alert_date < CURRENT_DATE() AND alert_level = 'Critical') OR product_id IN (SELECT product_id FROM recent_sales WHERE sale_date > '2024-05-01' AND quantity_sold > 5 AND stock < 20);
+
+[2025-12-23 09:37:26.166851] [Case:27][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "yes"}
+[2025-12-23 09:37:26.167150] [27] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-23 09:37:26.167509] [27] Objective Eval Case Results: False
+[2025-12-23 09:37:26.168652] [Case:28][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+SELECT emp_id, emp_name FROM employees WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = 'New York' AND dept_id NOT IN (SELECT dept_id FROM projects WHERE project_status = 'Completed' ORDER BY project_id));
+
+[2025-12-23 09:39:04.393484] [Case:28][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "yes"}
+[2025-12-23 09:39:04.393714] [28] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-23 09:39:04.402335] [28] Objective Eval Case Results: False
+[2025-12-23 09:39:04.403672] [Case:29][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+BEGIN TRANSACTION; INSERT INTO audit_log (action, timestamp) VALUES ('User login attempt', NOW()); UPDATE users SET last_login = NOW() WHERE username = 'testuser'; COMMIT TRANSACTION SELECT * FROM users WHERE username = 'testuser';
+
+[2025-12-23 09:40:17.493131] [Case:29][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "yes"}
+[2025-12-23 09:40:17.493381] [29] Objective Eval: Format Model Answer: '{'has_syntax_error': 'yes'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-12-23 09:40:17.493493] [29] Objective Eval Case Results: True
+[2025-12-23 09:40:17.494581] [Case:30][Run:1] [qwq-32b] Model Input Prompt:
+
+You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+
+{
+  "has_syntax_error": "yes|no"
+}
+
+## SQL:
+CREATE VIEW popular_products_view AS SELECT p.product_id, p.product_name, SUM(oi.quantity) AS total_quantity_sold FROM products p JOIN order_items oi ON p.product_id = oi.product_id GROUP BY p.product_id, p.product_name HAVING SUM(oi.quantity) > 50 AND p.category = 'Gadgets' AND (SELECT COUNT(review_id) FROM reviews WHERE product_id = p.product_id) > 10 ORDER BY total_quantity_sold DESC;
+
+[2025-12-23 09:42:57.266291] [Case:30][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "no"}
+[2025-12-23 09:42:57.266544] [30] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-23 09:42:57.266676] [30] Objective Eval Case Results: True
+[2025-12-23 09:46:08.003044] [Case:21][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "no"}
+[2025-12-23 09:46:08.003245] [21] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'no'}'
+[2025-12-23 09:46:08.003339] [21] Objective Eval Case Results: True
+[2025-12-23 09:51:32.426440] [Case:25][Run:1] [qwq-32b] Model Output Response:
+
+
+{"has_syntax_error": "no"}
+[2025-12-23 09:51:32.426906] [25] Objective Eval: Format Model Answer: '{'has_syntax_error': 'no'}', Expected: '{'has_syntax_error': 'yes'}'
+[2025-12-23 09:51:32.427519] [25] Objective Eval Case Results: False
+[2025-12-23 09:51:32.433396] [1] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.433711] [2] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.434012] [3] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.434291] [4] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.434584] [5] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.434903] [6] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.435185] [7] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.435439] [8] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.435707] [9] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.435993] [10] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.436234] [11] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.436454] [12] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.436717] [13] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.436949] [14] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.437199] [15] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.437455] [16] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.437710] [17] objective Eval Case Final Result: False
+[2025-12-23 09:51:32.437969] [18] objective Eval Case Final Result: False
+[2025-12-23 09:51:32.438225] [19] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.438459] [20] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.438719] [21] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.439023] [22] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.439415] [23] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.439752] [24] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.440122] [25] objective Eval Case Final Result: False
+[2025-12-23 09:51:32.440503] [26] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.440795] [27] objective Eval Case Final Result: False
+[2025-12-23 09:51:32.441118] [28] objective Eval Case Final Result: False
+[2025-12-23 09:51:32.441446] [29] objective Eval Case Final Result: True
+[2025-12-23 09:51:32.441799] [30] objective Eval Case Final Result: True
