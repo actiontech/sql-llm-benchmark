@@ -165,6 +165,19 @@ export function createArticleUtils(contentDir: string) {
     },
 
     /**
+     * 获取指定语言的最新文章（按日期排序后的第一篇）
+     * @param language 语言
+     * @returns 最新文章对象
+     */
+    getLatestPost(language: 'zh' | 'en'): ArticlePost | null {
+      const posts = this.getAllPosts(language);
+      if (posts.length === 0) {
+        return null;
+      }
+      return this.getPost(posts[0].slug, language);
+    },
+
+    /**
      * 获取所有文章的slugs
      * @param language 语言
      * @returns slug数组
