@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 
 const AboutPage: React.FC = () => {
@@ -56,7 +57,16 @@ const AboutPage: React.FC = () => {
                 {t('about.section3.title')}
               </h2>
               <p className="m-0 text-base leading-[1.8] text-[#595959] md:text-[15px]">
-                {t('about.section3.content')}
+                {t('about.section3.content_before')}
+                <Link
+                  href="https://github.com/actiontech/sql-llm-benchmark"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="!text-[#1890ff] hover:text-[#40a9ff] hover:underline transition-colors"
+                >
+                  {t('about.section3.content_link')}
+                </Link>
+                {t('about.section3.content_after')}
               </p>
             </section>
           </div>
