@@ -14,6 +14,7 @@ import {
 import { cn } from '../utils/cn';
 import { SubmissionGuideModal } from './SubmissionGuideModal';
 import { FormulaRuleModal } from './FormulaRuleModal';
+import { StarOutlined } from './StarOutlined';
 
 // 获取系统当前月份（格式：YYYY-MM）
 const getCurrentSystemMonth = (): string => {
@@ -156,7 +157,7 @@ const Header: React.FC = () => {
   const navLinkBase = cn(
     'flex items-center gap-2',
     'px-4 py-2',
-    'text-[15px] font-medium',
+    'text-sm font-normal',
     'rounded-md',
     'transition-all duration-200',
     'cursor-pointer no-underline'
@@ -167,15 +168,15 @@ const Header: React.FC = () => {
     cn(
       navLinkBase,
       isActive
-        ? '!bg-blue-50 text-blue-600'
-        : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+        ? '!bg-blue-50 text-blue-600 font-semibold'
+        : 'hover:bg-blue-50 hover:text-blue-600'
     );
 
   // 辅助按钮样式（榜单规则、贡献测评集）
   const actionButtonStyles = cn(
     'flex items-center gap-1.5',
     'px-3.5 py-2',
-    'text-sm font-normal text-gray-500',
+    'text-sm font-normal',
     'bg-transparent border-none',
     'rounded-md',
     'transition-colors duration-200',
@@ -196,7 +197,7 @@ const Header: React.FC = () => {
     <header
       className={cn(
         'fixed top-0 right-0 left-0 z-1000',
-        'bg-white',
+        'bg-[#f0f2f550] backdrop-blur-md',
         'border-b border-gray-200',
         'shadow-sm',
         'transition-all duration-300',
@@ -208,7 +209,7 @@ const Header: React.FC = () => {
           'flex items-center justify-between',
           'px-8',
           'transition-all duration-300',
-          isScrolled ? 'h-12' : 'h-16'
+          isScrolled ? 'h-11' : 'h-14'
         )}
       >
         {/* Left Navigation */}
@@ -262,18 +263,6 @@ const Header: React.FC = () => {
                 <span>News</span>
               </a>
             </Link>
-
-            {/* About */}
-            <Link href="/about" passHref legacyBehavior>
-              <a className={navLinkStyles(isAboutPage)}>
-                <InfoCircleOutlined className="text-lg" />
-                <span>{t('nav.about')}</span>
-              </a>
-            </Link>
-
-            {/* 分隔线 - 仅在 ranking 页面显示 */}
-            {isRankingPage && <div className="mx-3 h-5 w-px bg-gray-300"></div>}
-
             {/* 榜单规则 - 仅在 ranking 页面显示 */}
             {isRankingPage && (
               <button className={actionButtonStyles} onClick={showFormulaModal}>
@@ -288,10 +277,21 @@ const Header: React.FC = () => {
                 className={actionButtonStyles}
                 onClick={showSubmissionGuide}
               >
-                <GithubOutlined className="text-base" />
+                <StarOutlined className="text-base w-4 h-4" />
                 <span>{t('nav.contribute_evaluation')}</span>
               </button>
             )}
+
+            {/* 分隔线 - 仅在 ranking 页面显示 */}
+            {isRankingPage && <div className="mx-3 h-5 w-px bg-gray-300"></div>}
+
+            {/* About */}
+            <Link href="/about" passHref legacyBehavior>
+              <a className={navLinkStyles(isAboutPage)}>
+                <InfoCircleOutlined className="text-lg" />
+                <span>{t('nav.about')}</span>
+              </a>
+            </Link>
           </nav>
         </div>
 
