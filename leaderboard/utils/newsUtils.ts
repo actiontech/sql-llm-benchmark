@@ -35,6 +35,15 @@ export function getNewsPost(
 }
 
 /**
+ * 获取指定语言的最新新闻文章
+ * @param language 语言
+ * @returns 新闻文章对象
+ */
+export function getLatestNewsPost(language: 'zh' | 'en'): NewsPost | null {
+  return newsUtils.getLatestPost(language);
+}
+
+/**
  * 获取所有新闻文章的slugs
  * @param language 语言
  * @returns slug数组

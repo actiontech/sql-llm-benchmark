@@ -34,7 +34,7 @@ import {
 
 // 导入拆分的组件和工具
 import { Model, RankingPageProps } from '../../types/ranking';
-import { getNewsPost } from '../../utils/newsUtils';
+import { getLatestNewsPost, getNewsPost } from '../../utils/newsUtils';
 import {
   getTopModelsByCategory,
   getMaxScoresByCategory,
@@ -1057,7 +1057,7 @@ export const getStaticProps: GetStaticProps<RankingPageProps> = async (
     });
   }
 
-  // 读取当月的博客文章（中文和英文版本）
+  // 读取当月的博客文章（中文和英文版本），当月没有则回退到最新文章
   const month = context.params?.month as string;
   let zhNewsPost = null;
   let enNewsPost = null;
@@ -1066,7 +1066,7 @@ export const getStaticProps: GetStaticProps<RankingPageProps> = async (
     const newsSlug = `scale-${month.replace('-', '')}`;
 
     // 使用 getNewsPost 获取文章，它已经处理了新的目录结构和 index.md
-    const zhPost = getNewsPost(newsSlug, 'zh');
+    const zhPost = getNewsPost(newsSlug, 'zh') ?? getLatestNewsPost('zh');
     if (zhPost) {
       zhNewsPost = {
         slug: zhPost.slug,
@@ -1078,7 +1078,7 @@ export const getStaticProps: GetStaticProps<RankingPageProps> = async (
       };
     }
 
-    const enPost = getNewsPost(newsSlug, 'en');
+    const enPost = getNewsPost(newsSlug, 'en') ?? getLatestNewsPost('en');
     if (enPost) {
       enNewsPost = {
         slug: enPost.slug,
