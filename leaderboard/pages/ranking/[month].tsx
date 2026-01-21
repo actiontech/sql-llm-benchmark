@@ -700,7 +700,7 @@ const RankingPage: React.FC<RankingPageProps> = ({
                           transform: 'translate(-50%, -50%)',
                           width: '90%',
                           textAlign: 'center',
-                          color: '#ffffff',
+                          color: '#4A3728',
                           zIndex: 1,
                         }}
                       >
@@ -709,7 +709,6 @@ const RankingPage: React.FC<RankingPageProps> = ({
                             fontSize: '18px',
                             fontWeight: 700,
                             lineHeight: '1.4',
-                            textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
                           }}
                         >
                           {displayPost.title}
@@ -718,7 +717,7 @@ const RankingPage: React.FC<RankingPageProps> = ({
                           style={{
                             marginTop: '12px',
                             fontSize: '14px',
-                            opacity: 0.9,
+                            opacity: 0.85,
                             fontWeight: 400,
                           }}
                         >
