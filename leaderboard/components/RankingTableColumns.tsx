@@ -83,7 +83,7 @@ export const createRankingTableColumns = ({
                         logoInfo={logoInfo}
                         width={60}
                         height={60}
-                        style={{ verticalAlign: "middle" }}
+                        style={{ display: "inline-block" }}
                     />
                 ) : (
                     <span>N/A</span>
