@@ -16,6 +16,7 @@ import {
   Modal,
   Checkbox,
   Badge,
+  Spin,
 } from 'antd';
 
 import { useTranslation } from 'react-i18next';
@@ -78,6 +79,8 @@ const RankingPage: React.FC<RankingPageProps> = ({
 
   const actionRef = useRef<ActionType | undefined>(undefined);
   const [models, setModels] = useState<Model[]>([]); // 客户端状态管理 models
+  const [mounted, setMounted] = useState(false); // 客户端挂载状态
+  const [isLoading, setIsLoading] = useState(true); // 数据加载状态
   const [searchText, setSearchText] = useState<string>('');
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(true);
   const [isSubmissionGuideVisible, setIsSubmissionGuideVisible] =
@@ -89,8 +92,14 @@ const RankingPage: React.FC<RankingPageProps> = ({
   const [selectedModels, setSelectedModels] = useState<Set<string>>(new Set());
   const [showCompareMode, setShowCompareMode] = useState<boolean>(false);
 
+  // 客户端挂载后设置 mounted 状态
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // 客户端数据获取函数
   const fetchModels = async (month: string) => {
+    setIsLoading(true);
     NProgress.start();
     try {
       const res = await fetch(`/data/eval_reports/models-${month}.json`);
@@ -110,16 +119,17 @@ const RankingPage: React.FC<RankingPageProps> = ({
       console.error('Error fetching models:', error);
       setModels([]); // 清空数据或显示错误状态
     } finally {
+      setIsLoading(false);
       NProgress.done();
     }
   };
 
-  // 在组件挂载和 currentMonth 变化时加载数据
+  // 在组件挂载和 currentMonth 变化时加载数据（仅在客户端挂载后）
   useEffect(() => {
-    if (currentMonth) {
+    if (currentMonth && mounted) {
       fetchModels(currentMonth);
     }
-  }, [currentMonth]);
+  }, [currentMonth, mounted]);
 
   const handleTableChange = (
     pagination: any,
@@ -783,205 +793,223 @@ const RankingPage: React.FC<RankingPageProps> = ({
           )}
 
           {/* 表格 */}
-          <ProTable<Model>
-            actionRef={actionRef}
-            columns={columns}
-            dataSource={filteredModels}
-            rowKey="id"
-            search={false}
-            options={{
-              reload: () => fetchModels(currentMonth), // 调用客户端数据获取函数
-              density: true,
-              fullScreen: true,
-              setting: true,
-            }}
-            onChange={handleTableChange}
-            headerTitle={
-              <Space size="middle">
-                {/* 日期选择器 */}
-                <Select
-                  value={currentMonth}
-                  onChange={handleMonthChange}
-                  style={{ width: 180 }}
-                  size="middle"
-                >
-                  {months.map((m) => {
-                    const isLatestMonth = m === latestMonth;
-                    const isRealTime = isLatestMonth && isLatestMonthCurrent;
+          {!mounted || isLoading ? (
+            <Card
+              style={{
+                borderRadius: 12,
+                overflow: 'hidden',
+                boxShadow: '0 10px 10px rgba(0, 0, 0, 0.1)',
+                border: '1px solid #e8e8e8',
+                minHeight: '400px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Spin size="large" />
+            </Card>
+          ) : (
+            <ProTable<Model>
+              actionRef={actionRef}
+              columns={columns}
+              dataSource={filteredModels}
+              rowKey="id"
+              search={false}
+              loading={isLoading}
+              options={{
+                reload: () => fetchModels(currentMonth), // 调用客户端数据获取函数
+                density: true,
+                fullScreen: true,
+                setting: true,
+              }}
+              onChange={handleTableChange}
+              headerTitle={
+                <Space size="middle">
+                  {/* 日期选择器 */}
+                  <Select
+                    value={currentMonth}
+                    onChange={handleMonthChange}
+                    style={{ width: 180 }}
+                    size="middle"
+                  >
+                    {months.map((m) => {
+                      const isLatestMonth = m === latestMonth;
+                      const isRealTime = isLatestMonth && isLatestMonthCurrent;
 
-                    return (
-                      <Select.Option key={m} value={m}>
-                        {isRealTime ? t('ranking.current_month_realtime') : m}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
+                      return (
+                        <Select.Option key={m} value={m}>
+                          {isRealTime ? t('ranking.current_month_realtime') : m}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
 
-                {/* 榜单规则按钮 */}
-                <Button icon={<FormOutlined />} onClick={showFormulaModal}>
-                  {t('evaluation_cases.formula_button')}
-                </Button>
+                  {/* 榜单规则按钮 */}
+                  <Button icon={<FormOutlined />} onClick={showFormulaModal}>
+                    {t('evaluation_cases.formula_button')}
+                  </Button>
 
-                {/* 贡献测评集按钮 */}
-                <Button icon={<GithubOutlined />} onClick={showSubmissionGuide}>
-                  {t('nav.contribute_evaluation')}
-                </Button>
+                  {/* 贡献测评集按钮 */}
+                  <Button icon={<GithubOutlined />} onClick={showSubmissionGuide}>
+                    {t('nav.contribute_evaluation')}
+                  </Button>
 
-                {/* 分隔线 */}
-                <div
-                  style={{
-                    width: 1,
-                    height: 24,
-                    background: '#d9d9d9',
-                    margin: '0 8px',
-                  }}
-                />
+                  {/* 分隔线 */}
+                  <div
+                    style={{
+                      width: 1,
+                      height: 24,
+                      background: '#d9d9d9',
+                      margin: '0 8px',
+                    }}
+                  />
 
-                {/* 模型对比按钮 */}
-                <Button
-                  key="compare-toggle"
-                  type={showCompareMode ? 'default' : 'primary'}
-                  onClick={toggleCompareMode}
-                  icon={showCompareMode ? <CloseOutlined /> : <SwapOutlined />}
-                  style={{
-                    fontWeight: 'bold',
-                    borderRadius: '4px',
-                    padding: '4px 12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                  }}
-                >
-                  {showCompareMode
-                    ? t('compare.exit_compare_mode')
-                    : t('compare.toggle_compare_mode')}
-                </Button>
-                {showCompareMode && (
-                  <>
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        backgroundColor: '#f0f9ff',
-                        padding: '4px 12px',
-                        borderRadius: '6px',
-                        border: '1px solid #91caff',
-                      }}
-                    >
-                      <Badge
-                        count={selectedModels.size}
-                        showZero
-                        style={{ backgroundColor: '#1890ff' }}
-                      />
-                      <span
+                  {/* 模型对比按钮 */}
+                  <Button
+                    key="compare-toggle"
+                    type={showCompareMode ? 'default' : 'primary'}
+                    onClick={toggleCompareMode}
+                    icon={showCompareMode ? <CloseOutlined /> : <SwapOutlined />}
+                    style={{
+                      fontWeight: 'bold',
+                      borderRadius: '4px',
+                      padding: '4px 12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    {showCompareMode
+                      ? t('compare.exit_compare_mode')
+                      : t('compare.toggle_compare_mode')}
+                  </Button>
+                  {showCompareMode && (
+                    <>
+                      <div
                         style={{
-                          marginLeft: '8px',
-                          fontSize: '14px',
-                          color: '#1890ff',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        {t('compare.selected_models_count', {
-                          count: selectedModels.size,
-                        })}
-                      </span>
-                    </div>
-                    {selectedModels.size >= 2 && (
-                      <Button
-                        key="start-compare"
-                        type="primary"
-                        onClick={handleCompare}
-                        style={{
-                          fontWeight: 'bold',
-                          borderRadius: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          backgroundColor: '#f0f9ff',
                           padding: '4px 12px',
+                          borderRadius: '6px',
+                          border: '1px solid #91caff',
                         }}
                       >
-                        {t('compare.start_compare', {
-                          count: selectedModels.size,
-                        })}
-                      </Button>
-                    )}
-                  </>
-                )}
-              </Space>
-            }
-            pagination={false}
-            rowClassName={(record: Model, idx) => {
-              const rank = idx + 1;
-              const classes = [];
-
-              // 基础排名样式
-              if (rank === 1) classes.push(styles.rank1Row);
-              else if (rank === 2) classes.push(styles.rank2Row);
-              else if (rank === 3) classes.push(styles.rank3Row);
-              else
-                classes.push(
-                  idx % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven
-                );
-
-              // 在多选模式下添加额外样式
-              if (showCompareMode) {
-                classes.push(styles.compareMode);
-                const isSelected = selectedModels.has(record.id);
-                if (isSelected) {
-                  classes.push(styles.selectedRow);
-                }
+                        <Badge
+                          count={selectedModels.size}
+                          showZero
+                          style={{ backgroundColor: '#1890ff' }}
+                        />
+                        <span
+                          style={{
+                            marginLeft: '8px',
+                            fontSize: '14px',
+                            color: '#1890ff',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          {t('compare.selected_models_count', {
+                            count: selectedModels.size,
+                          })}
+                        </span>
+                      </div>
+                      {selectedModels.size >= 2 && (
+                        <Button
+                          key="start-compare"
+                          type="primary"
+                          onClick={handleCompare}
+                          style={{
+                            fontWeight: 'bold',
+                            borderRadius: '4px',
+                            padding: '4px 12px',
+                          }}
+                        >
+                          {t('compare.start_compare', {
+                            count: selectedModels.size,
+                          })}
+                        </Button>
+                      )}
+                    </>
+                  )}
+                </Space>
               }
+              pagination={false}
+              rowClassName={(record: Model, idx) => {
+                const rank = idx + 1;
+                const classes = [];
 
-              return classes.filter(Boolean).join(' ');
-            }}
-            tableStyle={{
-              borderRadius: 12,
-              overflow: 'hidden',
-              boxShadow: '0 10px 10px rgba(0, 0, 0, 0.1)',
-              border: '1px solid #e8e8e8',
-            }}
-            cardProps={{
-              bodyStyle: { padding: 0 },
-            }}
-            onRow={(record) => {
-              return {
-                onClick: (event) => {
-                  const target = event.target as HTMLElement;
+                // 基础排名样式
+                if (rank === 1) classes.push(styles.rank1Row);
+                else if (rank === 2) classes.push(styles.rank2Row);
+                else if (rank === 3) classes.push(styles.rank3Row);
+                else
+                  classes.push(
+                    idx % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven
+                  );
 
-                  // 在多选模式下，让整行点击切换选择状态
-                  if (showCompareMode) {
-                    // 如果点击的是复选框本身，让其正常工作，不重复处理
+                // 在多选模式下添加额外样式
+                if (showCompareMode) {
+                  classes.push(styles.compareMode);
+                  const isSelected = selectedModels.has(record.id);
+                  if (isSelected) {
+                    classes.push(styles.selectedRow);
+                  }
+                }
+
+                return classes.filter(Boolean).join(' ');
+              }}
+              tableStyle={{
+                borderRadius: 12,
+                overflow: 'hidden',
+                boxShadow: '0 10px 10px rgba(0, 0, 0, 0.1)',
+                border: '1px solid #e8e8e8',
+              }}
+              cardProps={{
+                bodyStyle: { padding: 0 },
+              }}
+              onRow={(record) => {
+                return {
+                  onClick: (event) => {
+                    const target = event.target as HTMLElement;
+
+                    // 在多选模式下，让整行点击切换选择状态
+                    if (showCompareMode) {
+                      // 如果点击的是复选框本身，让其正常工作，不重复处理
+                      if (
+                        target.closest("input[type='checkbox']") ||
+                        target.closest('.ant-checkbox')
+                      ) {
+                        return;
+                      }
+                      // 整行点击时切换选择状态
+                      const isCurrentlySelected = selectedModels.has(record.id);
+                      handleModelSelect(record.id, !isCurrentlySelected);
+                      return;
+                    }
+
+                    // 如果点击的是按钮、链接或复选框相关元素，不跳转
                     if (
+                      target.closest('button') ||
+                      target.closest('a') ||
                       target.closest("input[type='checkbox']") ||
                       target.closest('.ant-checkbox')
                     ) {
                       return;
                     }
-                    // 整行点击时切换选择状态
-                    const isCurrentlySelected = selectedModels.has(record.id);
-                    handleModelSelect(record.id, !isCurrentlySelected);
-                    return;
-                  }
 
-                  // 如果点击的是按钮、链接或复选框相关元素，不跳转
-                  if (
-                    target.closest('button') ||
-                    target.closest('a') ||
-                    target.closest("input[type='checkbox']") ||
-                    target.closest('.ant-checkbox')
-                  ) {
-                    return;
-                  }
-
-                  NProgress.start();
-                  router.push(`/models/${record.id}/${currentMonth}`);
-                },
-                style: showCompareMode
-                  ? {
+                    NProgress.start();
+                    router.push(`/models/${record.id}/${currentMonth}`);
+                  },
+                  style: showCompareMode
+                    ? {
                       cursor: 'pointer',
                       userSelect: 'none',
                     }
-                  : undefined,
-              };
-            }}
-          />
+                    : undefined,
+                };
+              }}
+            />
+          )}
         </Card>
 
         <SubmissionGuideModal
