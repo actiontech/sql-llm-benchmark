@@ -362,8 +362,8 @@ const RankingPage: React.FC<RankingPageProps> = ({
             }}
           >
             {/* 背景光效 */}
-            <div className={styles.heroGlow1}></div>
-            <div className={styles.heroGlow2}></div>
+            {/* <div className={styles.heroGlow1}></div>
+             <div className={styles.heroGlow2}></div> */}
 
             {/* 左侧栏: 包含标题、简述和领奖台 */}
             <div
@@ -452,100 +452,6 @@ const RankingPage: React.FC<RankingPageProps> = ({
                     {t('ranking.description_part3_trigger')}
                   </Button>
                 </Paragraph>
-
-                {/* Scale博客入口 - 已注释 */}
-                {/* <div style={{ marginTop: "24px", marginBottom: "15px", width: "fit-content" }}>
-                  <Link
-                    href="https://opensource.actionsky.com/category/%e5%bc%80%e6%ba%90%e4%ba%a7%e5%93%81/scale/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "block",
-                      textDecoration: "none",
-                    }}
-                  >
-                    <div
-                      style={{
-                        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                        padding: "20px 32px",
-                        borderRadius: "12px",
-                        boxShadow: "0 8px 24px rgba(102, 126, 234, 0.3)",
-                        transition: "all 0.3s ease",
-                        cursor: "pointer",
-                        position: "relative",
-                        overflow: "hidden",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = "translateY(-4px)";
-                        e.currentTarget.style.boxShadow = "0 12px 32px rgba(102, 126, 234, 0.4)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = "translateY(0)";
-                        e.currentTarget.style.boxShadow = "0 8px 24px rgba(102, 126, 234, 0.3)";
-                      }}
-                    >
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "-50%",
-                          right: "-10%",
-                          width: "200px",
-                          height: "200px",
-                          background: "rgba(255, 255, 255, 0.1)",
-                          borderRadius: "50%",
-                          pointerEvents: "none",
-                        }}
-                      />
-
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          position: "relative",
-                          zIndex: 1,
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                          <FormOutlined
-                            style={{
-                              fontSize: "28px",
-                              color: "#ffffff",
-                            }}
-                          />
-                          <div>
-                            <div
-                              style={{
-                                color: "#ffffff",
-                                fontSize: "20px",
-                                fontWeight: "700",
-                                lineHeight: "1.3",
-                                marginBottom: "4px",
-                              }}
-                            >
-                              {t("blog.viewBlog")}
-                            </div>
-                            <div
-                              style={{
-                                color: "rgba(255, 255, 255, 0.9)",
-                                fontSize: "14px",
-                                fontWeight: "400",
-                              }}
-                            >
-                              {t("blog.description")}
-                            </div>
-                          </div>
-                        </div>
-                        <RightOutlined
-                          style={{
-                            fontSize: "20px",
-                            color: "#ffffff",
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </Link>
-                </div> */}
               </div>
 
               {/* 领奖台模块 */}
@@ -877,6 +783,7 @@ const RankingPage: React.FC<RankingPageProps> = ({
                       display: 'flex',
                       alignItems: 'center',
                       gap: '4px',
+                      backgroundColor: showCompareMode ? undefined : '#1890ff',
                     }}
                   >
                     {showCompareMode
