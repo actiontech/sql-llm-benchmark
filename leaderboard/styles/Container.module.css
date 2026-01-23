@@ -32,12 +32,12 @@
 }
 
 .tableRowOdd {
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
   /* 白色行 */
 }
 
 .tableRowEven {
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
   /* 浅灰色行 */
 }
 
@@ -48,24 +48,24 @@
 }
 
 .rank1Row {
-  background-color: #fffbe6;
+  /* background-color: #fffbe6; */
   /* 淡金色 */
   font-weight: bold;
-  animation: highlight-row 1.5s ease-in-out infinite alternate;
+  /* animation: highlight-row 1.5s ease-in-out infinite alternate; */
 }
 
 .rank2Row {
-  background-color: #f0f2f5;
+  /* background-color: #f0f2f5; */
   /* 淡银色 */
   font-weight: bold;
-  animation: highlight-row 1.5s ease-in-out infinite alternate;
+  /* animation: highlight-row 1.5s ease-in-out infinite alternate; */
 }
 
 .rank3Row {
-  background-color: #f5f0eb;
+  /* background-color: #f5f0eb; */
   /* 淡铜色 */
   font-weight: bold;
-  animation: highlight-row 1.5s ease-in-out infinite alternate;
+  /* animation: highlight-row 1.5s ease-in-out infinite alternate; */
 }
 
 @keyframes highlight-row {
@@ -327,4 +327,9 @@
 /* 确保整个选择框区域都可以点击 */
 .monthSelectEnhanced :global(.ant-select-selector) {
   cursor: pointer !important;
+}
+
+/* 表头操作栏背景色 */
+.container :global(.ant-pro-table-list-toolbar) {
+  background: linear-gradient(135deg, #f6f8fa 0%, #e9eef4 100%) !important;
 }
