@@ -168,7 +168,7 @@ const Header: React.FC = () => {
     cn(
       navLinkBase,
       isActive
-        ? '!bg-blue-50 text-blue-600 font-semibold'
+        ? '!bg-blue-50 text-blue-600 font-semibold border-b-2 border-gray-500'
         : 'hover:bg-blue-50 hover:text-blue-600'
     );
 
@@ -213,8 +213,8 @@ const Header: React.FC = () => {
         )}
       >
         {/* Left Navigation */}
-        <div className="flex flex-1 items-center">
-          <nav className="flex flex-1 items-center gap-2">
+        <div className="flex flex-1 items-center justify-center">
+          <nav className="flex items-center gap-2">
             {/* 首页 */}
             <Link href="/" passHref legacyBehavior>
               <a className={navLinkStyles(isHomePage)}>
