@@ -106,6 +106,8 @@ OUTPUT_DIR = "output"
 # Recommended value: 3-5, adjust based on server resources
 MAX_CONCURRENT_CASES = 3
 
+MAX_APPLICATION_CONCURRENT_CASES = 3
+
 # Number of concurrent judge models (automatically set to length of JUDGE_LLM_CONFIGS, usually no need to modify)
 MAX_CONCURRENT_JUDGES = len(JUDGE_LLM_CONFIGS)
 
@@ -130,4 +132,4 @@ API_TIMEOUT = 300
 
 # Number of executions per case (used for voting/consensus)
 # Recommended to use odd numbers for easier majority voting
-CASE_EXECUTION_TIMES = 3
+CASE_EXECUTION_TIMES = 1
