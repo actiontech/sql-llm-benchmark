@@ -1443,6 +1443,152 @@
                     ]
                 }
             }
+        },
+        {
+            "id": "glm-4.7",
+            "name": null,
+            "real_model_namne": "GLM-4.7",
+            "type": "Chat(Thinking)",
+            "parameters": 910459,
+            "website": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+            "description": "The GLM-4.7 series represents Zhipu's latest flagship model, designed to enhance coding capabilities, long-term task planning, and tool collaboration for agentic coding scenarios. It has achieved outstanding performance among open-source models on multiple current leaderboards across public benchmarks.",
+            "organization": "GLM",
+            "releaseDate": "2025/12/22",
+            "new_model": true,
+            "scores": {
+                "sql_optimization": {
+                    "ability_score": 59.6,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 58.1,
+                            "indicator_name": "index_advice.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 57.7,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 49.6,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 80.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_understanding": {
+                    "ability_score": 79.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 82.9,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 60.7,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.9,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 68.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 58.1,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.0,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 50.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "seed-oss-36b-instruct",
+            "name": null,
+            "real_model_namne": "Seed-OSS-36B-Instruct",
+            "type": "Chat",
+            "parameters": 910459,
+            "website": "https://seed.bytedance.com/zh/blog/seed-oss-open-source-models-release",
+            "description": "Seed-OSS-36B-Instruct is a 36-billion parameter open-source large language model developed by ByteDance's Seed Team. It is designed for powerful long-context, reasoning, agent and general capabilities, and versatile developer-friendly features. ",
+            "organization": "ByteDance",
+            "releaseDate": "2025/08/20",
+            "new_model": true,
+            "scores": {
+                "sql_optimization": {
+                    "ability_score": 55.3,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 53.8,
+                            "indicator_name": "index_advice.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 52.6,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 44.2,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 78.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_understanding": {
+                    "ability_score": 55.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 48.6,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 46.4,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 88.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 55.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 19.4,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 81.6,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.0,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 47.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
         }
     ]
 }
