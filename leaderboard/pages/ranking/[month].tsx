@@ -574,7 +574,7 @@ const RankingPage: React.FC<RankingPageProps> = ({
                       style={{
                         position: 'relative',
                         width: '100%',
-                        height: '180px',
+                        aspectRatio: '1.8 / 1',
                         borderRadius: '12px',
                         overflow: 'hidden',
                         cursor: 'pointer',
@@ -616,8 +616,9 @@ const RankingPage: React.FC<RankingPageProps> = ({
                           transform: 'translate(-50%, -50%)',
                           width: '90%',
                           textAlign: 'center',
-                          color: '#4A3728',
+                          color: '#fff',
                           zIndex: 1,
+                          paddingLeft: '22%'
                         }}
                       >
                         <div
@@ -629,6 +630,23 @@ const RankingPage: React.FC<RankingPageProps> = ({
                         >
                           {displayPost.title}
                         </div>
+                        {displayPost.excerpt && (
+                          <div
+                            style={{
+                              marginTop: '8px',
+                              fontSize: '14px',
+                              opacity: 0.9,
+                              fontWeight: 400,
+                              lineHeight: '1.5',
+                              display: '-webkit-box',
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: 'vertical' as const,
+                              overflow: 'hidden',
+                            }}
+                          >
+                            {displayPost.excerpt}
+                          </div>
+                        )}
                         <div
                           style={{
                             marginTop: '12px',

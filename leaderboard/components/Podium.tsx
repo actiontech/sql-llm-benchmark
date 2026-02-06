@@ -86,7 +86,6 @@ export const Podium: React.FC<PodiumProps> = ({
                   padding: 0,
                   display: 'flex',
                   flexDirection: 'column',
-                  justifyContent: 'center',
                   alignItems: 'center',
                   height: '100%',
                   width: '100%',

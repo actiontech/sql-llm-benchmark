@@ -8,6 +8,7 @@ excerpt: >-
   capabiliti...
 slug: scale-202507
 title: 'SCALE: Large Model SQL Capability Leaderboard - July 2025'
+coverImage: /news/images/monthly-eval.png
 ---
 ## 1. Executive Summary
 In July 2025, competition in the field of AI large models for code generation and understanding, particularly in database SQL capabilities, is intensifying.

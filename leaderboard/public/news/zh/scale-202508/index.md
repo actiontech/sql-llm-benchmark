@@ -8,6 +8,7 @@ excerpt: >-
   GPT-...
 slug: scale-202508
 title: 大模型 SQL 能力排行榜 2025 年 08 月
+coverImage: /news/images/monthly-eval.png
 ---
 ## 1. 摘要
 2025 年 8 月，[SCALE](https://sql-llm-leaderboard.com/ranking/2025-08 "SCALE 202508") 评测基准持续追踪 AI 技术前沿，本期我们迎来了多个备受瞩目的新模型，并首次将专业的方言转换应用 —— [SQLShift](https://sqlshift.cn/) 作为基线纳入评测范围，旨在为开发者和决策者提供更全面、更具实践指导意义的参考。 
