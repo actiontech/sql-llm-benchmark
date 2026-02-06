@@ -8,6 +8,7 @@ excerpt: >-
   domain. This mo...
 slug: scale-202510
 title: 'SCALE: Large Model SQL Capability Leaderboard - October 2025'
+coverImage: /news/images/monthly-eval.png
 ---
 ## 1. Executive Summary
 

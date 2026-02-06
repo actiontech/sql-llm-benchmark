@@ -8,6 +8,7 @@ excerpt: >-
   several high...
 slug: scale-202508
 title: 'SCALE: Large Model SQL Capability Leaderboard - August 2025'
+coverImage: /news/images/monthly-eval.png
 ---
 ## 1. Executive Summary
 In August 2025, the [SCALE](https://sql-llm-leaderboard.com/ranking/2025-08) evaluation benchmark continues to track the cutting edge of AI technology. This month, we welcome several highly anticipated new models and, for the first time, include the professional dialect conversion application — [SQLShift](https://sqlshift.cn/) — as a baseline in our evaluation scope. This aims to provide developers and decision-makers with more comprehensive and practically instructive references.

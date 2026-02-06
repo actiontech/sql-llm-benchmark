@@ -8,6 +8,7 @@ excerpt: >-
   This mont...
 slug: scale-202509
 title: 'SCALE: Large Model SQL Capability Leaderboard - September 2025'
+coverImage: /news/images/monthly-eval.png
 ---
 ## 1. Executive Summary
 

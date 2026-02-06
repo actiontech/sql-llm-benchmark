@@ -5,8 +5,9 @@ import Document, {
   NextScript,
   DocumentContext,
 } from "next/document";
-import { createCache, extractStyle, StyleProvider } from "@ant-design/cssinjs";
-import type { EmotionCache } from "@emotion/cache";
+import type { AppProps } from "next/app";
+import type { ComponentType } from "react";
+import { createCache, extractStyle } from "@ant-design/cssinjs";
 import i18n from "../lib/i18n";
 
 interface SeoData {
@@ -16,7 +17,6 @@ interface SeoData {
 }
 
 interface MyDocumentProps {
-  emotionCache: EmotionCache;
   seoData: SeoData;
   locale: string;
 }
@@ -44,12 +44,12 @@ class MyDocument extends Document<MyDocumentProps> {
 
     ctx.renderPage = () =>
       originalRenderPage({
-        enhanceApp: (App) => (props) =>
-        (
-          <StyleProvider cache={cache}>
-            <App {...props} />
-          </StyleProvider>
-        ),
+        enhanceApp: (App) => (props) => {
+          const AppWithAntCache = App as ComponentType<
+            AppProps & { antStyleCache?: typeof cache }
+          >;
+          return <AppWithAntCache {...props} antStyleCache={cache} />;
+        },
       });
 
     const initialProps = await Document.getInitialProps(ctx);
