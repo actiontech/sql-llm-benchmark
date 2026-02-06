@@ -8,6 +8,7 @@ excerpt: >-
   language mo...
 slug: scale-202511
 title: 'SCALE: Large Model SQL Capability Leaderboard - November 2025'
+coverImage: /news/images/monthly-eval.png
 ---
 ## 1. Executive Summary
 This edition of the  [SCALE](https://sql-llm-leaderboard.com/) evaluation focuses on the performance boundaries of the new generation of professional-grade large language models in the database SQL domain.

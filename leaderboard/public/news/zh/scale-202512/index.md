@@ -8,6 +8,7 @@ excerpt: >-
   4.5 系...
 slug: scale-202512
 title: 大模型 SQL 能力排行榜 2025 年 12 月
+coverImage: /news/images/monthly-eval.png
 ---
 ## 一、本月榜单导览
 

@@ -45,6 +45,8 @@ body {
   /* 确保padding不会增加总宽度 */
   padding-top: 20px;
   /* 为固定导航栏留出空间，调整为更紧凑的距离 */
+  /* 覆盖 Ant Design Modal 打开时对 body 的 overflow: hidden，允许背景继续滚动，修复 Windows 因滚动条占据宽度，随着弹窗显隐导致的布局抖动 */
+  overflow: auto !important;
 }
 
 @media (max-width: 768px) {

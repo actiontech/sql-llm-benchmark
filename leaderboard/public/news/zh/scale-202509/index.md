@@ -8,6 +8,7 @@ excerpt: >-
   Kimi-K2-Instruct-0905，还在平台功能上进行了升级，旨在为开发者、研究者和企业决策者提供更精细、更具洞察力的技术参考。...
 slug: scale-202509
 title: 大模型 SQL 能力排行榜 2025 年 09 月
+coverImage: /news/images/monthly-eval.png
 ---
 ## 1. 摘要
 2025 年 9 月，[SCALE](https://sql-llm-leaderboard.com/ranking/2025-09 "SCALE 202509") 评测基准持续聚焦 AI 在 SQL 领域的应用前沿。

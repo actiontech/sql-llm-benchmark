@@ -39,7 +39,13 @@
     "items": "items",
     "reset": "Reset",
     "back_to_ranking": "Back to Ranking",
-    "back_to_detail": "Back to Detail"
+    "back_to_detail": "Back to Detail",
+    "back": "Back",
+    "prev": "Previous",
+    "next": "Next",
+    "select_all": "Select All",
+    "loading": "Loading",
+    "unknown_vendor": "Other"
   },
   "table": {
     "rank": "Rank",
@@ -324,9 +330,189 @@
     "home": "LLM Leaderboard",
     "home_label": "Leaderboard",
     "blog": "blog",
+    "news": "News",
     "about": "About Us",
     "github": "Visit GitHub Repository",
-    "contribute_evaluation": "Contribute Evaluation"
+    "contribute_evaluation": "Contribute Evaluation",
+    "online_evaluation": "Custom Evaluation"
+  },
+  "evaluation": {
+    "modal_title": "Create Online Evaluation",
+    "create_button": "Create Evaluation",
+    "submit_button": "Submit Evaluation Request",
+    "confirm_title": "Please Confirm the Following Information",
+    "task_id": "Task ID",
+    "estimated_time": "Estimated Completion Time",
+    "result_email_hint": "Results will be sent to",
+    "token_estimate": "Token",
+    "view_dataset": "View Dataset",
+    "selected_datasets": "Selected Datasets",
+    "estimated_tokens": "Estimated Total Tokens",
+    "dataset_description": "{{count}} test cases",
+    "custom_model": {
+      "title": "Custom Model Evaluation",
+      "page_title": "Custom Model Evaluation",
+      "description": "Submit your model information, and we will conduct a comprehensive evaluation using SCALE evaluation datasets",
+      "goal": "Comprehensively assess your LLM's capabilities in core SQL scenarios including optimization, dialect conversion, and understanding",
+      "desc_1": "SQL capability evaluation for models",
+      "desc_2": "Support user-defined models",
+      "desc_3": "Support all SCALE evaluation datasets",
+      "desc_4": "Evaluation results via email notification",
+      "steps": {
+        "model_info": "Model Information",
+        "dataset_select": "Select Datasets",
+        "email_and_confirm": "Confirmation & Email"
+      },
+      "form": {
+        "model_name": "Model Name",
+        "model_name_placeholder": "e.g., GPT-4-Turbo",
+        "model_name_required": "Please enter model name",
+        "api_url": "Model API URL",
+        "api_url_required": "Please enter API URL",
+        "api_url_invalid": "Please enter a valid URL",
+        "api_key": "Model API Key",
+        "api_key_required": "Please enter API Key",
+        "api_key_hint": "🔒 Your API Key will not be stored and will only be used for this evaluation",
+        "max_concurrency": "Maximum Concurrency",
+        "max_concurrency_required": "Please enter concurrency",
+        "max_concurrency_range": "Concurrency range 1-20",
+        "result_email": "Evaluation Result Email",
+        "result_email_required": "Please enter email",
+        "result_email_invalid": "Please enter a valid email address",
+        "verification_code": "Email Verification Code",
+        "verification_code_required": "Please enter verification code",
+        "verification_code_placeholder": "Enter 6-digit code",
+        "send_verification_code": "Send Code",
+        "resend_verification_code": "Resend in {{seconds}}s",
+        "verification_code_sent": "Code sent",
+        "verification_code_hint": "Code valid for 5 minutes, do not share",
+        "model_call_info": "Model Call Instructions (Optional)",
+        "model_call_info_placeholder": "Please describe how to call your model, for example:\n• Model provider (e.g., OpenAI, Google, Azure OpenAI, etc.)\n• Specific model version (e.g., 2024-04-09)\n• Other notes\nYou can also paste code examples directly. We will manually configure and call your model based on this information.",
+        "model_call_info_hint": "⚠️ Please ensure the information provided is detailed and accurate enough for us to successfully call your model",
+        "datasets": "Evaluation Datasets"
+      },
+      "warning": {
+        "balance_title": "Please ensure sufficient account balance",
+        "balance_description": "Full dataset contains approximately {{tokens}} tokens. Evaluation will consume your API quota, please ensure sufficient account balance"
+      },
+      "dataset_select_hint": "Please select evaluation datasets to use",
+      "email_hint": "Evaluation report will be sent to this email upon completion",
+      "error": {
+        "no_dataset_selected": "Please select at least one dataset"
+      }
+    },
+    "custom_dataset": {
+      "title": "Custom Dataset Evaluation",
+      "page_title": "Custom Dataset Evaluation",
+      "description": "Upload your custom dataset to evaluate with leaderboard models",
+      "goal": "Horizontally compare mainstream LLMs' SQL capabilities on your proprietary business datasets to provide scientific basis for model selection",
+      "desc_1": "Use custom evaluation dataset",
+      "desc_2": "Support evaluation with all leaderboard models",
+      "desc_3": "Commercial cooperation prioritized",
+      "desc_4": "Evaluation results via email notification",
+      "steps": {
+        "business_info": "Business Information",
+        "dataset_config": "Dataset Configuration",
+        "confirm_and_email": "Confirmation & Email"
+      },
+      "form": {
+        "name": "Your Name",
+        "name_placeholder": "John Doe",
+        "name_required": "Please enter your name",
+        "phone": "Phone Number",
+        "phone_required": "Please enter phone number",
+        "phone_invalid": "Please enter a valid phone number",
+        "company": "Company Name",
+        "company_placeholder": "XX Technology Co., Ltd.",
+        "company_required": "Please enter company name",
+        "email": "Enterprise Email",
+        "email_required": "Please enter enterprise email",
+        "email_invalid": "Please enter a valid email address",
+        "dataset_file": "Evaluation Dataset",
+        "dataset_name": "Dataset Name",
+        "dataset_name_placeholder": "Enter dataset name (optional)",
+        "dataset_name_tooltip": "Specify a name for your evaluation dataset for easy identification",
+        "dataset_description": "Dataset Description",
+        "dataset_description_placeholder": "Please briefly describe your evaluation dataset...",
+        "notes": "Notes",
+        "notes_placeholder": "Special considerations for evaluation...",
+        "judge_mode": "Judge Mode",
+        "judge_mode_required": "Please select judge mode",
+        "target_prompt": "Target Model Prompt",
+        "target_prompt_placeholder": "System prompt for the evaluated model (optional)...",
+        "judge_prompt": "Judge Model Prompt",
+        "judge_prompt_placeholder": "System prompt for the judge model (optional)...",
+        "model_name": "Model Name",
+        "model_name_required": "Please enter model name",
+        "api_url_required": "Please enter API URL",
+        "api_key_required": "Please enter API Key"
+      },
+      "business_info_hint": "Business information is only used for contact and service, we will keep it strictly confidential",
+      "email_hint": "Evaluation report will be sent to this email upon completion",
+      "model_select_title": "Select Evaluation Models",
+      "leaderboard_models": "Leaderboard Models",
+      "custom_models": "Custom Models",
+      "custom_models_request": "Other Models You'd Like Supported",
+      "custom_models_request_tooltip": "Let us know if you'd like us to support other models",
+      "custom_models_request_placeholder": "Models you'd like to evaluate with this dataset. Separate multiple models with semicolons (;), e.g.: gpt-5;claude-4;gemini-ultra",
+      "add_custom_model": "Add Custom Model",
+      "evaluation_config": "Evaluation Configuration",
+      "judge_mode": {
+        "objective": "Objective",
+        "subjective": "Subjective",
+        "mixed": "Hybrid",
+        "hybrid": "Hybrid",
+        "description_title": "Evaluation Method Description:",
+        "objective_detail": {
+          "title": "Objective Evaluation",
+          "feature": "Deterministic answers with unique standards",
+          "scenario": "SQL syntax correctness detection, execution accuracy verification, and other evaluations with clear pass/fail criteria",
+          "method": "Direct comparison between model output and preset standard answers through automated programs, results in pass/fail"
+        },
+        "subjective_detail": {
+          "title": "Subjective Evaluation",
+          "feature": "Open-ended answers relying on semantic understanding",
+          "scenario": "Logical equivalence determination, SQL dialect conversion, and other evaluations without preset fixed answers",
+          "method": "Multiple high-performance judge models independently evaluate the correctness and reasonableness of model output, final conclusion determined by majority voting"
+        },
+        "mixed_detail": {
+          "title": "Hybrid Evaluation",
+          "feature": "Semi-open answers with clear evaluation dimensions",
+          "scenario": "SQL optimization effectiveness evaluation and other assessments with preset evaluation rules but non-unique answers, guided by rule-driven judge models",
+          "method": "Based on predefined rule sets, multiple judge models use majority voting to analyze whether model output triggers target optimization rules, comprehensive scoring based on rule coverage and trigger accuracy"
+        },
+        "feature_label": "Feature: ",
+        "scenario_label": "Applicable Scenarios: ",
+        "method_label": "Judgment Method: "
+      },
+      "upload": {
+        "click_or_drag": "Click or drag file to this area",
+        "hint": "Support .jsonl or .csv format, file size not exceeding 20MB"
+      },
+      "contact": "Contact",
+      "evaluation_models": "Evaluation Models",
+      "error": {
+        "no_file": "Please upload dataset file",
+        "no_model": "Please select at least one model",
+        "invalid_file_type": "Only JSONL or CSV format supported",
+        "file_too_large": "File size cannot exceed 20MB"
+      },
+      "fetch_models_failed": "Failed to fetch model list",
+      "fetch_models_error": "An error occurred while fetching model list, please try again later",
+      "no_models_available": "No leaderboard models available"
+    },
+    "commercial_info": "We will proactively contact you after the evaluation is completed to provide detailed evaluation reports and professional consulting services. If you have any questions, please feel free to contact us via the email below.",
+    "contact_email": "wanghucheng@actionsky.com",
+    "success": {
+      "task_submitted": "Task submitted successfully!",
+      "submit_success": "Submission Successful",
+      "estimated_duration": "Estimated completion: ~3 days"
+    },
+    "error": {
+      "submit_failed": "Submission failed",
+      "network_error": "Network error, please try again later",
+      "fetch_datasets_failed": "Failed to fetch dataset list"
+    }
   },
   "pagination": {
     "previous": "Previous",
