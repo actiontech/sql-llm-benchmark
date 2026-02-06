@@ -8,6 +8,7 @@ excerpt: >-
   可靠性新标杆：Gemini 3 P...
 slug: scale-202511
 title: 大模型 SQL 能力排行榜 2025 年 11 月
+coverImage: /news/images/monthly-eval.png
 ---
 ## 1. 摘要
 本期 [SCALE](https://sql-llm-leaderboard.com/ "SCALE") 评测聚焦于新一代专业级大语言模型在数据库 SQL 领域的表现边界。

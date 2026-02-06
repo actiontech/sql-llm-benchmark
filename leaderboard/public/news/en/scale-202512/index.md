@@ -8,6 +8,7 @@ excerpt: >-
   month's updat...
 slug: scale-202512
 title: 'SCALE: Large Model SQL Capability Leaderboard - December 2025'
+coverImage: /news/images/monthly-eval.png
 ---
 ## 1. Monthly Leaderboard Overview
 

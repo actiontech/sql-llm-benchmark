@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "antd";
+import { createCache, StyleProvider } from "@ant-design/cssinjs";
 import { useTranslation } from "react-i18next";
 import "../lib/i18n"; // 导入i18n配置
 import "../styles/globals.css";
@@ -19,9 +20,19 @@ Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
-function MyApp({ Component, pageProps }: AppProps) {
+type AntStyleCache = ReturnType<typeof createCache>;
+
+interface MyAppProps extends AppProps {
+  antStyleCache?: AntStyleCache;
+}
+
+function MyApp({ Component, pageProps, antStyleCache }: MyAppProps) {
   const [isMounted, setIsMounted] = React.useState(false);
   const { i18n } = useTranslation();
+  const antCache = React.useMemo(
+    () => antStyleCache ?? createCache(),
+    [antStyleCache],
+  );
 
   React.useEffect(() => {
     setIsMounted(true);
@@ -36,19 +47,21 @@ function MyApp({ Component, pageProps }: AppProps) {
           <title>模型评测排行榜</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
-        <App>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              minHeight: "100vh",
-            }}
-          >
-            <Header />
-            <Component {...pageProps} />
-            <Footer />
-          </div>
-        </App>
+        <StyleProvider cache={antCache}>
+          <App>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                minHeight: "100vh",
+              }}
+            >
+              <Header />
+              <Component {...pageProps} />
+              <Footer />
+            </div>
+          </App>
+        </StyleProvider>
       </>
     );
   }
@@ -60,17 +73,19 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>模型评测排行榜</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <App>
-        <div
-          style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
-        >
-          <BrowserRouter>
-            <Header />
-            <Component {...pageProps} />
-          </BrowserRouter>
-          <Footer />
-        </div>
-      </App>
+      <StyleProvider cache={antCache}>
+        <App>
+          <div
+            style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+          >
+            <BrowserRouter>
+              <Header />
+              <Component {...pageProps} />
+            </BrowserRouter>
+            <Footer />
+          </div>
+        </App>
+      </StyleProvider>
     </>
   );
 }

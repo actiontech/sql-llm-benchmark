@@ -8,6 +8,7 @@ excerpt: >-
   系列也正式迈入稳定版。更重要的是，我们针对数据库...
 slug: scale-202507
 title: 大模型 SQL 能力排行榜 2025 年 07 月
+coverImage: /news/images/monthly-eval.png
 ---
 ## 1. 摘要
 2025 年 7 月，AI 大模型在代码生成与理解领域，特别是数据库 SQL 能力上的竞争日趋白热化。

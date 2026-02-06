@@ -48,7 +48,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
                 <img 
                   src={post.coverImage} 
                   alt={post.title}
-                  className={styles.postCardImageBg}
+                  className={`${styles.postCardImageBg} ${imageBgClass}`}
                   style={{ 
                     objectFit: 'cover', 
                     objectPosition: 'left center',
