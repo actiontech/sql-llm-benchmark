@@ -62,7 +62,7 @@ export const FeaturedArticle: React.FC<FeaturedArticleProps> = ({
               <img 
                 src={post.coverImage} 
                 alt={post.title}
-                className={styles.featuredImageBg}
+                className={`${styles.featuredImageBg} ${featuredBgClass}`}
                 style={{ 
                   objectFit: 'initial', 
                   objectPosition: 'left center',
