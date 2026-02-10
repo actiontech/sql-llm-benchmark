@@ -24,6 +24,7 @@
     "description_part2": "获取更多详情，或",
     "description_part3_trigger": "提交您的评测报告",
     "current_month_realtime": "本月实时榜",
+    "toolbar_more": "更多",
     "full_description": "大模型SQL能力排行榜揭示大模型在SQL领域的真实水平！ SCALE致力于通过科学、严谨的测评，全面评估大语言模型（LLM）处理SQL的核心能力。我们聚焦三大关键维度：SQL优化能力（提升查询效率与性能）、方言转换能力（实现跨数据库平台的无缝迁移）以及SQL深度理解能力（精准解析复杂查询逻辑与用户意图）。为真实反映模型在数据库操作实践中的表现，我们构建了一套多维度、多指标的综合测评体系。并采用不同难度等级的真实案例进行严格测试。每个测试案例均依据其技术复杂度与实际应用价值被赋予科学的权重（难度越高，权重越大），确保最终得分能精准衡量模型在高价值、高挑战性任务上的综合表现力。SCALE 榜单通过严格测试与科学加权评分，旨在为开发者、数据库管理员及企业技术决策者提供权威、客观的参考依据，清晰呈现各模型在SQL处理领域的相对优势，推动大模型在数据库智能化应用中的技术发展与选型落地。"
   },
   "common": {
@@ -327,6 +328,7 @@
     "next": "下一篇"
   },
   "nav": {
+    "menu": "菜单",
     "home": "LLM榜单",
     "home_label": "榜单",
     "blog": "博客",
@@ -386,16 +388,24 @@
         "resend_verification_code": "{{seconds}}秒后重新发送",
         "verification_code_sent": "验证码已发送",
         "verification_code_hint": "验证码5分钟内有效，请勿泄露给他人",
-        "model_call_info": "模型调用说明（可选）",
-        "model_call_info_placeholder": "请描述如何调用您的模型，例如：\n• 模型提供商（如：OpenAI、Google、Azure OpenAI 等）\n• 具体模型版本（如：2024-04-09）\n• 其他注意事项\n您也可以直接粘贴调用代码示例，我们会根据这些信息手动配置并调用您的模型。",
-        "model_call_info_hint": "⚠️ 请确保您提供的信息足够详细和准确，以便我们能够成功调用您的模型进行测评",
+        "model_api_params": "模型 API 参数",
+        "model_api_params_required": "请填写模型 API 参数",
+        "model_api_params_hint": "请根据示例进行填写，格式为 key=\"value\"",
+        "model_api_params_invalid": "模型 API 参数校验未通过",
         "datasets": "测评数据集"
       },
       "warning": {
         "balance_title": "请确保账户余额充足",
-        "balance_description": "全量数据集 Token 数大约为 {{tokens}}，测评将消耗您的 API 额度，请确保账户余额充足"
+        "balance_description": "测评将消耗您的 API 额度，请确保账户余额充足"
       },
       "dataset_select_hint": "请选择要使用的测评数据集",
+      "token_stats_title": "数据集 Token 统计",
+      "token_stats_dimension": "维度",
+      "token_stats_indicator": "指标",
+      "token_stats_cases": "Cases数",
+      "token_stats_tokens": "总Token数",
+      "token_stats_summary": "汇总",
+      "token_stats_total": "总体统计",
       "email_hint": "测评完成后，结果报告将发送至此邮箱",
       "error": {
         "no_dataset_selected": "请至少选择一个数据集"
@@ -440,8 +450,11 @@
         "judge_mode_required": "请选择裁判方式",
         "target_prompt": "测评目标模型提示词",
         "target_prompt_placeholder": "发送给被测评模型的系统提示词（可选）...",
-        "judge_prompt": "裁判模型提示词",
+        "target_prompt_default": "将以下 SQL 从 {source} 方言转换为 {target} 方言。\n要求：\n- 仅输出转换后的 SQL 语句\n- 不要使用 Markdown 代码块，不要添加解释或注释\n- 必须可以在 {target} 中直接执行\n源 SQL ({source})：\n{sql}\n转换后的 SQL ({target})：",
+        "target_prompt_tooltip": "为什么需要提示词？\nSCALE需要了解您的数据集结构和测评意图，才能正确调用模型并评估结果。\n提示词应包含什么？\n✓ 测评目的：评估模型的哪项 SQL 能力\n✓ 评估标准：如何判断模型回答的正确性\n✓ 参数说明：数据集中的字段含义（如 方言转换测评集的 {sql}、{source}、{target}）\n✓ 使用方式：如何将字段组合成发送给模型的问题\n示例参考：\n参考输入框中预置的提示词模板",
+        "judge_prompt": "裁判提示词",
         "judge_prompt_placeholder": "发送给裁判模型的系统提示词（可选）...",
+        "judge_prompt_default": "你是一位资深数据库专家，对各种 SQL 方言和跨平台兼容性有深入理解。\n你的任务是验证从 {source} 到 {target} 的 SQL 转换是否正确，需检查：\n1. **逻辑等价性**：原始 SQL 和转换后的 SQL 在任何有效数据集上产生相同结果\n2. **方言正确性**：转换后的 SQL 严格遵循 {target} 的语法、函数和语义规则\n仅返回 JSON 对象，不要添加其他说明：\n{\n  \"answer\": \"yes\" | \"no\",\n  \"reason\": \"若 answer 为 no，简要说明原因\"\n}\n原始 SQL ({source})：\n{original}\n转换后的 SQL ({target})：\n{translated}",
         "model_name": "模型名称",
         "model_name_required": "请输入模型名称",
         "api_url_required": "请输入 API URL",
@@ -506,7 +519,7 @@
     "success": {
       "task_submitted": "任务提交成功！",
       "submit_success": "提交成功",
-      "estimated_duration": "预计完成时间：约 3 天"
+      "estimated_duration": "预计5个工作日内给您回复"
     },
     "error": {
       "submit_failed": "提交失败",
