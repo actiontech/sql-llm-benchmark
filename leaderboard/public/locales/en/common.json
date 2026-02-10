@@ -24,6 +24,7 @@
     "description_part2": " or",
     "description_part3_trigger": "submit your own evaluation report",
     "current_month_realtime": "Real-time",
+    "toolbar_more": "More",
     "full_description": "The Large Model SQL Capability Leaderboard (SCALE) reveals the true proficiency of large models in SQL. SCALE comprehensively evaluates Large Language Models' (LLMs) core SQL capabilities through scientific, rigorous assessment, focusing on three critical dimensions: SQL Optimization (enhancing query efficiency and performance), Dialect Conversion (enabling seamless cross-database platform migration), and Deep SQL Comprehension (accurately parsing complex logic and user intent). To authentically reflect real-world database operation performance, we established a multi-dimensional, multi-metric evaluation system employing strict testing with real-world cases across varying difficulty levels. Each test case carries scientifically calibrated weights based on technical complexity and practical value (higher difficulty = greater weight), ensuring final scores precisely measure models' comprehensive performance in high-value, high-challenge tasks. Through rigorous testing and weighted scoring, SCALE provides developers, database administrators, and enterprise technology decision-makers with authoritative, objective benchmarks, clearly delineating models' relative strengths in SQL processing to advance intelligent database application development and implementation."
   },
   "common": {
@@ -327,6 +328,7 @@
     "next": "Next"
   },
   "nav": {
+    "menu": "Menu",
     "home": "LLM Leaderboard",
     "home_label": "Leaderboard",
     "blog": "blog",
@@ -386,16 +388,24 @@
         "resend_verification_code": "Resend in {{seconds}}s",
         "verification_code_sent": "Code sent",
         "verification_code_hint": "Code valid for 5 minutes, do not share",
-        "model_call_info": "Model Call Instructions (Optional)",
-        "model_call_info_placeholder": "Please describe how to call your model, for example:\n• Model provider (e.g., OpenAI, Google, Azure OpenAI, etc.)\n• Specific model version (e.g., 2024-04-09)\n• Other notes\nYou can also paste code examples directly. We will manually configure and call your model based on this information.",
-        "model_call_info_hint": "⚠️ Please ensure the information provided is detailed and accurate enough for us to successfully call your model",
+        "model_api_params": "Model API Parameters",
+        "model_api_params_required": "Please enter model API parameters",
+        "model_api_params_hint": "Please fill in according to the example, format: key=\"value\"",
+        "model_api_params_invalid": "Model API parameters validation failed",
         "datasets": "Evaluation Datasets"
       },
       "warning": {
         "balance_title": "Please ensure sufficient account balance",
-        "balance_description": "Full dataset contains approximately {{tokens}} tokens. Evaluation will consume your API quota, please ensure sufficient account balance"
+        "balance_description": "The evaluation will consume your API quota. Please ensure your account has sufficient balance."
       },
       "dataset_select_hint": "Please select evaluation datasets to use",
+      "token_stats_title": "Dataset Token Statistics",
+      "token_stats_dimension": "Dimension",
+      "token_stats_indicator": "Indicator",
+      "token_stats_cases": "Cases",
+      "token_stats_tokens": "Total Tokens",
+      "token_stats_summary": "Subtotal",
+      "token_stats_total": "Total",
       "email_hint": "Evaluation report will be sent to this email upon completion",
       "error": {
         "no_dataset_selected": "Please select at least one dataset"
@@ -440,8 +450,11 @@
         "judge_mode_required": "Please select judge mode",
         "target_prompt": "Target Model Prompt",
         "target_prompt_placeholder": "System prompt for the evaluated model (optional)...",
-        "judge_prompt": "Judge Model Prompt",
+        "target_prompt_default": "Convert the SQL from {source} to {target} dialect.\nRequirements:\n- Output ONLY the converted SQL statement\n- No markdown code blocks, no explanations, no comments\n- Must be directly executable in {target}\nSource SQL ({source}):\n{sql}\nConverted SQL ({target}):",
+        "target_prompt_tooltip": "Why is the prompt needed?\nSCALE needs to understand your dataset structure and evaluation intent to correctly invoke the model and evaluate results.\nWhat should the prompt include?\n✓ Evaluation objective: which SQL capability of the model is being assessed\n✓ Evaluation criteria: how to determine whether the model's answer is correct\n✓ Parameter description: meaning of fields in the dataset (e.g. {sql}, {source}, {target} for dialect conversion)\n✓ Usage: how to combine fields into the question sent to the model\nExample:\nRefer to the preset prompt template in the input box",
+        "judge_prompt": "Judge Prompt",
         "judge_prompt_placeholder": "System prompt for the judge model (optional)...",
+        "judge_prompt_default": "You are a senior database expert with deep knowledge of SQL dialects and cross-platform compatibility.\nYour task is to verify if the SQL translation from {source} to {target} is correct by checking:\n1. **Logical Equivalence**: The original and translated SQL statements produce identical results on any valid dataset\n2. **Dialect Correctness**: The translated SQL strictly adheres to {target} syntax, functions, and semantic rules\nReturn only a JSON object with no additional commentary:\n{\n  \"answer\": \"yes\" | \"no\",\n  \"reason\": \"If answer is no, briefly explain why\"\n}\nOriginal SQL ({source}):\n{original}\nTranslated SQL ({target}):\n{translated}",
         "model_name": "Model Name",
         "model_name_required": "Please enter model name",
         "api_url_required": "Please enter API URL",
@@ -506,7 +519,7 @@
     "success": {
       "task_submitted": "Task submitted successfully!",
       "submit_success": "Submission Successful",
-      "estimated_duration": "Estimated completion: ~3 days"
+      "estimated_duration": "We will reply within 5 business days"
     },
     "error": {
       "submit_failed": "Submission failed",
