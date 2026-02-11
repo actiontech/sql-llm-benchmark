@@ -3,13 +3,14 @@ category: monthly
 date: 2025-10-01T00:00:00.000Z
 author: simple
 excerpt: >-
-  ## 1. Executive Summary In October 2025, the SCALE evaluation benchmark
+  1. Executive Summary In October 2025, the SCALE evaluation benchmark
   continues to track the latest advancements of AI in the professional SQL
   domain. This mo...
 slug: scale-202510
 title: 'SCALE: Large Model SQL Capability Leaderboard - October 2025'
 coverImage: /news/images/monthly-eval.png
 ---
+
 ## 1. Executive Summary
 
 In October 2025, the [SCALE](https://sql-llm-leaderboard.com/ranking/2025-10) evaluation benchmark continues to track the latest advancements of AI in the professional SQL domain.
@@ -18,22 +19,22 @@ This month, the leaderboard welcomes two new trillion-parameter models released 
 
 ![](./ant-news.png)
 
-* **Ling-1T**: The first flagship model of Ant Group Bailing's **Ling 2.0** series.
-* **Ring-1T**: A reasoning model based on the **Ling 2.0** architecture, also the world's first open-source trillion-parameter reasoning model.
+- **Ling-1T**: The first flagship model of Ant Group Bailing's **Ling 2.0** series.
+- **Ring-1T**: A reasoning model based on the **Ling 2.0** architecture, also the world's first open-source trillion-parameter reasoning model.
 
 **Key Highlights of This Edition:**
 
-* **New Model Evaluations**: First-time introduction of Ant's *Ling-1T* and *Ring-1T* models. Evaluation data shows a clear differentiation in their capabilities:
-  * Ling-1T performs exceptionally well in "**Domestic Database**" conversion scenarios, achieving a perfect score!
-  * Ring-1T demonstrates **more balanced and robust comprehensive capabilities** in both the "**SQL Optimization**" and "**SQL Understanding**" dimensions, with total scores placing it in the upper tier of the leaderboard.
+- **New Model Evaluations**: First-time introduction of Ant's _Ling-1T_ and _Ring-1T_ models. Evaluation data shows a clear differentiation in their capabilities:
+  - Ling-1T performs exceptionally well in "**Domestic Database**" conversion scenarios, achieving a perfect score!
+  - Ring-1T demonstrates **more balanced and robust comprehensive capabilities** in both the "**SQL Optimization**" and "**SQL Understanding**" dimensions, with total scores placing it in the upper tier of the leaderboard.
 
 ## 2. Evaluation Benchmark
 
 To ensure long-term comparability and authority of the evaluation results, our core evaluation benchmark and algorithms remain unchanged this month. We continue to use the three-dimensional evaluation system established since the inception of **SCALE**, ensuring all models and tools are assessed under a unified, standardized testing environment to provide fair and reproducible evaluation results.
 
-* **SQL Optimization**: Examines the model's awareness and capability to improve query efficiency and performance.
-* **Dialect Conversion**: Examines the accuracy of the model's syntax migration between mainstream databases.
-* **SQL Understanding**: Examines the model's ability to accurately parse complex query logic and user intent.
+- **SQL Optimization**: Examines the model's awareness and capability to improve query efficiency and performance.
+- **Dialect Conversion**: Examines the accuracy of the model's syntax migration between mainstream databases.
+- **SQL Understanding**: Examines the model's ability to accurately parse complex query logic and user intent.
 
 All newly added models this month are evaluated under this standard system.
 
@@ -43,17 +44,17 @@ All newly added models this month are evaluated under this standard system.
 
 ![](./tokens.png)
 
-*Ling-1T*, as the first flagship non-reasoning model of the **Ling 2.0** series, participated in the evaluation for the first time this month. Its total scores across dimensions are:
+_Ling-1T_, as the first flagship non-reasoning model of the **Ling 2.0** series, participated in the evaluation for the first time this month. Its total scores across dimensions are:
 
-* **SQL Optimization**: 62.5
-* **Dialect Conversion**: 59.2
-* **SQL Understanding**: 59.4
+- **SQL Optimization**: 62.5
+- **Dialect Conversion**: 59.2
+- **SQL Understanding**: 59.4
 
 The evaluation results indicate that this model has distinct characteristics, excelling in specific scenarios but showing clear shortcomings in handling complex tasks.
 
 #### 3.1.1 SQL Optimization Capability: 62.5
 
-*Ling-1T* scored 62.5 in the **SQL Optimization** dimension. According to detailed metrics, the model performed excellently in "**Logical Equivalence**", ranking 5th with a score of 84.2.
+_Ling-1T_ scored 62.5 in the **SQL Optimization** dimension. According to detailed metrics, the model performed excellently in "**Logical Equivalence**", ranking 5th with a score of 84.2.
 
 However, its performance in "**Optimization Depth**" was insufficient, scoring only 51.1 (ranked 17th). Simultaneously, its score in "**Syntax Error Detection**" was also relatively low (84.2, ranked 18th). Analysis of the evaluation report shows that the model misjudged a `GROUP BY` query compliant with MySQL's loose mode as a syntax error; it also inaccurately understood the syntax rules for `ORDER BY/LIMIT` in `UNION` queries.
 
@@ -71,7 +72,7 @@ However, the model struggled with complex migration tasks. Its score for "**Larg
 
 #### 3.1.3 SQL Understanding Capability: 59.4
 
-This score indicates that *Ling-1T* possesses basic SQL parsing capabilities. Detailed data shows it excels in "**Syntax Error Detection**", achieving a score of 87.1, tying for first place in this metric with *Claude 3.5 Sonnet*.
+This score indicates that _Ling-1T_ possesses basic SQL parsing capabilities. Detailed data shows it excels in "**Syntax Error Detection**", achieving a score of 87.1, tying for first place in this metric with _Claude 3.5 Sonnet_.
 
 However, its performance in "**Execution Accuracy**" was poor, scoring only 52.9 (ranked 19th). Analysis of the evaluation report reveals that the model is prone to errors in date condition assessments. For example, in a query for `due_date < '2025-06-07'`, it returned records with `due_date='2025-06-10'`, clearly violating the condition. Such errors reflect the model's insufficient semantic understanding and rigor regarding date comparisons when executing SQL queries. This is one of its main weaknesses.
 
@@ -83,11 +84,11 @@ Furthermore, its score for "**Execution Plan Detection**" is 57.1. When predicti
 
 ![](./ring1t-1.png)
 
-*Ring-1T*, as a trillion-parameter reasoning model based on the **Ling 2.0** architecture, demonstrates stronger comprehensive capabilities compared to *Ling-1T*. Its total scores across dimensions are:
+_Ring-1T_, as a trillion-parameter reasoning model based on the **Ling 2.0** architecture, demonstrates stronger comprehensive capabilities compared to _Ling-1T_. Its total scores across dimensions are:
 
-* **SQL Optimization**: 70.5
-* **Dialect Conversion**: 69.5
-* **SQL Understanding**: 78.1
+- **SQL Optimization**: 70.5
+- **Dialect Conversion**: 69.5
+- **SQL Understanding**: 78.1
 
 Its performance is more balanced.
 
@@ -99,11 +100,11 @@ This score reflects the model's balanced ability in SQL optimization. It achieve
 
 #### 3.2.2 Dialect Conversion Capability: 69.5
 
-*Ring-1T* scored 69.5 in the Dialect Conversion dimension (ranked 11th). Detailed data shows robust performance in "**China-made Database**" conversion (94.7), "**Syntax Error Detection**" (73.8, ranked 9th), and "**Logical Equivalence**" (71.0).
+_Ring-1T_ scored 69.5 in the Dialect Conversion dimension (ranked 11th). Detailed data shows robust performance in "**China-made Database**" conversion (94.7), "**Syntax Error Detection**" (73.8, ranked 9th), and "**Logical Equivalence**" (71.0).
 
 Its shortcoming lies in "**Large SQL Conversion**", scoring only 41.9 (ranked 12th). The model encountered issues when handling complex structures like cross-database access (e.g., SQL Server's `[server].database.schema.table`), control flow (e.g., GOTO label jumps), error handling mechanisms (e.g., `@@ERROR` checks, `BEGIN TRY/CATCH`), dynamic SQL execution (e.g., `sp_executesql` parameter binding), leading to problems such as syntax mixing, semantic inequivalence, and incomplete structural conversion.
 
-**Core Defect**: Lacks global comprehension of complex structured code and precise mapping ability for multi-dialect semantic differences, resulting in defects in the syntactic correctness or logical equivalence of the converted SQL. Compared to *Ling-1T*'s score of 12.9, this score shows significant improvement, indicating a stronger ability in handling "**Large SQL Conversion**" and ensuring code standardization, making it a more reliable database migration tool.
+**Core Defect**: Lacks global comprehension of complex structured code and precise mapping ability for multi-dialect semantic differences, resulting in defects in the syntactic correctness or logical equivalence of the converted SQL. Compared to _Ling-1T_'s score of 12.9, this score shows significant improvement, indicating a stronger ability in handling "**Large SQL Conversion**" and ensuring code standardization, making it a more reliable database migration tool.
 
 ![](./ring1t-2.png)
 
@@ -117,17 +118,18 @@ The model confused standard SQL syntax with database-specific rules, misjudging 
 
 ## 4. Summary
 
-With the addition of Ant Group's two new models, *Ling-1T* and *Ring-1T*, the **SCALE** evaluation leaderboard has now accumulated over 20 mainstream AI models and professional tools from the industry. This month's evaluation clearly demonstrates the characteristics of the two **Ling 2.0** series models:
+With the addition of Ant Group's two new models, _Ling-1T_ and _Ring-1T_, the **SCALE** evaluation leaderboard has now accumulated over 20 mainstream AI models and professional tools from the industry. This month's evaluation clearly demonstrates the characteristics of the two **Ling 2.0** series models:
 
-* **Ling-1T** excels in china-made database adaptation but has shortcomings in handling complex tasks.
-* **Ring-1T** demonstrates more balanced and powerful comprehensive SQL processing capabilities, particularly showing robustness in SQL understanding and optimization.
+- **Ling-1T** excels in china-made database adaptation but has shortcomings in handling complex tasks.
+- **Ring-1T** demonstrates more balanced and powerful comprehensive SQL processing capabilities, particularly showing robustness in SQL understanding and optimization.
 
 ## 5. Future Outlook
+
 The SCALE evaluation system will continue to track the latest model developments and iteration progress from major vendors. We are committed to promoting deeper application and practice of large language models in the database field through fair and transparent evaluation data, together with the community.
 
 **Explore the professional capabilities of the new generation of models now!** You are welcome to log in to the official SCALE platform to view the complete latest leaderboard and detailed model comparisons, and jointly grasp the pulse of cutting-edge AI technology.
 
-*Data cutoff date: November 15, 2025*
+_Data cutoff date: November 15, 2025_
 
 > View the complete leaderboard and contact us to submit your product for evaluation. *https://sql-llm-leaderboard.com/*
 

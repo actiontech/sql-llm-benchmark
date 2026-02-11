@@ -3,16 +3,17 @@ category: product
 date: 2025-11-01T00:00:00.000Z
 author: simple
 excerpt: >-
-  ## 1. Executive Summary The Gemini 3 Pro model was included in this month's
+  1. Executive Summary The Gemini 3 Pro model was included in this month's
   SCALE evaluation for the first time, and its performance fully validates its
   strengt...
 slug: 202511-gemini3
 title: 'SCALE: Gemini 3 Pro SQL Capability Evaluation Report'
 coverImage: ./cover.png
 ---
+
 ## 1. Executive Summary
 
-The Gemini 3 Pro model was included in this month's  [SCALE](https://sql-llm-leaderboard.com/ ) evaluation for the first time, and its performance fully validates its strength as a new-generation professional-grade large language model. Evaluation results show that Gemini 3 Pro achieved significant breakthroughs in the **SQL Understanding** dimension, ranking first on the leaderboard, while also demonstrating highly balanced and robust comprehensive performance in SQL optimization and dialect conversion dimensions.
+The Gemini 3 Pro model was included in this month's [SCALE](https://sql-llm-leaderboard.com/) evaluation for the first time, and its performance fully validates its strength as a new-generation professional-grade large language model. Evaluation results show that Gemini 3 Pro achieved significant breakthroughs in the **SQL Understanding** dimension, ranking first on the leaderboard, while also demonstrating highly balanced and robust comprehensive performance in SQL optimization and dialect conversion dimensions.
 
 Among current mainstream models, **Gemini 3 Pro ranks among the top in comprehensive SQL capability evaluation.**
 
@@ -21,16 +22,11 @@ Among current mainstream models, **Gemini 3 Pro ranks among the top in comprehen
 **Key Highlights:**
 
 - **SQL Understanding: No.1**
-    
-    High execution accuracy, excellent performance in complex query result prediction, achieving the highest historical score in this dimension.
-    
+  High execution accuracy, excellent performance in complex query result prediction, achieving the highest historical score in this dimension.
 - **SQL Optimization: No.2**
-    
-    Perfect syntax correctness rate for optimized SQL, providing "out-of-the-box" quality assurance for generated optimized code in production environments.
-    
+  Perfect syntax correctness rate for optimized SQL, providing "out-of-the-box" quality assurance for generated optimized code in production environments.
 - **Dialect Conversion: No.6**
-    
-    High score in large SQL conversion, indicating strong global logical comprehension capability when handling scripts containing complex control flow and ultra-long contexts.
+  High score in large SQL conversion, indicating strong global logical comprehension capability when handling scripts containing complex control flow and ultra-long contexts.
 
 ## 2. Evaluation Purpose and Methodology
 
@@ -94,6 +90,7 @@ These defects reflect the model's shortcomings in pattern recognition capability
 ### 3.3 Dialect Conversion Capability
 
 Dimension Total Score: 77.1 (No.6)
+
 - China-made Database Conversion: 89.5 (Tied for No.16)
 - Logical Equivalence: 80.6 (Tied for No.2)
 - Large SQL Conversion: 61.3 (Tied for No.2)
