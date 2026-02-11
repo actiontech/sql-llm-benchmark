@@ -3,33 +3,36 @@ category: monthly
 date: 2025-07-01T00:00:00.000Z
 author: simple
 excerpt: >-
-  ## 1. Executive Summary In July 2025, competition in the field of AI large
+  1. Executive Summary In July 2025, competition in the field of AI large
   models for code generation and understanding, particularly in database SQL
   capabiliti...
 slug: scale-202507
 title: 'SCALE: Large Model SQL Capability Leaderboard - July 2025'
 coverImage: /news/images/monthly-eval.png
 ---
+
 ## 1. Executive Summary
+
 In July 2025, competition in the field of AI large models for code generation and understanding, particularly in database SQL capabilities, is intensifying.
 
-This edition of the [SCALE](https://sql-llm-leaderboard.com/ranking/2025-07)  evaluation welcomes the highly anticipated first participation of **Claude 3.5 Sonnet** and **Claude Sonnet 4**, while the **Gemini 2.5** series also officially enters its stable version. More importantly, addressing the real pain points of database modernization migration, we have made significant upgrades to the evaluation benchmark, aiming to more deeply test the models' SQL processing capabilities in complex, real-world scenarios.
+This edition of the [SCALE](https://sql-llm-leaderboard.com/ranking/2025-07) evaluation welcomes the highly anticipated first participation of **Claude 3.5 Sonnet** and **Claude Sonnet 4**, while the **Gemini 2.5** series also officially enters its stable version. More importantly, addressing the real pain points of database modernization migration, we have made significant upgrades to the evaluation benchmark, aiming to more deeply test the models' SQL processing capabilities in complex, real-world scenarios.
 
 **Key Highlights of This Edition:**
 
 - **A New Champion or a Strong Contender?**
-      
-    How does the new participant **Claude 3.5 Sonnet** perform comprehensively across the three core dimensions of SQL Optimization, Dialect Conversion, and Understanding in its first evaluation? Can it challenge the existing top-tier landscape?
+
+  How does the new participant **Claude 3.5 Sonnet** perform comprehensively across the three core dimensions of SQL Optimization, Dialect Conversion, and Understanding in its first evaluation? Can it challenge the existing top-tier landscape?
 
 - **Dialect Conversion Benchmark Upgrade**
- 
-   We have introduced two new evaluation metrics for the first time: **Large SQL Conversion** and **Domestic Database Conversion**, comprehensively testing the models' abilities when handling advanced database objects like ultra-long, complex logic, stored procedures, and functions.
-   
+
+  We have introduced two new evaluation metrics for the first time: **Large SQL Conversion** and **Domestic Database Conversion**, comprehensively testing the models' abilities when handling advanced database objects like ultra-long, complex logic, stored procedures, and functions.
+
 - **Stable Version Performance Verification**
-  
-    **Gemini 2.5 Pro** and **Gemini 2.5 Flash** have reached their stable versions. Compared to the preview versions, have their performance and stability been fully improved?
-    
+
+  **Gemini 2.5 Pro** and **Gemini 2.5 Flash** have reached their stable versions. Compared to the preview versions, have their performance and stability been fully improved?
+
 ## 2. Evaluation Benchmark and Updates
+
 To more accurately assess the practicality of AI models in enterprise-level complex database scenarios, this month we have expanded and deepened the evaluation dataset for the **SQL Dialect Conversion** dimension.
 
 ### 2.1 New Metric: Large SQL Conversion
@@ -53,6 +56,7 @@ Based on the updated evaluation benchmark above, this month's leaderboard shows 
 ## 3. Monthly Leaderboard and Focus Analysis
 
 ### 3.1 Dimensional Capability Rankings
+
 **Top 5 in SQL Optimization Capability**
 
 1. SQLFlash: 88.5
@@ -121,28 +125,30 @@ On the critical migration path from Oracle to OceanBase (Oracle mode) 4.2.5, the
 ![](./gpt-o4-mini.png)
 
 ## 4. Evaluation Model Change Log This Edition
+
 To ensure the timeliness and cutting-edge nature of the SCALE evaluation, we have added and upgraded the following models this month:
 
 ### 4.1 Newly Evaluated Models
 
-| Model Name | Remarks |
-|:--- | :--- |
-|Claude 3.5 Sonnet |Latest model released by Anthropic in June 2024|
-|Claude Sonnet 4 thinking|Latest model released by Anthropic in May 2025|
+| Model Name               | Remarks                                         |
+| :----------------------- | :---------------------------------------------- |
+| Claude 3.5 Sonnet        | Latest model released by Anthropic in June 2024 |
+| Claude Sonnet 4 thinking | Latest model released by Anthropic in May 2025  |
 
 ### 4.2 Upgraded Evaluation Models
 
-| Model Name | Old Version | New Version (Used in this Evaluation)|
-|:--- | :--- | :--- |
-|Qwen3-235B-A22B-Thinking|2024-04-29|Qwen3-235B-A22B-Thinking-2507|
-|Qwen3-235B-A22B-Instruct|2024-04-29|Qwen3-235B-A22B-Instruct-2507|
-|Gemini 2.5 Pro|gemini-2.5-pro-preview-06-05|gemini-2.5-pro (Stable Version)||
-|Gemini 2.5 Flash|gemini-2.5-pro-preview-06-05|gemini-2.5-flash (Stable Version)|
+| Model Name               | Old Version                  | New Version (Used in this Evaluation) |
+| :----------------------- | :--------------------------- | :------------------------------------ | --- |
+| Qwen3-235B-A22B-Thinking | 2024-04-29                   | Qwen3-235B-A22B-Thinking-2507         |
+| Qwen3-235B-A22B-Instruct | 2024-04-29                   | Qwen3-235B-A22B-Instruct-2507         |
+| Gemini 2.5 Pro           | gemini-2.5-pro-preview-06-05 | gemini-2.5-pro (Stable Version)       |     |
+| Gemini 2.5 Flash         | gemini-2.5-pro-preview-06-05 | gemini-2.5-flash (Stable Version)     |
 
 ## 5. Summary
+
 This month's evaluation results show that as the evaluation dimensions deepen, the capability differences between models are further amplified. Especially in the newly added **Large SQL Conversion** evaluation, only a few top models could handle the task well, pointing out a key direction for future model iterations. The addition of **Claude Sonnet 4** has brought new vitality to the market, and the performance of the **Gemini 2.5 series (Stable Version)** also validates the results of its continuous optimization.
 
-*Data cutoff date: December 2, 2025*
+_Data cutoff date: December 2, 2025_
 
 > View the complete leaderboard and contact us to submit your product for evaluation. *https://sql-llm-leaderboard.com/*
 

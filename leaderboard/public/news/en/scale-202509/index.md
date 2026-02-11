@@ -3,16 +3,17 @@ category: monthly
 date: 2025-09-01T00:00:00.000Z
 author: simple
 excerpt: >-
-  ## 1. Executive Summary In September 2025, the SCALE evaluation benchmark
+  1. Executive Summary In September 2025, the SCALE evaluation benchmark
   continues to focus on the cutting-edge applications of AI in the SQL domain.
   This mont...
 slug: scale-202509
 title: 'SCALE: Large Model SQL Capability Leaderboard - September 2025'
 coverImage: /news/images/monthly-eval.png
 ---
+
 ## 1. Executive Summary
 
-In September 2025, the  [SCALE](https://sql-llm-leaderboard.com/ranking/2025-09) evaluation benchmark continues to focus on the cutting-edge applications of AI in the SQL domain.
+In September 2025, the [SCALE](https://sql-llm-leaderboard.com/ranking/2025-09) evaluation benchmark continues to focus on the cutting-edge applications of AI in the SQL domain.
 
 This month, the leaderboard welcomes the latest model from [Moonshot AI](https://www.moonshot.cn/) - **Kimi-K2-Instruct-0905**. Additionally, platform features have been upgraded, aiming to provide developers, researchers, and enterprise decision-makers with more detailed and insightful technical references.
 
@@ -38,6 +39,7 @@ We believe that a stable evaluation system is the cornerstone for tracking model
 ![](./kimiK2-logo.png)
 
 As the newly added focal model this month, Kimi K2 received the following scores in its first evaluation:
+
 - **SQL Understanding**: 70.4
 - **SQL Optimization**: 64.4
 - **Dialect Conversion**: 63.0
@@ -45,6 +47,7 @@ As the newly added focal model this month, Kimi K2 received the following scores
 These scores reveal the specific capability distribution of this general-purpose large model in the SQL domain.
 
 #### 3.1.1 SQL Understanding Capability: 70.4
+
 This is a solid score, indicating **Kimi K2 possesses reliable Text-to-SQL foundational capabilities.**
 
 This score is primarily attributed to its good performance in "**Execution Accuracy**" (72.9) and "**Syntax Error Detection**" (82.9). However, its score in the "**Execution Plan Detection**" sub-item is only 42.9. This reflects that the model can accurately generate SQL code that aligns with user intent, but the evaluation found that Kimi K2 misidentified SQL statement types as execution plan access types, filling in access types with INSERT, UPDATE, etc. This demonstrates a problem of over-reliance on surface syntactic features rather than deep semantic understanding. **Kimi K2's ability to understand SQL execution plans still needs strengthening.**
@@ -52,6 +55,7 @@ This score is primarily attributed to its good performance in "**Execution Accur
 ![](./kimik2-1.png)
 
 #### 3.1.2 SQL Optimization Capability: 64.4
+
 This score reflects the model's characteristic capabilities in **SQL Optimization**: **Focusing on ensuring syntactic correctness, but lacking in deep optimization.**
 
 Specifically, it achieved a perfect score of 100 in "**Syntax Error Detection**", ensuring the usability of optimized code; "**Logical Equivalence**" (68.4) performance is acceptable. However, its core weakness lies in "**Optimization Depth**" (55.6), with this item ranking only 14th. This indicates its optimization strategies tend to be conservative and general-purpose, performing poorly in projection pushdown and LIKE prefix optimization evaluations. **Kimi K2 failed to utilize these query optimization techniques, lacking the ability to perform deep restructuring of complex queries to enhance performance.**
@@ -71,7 +75,8 @@ This indicates that Kimi K2 performs excellently in handling standardized migrat
 To help users translate evaluation data into actual selection decisions, the SCALE platform officially launched two core features this month. Their core value lies in shifting users from macro-level browsing of "**looking at total score rankings**" to deep analysis of "**finding the optimal solution for specific scenarios**".
 
 ### 4.1 Detailed Metric Rankings for Models
-*Go beyond total scores to understand a model's specialized characteristics.*
+
+_Go beyond total scores to understand a model's specialized characteristics._
 
 This feature allows users to drill down into 12 detailed metrics to view model rankings on specific sub-tasks, assessing whether a model meets specific scenario requirements.
 
@@ -80,7 +85,8 @@ This feature allows users to drill down into 12 detailed metrics to view model r
 ![](./scores.png)
 
 ### 4.2 Model Comparative Analysis
-*Move beyond blind selection; intuitively identify the optimal solution for your scenario.*
+
+_Move beyond blind selection; intuitively identify the optimal solution for your scenario._
 
 This feature allows users to select multiple models for multi-dimensional visual comparison, facilitating intuitive selection trade-offs.
 
@@ -95,11 +101,12 @@ This feature allows users to select multiple models for multi-dimensional visual
 With the addition of new models like Kimi K2, the SCALE evaluation leaderboard has now accumulated over 19 mainstream AI models and professional tools from the industry. This month's feature upgrades are an important step in enhancing the platform's value. More transparent and user-friendly data will help the community make prudent technical selections.
 
 ## 6. Future Outlook
+
 The SCALE evaluation system will continue to track the latest model developments and iteration progress from major vendors. We are committed to promoting deeper application and practice of large language models in the database field through fair and transparent evaluation data, together with the community.
 
 **Explore the professional capabilities of the new generation of models now!** You are welcome to log in to the official SCALE platform to view the complete latest leaderboard and detailed model comparisons, and jointly grasp the pulse of cutting-edge AI technology.
 
-*Data cutoff date: October 10, 2025*
+_Data cutoff date: October 10, 2025_
 
 > View the complete leaderboard and contact us to submit your product for evaluation. [https://sql-llm-leaderboard.com/](https://sql-llm-leaderboard.com/)
 
