@@ -139,8 +139,9 @@ const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
         </article>
 
         {/* Table of Contents - Only visible on >= 1366px */}
+        {/* key 确保语言切换时重新挂载，避免中文目录残留 */}
         <aside className={styles.articleDetailTOC}>
-          <TableOfContents content={displayPost.content} />
+          <TableOfContents key={currentLang} content={displayPost.content} />
         </aside>
       </div>
 
