@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Button, Tooltip, Select, Space, Modal, Typography } from 'antd';
+import { Badge, Button, Tooltip, Select, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 import {
   HomeOutlined,
   FileTextOutlined,
@@ -10,11 +11,14 @@ import {
   GithubOutlined,
   FormOutlined,
   InfoCircleOutlined,
+  ExperimentOutlined,
+  MenuOutlined,
 } from '@ant-design/icons';
 import { cn } from '../utils/cn';
 import { SubmissionGuideModal } from './SubmissionGuideModal';
 import { FormulaRuleModal } from './FormulaRuleModal';
 import { StarOutlined } from './StarOutlined';
+import { EvaluationTypeModal } from './Evaluation/EvaluationTypeModal';
 
 // 获取系统当前月份（格式：YYYY-MM）
 const getCurrentSystemMonth = (): string => {
@@ -34,6 +38,9 @@ const Header: React.FC = () => {
   const [isFormulaModalVisible, setIsFormulaModalVisible] = useState(false);
   const [isSubmissionGuideVisible, setIsSubmissionGuideVisible] =
     useState(false);
+  const [isEvaluationModalVisible, setIsEvaluationModalVisible] =
+    useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -75,6 +82,7 @@ const Header: React.FC = () => {
   const isAboutPage = router.pathname === '/about';
   const isHomePage =
     router.pathname === '/' || router.pathname.startsWith('/ranking');
+  const isEvaluationPage = router.pathname.startsWith('/evaluation');
 
   // 判断是否在需要月份选择器的页面
   const isRankingPage =
@@ -149,6 +157,112 @@ const Header: React.FC = () => {
     setIsSubmissionGuideVisible(false);
   };
 
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  // 计算当前选中的菜单项 key（用于移动端 Dropdown）
+  const selectedMenuKeys: string[] = [];
+  if (isHomePage) selectedMenuKeys.push('home');
+  else if (isBlogPage) selectedMenuKeys.push('blog');
+  else if (isNewsPage) selectedMenuKeys.push('news');
+  else if (isEvaluationPage) selectedMenuKeys.push('evaluation');
+  else if (isAboutPage) selectedMenuKeys.push('about');
+
+  // 选中项 Tailwind 样式（与桌面端导航保持一致）
+  const mobileMenuItemSelectedClass =
+    '!bg-blue-50 font-semibold text-blue-600 border-l-4 border-l-gray-500';
+
+  const isSelected = (key: string) => selectedMenuKeys.includes(key);
+
+  // 移动端汉堡菜单项（测评实验室置于博客前）
+  const mobileMenuItems: MenuProps['items'] = [
+    {
+      key: 'home',
+      icon: <HomeOutlined />,
+      label: t('nav.home_label'),
+      className: isSelected('home') ? mobileMenuItemSelectedClass : undefined,
+      onClick: () => {
+        closeMobileMenu();
+        router.push('/');
+      },
+    },
+    {
+      key: 'evaluation',
+      icon: <ExperimentOutlined />,
+      label: (
+        <Badge
+          count={isEvaluationPage ? 0 : 'HOT'}
+          size="small"
+          offset={[16, 0]}
+          color="#ef4444"
+          classNames={{
+            indicator: 'text-[9px]! min-w-[18px]! h-[14px] leading-[14px] px-1!',
+          }}
+        >
+          <span>{t('nav.online_evaluation')}</span>
+        </Badge>
+      ),
+      className: isSelected('evaluation')
+        ? mobileMenuItemSelectedClass
+        : undefined,
+      onClick: () => {
+        closeMobileMenu();
+        setIsEvaluationModalVisible(true);
+      },
+    },
+    {
+      key: 'blog',
+      icon: <FileTextOutlined />,
+      label: t('nav.blog'),
+      className: isSelected('blog') ? mobileMenuItemSelectedClass : undefined,
+      onClick: () => {
+        closeMobileMenu();
+        router.push('/blog');
+      },
+    },
+    {
+      key: 'news',
+      icon: <FileTextOutlined />,
+      label: t('nav.news'),
+      className: isSelected('news') ? mobileMenuItemSelectedClass : undefined,
+      onClick: () => {
+        closeMobileMenu();
+        router.push('/news');
+      },
+    },
+    ...(isRankingPage
+      ? [
+        {
+          key: 'formula',
+          icon: <FormOutlined />,
+          label: t('evaluation_cases.formula_button'),
+          onClick: () => {
+            closeMobileMenu();
+            showFormulaModal();
+          },
+        },
+        {
+          key: 'contribute',
+          icon: <StarOutlined className="w-4 h-4" />,
+          label: t('nav.contribute_evaluation'),
+          onClick: () => {
+            closeMobileMenu();
+            showSubmissionGuide();
+          },
+        },
+      ]
+      : []),
+    {
+      key: 'about',
+      icon: <InfoCircleOutlined />,
+      label: t('nav.about'),
+      className: isSelected('about') ? mobileMenuItemSelectedClass : undefined,
+      onClick: () => {
+        closeMobileMenu();
+        router.push('/about');
+      },
+    },
+  ];
+
   if (!mounted) {
     return null;
   }
@@ -168,7 +282,7 @@ const Header: React.FC = () => {
     cn(
       navLinkBase,
       isActive
-        ? '!bg-blue-50 text-blue-600 font-semibold border-b-2 border-gray-500'
+        ? '!bg-blue-50  font-semibold border-b-2 border-gray-500'
         : 'hover:bg-blue-50 hover:text-blue-600'
     );
 
@@ -207,13 +321,35 @@ const Header: React.FC = () => {
       <div
         className={cn(
           'flex items-center justify-between',
-          'px-8',
+          'px-4 md:px-8',
           'transition-all duration-300',
           isScrolled ? 'h-11' : 'h-14'
         )}
       >
-        {/* Left Navigation */}
-        <div className="flex flex-1 items-center justify-center">
+        {/* 移动端：汉堡菜单 */}
+        <div className="flex md:hidden">
+          <Dropdown
+            menu={{
+              items: mobileMenuItems,
+              selectedKeys: selectedMenuKeys,
+            }}
+            trigger={['click']}
+            open={mobileMenuOpen}
+            onOpenChange={setMobileMenuOpen}
+            placement="bottomLeft"
+            overlayStyle={{ minWidth: 200 }}
+          >
+            <Button
+              type="text"
+              className={iconButtonStyles}
+              icon={<MenuOutlined style={{ fontSize: '20px' }} />}
+              aria-label={t('nav.menu')}
+            />
+          </Dropdown>
+        </div>
+
+        {/* 桌面端：左侧导航 */}
+        <div className="hidden md:flex flex-1 items-center justify-center">
           <nav className="flex items-center gap-2">
             {/* 首页 */}
             <Link href="/" passHref legacyBehavior>
@@ -223,9 +359,9 @@ const Header: React.FC = () => {
               </a>
             </Link>
 
-            {/* 月份榜单选择器 - 仅在 ranking 页面显示 */}
+            {/* 月份榜单选择器 - 仅在 ranking 页面显示，移动端隐藏 */}
             {isRankingPage && months.length > 0 && (
-              <div className="mx-1">
+              <div className="mx-1 hidden md:block">
                 <Select
                   value={currentMonth}
                   onChange={handleMonthChange}
@@ -248,6 +384,25 @@ const Header: React.FC = () => {
               </div>
             )}
 
+            {/* 在线测评 - 模型测评实验室，置于博客前 */}
+            <Badge
+              count={isEvaluationPage ? 0 : 'HOT'}
+              size="small"
+              offset={[-4, 8]}
+              color="#ef4444"
+              classNames={{
+                indicator: 'text-[9px]! min-w-[18px]! h-[14px] leading-[14px] px-1!',
+              }}
+            >
+              <button
+                className={navLinkStyles(isEvaluationPage)}
+                onClick={() => setIsEvaluationModalVisible(true)}
+              >
+                <ExperimentOutlined className="text-lg" />
+                <span>{t('nav.online_evaluation')}</span>
+              </button>
+            </Badge>
+
             {/* Blog */}
             <Link href="/blog" passHref legacyBehavior>
               <a className={navLinkStyles(isBlogPage)}>
@@ -260,9 +415,10 @@ const Header: React.FC = () => {
             <Link href="/news" passHref legacyBehavior>
               <a className={navLinkStyles(isNewsPage)}>
                 <FileTextOutlined className="text-lg" />
-                <span>News</span>
+                <span>{t('nav.news')}</span>
               </a>
             </Link>
+
             {/* 榜单规则 - 仅在 ranking 页面显示 */}
             {isRankingPage && (
               <button className={actionButtonStyles} onClick={showFormulaModal}>
@@ -295,7 +451,7 @@ const Header: React.FC = () => {
           </nav>
         </div>
 
-        {/* Right Actions */}
+        {/* Right Actions - 语言切换 + GitHub */}
         <div className="flex items-center gap-3">
           {/* GitHub 图标 */}
           <Tooltip title={t('nav.github')}>
@@ -337,8 +493,14 @@ const Header: React.FC = () => {
         visible={isSubmissionGuideVisible}
         onClose={handleSubmissionGuideCancel}
       />
+
+      {/* 在线测评类型选择模块 */}
+      <EvaluationTypeModal
+        visible={isEvaluationModalVisible}
+        onClose={() => setIsEvaluationModalVisible(false)}
+      />
     </header>
   );
-};;;;;;;;;;
+};
 
 export default Header;

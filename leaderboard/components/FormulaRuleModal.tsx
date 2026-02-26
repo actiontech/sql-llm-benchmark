@@ -87,7 +87,6 @@ export const FormulaRuleModal: React.FC<FormulaRuleModalProps> = ({
           {t('actions.close')}
         </Button>,
       ]}
-      width="30%"
       style={{ top: 50 }}
       title={
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

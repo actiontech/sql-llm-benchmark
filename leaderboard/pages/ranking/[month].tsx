@@ -7,30 +7,21 @@ import { useRouter } from "next/router";
 import NProgress from 'nprogress'; // 导入 NProgress
 import {
   Button,
-  Select,
   Card,
   Typography,
-  Space,
   Tooltip,
-  Input,
-  Modal,
   Checkbox,
   Badge,
   Spin,
 } from 'antd';
-
 import { useTranslation } from 'react-i18next';
-import styles from '../../styles/Container.module.css';
 import Link from 'next/link';
 import { ActionType, ProTable } from '@ant-design/pro-table';
 import {
   UpOutlined,
   DownOutlined,
-  GithubOutlined, // 导入 Github 图标
-  RightOutlined,
-  FormOutlined, // 导入 FormOutlined 图标
-  SwapOutlined,
-  CloseOutlined,
+  SearchOutlined,
+  AppstoreOutlined,
 } from '@ant-design/icons';
 
 // 导入拆分的组件和工具
@@ -44,9 +35,11 @@ import { SubmissionGuideModal } from '../../components/SubmissionGuideModal';
 import { FormulaRuleModal } from '../../components/FormulaRuleModal';
 import { Podium } from '../../components/Podium';
 import { createRankingTableColumns } from '../../components/RankingTableColumns';
+import { RankingTableToolbar } from '../../components/RankingTableToolbar';
 import { addRankingToModels } from '../../utils/rankingUtils';
+import { cn } from '../../utils/cn';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 
-const { Search } = Input;
 const { Title, Paragraph, Text } = Typography;
 
 // 获取系统当前月份（格式：YYYY-MM）
@@ -91,6 +84,7 @@ const RankingPage: React.FC<RankingPageProps> = ({
   const [sortedInfo, setSortedInfo] = useState<any>({});
   const [selectedModels, setSelectedModels] = useState<Set<string>>(new Set());
   const [showCompareMode, setShowCompareMode] = useState<boolean>(false);
+  const isMobile = useMediaQuery('(max-width: 767px)');
 
   // 客户端挂载后设置 mounted 状态
   useEffect(() => {
@@ -264,6 +258,7 @@ const RankingPage: React.FC<RankingPageProps> = ({
       maxScoresByCategory,
       currentMonth,
       t,
+      isMobile,
     });
 
     if (showCompareMode) {
@@ -314,6 +309,7 @@ const RankingPage: React.FC<RankingPageProps> = ({
     t,
     showCompareMode,
     selectedModels,
+    isMobile,
   ]);
 
   const pageTitle = t('seo.ranking_page.title', { month: currentMonth });
@@ -339,7 +335,16 @@ const RankingPage: React.FC<RankingPageProps> = ({
         <meta property="twitter:title" content={pageTitle} />
         <meta property="twitter:description" content={pageDescription} />
       </Head>
-      <div className={styles.container}>
+      <div
+        className={cn(
+          'min-h-screen w-full max-w-none p-0 box-border bg-[#f0f2f5]',
+          '[&>*:first-child]:pt-0',
+          '[&_.ant-pro-table-list-toolbar]:px-1!',
+          '[&_..ant-pro-card]:bg-transparent!',
+          '[&_.ant-pro-table-list-toolbar_.ant-pro-table-list-toolbar-left]:mb-0!',
+          '[&_.ant-table-thead_.ant-table-column-has-sorters.ant-table-column-sort]:bg-[#e6f7ff] [&_.ant-table-thead_.ant-table-column-has-sorters.ant-table-column-sort]:shadow-[0_4px_8px_rgba(0,0,0,0.45)] [&_.ant-table-thead_.ant-table-column-has-sorters.ant-table-column-sort]:transition-all [&_.ant-table-thead_.ant-table-column-has-sorters.ant-table-column-sort]:duration-300 [&_.ant-table-thead_.ant-table-column-has-sorters.ant-table-column-sort]:ease-in-out'
+        )}
+      >
         <Card
           variant="borderless"
           style={{
@@ -351,157 +356,111 @@ const RankingPage: React.FC<RankingPageProps> = ({
           }}
         >
           <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'stretch',
-              padding: '40px 60px',
-              position: 'relative',
-              overflow: 'hidden',
-              gap: '60px',
-            }}
+            className={cn(
+              'relative overflow-hidden',
+              'flex flex-col gap-6 p-0',
+              'md:px-15 md:py-10 md:grid md:grid-cols-[1.5fr_1fr] md:grid-rows-[auto_auto_auto] md:gap-[60px]'
+            )}
+            style={{ position: 'relative' }}
           >
-            {/* 背景光效 */}
-            {/* <div className={styles.heroGlow1}></div>
-             <div className={styles.heroGlow2}></div> */}
-
-            {/* 左侧栏: 包含标题、简述和领奖台 */}
-            <div
-              style={{
-                flex: 1.5,
-                display: 'flex',
-                flexDirection: 'column',
-                zIndex: 2,
-              }}
-            >
-              <div style={{ textAlign: 'left', marginBottom: '40px' }}>
-                <Title
-                  level={1}
-                  className={styles.scaleTitle}
-                  style={{
-                    margin: 0,
-                    fontSize: '230px',
-                    fontWeight: 900,
-                    color: '#2c3e50',
-                    letterSpacing: '-2px',
-                    lineHeight: 1,
-                    textShadow: '4px 4px 8px rgba(0, 0, 0, 0.1)',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {t('ranking.title')}
-                </Title>
-                <Title
-                  level={2}
-                  style={{
-                    margin: '10px 0 24px 0',
-                    fontSize: '24px',
-                    fontWeight: 600,
-                    color: '#34495e',
-                    textAlign: 'left',
-                    lineHeight: '1.3',
-                  }}
-                >
-                  <span>
-                    <span style={{ color: '#1890ff', fontWeight: 800 }}>S</span>
-                    QL{' '}
-                    <span style={{ color: '#1890ff', fontWeight: 800 }}>
-                      Ca
-                    </span>
-                    pability{' '}
-                    <span style={{ color: '#1890ff', fontWeight: 800 }}>
-                      Le
-                    </span>
-                    aderboard for LLMs
-                  </span>
-                </Title>
-                <Paragraph
-                  style={{
-                    fontSize: '18px',
-                    color: '#555',
-                    lineHeight: '1.7',
-                  }}
-                >
-                  {t('ranking.description_part1')}{' '}
-                  <Link
-                    href="https://github.com/actiontech/sql-llm-benchmark"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      color: '#1890ff',
-                      fontSize: '25px',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    GitHub
-                  </Link>
-                  {t('ranking.description_part2')}{' '}
-                  <Button
-                    type="link"
-                    onClick={showSubmissionGuide}
-                    style={{
-                      padding: 0,
-                      fontSize: '18px',
-                      height: 'auto',
-                      lineHeight: 'inherit',
-                      color: '#1890ff',
-                      fontWeight: 'bold',
-                      verticalAlign: 'baseline',
-                    }}
-                  >
-                    {t('ranking.description_part3_trigger')}
-                  </Button>
-                </Paragraph>
-              </div>
-
-              {/* 领奖台模块 */}
-              <Podium
-                topModelsByCategory={topModelsByCategory}
-                logoInfo={logoInfo}
-                modelLogoInfo={modelLogoInfo}
-                onCategoryClick={(category) => {
-                  setSortedInfo({
-                    columnKey: category,
-                    order: 'descend',
-                  });
+            {/* 1. 大标题 + 副标题（移动端/桌面均为第一项） */}
+            <div className="z-2 text-left md:col-start-1 md:row-start-1">
+              <Title
+                level={1}
+                className="whitespace-nowrap! text-[230px]! tracking-[-2px] max-md:text-[18vw]! max-md:tracking-[-2px] max-[375px]:text-[16vw]! max-[375px]:tracking-[-1px]"
+                style={{
+                  margin: 0,
+                  fontWeight: 900,
+                  color: '#2c3e50',
+                  lineHeight: 1,
+                  textShadow: '4px 4px 8px rgba(0, 0, 0, 0.1)',
                 }}
-              />
+              >
+                {t('ranking.title')}
+              </Title>
+              <Title
+                level={2}
+                style={{
+                  marginTop: 10,
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  color: '#34495e',
+                  textAlign: 'left',
+                  lineHeight: '1.3',
+                }}
+              >
+                <span>
+                  <span style={{ color: '#1890ff', fontWeight: 800 }}>S</span>
+                  QL{' '}
+                  <span style={{ color: '#1890ff', fontWeight: 800 }}>
+                    Ca
+                  </span>
+                  pability{' '}
+                  <span style={{ color: '#1890ff', fontWeight: 800 }}>
+                    Le
+                  </span>
+                  aderboard for LLMs
+                </span>
+              </Title>
+              <Paragraph
+                style={{
+                  fontSize: '18px',
+                  color: '#555',
+                  lineHeight: '1.7',
+                }}
+              >
+                {t('ranking.description_part1')}{' '}
+                <Link
+                  href="https://github.com/actiontech/sql-llm-benchmark"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: '#1890ff',
+                    fontSize: '25px',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  GitHub
+                </Link>
+                {t('ranking.description_part2')}{' '}
+                <Button
+                  type="link"
+                  onClick={showSubmissionGuide}
+                  style={{
+                    padding: 0,
+                    fontSize: '18px',
+                    height: 'auto',
+                    lineHeight: 'inherit',
+                    color: '#1890ff',
+                    fontWeight: 'bold',
+                    verticalAlign: 'baseline',
+                  }}
+                >
+                  {t('ranking.description_part3_trigger')}
+                </Button>
+              </Paragraph>
             </div>
 
-            {/* 右侧栏: 详细描述 */}
-            <div
-              style={{
-                flex: 1,
-                zIndex: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                minHeight: 0,
-              }}
-            >
-              <div className={styles.descriptionWrapper}>
+            {/* 2. 右侧描述卡片（移动端第二项，桌面右侧第一行） */}
+            <div className="z-2 flex min-h-0 flex-col md:col-start-2 md:row-start-1">
+              <div className="rounded-xl border border-black/8 bg-white/60 px-6 py-5 text-left shadow-[0_4px_12px_rgba(0,0,0,0.05)] md:px-8 md:py-6">
                 <div
                   ref={descriptionRef}
-                  className={`${styles.descriptionContent} ${isDescriptionExpanded ? styles.expanded : ''}`}
+                  className="relative overflow-hidden transition-[max-height] duration-500 ease-in-out"
                   style={{
                     maxHeight: isDescriptionExpanded
                       ? `${descriptionRef.current?.scrollHeight || 'none'}px`
                       : '120px',
-                    position: 'relative',
                   }}
                 >
-                  <Paragraph
-                    style={{
-                      fontSize: '16px',
-                      color: '#34495e',
-                      lineHeight: '1.7',
-                      margin: 0,
-                    }}
-                    className={styles.descriptionText}
-                  >
+                  <Paragraph style={{ fontSize: 16 }} className="m-0 text-base text-left leading-[1.7] text-[#34495e]">
                     {t('ranking.full_description')}
                   </Paragraph>
                   {!isDescriptionExpanded && (
-                    <div className={styles.descriptionMask} />
+                    <div
+                      className="pointer-events-none absolute inset-x-0 bottom-0 z-2 h-[50px] bg-[linear-gradient(to_top,rgba(233,238,244,1),rgba(233,238,244,0))]"
+                      aria-hidden
+                    />
                   )}
                 </div>
                 {descriptionRef.current &&
@@ -511,7 +470,8 @@ const RankingPage: React.FC<RankingPageProps> = ({
                       <Button
                         type="link"
                         shape="round"
-                        icon={<UpOutlined className={styles.expandIcon} />}
+                      className="group"
+                      icon={<UpOutlined className="transition-transform duration-300 ease-in-out group-hover:-translate-y-[2px]" />}
                         onClick={() => setIsDescriptionExpanded(false)}
                         style={{
                           marginTop: '15px',
@@ -532,7 +492,8 @@ const RankingPage: React.FC<RankingPageProps> = ({
                       <Button
                         type="link"
                         shape="round"
-                        icon={<DownOutlined className={styles.expandIcon} />}
+                      className="group"
+                      icon={<DownOutlined className="transition-transform duration-300 ease-in-out group-hover:-translate-y-[2px]" />}
                         onClick={() => setIsDescriptionExpanded(true)}
                         style={{
                           marginTop: '15px',
@@ -547,8 +508,25 @@ const RankingPage: React.FC<RankingPageProps> = ({
                     </div>
                   )}
               </div>
+            </div>
 
-              {/* 当月测评文章卡片 */}
+            {/* 3. Podium 领奖台（移动端第三项，桌面左侧第三行） */}
+            <div className="z-2 md:col-start-1 md:row-start-2">
+              <Podium
+                topModelsByCategory={topModelsByCategory}
+                logoInfo={logoInfo}
+                modelLogoInfo={modelLogoInfo}
+                onCategoryClick={(category) => {
+                  setSortedInfo({
+                    columnKey: category,
+                    order: 'descend',
+                  });
+                }}
+              />
+            </div>
+
+            {/* 4. 当月测评文章卡片（仅桌面显示，移动端隐藏） */}
+            <div className="hidden md:col-start-2 md:row-start-2 md:block">
               {(() => {
                 // 根据当前语言选择对应的博客
                 const currentLang = i18n.language
@@ -668,53 +646,57 @@ const RankingPage: React.FC<RankingPageProps> = ({
             </div>
           </div>
 
-          {/* 搜索框 - 表格上方 */}
+          {/* 搜索框 + 对比模式提示 */}
           <div
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              marginBottom: 24,
-              padding: '0 24px',
-            }}
+            className={cn(
+              'mt-6 mb-3',
+              'max-md:space-y-4',
+              'md:flex md:flex-wrap md:items-center md:justify-end md:gap-3'
+            )}
           >
-            <Search
-              key="search"
-              placeholder={t('search model name')}
-              allowClear
-              onSearch={(val) => {
-                setSearchText(val);
-                actionRef.current?.reload();
-              }}
-              style={{ width: 300 }}
-            />
-          </div>
-
-          {/* 对比模式提示 */}
-          {showCompareMode && (
-            <Card
-              style={{
-                marginBottom: '16px',
-                backgroundColor: '#f0f9ff',
-                border: '1px solid #91caff',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#1890ff',
-                  fontSize: '14px',
-                }}
-              >
-                <SwapOutlined
-                  style={{ marginRight: '8px', fontSize: '16px' }}
+            <div className="w-full md:w-[400px] md:shrink-0">
+              <div className="relative group">
+                <SearchOutlined
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors"
+                  style={{ fontSize: 18 }}
                 />
-                <span>{t('compare.compare_mode_tip')}</span>
+                <input
+                  type="text"
+                  placeholder={t('actions.searchPlaceholder')}
+                  className="w-full pl-10 pr-4 py-2 bg-white border-none rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none text-sm"
+                  value={searchText}
+                  onChange={(e) => {
+                    setSearchText(e.target.value);
+                    actionRef.current?.reload();
+                  }}
+                />
               </div>
-            </Card>
-          )}
+            </div>
+
+            {/* 对比模式提示：移动端和桌面端统一样式 */}
+            {showCompareMode && (
+              <div className="w-full md:w-full">
+                <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 flex items-start gap-3">
+                  <div className="bg-blue-500 p-1.5 rounded-lg text-white mt-0.5 shrink-0">
+                    <AppstoreOutlined style={{ fontSize: 16 }} />
+                  </div>
+                  <div className="flex-1 text-xs leading-relaxed text-blue-800">
+                    <p className="font-semibold mb-1 text-blue-900">
+                      {t('compare.compare_mode_tip_title')}
+                    </p>
+                    {t('compare.compare_mode_tip_content', { count: 5 }).split('5').map((part, i, arr) => (
+                      <React.Fragment key={i}>
+                        {part}
+                        {i < arr.length - 1 && (
+                          <span className="font-bold text-blue-600">5</span>
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* 表格 */}
           {!mounted || isLoading ? (
@@ -740,148 +722,51 @@ const RankingPage: React.FC<RankingPageProps> = ({
               rowKey="id"
               search={false}
               loading={isLoading}
+                scroll={{ x: 'max-content' }}
               options={{
-                reload: () => fetchModels(currentMonth), // 调用客户端数据获取函数
-                density: true,
-                fullScreen: true,
-                setting: true,
+                reload: isMobile ? false : () => fetchModels(currentMonth),
+                density: !isMobile,
+                fullScreen: !isMobile,
+                setting: !isMobile,
               }}
               onChange={handleTableChange}
               headerTitle={
-                <Space size="middle">
-                  {/* 日期选择器 */}
-                  <Select
-                    value={currentMonth}
-                    onChange={handleMonthChange}
-                    style={{ width: 180 }}
-                    size="middle"
-                  >
-                    {months.map((m) => {
-                      const isLatestMonth = m === latestMonth;
-                      const isRealTime = isLatestMonth && isLatestMonthCurrent;
-
-                      return (
-                        <Select.Option key={m} value={m}>
-                          {isRealTime ? t('ranking.current_month_realtime') : m}
-                        </Select.Option>
-                      );
-                    })}
-                  </Select>
-
-                  {/* 榜单规则按钮 */}
-                  <Button icon={<FormOutlined />} onClick={showFormulaModal}>
-                    {t('evaluation_cases.formula_button')}
-                  </Button>
-
-                  {/* 贡献测评集按钮 */}
-                  <Button icon={<GithubOutlined />} onClick={showSubmissionGuide}>
-                    {t('nav.contribute_evaluation')}
-                  </Button>
-
-                  {/* 分隔线 */}
-                  <div
-                    style={{
-                      width: 1,
-                      height: 24,
-                      background: '#d9d9d9',
-                      margin: '0 8px',
-                    }}
-                  />
-
-                  {/* 模型对比按钮 */}
-                  <Button
-                    key="compare-toggle"
-                    type={showCompareMode ? 'default' : 'primary'}
-                    onClick={toggleCompareMode}
-                    icon={showCompareMode ? <CloseOutlined /> : <SwapOutlined />}
-                    style={{
-                      fontWeight: 'bold',
-                      borderRadius: '4px',
-                      padding: '4px 12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      backgroundColor: showCompareMode ? undefined : '#1890ff',
-                    }}
-                  >
-                    {showCompareMode
-                      ? t('compare.exit_compare_mode')
-                      : t('compare.toggle_compare_mode')}
-                  </Button>
-                  {showCompareMode && (
-                    <>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          backgroundColor: '#f0f9ff',
-                          padding: '4px 12px',
-                          borderRadius: '6px',
-                          border: '1px solid #91caff',
-                        }}
-                      >
-                        <Badge
-                          count={selectedModels.size}
-                          showZero
-                          style={{ backgroundColor: '#1890ff' }}
-                        />
-                        <span
-                          style={{
-                            marginLeft: '8px',
-                            fontSize: '14px',
-                            color: '#1890ff',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {t('compare.selected_models_count', {
-                            count: selectedModels.size,
-                          })}
-                        </span>
-                      </div>
-                      {selectedModels.size >= 2 && (
-                        <Button
-                          key="start-compare"
-                          type="primary"
-                          onClick={handleCompare}
-                          style={{
-                            fontWeight: 'bold',
-                            borderRadius: '4px',
-                            padding: '4px 12px',
-                          }}
-                        >
-                          {t('compare.start_compare', {
-                            count: selectedModels.size,
-                          })}
-                        </Button>
-                      )}
-                    </>
-                  )}
-                </Space>
+                <RankingTableToolbar
+                  months={months}
+                  currentMonth={currentMonth}
+                  latestMonth={latestMonth}
+                  isLatestMonthCurrent={isLatestMonthCurrent}
+                  t={t}
+                  showCompareMode={showCompareMode}
+                  selectedModelsCount={selectedModels.size}
+                  onMonthChange={handleMonthChange}
+                  onFormulaClick={showFormulaModal}
+                  onContributeClick={showSubmissionGuide}
+                  onToggleCompareMode={toggleCompareMode}
+                  onReload={() => fetchModels(currentMonth)}
+                  onStartCompare={handleCompare}
+                />
               }
               pagination={false}
               rowClassName={(record: Model, idx) => {
                 const rank = idx + 1;
-                const classes = [];
+                const isSelected = showCompareMode && selectedModels.has(record.id);
 
-                // 基础排名样式
-                if (rank === 1) classes.push(styles.rank1Row);
-                else if (rank === 2) classes.push(styles.rank2Row);
-                else if (rank === 3) classes.push(styles.rank3Row);
-                else
-                  classes.push(
-                    idx % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven
-                  );
+                // 排名行：前三名加粗
+                const rankRowClass =
+                  rank === 1 || rank === 2 || rank === 3 ? 'font-bold' : '';
 
-                // 在多选模式下添加额外样式
-                if (showCompareMode) {
-                  classes.push(styles.compareMode);
-                  const isSelected = selectedModels.has(record.id);
-                  if (isSelected) {
-                    classes.push(styles.selectedRow);
-                  }
-                }
+                // 对比模式：过渡 + hover 浅蓝背景
+                const compareModeClass = showCompareMode
+                  ? 'transition-colors duration-200 hover:!bg-[#f0f9ff]'
+                  : '';
 
-                return classes.filter(Boolean).join(' ');
+                // 选中行：左侧 4px 蓝条 + 浅蓝背景，td 透明以显示行背景
+                const selectedRowClass = isSelected
+                  ? '!bg-[linear-gradient(to_right,#1890ff_0_4px,#e6f7ff_4px_100%)] hover:!bg-[linear-gradient(to_right,#1890ff_0_4px,#d4edff_4px_100%)] [&_td]:!bg-transparent'
+                  : '';
+
+                return cn('hover:cursor-pointer', rankRowClass, compareModeClass, selectedRowClass);
               }}
               tableStyle={{
                 borderRadius: 12,

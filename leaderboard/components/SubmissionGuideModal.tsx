@@ -44,8 +44,7 @@ export const SubmissionGuideModal: React.FC<SubmissionGuideModalProps> = ({
                     {t("submission_guide.cta_button")}
                 </Button>,
             ]}
-            width="50%"
-            style={{ top: 50, maxWidth: "800px" }}
+            style={{ top: 50 }}
             title={
                 <Space>
                     <GithubOutlined />
