@@ -25,23 +25,6 @@
   /* 移除顶部padding，让内容紧靠导航栏 */
   box-sizing: border-box;
 }
-
-/* 为需要padding的页面内容添加padding */
-.container>*:first-child {
-  padding-top: 0;
-}
-
-/*
-榜单列表斑马线样式
-.tableRowOdd {
-   background-color: #ffffff; 
-}
-
-.tableRowEven {
-   background-color: #f9f9f9;
-}
-*/
-
 .baselineRow {
   background-color: #e6e9ff;
   /* 蓝色背景，用于着重显示 */
@@ -119,27 +102,6 @@
     opacity: 0.8;
   }
 }
-
-/* 排序中的列头立体显示 */
-.container :global(.ant-table-thead .ant-table-column-has-sorters.ant-table-column-sort) {
-  background-color: #e6f7ff;
-  /* 浅蓝色背景，表示选中 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.45);
-  /* 立体阴影效果 */
-  transition: all 0.3s ease;
-  /* 平滑过渡 */
-}
-
-.container :global(.ant-table-thead .ant-table-column-has-sorters:hover) {
-  background-color: #e6f7ff;
-  /* 鼠标悬停时也显示背景色 */
-}
-
-/* 表格行悬停时显示手型光标 */
-.container :global(.ant-table-tbody > tr.ant-table-row:hover) {
-  cursor: pointer;
-}
-
 /* SCALE Title Responsive Styles */
 .scaleTitle {
   white-space: nowrap !important;
@@ -237,15 +199,6 @@
   color: #34495e;
   text-align: left;
 }
-
-.expandIcon {
-  transition: transform 0.3s ease;
-}
-
-:global(.ant-btn:hover) .expandIcon {
-  transform: translateY(-2px);
-}
-
 .descriptionMask {
   content: "";
   position: absolute;
@@ -328,9 +281,4 @@
 /* 确保整个选择框区域都可以点击 */
 .monthSelectEnhanced :global(.ant-select-selector) {
   cursor: pointer !important;
-}
-
-/* 表头操作栏背景色 */
-.container :global(.ant-pro-table-list-toolbar) {
-  background: linear-gradient(135deg, #f6f8fa 0%, #e9eef4 100%) !important;
 }
