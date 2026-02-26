@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'export', // 启用静态导出
+  // 移除 output: 'export' 以启用 API Routes 功能
+  // output: 'export', // 已禁用静态导出模式
   staticPageGenerationTimeout: 60,
 };
 
