@@ -57,7 +57,8 @@ You are a database expert in SQL analysis. Analyze the SQL statement below and r
 def prompt_for_syntax_error_detection(case: dict) -> str:
     query = case.get("sql", "")
     return f"""
-You are a SQL syntax checker. Check if the following SQL statement has syntax errors. Respond **only** with valid JSON (no extra text) matching this structure:
+You are a SQL syntax checker. The following SQL statement is written for the MySQL database.
+Check if the following SQL statement has syntax errors, regardless of any specific MySQL version (focus solely on standard SQL syntax, not dialect/version compatibility). Respond **only** with valid JSON (no extra text) matching this structure:
 
 {{
   "has_syntax_error": "yes|no"
@@ -81,6 +82,7 @@ Given the table schema, data inserts, and a SQL query (in {case.get('dialect')} 
 Respond only with JSON matching exactly this structure (no extra text, no markdown fences, no line breaks inside the JSON):
 
 {{
+  "select_type": "<select_type>",
   "type": "<type>",
   "rows": "<rows>",
   "key": <key|null>,

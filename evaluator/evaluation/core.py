@@ -30,8 +30,12 @@ def evaluate_objective(model_answer: Any, expected_answer: Any, test_case_id: st
         expected_answer, str) else expected_answer
     correctly = deep_equal(norm_model_answer, norm_expected_answer)
     if not correctly:
+        logger.info(
+            f"[{test_case_id}] case expected answer: {norm_expected_answer},model answer: {norm_model_answer}")
         log_process_detail(
             f"[{test_case_id}] case expected answer: {norm_expected_answer}")
+    logger.info(
+        f"[{test_case_id}] Objective Eval Case Results: {correctly}")
     log_process_detail(
         f"[{test_case_id}] Objective Eval Case Results: {correctly}")
     return correctly
