@@ -5,8 +5,9 @@ import Document, {
   NextScript,
   DocumentContext,
 } from "next/document";
-import { createCache, extractStyle, StyleProvider } from "@ant-design/cssinjs";
-import type { EmotionCache } from "@emotion/cache";
+import type { AppProps } from "next/app";
+import type { ComponentType } from "react";
+import { createCache, extractStyle } from "@ant-design/cssinjs";
 import i18n from "../lib/i18n";
 
 interface SeoData {
@@ -16,7 +17,6 @@ interface SeoData {
 }
 
 interface MyDocumentProps {
-  emotionCache: EmotionCache;
   seoData: SeoData;
   locale: string;
 }
@@ -44,12 +44,12 @@ class MyDocument extends Document<MyDocumentProps> {
 
     ctx.renderPage = () =>
       originalRenderPage({
-        enhanceApp: (App) => (props) =>
-        (
-          <StyleProvider cache={cache}>
-            <App {...props} />
-          </StyleProvider>
-        ),
+        enhanceApp: (App) => (props) => {
+          const AppWithAntCache = App as ComponentType<
+            AppProps & { antStyleCache?: typeof cache }
+          >;
+          return <AppWithAntCache {...props} antStyleCache={cache} />;
+        },
       });
 
     const initialProps = await Document.getInitialProps(ctx);
@@ -104,7 +104,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
           {/* End 百度统计 */}
           <meta charSet="utf-8" />
-          <meta name="viewport" content="width=1500, initial-scale=1" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="author" content="ActionTech" />
 
           {/* 百度站点验证 */}

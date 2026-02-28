@@ -1,0 +1,67 @@
+{
+  "description": "各数据集真实 Token 统计，用于测评页展示与 API 返回。key 为 datasetId（category/文件名不含.jsonl）",
+  "datasets": {
+    "sql_understanding/execution_accuracy": {
+      "testCaseCount": 30,
+      "tokenCount": 76820
+    },
+    "sql_understanding/explain_detection": {
+      "testCaseCount": 20,
+      "tokenCount": 45610
+    },
+    "sql_understanding/syntax_error_detection": {
+      "testCaseCount": 30,
+      "tokenCount": 30330
+    },
+    "dialect_conversion/big_sql_conversion": {
+      "testCaseCount": 15,
+      "tokenCount": 210550
+    },
+    "dialect_conversion/China-made_database": {
+      "testCaseCount": 19,
+      "tokenCount": 27040
+    },
+    "dialect_conversion/logical_equivalence": {
+      "testCaseCount": 18,
+      "tokenCount": 32350
+    },
+    "dialect_conversion/syntax_error_detection": {
+      "testCaseCount": 20,
+      "tokenCount": 30200
+    },
+    "sql_optimization/index_advice": {
+      "testCaseCount": 88,
+      "tokenCount": 768350
+    },
+    "sql_optimization/logical_equivalence": {
+      "testCaseCount": 50,
+      "tokenCount": 747300
+    },
+    "sql_optimization/optimization_depth": {
+      "testCaseCount": 50,
+      "tokenCount": 705820
+    },
+    "sql_optimization/syntax_error_detection": {
+      "testCaseCount": 50,
+      "tokenCount": 747300
+    }
+  },
+  "summary": {
+    "sql_understanding": {
+      "testCaseCount": 80,
+      "tokenCount": 152760
+    },
+    "dialect_conversion": {
+      "testCaseCount": 72,
+      "tokenCount": 300140
+    },
+    "sql_optimization": {
+      "testCaseCount": 238,
+      "tokenCount": 2968770
+    },
+    "total": {
+      "testCaseCount": 390,
+      "tokenCount": 3421670
+    }
+  }
+}
