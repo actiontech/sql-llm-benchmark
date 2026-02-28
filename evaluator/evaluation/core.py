@@ -29,6 +29,9 @@ def evaluate_objective(model_answer: Any, expected_answer: Any, test_case_id: st
     norm_expected_answer = expected_answer.strip().lower() if isinstance(
         expected_answer, str) else expected_answer
     correctly = deep_equal(norm_model_answer, norm_expected_answer)
+    if not correctly:
+        log_process_detail(
+            f"[{test_case_id}] case expected answer: {norm_expected_answer}")
     log_process_detail(
         f"[{test_case_id}] Objective Eval Case Results: {correctly}")
     return correctly
