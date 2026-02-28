@@ -18,6 +18,7 @@ interface ColumnProps {
     maxScoresByCategory: Record<string, number>;
     currentMonth: string;
     t: (key: string) => string; // 添加翻译函数参数
+    isMobile: boolean;
 }
 
 export const createRankingTableColumns = ({
@@ -26,6 +27,7 @@ export const createRankingTableColumns = ({
     maxScoresByCategory,
     currentMonth,
     t,
+    isMobile,
 }: ColumnProps): ProColumns<Model>[] => {
 
     return [
@@ -68,7 +70,7 @@ export const createRankingTableColumns = ({
                     </Space>
                 );
             },
-            width: 100,
+            width: isMobile ? 54 : 100,
             align: "center",
         },
         {
@@ -88,7 +90,7 @@ export const createRankingTableColumns = ({
                 ) : (
                     <span>N/A</span>
                 ),
-            width: 150,
+            width: isMobile ? 68 : 150,
         },
         {
             title: (
@@ -142,7 +144,7 @@ export const createRankingTableColumns = ({
             sortOrder:
                 sortedInfo.columnKey === "real_model_namne" ? sortedInfo.order : false,
             showSorterTooltip: false,
-            width: 200,
+            width: isMobile ? 160 : 200,
         },
         {
             title: (
@@ -163,7 +165,7 @@ export const createRankingTableColumns = ({
             sortOrder:
                 sortedInfo.columnKey === "releaseDate" ? sortedInfo.order : false,
             showSorterTooltip: false,
-            width: 200,
+            width: isMobile ? 110 : 200,
         },
         {
             title: t("table.type"),
@@ -195,7 +197,7 @@ export const createRankingTableColumns = ({
                     </span>
                 );
             },
-            width: 200,
+            width: isMobile ? 100 : 200,
         },
         {
             title: (
@@ -230,10 +232,17 @@ export const createRankingTableColumns = ({
                 if (score === undefined) return "--";
                 const isHighest =
                     score === maxScoresByCategory.sql_optimization && score !== 0;
+                if (isMobile) {
+                    return (
+                        <span style={{ fontWeight: isHighest ? "bold" : "normal" }}>
+                            {score}
+                        </span>
+                    );
+                }
                 const delay = (index || 0) * 100; // 每行延迟100ms
                 return <StyledProgressBar score={score} isHighestScore={isHighest} delay={delay} />;
             },
-            width: 300,
+            width: isMobile ? 60 : 300,
         },
         {
             title: (
@@ -261,10 +270,17 @@ export const createRankingTableColumns = ({
                 if (score === undefined) return "--";
                 const isHighest =
                     score === maxScoresByCategory.dialect_conversion && score !== 0;
+                if (isMobile) {
+                    return (
+                        <span style={{ fontWeight: isHighest ? "bold" : "normal" }}>
+                            {score}
+                        </span>
+                    );
+                }
                 const delay = (index || 0) * 100; // 每行延迟100ms
                 return <StyledProgressBar score={score} isHighestScore={isHighest} delay={delay} />;
             },
-            width: 300,
+            width: isMobile ? 60 : 300,
         },
         {
             title: (
@@ -292,10 +308,17 @@ export const createRankingTableColumns = ({
                 if (score === undefined) return "--";
                 const isHighest =
                     score === maxScoresByCategory.sql_understanding && score !== 0;
+                if (isMobile) {
+                    return (
+                        <span style={{ fontWeight: isHighest ? "bold" : "normal" }}>
+                            {score}
+                        </span>
+                    );
+                }
                 const delay = (index || 0) * 100; // 每行延迟100ms
                 return <StyledProgressBar score={score} isHighestScore={isHighest} delay={delay} />;
             },
-            width: 300,
+            width: isMobile ? 60 : 300,
         },
         {
             title: t("table.details"),
@@ -307,7 +330,7 @@ export const createRankingTableColumns = ({
                 >
                     <Button
                         type="link"
-                        icon={<EyeOutlined />}
+                        icon={!isMobile ? <EyeOutlined /> : undefined}
                         size="small"
                         title={t("table.view_details")}
                     >
@@ -315,7 +338,7 @@ export const createRankingTableColumns = ({
                     </Button>
                 </Link>
             ),
-            width: 100,
+            width: isMobile ? 60 : 100,
             align: "center",
         },
     ];

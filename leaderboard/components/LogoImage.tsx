@@ -3,8 +3,9 @@ import React from "react";
 interface LogoImageProps {
     organization: string;
     width: number;
-    height: number;
+    height?: number;
     style?: React.CSSProperties;
+    className?: string;
     logoInfo: Record<string, string>;
     modelLogoInfo?: Record<string, { ext: string; originalName: string }>;
 }
@@ -14,6 +15,7 @@ export const LogoImage: React.FC<LogoImageProps> = ({
     width,
     height,
     style,
+    className,
     logoInfo,
     modelLogoInfo = {}
 }) => {
@@ -36,7 +38,7 @@ export const LogoImage: React.FC<LogoImageProps> = ({
 
     if (!src) {
         return (
-            <span style={{ ...style, width, height }}>
+            <span style={{ ...style, width, height }} className={className}>
                 {organization}
             </span>
         );
@@ -47,6 +49,7 @@ export const LogoImage: React.FC<LogoImageProps> = ({
             src={src}
             alt={organization}
             style={{ width, height, objectFit: "contain", ...style }}
+            className={className}
         />
     );
 }; 
