@@ -36,20 +36,31 @@ export const LogoImage: React.FC<LogoImageProps> = ({
         }
     }
 
+    const containerStyle: React.CSSProperties = {
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+        width,
+        height: height ?? width,
+        ...style,
+    };
+
     if (!src) {
         return (
-            <span style={{ ...style, width, height }} className={className}>
+            <span style={containerStyle} className={className}>
                 {organization}
             </span>
         );
     }
 
     return (
-        <img
-            src={src}
-            alt={organization}
-            style={{ width, height, objectFit: "contain", ...style }}
-            className={className}
-        />
+        <div style={containerStyle} className={className}>
+            <img
+                src={src}
+                alt={organization}
+                style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", display: "block" }}
+            />
+        </div>
     );
 }; 

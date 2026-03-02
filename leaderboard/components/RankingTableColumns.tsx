@@ -83,9 +83,8 @@ export const createRankingTableColumns = ({
                     <LogoImage
                         organization={record.organization}
                         logoInfo={logoInfo}
-                        width={60}
-                        height={60}
-                        style={{ display: "inline-block" }}
+                        width={80}
+                        height={20}
                     />
                 ) : (
                     <span>N/A</span>
