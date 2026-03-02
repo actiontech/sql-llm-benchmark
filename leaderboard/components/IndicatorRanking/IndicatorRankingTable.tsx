@@ -85,9 +85,8 @@ export const IndicatorRankingTable: React.FC<IndicatorRankingTableProps> = ({
                     <LogoImage
                         organization={record.organization}
                         logoInfo={logoInfo}
-                        width={32}
-                        height={32}
-                        style={{ marginBottom: 0 }}
+                        width={48}
+                        height={18}
                     />
                     <span>{record.modelName}</span>
                     {record.new_model && (
