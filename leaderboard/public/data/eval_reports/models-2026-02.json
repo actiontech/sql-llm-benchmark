@@ -70,6 +70,79 @@
             }
         },
         {
+            "id": "minimax-m2.5",
+            "name": "minimax-m2.5",
+            "real_model_namne": "MiniMax M2.5",
+            "type": "Chat(Thinking)",
+            "parameters": 1053390,
+            "website": "https://minimaxi.com/news/minimax-m25",
+            "description": "MiniMax M2.5: Built for Real-World Productivity.",
+            "organization": "MiniMax",
+            "releaseDate": "2026/2/12",
+            "new_model": true,
+            "scores": {
+                "sql_understanding": {
+                    "ability_score": 82.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 87.1,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 57.1,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.9,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 64.0,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 66.2,
+                            "indicator_name": "index_advice.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 56.7,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 53.3,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 85.6,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "dialect_conversion": {
+                    "ability_score": 65.9,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 41.9,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 74.2,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "id": "gemini-3-pro-preview",
             "name": "gemini-3-pro-preview",
             "real_model_namne": "Gemini 3 Pro",
