@@ -359,15 +359,15 @@ const RankingPage: React.FC<RankingPageProps> = ({
             className={cn(
               'relative overflow-hidden',
               'flex flex-col gap-6 p-0',
-              'md:px-15 md:py-10 md:grid md:grid-cols-[1.5fr_1fr] md:grid-rows-[auto_auto_auto] md:gap-[60px]'
+              'lg:px-15 lg:py-10 lg:grid lg:grid-cols-[1.5fr_1fr] lg:grid-rows-[auto_auto_auto] lg:gap-[60px]'
             )}
             style={{ position: 'relative' }}
           >
             {/* 1. 大标题 + 副标题（移动端/桌面均为第一项） */}
-            <div className="z-2 text-left md:col-start-1 md:row-start-1">
+            <div className="z-2 text-left lg:col-start-1 lg:row-start-1">
               <Title
                 level={1}
-                className="whitespace-nowrap! text-[230px]! tracking-[-2px] max-md:text-[18vw]! max-md:tracking-[-2px] max-[375px]:text-[16vw]! max-[375px]:tracking-[-1px]"
+                className="whitespace-nowrap! text-[160px]! xl:text-[230px]! tracking-[-2px] max-md:text-[18vw]! max-md:tracking-[-2px] max-[375px]:text-[16vw]! max-[375px]:tracking-[-1px]"
                 style={{
                   margin: 0,
                   fontWeight: 900,
@@ -442,8 +442,8 @@ const RankingPage: React.FC<RankingPageProps> = ({
             </div>
 
             {/* 2. 右侧描述卡片（移动端第二项，桌面右侧第一行） */}
-            <div className="z-2 flex min-h-0 flex-col md:col-start-2 md:row-start-1">
-              <div className="rounded-xl border border-black/8 bg-white/60 px-6 py-5 text-left shadow-[0_4px_12px_rgba(0,0,0,0.05)] md:px-8 md:py-6">
+            <div className="z-2 flex min-h-0 flex-col lg:col-start-2 lg:row-span-2">
+              <div className="rounded-xl border border-black/8 bg-white/60 px-5 py-4 xl:px-8 xl:py-6 text-left shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
                 <div
                   ref={descriptionRef}
                   className="relative overflow-hidden transition-[max-height] duration-500 ease-in-out"
@@ -508,6 +508,125 @@ const RankingPage: React.FC<RankingPageProps> = ({
                     </div>
                   )}
               </div>
+              {/* 4. 当月测评文章卡片（仅桌面显示，移动端隐藏） */}
+              <div className="hidden lg:block">
+                {(() => {
+                  // 根据当前语言选择对应的博客
+                  const currentLang = i18n.language
+                    ?.toLowerCase()
+                    .startsWith('zh')
+                    ? 'zh'
+                    : 'en';
+                  const monthlyNewsPost =
+                    currentLang === 'zh' ? zhNewsPost : enNewsPost;
+                  // 如果当前语言没有，尝试使用另一种语言
+                  const displayPost = monthlyNewsPost || zhNewsPost || enNewsPost;
+
+                  return displayPost ? (
+                    <Link
+                      href={`/news/${displayPost.slug}`}
+                      style={{
+                        display: 'block',
+                        textDecoration: 'none',
+                        marginTop: '24px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: 'relative',
+                          width: '100%',
+                          aspectRatio: '1.8 / 1',
+                          borderRadius: '12px',
+                          overflow: 'hidden',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateY(-4px)';
+                          e.currentTarget.style.boxShadow =
+                            '0 8px 24px rgba(0, 0, 0, 0.15)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow =
+                            '0 4px 12px rgba(0, 0, 0, 0.1)';
+                        }}
+                      >
+                        {/* 背景图片 */}
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            backgroundImage: "url('/blog/images/news.png')",
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'left center',
+                            backgroundRepeat: 'no-repeat',
+                          }}
+                        />
+
+                        {/* 文字内容 */}
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: '90%',
+                            textAlign: 'center',
+                            color: '#fff',
+                            zIndex: 1,
+                            paddingLeft: '22%'
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: '18px',
+                              fontWeight: 700,
+                              lineHeight: '1.4',
+                            }}
+                          >
+                            {displayPost.title}
+                          </div>
+                          {displayPost.excerpt && (
+                            <div
+                              style={{
+                                marginTop: '8px',
+                                fontSize: '14px',
+                                opacity: 0.9,
+                                fontWeight: 400,
+                                lineHeight: '1.5',
+                                display: '-webkit-box',
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: 'vertical' as const,
+                                overflow: 'hidden',
+                              }}
+                            >
+                              {displayPost.excerpt}
+                            </div>
+                          )}
+                          <div
+                            style={{
+                              marginTop: '12px',
+                              fontSize: '14px',
+                              opacity: 0.85,
+                              fontWeight: 400,
+                            }}
+                          >
+                            {currentLang === 'zh'
+                              ? '点击查看详情'
+                              : 'Click to view details'}{' '}
+                            →
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ) : null;
+                })()}
+              </div>
             </div>
 
             {/* 3. Podium 领奖台（移动端第三项，桌面左侧第三行） */}
@@ -525,125 +644,7 @@ const RankingPage: React.FC<RankingPageProps> = ({
               />
             </div>
 
-            {/* 4. 当月测评文章卡片（仅桌面显示，移动端隐藏） */}
-            <div className="hidden md:col-start-2 md:row-start-2 md:block">
-              {(() => {
-                // 根据当前语言选择对应的博客
-                const currentLang = i18n.language
-                  ?.toLowerCase()
-                  .startsWith('zh')
-                  ? 'zh'
-                  : 'en';
-                const monthlyNewsPost =
-                  currentLang === 'zh' ? zhNewsPost : enNewsPost;
-                // 如果当前语言没有，尝试使用另一种语言
-                const displayPost = monthlyNewsPost || zhNewsPost || enNewsPost;
 
-                return displayPost ? (
-                  <Link
-                    href={`/news/${displayPost.slug}`}
-                    style={{
-                      display: 'block',
-                      textDecoration: 'none',
-                      marginTop: '24px',
-                    }}
-                  >
-                    <div
-                      style={{
-                        position: 'relative',
-                        width: '100%',
-                        aspectRatio: '1.8 / 1',
-                        borderRadius: '12px',
-                        overflow: 'hidden',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
-                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'translateY(-4px)';
-                        e.currentTarget.style.boxShadow =
-                          '0 8px 24px rgba(0, 0, 0, 0.15)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.boxShadow =
-                          '0 4px 12px rgba(0, 0, 0, 0.1)';
-                      }}
-                    >
-                      {/* 背景图片 */}
-                      <div
-                        style={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          width: '100%',
-                          height: '100%',
-                          backgroundImage: "url('/blog/images/news.png')",
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'left center',
-                          backgroundRepeat: 'no-repeat',
-                        }}
-                      />
-
-                      {/* 文字内容 */}
-                      <div
-                        style={{
-                          position: 'absolute',
-                          top: '50%',
-                          left: '50%',
-                          transform: 'translate(-50%, -50%)',
-                          width: '90%',
-                          textAlign: 'center',
-                          color: '#fff',
-                          zIndex: 1,
-                          paddingLeft: '22%'
-                        }}
-                      >
-                        <div
-                          style={{
-                            fontSize: '18px',
-                            fontWeight: 700,
-                            lineHeight: '1.4',
-                          }}
-                        >
-                          {displayPost.title}
-                        </div>
-                        {displayPost.excerpt && (
-                          <div
-                            style={{
-                              marginTop: '8px',
-                              fontSize: '14px',
-                              opacity: 0.9,
-                              fontWeight: 400,
-                              lineHeight: '1.5',
-                              display: '-webkit-box',
-                              WebkitLineClamp: 2,
-                              WebkitBoxOrient: 'vertical' as const,
-                              overflow: 'hidden',
-                            }}
-                          >
-                            {displayPost.excerpt}
-                          </div>
-                        )}
-                        <div
-                          style={{
-                            marginTop: '12px',
-                            fontSize: '14px',
-                            opacity: 0.85,
-                            fontWeight: 400,
-                          }}
-                        >
-                          {currentLang === 'zh'
-                            ? '点击查看详情'
-                            : 'Click to view details'}{' '}
-                          →
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ) : null;
-              })()}
-            </div>
           </div>
 
           {/* 搜索框 + 对比模式提示 */}
@@ -722,7 +723,7 @@ const RankingPage: React.FC<RankingPageProps> = ({
               rowKey="id"
               search={false}
               loading={isLoading}
-                scroll={{ x: 'max-content' }}
+                scroll={isMobile ? { x: 'max-content' } : { x: 1000 }}
               options={{
                 reload: isMobile ? false : () => fetchModels(currentMonth),
                 density: !isMobile,
