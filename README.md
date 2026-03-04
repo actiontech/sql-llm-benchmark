@@ -86,7 +86,7 @@ The Leaderboard UI is responsible for displaying evaluation reports, the leaderb
     pnpm dev # or npm run dev
     ```
 
-    This will start a development server, usually at `http://localhost:4000`.
+    This will start a development server, usually at `http://localhost:8000`.
 
 4.  **Deployment**:
 
@@ -102,7 +102,7 @@ The Leaderboard UI is responsible for displaying evaluation reports, the leaderb
     pm2 start npm --name "leaderboard" -- start
     ```
 
-    The service runs at `http://localhost:4000` by default, with server-side rendering (SSR) support.
+    The service runs at `http://localhost:8000` by default, with server-side rendering (SSR) support.
 
     Common pm2 management commands:
 
