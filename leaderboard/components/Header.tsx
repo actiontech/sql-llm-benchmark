@@ -269,9 +269,10 @@ const Header: React.FC = () => {
 
   // 导航链接基础样式
   const navLinkBase = cn(
-    'flex items-center gap-2',
-    'px-4 py-2',
-    'text-sm font-normal',
+    'flex items-center',
+    'gap-1.5 lg:gap-2',
+    'px-3 py-2 lg:px-4',
+    'text-xs xl:text-sm font-normal',
     'rounded-md',
     'transition-all duration-200',
     'cursor-pointer no-underline'
@@ -289,13 +290,13 @@ const Header: React.FC = () => {
   // 辅助按钮样式（榜单规则、贡献测评集）
   const actionButtonStyles = cn(
     'flex items-center gap-1.5',
-    'px-3.5 py-2',
-    'text-sm font-normal',
+    'px-3 py-2 lg:px-3.5',
+    'text-xs lg:text-sm font-normal',
     'bg-transparent border-none',
     'rounded-md',
     'transition-colors duration-200',
     'cursor-pointer',
-    'hover:text-blue-500'
+    'hover:text-blue-500',
   );
 
   // 图标按钮样式
@@ -350,10 +351,10 @@ const Header: React.FC = () => {
 
         {/* 桌面端：左侧导航 */}
         <div className="hidden md:flex flex-1 items-center justify-center">
-          <nav className="flex items-center gap-2">
+          <nav className="flex items-center lg:gap-2">
             {/* 首页 */}
             <Link href="/" passHref legacyBehavior>
-              <a className={navLinkStyles(isHomePage)}>
+              <a className={`${navLinkStyles(isHomePage)} whitespace-nowrap`}>
                 <HomeOutlined className="text-lg" />
                 <span>{t('nav.home_label')}</span>
               </a>
@@ -366,9 +367,8 @@ const Header: React.FC = () => {
                   value={currentMonth}
                   onChange={handleMonthChange}
                   loading={loadingMonths}
-                  style={{ width: 180 }}
                   size="middle"
-                  className="header-month-selector"
+                  className="header-month-selector w-[100px] xl:w-[180px]"
                 >
                   {months.map((m) => {
                     const isLatestMonth = m === latestMonth;
@@ -398,7 +398,7 @@ const Header: React.FC = () => {
                 className={navLinkStyles(isEvaluationPage)}
                 onClick={() => setIsEvaluationModalVisible(true)}
               >
-                <ExperimentOutlined className="text-lg" />
+                <ExperimentOutlined className="hidden! xl:inline-flex! text-lg" />
                 <span>{t('nav.online_evaluation')}</span>
               </button>
             </Badge>
@@ -406,7 +406,7 @@ const Header: React.FC = () => {
             {/* Blog */}
             <Link href="/blog" passHref legacyBehavior>
               <a className={navLinkStyles(isBlogPage)}>
-                <FileTextOutlined className="text-lg" />
+                <FileTextOutlined className="hidden! xl:inline-flex! text-lg" />
                 <span>{t('nav.blog')}</span>
               </a>
             </Link>
@@ -414,7 +414,7 @@ const Header: React.FC = () => {
             {/* News */}
             <Link href="/news" passHref legacyBehavior>
               <a className={navLinkStyles(isNewsPage)}>
-                <FileTextOutlined className="text-lg" />
+                <FileTextOutlined className="hidden! xl:inline-flex! text-lg" />
                 <span>{t('nav.news')}</span>
               </a>
             </Link>
@@ -422,7 +422,7 @@ const Header: React.FC = () => {
             {/* 榜单规则 - 仅在 ranking 页面显示 */}
             {isRankingPage && (
               <button className={actionButtonStyles} onClick={showFormulaModal}>
-                <FormOutlined className="text-base" />
+                <FormOutlined className="hidden! xl:inline-flex! text-base" />
                 <span>{t('evaluation_cases.formula_button')}</span>
               </button>
             )}
@@ -433,7 +433,7 @@ const Header: React.FC = () => {
                 className={actionButtonStyles}
                 onClick={showSubmissionGuide}
               >
-                <StarOutlined className="text-base w-4 h-4" />
+                <StarOutlined className="hidden! xl:inline-flex! text-lg " />
                 <span>{t('nav.contribute_evaluation')}</span>
               </button>
             )}
@@ -444,7 +444,7 @@ const Header: React.FC = () => {
             {/* About */}
             <Link href="/about" passHref legacyBehavior>
               <a className={navLinkStyles(isAboutPage)}>
-                <InfoCircleOutlined className="text-lg" />
+                <InfoCircleOutlined className="hidden! xl:inline-flex! text-lg" />
                 <span>{t('nav.about')}</span>
               </a>
             </Link>

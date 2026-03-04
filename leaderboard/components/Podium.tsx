@@ -34,7 +34,7 @@ export const Podium: React.FC<PodiumProps> = ({
         return (
           <div
             key={category}
-            className="h-[280px] w-[30%] min-w-0 cursor-pointer transition-all duration-300 ease-in-out drop-shadow-[0_2px_4px_rgba(0,0,0,0.12)] hover:-translate-y-2.5 md:h-[350px] md:min-w-[220px] md:drop-shadow-[0_8px_16px_rgba(0,0,0,0.15)]"
+            className="h-[280px] w-[30%] min-w-0 cursor-pointer transition-all duration-300 ease-in-out drop-shadow-[0_2px_4px_rgba(0,0,0,0.12)] hover:-translate-y-2.5 md:h-[350px] md:min-w-[160px] xl:min-w-[220px] lg:drop-shadow-[0_8px_16px_rgba(0,0,0,0.15)]"
             onClick={() => {
               if (model) {
                 onCategoryClick(category);
@@ -79,7 +79,7 @@ export const Podium: React.FC<PodiumProps> = ({
                         modelLogoInfo={modelLogoInfo}
                         width={90}
                         height={90}
-                        className="mx-auto block size-[50px]! rounded-full border-2 border-[#FFD700] bg-white p-0.5 shadow-[0_4px_12px_rgba(0,0,0,0.1)] md:size-[90px] md:border-4 md:p-1"
+                        className="overflow-hidden mx-auto block size-[50px]! rounded-full border-2 border-[#FFD700] bg-white p-0.5 shadow-[0_4px_12px_rgba(0,0,0,0.1)] md:size-[90px] md:border-4 md:p-1"
                       />
                     )}
                     <Title level={4} className="m-0 text-[#222] text-sm md:text-base">
