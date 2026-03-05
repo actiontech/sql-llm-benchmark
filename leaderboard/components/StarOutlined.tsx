@@ -2,17 +2,14 @@ import React from 'react';
 
 interface StarOutlinedProps {
   className?: string;
-  style?: React.CSSProperties;
 }
 
 export const StarOutlined: React.FC<StarOutlinedProps> = ({
   className,
-  style,
 }) => {
   return (
     <svg
       className={className}
-      style={style}
       viewBox="0 0 1024 1024"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"

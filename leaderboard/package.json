@@ -2,10 +2,10 @@
   "name": "sql_model_leaderboard",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next dev -p 3000",
+    "dev": "next dev -p 8000",
     "prebuild": "node scripts/generate-months.js && node scripts/generate-sitemap.js",
     "build": "pnpm prebuild && next build",
-    "start": "next start",
+    "start": "next start -p 8000",
     "generate-sitemap": "node scripts/generate-sitemap.js",
     "generate-months": "node scripts/generate-months.js"
   },

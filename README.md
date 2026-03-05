@@ -86,19 +86,32 @@ The Leaderboard UI is responsible for displaying evaluation reports, the leaderb
     pnpm dev # or npm run dev
     ```
 
-    This will start a development server, usually at `http://localhost:3000`.
+    This will start a development server, usually at `http://localhost:8000`.
 
 4.  **Deployment**:
-    - **Static Export (SSG)**:
-      ```bash
-      next build # or npm run build
-      ```
-      The exported static assets will be located in the `leaderboard/out/` directory. You can deploy the contents of this directory to any static file server.
-    - **Server-Side Rendering (SSR)**:
-      ```bash
-      next start # or npm start
-      ```
-      This will start a Next.js server, supporting server-side rendering.
+
+    First, build the project:
+
+    ```bash
+    npm run build
+    ```
+
+    Then use [pm2](https://pm2.keymetrics.io/) to start the service as a daemon:
+
+    ```bash
+    pm2 start npm --name "leaderboard" -- start
+    ```
+
+    The service runs at `http://localhost:8000` by default, with server-side rendering (SSR) support.
+
+    Common pm2 management commands:
+
+    ```bash
+    pm2 status                   # Check service status
+    pm2 logs leaderboard         # View logs
+    pm2 restart leaderboard      # Restart service
+    pm2 stop leaderboard         # Stop service
+    ```
 
 ## Evaluation Methodology and Score Calculation
 
