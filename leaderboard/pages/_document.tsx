@@ -107,6 +107,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="author" content="ActionTech" />
 
+          {/* 站点图标：供浏览器标签、书签及 Bing/Google 搜索结果旁展示，避免显示默认地球图标 */}
+          <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+          <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
           {/* 百度站点验证 */}
           <meta name="baidu-site-verification" content="codeva-JmWsVgyVSb" />
 

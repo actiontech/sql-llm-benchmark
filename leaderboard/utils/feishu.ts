@@ -30,6 +30,24 @@ export interface FeishuNotificationData {
 }
 
 /**
+ * 将 ISO 时间字符串格式化为北京时区显示
+ */
+function formatTimestampToBeijing(isoTimestamp: string): string {
+  const date = new Date(isoTimestamp);
+  const formatted = date.toLocaleString('zh-CN', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  });
+  return `${formatted} (北京时间)`;
+}
+
+/**
  * 飞书卡片消息构建器返回类型
  */
 interface FeishuCard {
@@ -147,7 +165,7 @@ async function uploadFileToFeishu(
 
 /**
  * 发送消息到飞书群聊
- * 
+ *
  * @returns 返回消息ID
  */
 async function sendMessageToFeishu(
@@ -211,7 +229,7 @@ async function sendMessageToFeishu(
 
 /**
  * 回复飞书消息（使用专门的 reply API）
- * 
+ *
  * @param token - 飞书访问令牌
  * @param messageId - 要回复的消息ID
  * @param msgType - 消息类型
@@ -235,7 +253,7 @@ async function replyFeishuMessage(
     }
 
     const replyUrl = `${FEISHU_API_BASE}/im/v1/messages/${messageId}/reply`;
-    
+
     const body = {
       msg_type: msgType,
       content: JSON.stringify(content),
@@ -329,7 +347,7 @@ function buildCustomModelCard(data: FeishuNotificationData): FeishuCard {
       is_short: true,
       text: {
         tag: 'lark_md',
-        content: `**提交时间:**\n${data.content.timestamp}`,
+        content: `**提交时间:**\n${formatTimestampToBeijing(data.content.timestamp)}`,
       },
     }
   );
@@ -417,7 +435,7 @@ function buildCustomDatasetCard(
           is_short: true,
           text: {
             tag: 'lark_md',
-            content: `**提交时间:**\n${data.content.timestamp}`,
+            content: `**提交时间:**\n${formatTimestampToBeijing(data.content.timestamp)}`,
           },
         },
       ],
@@ -462,7 +480,10 @@ function buildCustomDatasetCard(
   }
 
   // 期望支持的自定义模型
-  if (data.content.customModelsRequest && data.content.customModelsRequest !== '无') {
+  if (
+    data.content.customModelsRequest &&
+    data.content.customModelsRequest !== '无'
+  ) {
     elements.push({
       tag: 'div',
       text: {
@@ -490,18 +511,6 @@ function buildCustomDatasetCard(
     });
   }
 
-  // 添加提示信息
-  elements.push({
-    tag: 'note',
-    elements: [
-      {
-        tag: 'plain_text',
-        content:
-          '数据集文件将在话题中发送，请下载后及时处理测评任务，完成后发送结果到用户邮箱',
-      },
-    ],
-  });
-
   return {
     config: {
       wide_screen_mode: true,
@@ -520,7 +529,7 @@ function buildCustomDatasetCard(
 /**
  * 发送飞书通知（统一入口）
  * 支持文本消息和文件上传
- * 
+ *
  * 对于自定义数据集任务：
  * 1. 先发送卡片消息，作为主消息
  * 2. 使用 reply API 将文件作为回复发送
