@@ -322,35 +322,56 @@ const Header: React.FC = () => {
       <div
         className={cn(
           'flex items-center justify-between',
-          'px-4 md:px-8',
+          'px-2 md:px-4',
           'transition-all duration-300',
           isScrolled ? 'h-11' : 'h-14'
         )}
       >
-        {/* 移动端：汉堡菜单 */}
-        <div className="flex md:hidden">
-          <Dropdown
-            menu={{
-              items: mobileMenuItems,
-              selectedKeys: selectedMenuKeys,
-            }}
-            trigger={['click']}
-            open={mobileMenuOpen}
-            onOpenChange={setMobileMenuOpen}
-            placement="bottomLeft"
-            overlayStyle={{ minWidth: 200 }}
-          >
-            <Button
-              type="text"
-              className={iconButtonStyles}
-              icon={<MenuOutlined style={{ fontSize: '20px' }} />}
-              aria-label={t('nav.menu')}
-            />
-          </Dropdown>
+        {/* 左侧：logo 与移动端菜单 */}
+        <div className="flex flex-1 items-center gap-3 md:hidden">
+          <div className="flex">
+            <Dropdown
+              menu={{
+                items: mobileMenuItems,
+                selectedKeys: selectedMenuKeys,
+              }}
+              trigger={['click']}
+              open={mobileMenuOpen}
+              onOpenChange={setMobileMenuOpen}
+              placement="bottomLeft"
+              overlayStyle={{ minWidth: 200 }}
+            >
+              <Button
+                type="text"
+                className={iconButtonStyles}
+                icon={<MenuOutlined style={{ fontSize: '20px' }} />}
+                aria-label={t('nav.menu')}
+              />
+            </Dropdown>
+          </div>
+
+          <Link href="/" passHref legacyBehavior>
+            <a className="flex items-center">
+              <img
+                src="/scale_logo/logo.png"
+                alt="Scale logo"
+                className="h-8 w-auto"
+              />
+            </a>
+          </Link>
         </div>
 
         {/* 桌面端：左侧导航 */}
         <div className="hidden md:flex flex-1 items-center justify-center">
+          <Link href="/" passHref legacyBehavior >
+            <a className="flex items-center mr-4 hidden lg:block">
+              <img
+                src="/scale_logo/logo.png"
+                alt="Scale logo"
+                className="h-8 w-auto"
+              />
+            </a>
+          </Link>
           <nav className="flex items-center lg:gap-2">
             {/* 首页 */}
             <Link href="/" passHref legacyBehavior>
