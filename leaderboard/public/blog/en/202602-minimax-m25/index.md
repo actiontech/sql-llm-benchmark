@@ -1,5 +1,5 @@
 ---
-category: evaluation
+category: product
 date: 2026-02-12T00:00:00.000Z
 author: simple
 excerpt: >-
@@ -16,16 +16,16 @@ top: true
 
 ## 1. Evaluation Summary & Key Takeaways
 
-On February 12, 2026, [MiniMax M2.5](https://www.minimaxi.com/news/minimax-m25) was officially released. [SCALE](https://sql-llm-leaderboard.com/) immediately evaluated the model—marking the first time a MiniMax-series model appeared on the SCALE leaderboard. The goal was to systematically assess its SQL capabilities in enterprise-grade database scenarios and provide actionable insights for developers and technical decision-makers.
+On February 12, 2026, [MiniMax M2.5](https://www.minimax.io/models/text) was officially released. [SCALE](https://sql-llm-leaderboard.com/) immediately evaluated the model—marking the first time a MiniMax-series model appeared on the SCALE leaderboard. The goal was to systematically assess its SQL capabilities in enterprise-grade database scenarios and provide actionable insights for developers and technical decision-makers.
 
 ![./minimax.png](./minimax.png)
 
 **Precise Understanding, Robust Optimization, Leading Domestic Performance**  
-MiniMax M2.5 demonstrates solid foundational understanding of SQL semantics and syntax, achieving industry-leading results particularly in execution accuracy and syntax error correction. In SQL optimization, it ranked **2nd** in "Optimization Depth," highlighting strong potential. Notably, its performance in converting between domestic Chinese database dialects stands out, offering a compelling solution for enterprises undergoing "Xinchuang" (China's tech self-reliance initiative) migrations. As a well-balanced model, MiniMax M2.5 delivers consistent performance across most core competencies, making it highly practical for real-world use.
+MiniMax M2.5 demonstrates solid foundational understanding of SQL semantics and syntax, achieving industry-leading results particularly in execution accuracy and syntax error correction. In SQL optimization, it ranked **2nd** in “Optimization Depth,” highlighting strong potential. Notably, its performance in converting between domestic Chinese database dialects stands out, offering a compelling solution for enterprises undergoing “Xinchuang” (China’s tech self-reliance initiative) migrations. As a well-balanced model, MiniMax M2.5 delivers consistent performance across most core competencies, making it highly practical for real-world use.
 
 ![./scale.png](./scale.png)
 
-Under SCALE's three core evaluation dimensions, MiniMax M2.5 ranks among the top performers among mainstream models. According to SCALE's standardized scoring system:
+Under SCALE’s three core evaluation dimensions, MiniMax M2.5 ranks among the top performers among mainstream models. According to SCALE’s standardized scoring system:
 
 - **SQL Optimization**: **64.0** (Rank #4)
 - **SQL Understanding**: **82.2** (Rank #5)
@@ -50,7 +50,7 @@ The model scored **82.2** in SQL Understanding—reflecting excellent overall pe
 **Strengths**  
 MiniMax M2.5 excels in two critical sub-metrics:
 
-- **Execution Accuracy (87.1)**: Tested across three difficulty tiers—from basic DML to complex scenarios involving multi-table joins, correlated subqueries, `EXISTS/IN` nesting, and cross-table `UPDATE/DELETE`. The model must mentally "execute" the query and precisely reconstruct column names, data types, and row order.
+- **Execution Accuracy (87.1)**: Tested across three difficulty tiers—from basic DML to complex scenarios involving multi-table joins, correlated subqueries, `EXISTS/IN` nesting, and cross-table `UPDATE/DELETE`. The model must mentally “execute” the query and precisely reconstruct column names, data types, and row order.
 - **Syntax Error Detection (82.9)**: Evaluated on highly deceptive edge cases, including CTE misuse, transaction control errors, `CREATE VIEW` issues, incorrect `HAVING` clause placement, and missing parentheses.
 
 The model shows deep semantic understanding—it accurately predicts aggregation results, filter logic, and join outcomes, while reliably catching subtle syntactic pitfalls. This indicates strong professional-grade competence in both SQL semantics and grammar.
@@ -135,7 +135,7 @@ The test suite covered everything from simple DDL to enterprise-grade stored pro
 - `PIVOT` operations
 - Advanced window functions
 
-Crucially, the "Domestic Database" track required deep knowledge of Chinese DBMS quirks (e.g., OceanBase, GaussDB).
+Crucially, the “Domestic Database” track required deep knowledge of Chinese DBMS quirks (e.g., OceanBase, GaussDB).
 
 MiniMax M2.5 delivered:
 
@@ -143,7 +143,7 @@ MiniMax M2.5 delivered:
 - **74.2** in logical equivalence
 - **71.4** in syntax correctness
 
-This makes it a powerful tool for organizations migrating legacy systems to homegrown databases under China's Xinchuang policy.
+This makes it a powerful tool for organizations migrating legacy systems to homegrown databases under China’s Xinchuang policy.
 
 **Areas for Improvement**  
 In **Large SQL Conversion (41.9)**, challenges emerged with complex procedural logic:
@@ -181,8 +181,8 @@ Ranked among the top in optimization depth, MiniMax M2.5 can effectively assist 
 
 Since its inception, SCALE has maintained rigorous, consistent standards across all evaluations to ensure fairness and reproducibility.
 
-- **SQL Understanding**: Measures a model's ability to deeply analyze existing SQL—covering execution accuracy, execution plan reasoning, and syntax error detection.
-- **SQL Optimization**: Evaluates the model's capacity to rewrite inefficient queries into faster equivalents _without_ altering logic, plus its ability to recommend practical, cost-effective indexes. Metrics include logical equivalence, optimization depth, syntax correctness, and index quality.
+- **SQL Understanding**: Measures a model’s ability to deeply analyze existing SQL—covering execution accuracy, execution plan reasoning, and syntax error detection.
+- **SQL Optimization**: Evaluates the model’s capacity to rewrite inefficient queries into faster equivalents _without_ altering logic, plus its ability to recommend practical, cost-effective indexes. Metrics include logical equivalence, optimization depth, syntax correctness, and index quality.
 - **Dialect Conversion**: Tests accurate, reliable translation of SQL and procedural logic across database dialects—including complex constructs like cursors, dynamic SQL, and exception blocks. Metrics cover large-script conversion, domestic DB support, logical equivalence, and syntax fidelity.
 
 For the full leaderboard, benchmark details, or to submit your model for evaluation, visit:  
