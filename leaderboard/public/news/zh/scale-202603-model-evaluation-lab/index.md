@@ -5,12 +5,9 @@ author: simple
 excerpt: >-
   在社区与用户的持续交流中，我们发现有两类高频需求始终未被充分满足。
 slug: model-evaluation-lab
-title: SCALE 上线模型测评实验室
-coverImage: ./cover.png
+title: 新特性：模型测评实验室
 top: true
 ---
-
-# 新特性：模型测评实验室
 
 ## 👋 SCALE 用户们的心声
 

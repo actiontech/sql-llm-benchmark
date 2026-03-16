@@ -6,11 +6,9 @@ excerpt: >-
   Through ongoing dialogue with our community and users, we've identified two
   critical high-frequency needs that have remained underserved.
 slug: model-evaluation-lab
-title: 'SCALE: Model Evaluation Lab Launch'
+title: 'New Feature: Model Evaluation Lab'
 top: true
 ---
-
-# New Feature: Model Evaluation Lab
 
 ## 👋 Voices from the SCALE Community
 
