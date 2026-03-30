@@ -194,20 +194,6 @@ async function validateAndBuildTask(
   }
 
   // ========================================================================
-  // 3. 验证邮箱验证码
-  // ========================================================================
-
-  const verifyResult = await verifyCode(
-    businessInfo.email,
-    verificationCode,
-    traceId
-  );
-
-  if (!verifyResult.success) {
-    throw new Error(verifyResult.error || '验证码验证失败');
-  }
-
-  // ========================================================================
   // 4. 验证文件
   // ========================================================================
 
@@ -238,7 +224,21 @@ async function validateAndBuildTask(
   }
 
   // ========================================================================
-  // 6. 构建数据集文件信息
+  // 6. 验证邮箱验证码（放在格式校验之后，避免验证码被占用）
+  // ========================================================================
+
+  const verifyResult = await verifyCode(
+    businessInfo.email,
+    verificationCode,
+    traceId
+  );
+
+  if (!verifyResult.success) {
+    throw new Error(verifyResult.error || '验证码验证失败');
+  }
+
+  // ========================================================================
+  // 7. 构建数据集文件信息
   // ========================================================================
 
   const datasetFileInfo: DatasetFileInfo = {
@@ -251,7 +251,7 @@ async function validateAndBuildTask(
   };
 
   // ========================================================================
-  // 7. 构建并返回任务对象
+  // 8. 构建并返回任务对象
   // ========================================================================
 
   const taskData: CustomDatasetTask = {
@@ -362,21 +362,7 @@ export default async function handler(
     logger.info('Task ID generated', { taskId });
 
     // ========================================================================
-    // 3. 创建任务目录
-    // ========================================================================
-
-    const taskDir = path.join(
-      process.cwd(),
-      process.env.EVALUATION_DATA_PATH || '../data/evaluations',
-      'custom_datasets',
-      taskId
-    );
-
-    await fs.mkdir(taskDir, { recursive: true });
-    logger.info('Task directory created', { taskDir });
-
-    // ========================================================================
-    // 4. 保存文件到本地
+    // 3. 提取文件并生成路径（不落盘，先校验）
     // ========================================================================
 
     const datasetFile = Array.isArray(files.datasetFile)
@@ -399,13 +385,16 @@ export default async function handler(
     const safeFilename = originalFilename
       .replace(/[\/\\]/g, '_')
       .replace(/[^a-zA-Z0-9._\-\u4e00-\u9fa5]/g, '_');
+    const taskDir = path.join(
+      process.cwd(),
+      process.env.EVALUATION_DATA_PATH || '../data/evaluations',
+      'custom_datasets',
+      taskId
+    );
     const localFilePath = path.join(taskDir, safeFilename);
 
-    await fs.copyFile(datasetFile.filepath, localFilePath);
-    logger.info('Dataset file saved to local', { localFilePath });
-
     // ========================================================================
-    // 5. 验证入参并构建任务数据
+    // 4. 验证入参并构建任务数据
     // ========================================================================
 
     let taskData: CustomDatasetTask;
@@ -432,6 +421,26 @@ export default async function handler(
         success: false,
         error: 'Validation Error',
         message: (error as Error).message,
+      });
+    }
+
+    // ========================================================================
+    // 5. 创建任务目录并保存文件（在所有校验通过后）
+    // ========================================================================
+
+    try {
+      await fs.mkdir(taskDir, { recursive: true });
+      await fs.copyFile(datasetFile.filepath, localFilePath);
+      logger.info('Dataset file saved to local', { localFilePath });
+    } catch (error) {
+      logger.error('Failed to save dataset file', error as Error, {
+        taskDir,
+        localFilePath,
+      });
+      return res.status(500).json({
+        success: false,
+        error: 'Storage Error',
+        message: '文件保存失败，请稍后重试',
       });
     }
 
