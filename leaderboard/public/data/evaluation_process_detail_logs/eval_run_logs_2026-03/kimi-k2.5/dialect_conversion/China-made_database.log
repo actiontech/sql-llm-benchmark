@@ -1,0 +1,2678 @@
+
+=================================================
+SQL Capability Evaluation Process Report
+=================================================
+Run ID: 20260327_101322_137
+Run Dimensions: dialect_conversion
+Run Indicator: China-made_database
+Evaluation Timestamp: 2026-03-27T10:24:44.770152
+Target: Kimi-K2.5
+Judge LLMs: deepseek-r1, o4-mini-high, gemini-3-pro-preview
+-------------------------------------------------
+
+[2026-03-27 10:13:22.139590] ======== Starting Full SQL Capability Evaluation ========
+[2026-03-27 10:13:22.139664] Target: kimi-k2.5
+[2026-03-27 10:13:22.139731] Run Capability: dialect_conversion
+[2026-03-27 10:13:22.140183] Run Indicator: dialect_conversion, Parameters size: 7042B
+[2026-03-27 10:13:22.140685] 
+--- Capability: dialect_conversion Indicator China-made_database.jsonl Evaluating Type: hybrid  ---
+[2026-03-27 10:13:22.140789] Concurrency: 5 concurrent cases, 3 concurrent judges
+[2026-03-27 10:13:24.352649] [Case:1][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+CREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS TYPE stats_rec IS RECORD (total_emp NUMBER, avg_salary NUMBER, max_salary NUMBER, active_projects NUMBER); TYPE p_result_rec IS RECORD (employee_id NUMBER, last_name VARCHAR2(50), salary NUMBER(8,2)); v_stats stats_rec; v_result p_result_rec; v_cursor SYS_REFCURSOR; v_sql VARCHAR2(1000); v_dept_name VARCHAR2(50); BEGIN SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id; SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary FROM EMPLOYEES WHERE department_id = p_dept_id; SELECT COUNT(*) INTO v_stats.active_projects FROM PROJECTS WHERE department_id = p_dept_id AND status = 'ACTIVE'; v_sql := 'SELECT * FROM (SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC) WHERE ROWNUM <= 5'; OPEN v_cursor FOR v_sql USING p_dept_id; p_result := '{  "department": "' || v_dept_name || '",  "total_employees": ' || v_stats.total_emp || ',  "salary_stats": {    "average": ' || v_stats.avg_salary || ',    "max": ' || v_stats.max_salary || '  },  "active_projects": ' || v_stats.active_projects || ',  "top_earners": ['; LOOP FETCH v_cursor INTO v_result; EXIT WHEN v_cursor%NOTFOUND; p_result := p_result || '    {"id": ' || v_result.employee_id || ', "name": "' || v_result.last_name || '", "salary": ' || v_result.salary || '},'; END LOOP; p_result := RTRIM(p_result, ',') || '  ]}'; CLOSE v_cursor; EXCEPTION WHEN NO_DATA_FOUND THEN p_result := '{"error": "Department not found"}'; WHEN OTHERS THEN p_result := '{"error": "' || SQLERRM || '"}'; END;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:13:24.354140] [Case:2][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:13:24.355277] [Case:3][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:13:24.356058] [Case:4][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+SELECT c1, NVL(c2, 'is null') FROM t1;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:13:24.357608] [Case:5][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:13:37.253056] [Case:4][Run:1] [kimi-k2.5] Model Output Response:
+SELECT c1, NVL(c2, 'is null') FROM t1;
+[2026-03-27 10:13:37.256551] [Case:4][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT c1, NVL(c2, 'is null') FROM t1;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT c1, NVL(c2, 'is null') FROM t1;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**NVL 函数**:
+语法：NVL(expr1, expr2)
+示例：SELECT col1, NVL(col2, 100) FROM tbl1;
+[2026-03-27 10:13:37.258014] [Case:4][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT c1, NVL(c2, 'is null') FROM t1;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT c1, NVL(c2, 'is null') FROM t1;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**NVL 函数**:
+语法：NVL(expr1, expr2)
+示例：SELECT col1, NVL(col2, 100) FROM tbl1;
+[2026-03-27 10:13:37.258474] [Case:4][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT c1, NVL(c2, 'is null') FROM t1;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT c1, NVL(c2, 'is null') FROM t1;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**NVL 函数**:
+语法：NVL(expr1, expr2)
+示例：SELECT col1, NVL(col2, 100) FROM tbl1;
+[2026-03-27 10:13:42.394170] [Case:4][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes"}
+[2026-03-27 10:13:51.204720] [Case:3][Run:1] [kimi-k2.5] Model Output Response:
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+[2026-03-27 10:13:51.206238] [Case:3][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**TO_DATE 函数**:
+语法：TO_DATE(char [, fmt [, 'nlsparam' ] ])。
+示例：SELECT TO_DATE('2021-11-11 11:11:11','YYYY-MM-DD HH24:MI:SS') FROM DUAL;
+[2026-03-27 10:13:51.207265] [Case:3][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**TO_DATE 函数**:
+语法：TO_DATE(char [, fmt [, 'nlsparam' ] ])。
+示例：SELECT TO_DATE('2021-11-11 11:11:11','YYYY-MM-DD HH24:MI:SS') FROM DUAL;
+[2026-03-27 10:13:51.208089] [Case:3][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+INSERT INTO t1 VALUES (1, 'Hello OceanBase', TO_DATE('2025-01-01', 'yyyy-mm-dd'));
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**TO_DATE 函数**:
+语法：TO_DATE(char [, fmt [, 'nlsparam' ] ])。
+示例：SELECT TO_DATE('2021-11-11 11:11:11','YYYY-MM-DD HH24:MI:SS') FROM DUAL;
+[2026-03-27 10:13:57.650557] [Case:3][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes","reason":""}
+[2026-03-27 10:14:11.438496] [Case:3][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:14:19.122005] [Case:2][Run:1] [kimi-k2.5] Model Output Response:
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+[2026-03-27 10:14:19.123181] [Case:2][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+[2026-03-27 10:14:19.124427] [Case:2][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+[2026-03-27 10:14:19.124976] [Case:2][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE TABLE t1 (c1 NUMBER, c2 VARCHAR2(100), c3 DATE);
+
+[2026-03-27 10:14:20.882156] [Case:3][Run:1] [gemini-3-pro-preview] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:14:20.884044] [Case:6][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:14:21.088114] [Case:4][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:14:22.106422] [Case:2][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes","reason":""}
+[2026-03-27 10:14:33.181524] [Case:5][Run:1] [kimi-k2.5] Model Output Response:
+CREATE USER ob_user IDENTIFIED BY "Password123";
+[2026-03-27 10:14:33.183303] [Case:5][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**CREATE USER**:
+语法：CREATE USER user_name
+    IDENTIFIED BY [VALUES] password
+    [REQUIRE {NONE | SSL | X509 | tls_option}]
+    [PROFILE profile_name]
+    [DEFAULT TABLESPACE tablespace_name];
+tls_option:
+      CIPHER cipher_name
+    | ISSUER issuer_name
+    | SUBJECT subject_name
+示例：CREATE USER test1 IDENTIFIED BY "********";
+[2026-03-27 10:14:33.184103] [Case:5][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**CREATE USER**:
+语法：CREATE USER user_name
+    IDENTIFIED BY [VALUES] password
+    [REQUIRE {NONE | SSL | X509 | tls_option}]
+    [PROFILE profile_name]
+    [DEFAULT TABLESPACE tablespace_name];
+tls_option:
+      CIPHER cipher_name
+    | ISSUER issuer_name
+    | SUBJECT subject_name
+示例：CREATE USER test1 IDENTIFIED BY "********";
+[2026-03-27 10:14:33.184797] [Case:5][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE USER ob_user IDENTIFIED BY "Password123";
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**CREATE USER**:
+语法：CREATE USER user_name
+    IDENTIFIED BY [VALUES] password
+    [REQUIRE {NONE | SSL | X509 | tls_option}]
+    [PROFILE profile_name]
+    [DEFAULT TABLESPACE tablespace_name];
+tls_option:
+      CIPHER cipher_name
+    | ISSUER issuer_name
+    | SUBJECT subject_name
+示例：CREATE USER test1 IDENTIFIED BY "********";
+[2026-03-27 10:14:37.403018] [Case:5][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes","reason":""}
+[2026-03-27 10:14:44.681818] [Case:4][Run:1] [gemini-3-pro-preview] Model Output Response:
+```json
+{
+  "answer": "yes",
+  "reason": ""
+}
+```
+[2026-03-27 10:14:44.683635] [Case:7][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:14:49.581034] [Case:6][Run:1] [kimi-k2.5] Model Output Response:
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;
+[2026-03-27 10:14:49.582913] [Case:6][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**RANK 函数的语法和用法**:
+语法：
+/*聚合语法*/
+RANK(expr [, expr ]...) WITHIN GROUP
+  ( ORDER BY
+    expr_col [ DESC | ASC ][ NULLS { FIRST | LAST } ]
+    [, expr_col [ DESC | ASC ][ NULLS { FIRST | LAST } ]]...
+  )
+/*分析语法*/
+RANK() OVER ([ query_partition_clause ] order_by_clause)
+示例：SELECT RANK(3300) WITHIN GROUP (ORDER BY sal) FROM emp_msg;
+[2026-03-27 10:14:49.584257] [Case:6][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**RANK 函数的语法和用法**:
+语法：
+/*聚合语法*/
+RANK(expr [, expr ]...) WITHIN GROUP
+  ( ORDER BY
+    expr_col [ DESC | ASC ][ NULLS { FIRST | LAST } ]
+    [, expr_col [ DESC | ASC ][ NULLS { FIRST | LAST } ]]...
+  )
+/*分析语法*/
+RANK() OVER ([ query_partition_clause ] order_by_clause)
+示例：SELECT RANK(3300) WITHIN GROUP (ORDER BY sal) FROM emp_msg;
+[2026-03-27 10:14:49.584691] [Case:6][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT ename, sal, RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) FROM emp;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**RANK 函数的语法和用法**:
+语法：
+/*聚合语法*/
+RANK(expr [, expr ]...) WITHIN GROUP
+  ( ORDER BY
+    expr_col [ DESC | ASC ][ NULLS { FIRST | LAST } ]
+    [, expr_col [ DESC | ASC ][ NULLS { FIRST | LAST } ]]...
+  )
+/*分析语法*/
+RANK() OVER ([ query_partition_clause ] order_by_clause)
+示例：SELECT RANK(3300) WITHIN GROUP (ORDER BY sal) FROM emp_msg;
+[2026-03-27 10:14:50.764627] [Case:2][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:14:51.338770] [Case:1][Run:1] [kimi-k2.5] Model Output Response:
+CREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS 
+  TYPE stats_rec IS RECORD (
+    total_emp NUMBER, 
+    avg_salary NUMBER, 
+    max_salary NUMBER, 
+    active_projects NUMBER
+  ); 
+  TYPE p_result_rec IS RECORD (
+    employee_id NUMBER, 
+    last_name VARCHAR2(50), 
+    salary NUMBER(8,2)
+  ); 
+  v_stats stats_rec; 
+  v_result p_result_rec; 
+  v_cursor SYS_REFCURSOR; 
+  v_sql VARCHAR2(1000); 
+  v_dept_name VARCHAR2(50); 
+BEGIN 
+  SELECT department_name INTO v_dept_name 
+  FROM DEPARTMENTS 
+  WHERE department_id = p_dept_id; 
+  
+  SELECT COUNT(*), AVG(salary), MAX(salary) 
+  INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary 
+  FROM EMPLOYEES 
+  WHERE department_id = p_dept_id; 
+  
+  SELECT COUNT(*) INTO v_stats.active_projects 
+  FROM PROJECTS 
+  WHERE department_id = p_dept_id AND status = 'ACTIVE'; 
+  
+  v_sql := 'SELECT * FROM (SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC) WHERE ROWNUM <= 5'; 
+  
+  OPEN v_cursor FOR v_sql USING p_dept_id; 
+  
+  p_result := '{  "department": "' || v_dept_name || '",  "total_employees": ' || v_stats.total_emp || ',  "salary_stats": {    "average": ' || v_stats.avg_salary || ',    "max": ' || v_stats.max_salary || '  },  "active_projects": ' || v_stats.active_projects || ',  "top_earners": ['; 
+  
+  LOOP 
+    FETCH v_cursor INTO v_result; 
+    EXIT WHEN v_cursor%NOTFOUND; 
+    p_result := p_result || '    {"id": ' || v_result.employee_id || ', "name": "' || v_result.last_name || '", "salary": ' || v_result.salary || '},'; 
+  END LOOP; 
+  
+  p_result := RTRIM(p_result, ',') || '  ]}'; 
+  
+  CLOSE v_cursor; 
+EXCEPTION 
+  WHEN NO_DATA_FOUND THEN 
+    p_result := '{"error": "Department not found"}'; 
+  WHEN OTHERS THEN 
+    p_result := '{"error": "' || SQLERRM || '"}'; 
+END;
+[2026-03-27 10:14:51.342463] [Case:1][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS TYPE stats_rec IS RECORD (total_emp NUMBER, avg_salary NUMBER, max_salary NUMBER, active_projects NUMBER); TYPE p_result_rec IS RECORD (employee_id NUMBER, last_name VARCHAR2(50), salary NUMBER(8,2)); v_stats stats_rec; v_result p_result_rec; v_cursor SYS_REFCURSOR; v_sql VARCHAR2(1000); v_dept_name VARCHAR2(50); BEGIN SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id; SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary FROM EMPLOYEES WHERE department_id = p_dept_id; SELECT COUNT(*) INTO v_stats.active_projects FROM PROJECTS WHERE department_id = p_dept_id AND status = 'ACTIVE'; v_sql := 'SELECT * FROM (SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC) WHERE ROWNUM <= 5'; OPEN v_cursor FOR v_sql USING p_dept_id; p_result := '{  "department": "' || v_dept_name || '",  "total_employees": ' || v_stats.total_emp || ',  "salary_stats": {    "average": ' || v_stats.avg_salary || ',    "max": ' || v_stats.max_salary || '  },  "active_projects": ' || v_stats.active_projects || ',  "top_earners": ['; LOOP FETCH v_cursor INTO v_result; EXIT WHEN v_cursor%NOTFOUND; p_result := p_result || '    {"id": ' || v_result.employee_id || ', "name": "' || v_result.last_name || '", "salary": ' || v_result.salary || '},'; END LOOP; p_result := RTRIM(p_result, ',') || '  ]}'; CLOSE v_cursor; EXCEPTION WHEN NO_DATA_FOUND THEN p_result := '{"error": "Department not found"}'; WHEN OTHERS THEN p_result := '{"error": "' || SQLERRM || '"}'; END;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+{'error': 'Department not found'}
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**COUNT 函数**:
+语法：COUNT({ * | [ DISTINCT | UNIQUE | ALL ] expr }) [ OVER (analytic_clause) ]
+
+**SQLERRM 函数**:
+语法：SQLERRM [ ( error_code ) ]
+说明：SQLERRM 函数返回与错误代码关联的错误消息。其中，参数 error_code 为可选，在无参数情况下，该函数返回当前 SQLCODE 的错误信息。
+
+**MAX 函数**:
+语法：MAX ([ DISTINCT | UNIQUE | ALL ] expr) [ OVER (analytic_clause) ]。示例：SELECT MAX(salary) FROM employees;
+
+**ROWNUM 伪列**:
+目标端支持行数伪列：ROWNUM,ROWNUM 伪列为查询结果的每一行编号，值表示该行在结果集中的位置，第一行为1，第二行为2，依次类推。ROWNUM 可用于限制返回的行数，如返回前5条数据。
+使用 ROWNUM 时需要注意：若在 ROWNUM 后有 ORDER BY 子句，ORDER BY 将在 WHERE 条件后执行，排序发生在过滤之后。若要在排序后再限制行数，应将 ORDER BY 子句置于子查询中，ROWNUM 作为外层条件。此外，在 WHERE 子句中指定 ROWNUM > 任意正整数时，总是返回 FALSE，因为 ROWNUM 从1开始，无法满足大于1的条件。
+可通过 UPDATE 语句将 ROWNUM 赋值给表中的某一列，为行编号。
+注意：查询中使用 ROWNUM 可能影响视图优化。
+
+**NUMBER 类型转换规则**:
+OceanBase 数据库中，NUMBER 类型的存储格式相同，但根据值域定义不同，可分为四种格式：
+- **定点数 DECIMAL(M,D)**：
+  - **MySQL 模式下默认规则**：
+    - DECIMAL = DECIMAL(10, 0)
+    - DECIMAL(M) = DECIMAL(M, 0)
+    - DECIMAL(M, D)，0 ≤ D ≤ M ≤ 65
+  - **Oracle 模式下默认规则**：
+    - DECIMAL = NUMBER(38)
+    - NUMBER(M) = NUMBER(38, 0)
+    - NUMBER(M, D)，M ∈ [1, 38]，D ∈ [-84,127]
+- **无符号定点数 DECIMAL(M,D) UNSIGNED**：
+  - 仅存在于 MySQL 模式，等价于非负的 DECIMAL(M,D)
+- **浮点 NUMBER**：
+  - 仅存在于 Oracle 模式，总精度为 38 位的浮点数
+- **Oracle FLOAT(P)**：
+  - 仅存在于 Oracle 模式，P ∈ [1,126]
+OceanBase 数据库 V4.2.0 及以上版本中，各种 NUMBER 类型间的转换规则如下：
+- **允许 Instant 转换的条件**：
+  - 定点数(M1,D1) → 定点数(M2,D2)：D1 ≤ D2 且 M1-D1 ≤ M2-D2
+  - 定点数(M1,D1) → 浮点 NUMBER：M-D ≤ 38
+  - 定点数(M1,D1) → Oracle FLOAT(P2)：M1-D1 ≤ ceil(P × 0.30103)
+  - 无符号定点数(M1,D1) → 定点数(M2,D2)：D1 ≤ D2 且 M1-D1 ≤ M2-D2
+  - 浮点 NUMBER ↔ 浮点 NUMBER：支持
+  - Oracle FLOAT(P1) → Oracle FLOAT(P2)：P1 ≤ P2
+**注意**：
+- 浮点 NUMBER 和 Oracle FLOAT 仅存在于 Oracle 模式，无符号定点数仅存在于 MySQL 模式。
+- 对于 Oracle 模式，不允许 Instant 转换（只修改 Schema，不改变数据的转换）是指非空表不能转换。
+- 对于 MySQL 模式，不允许 Instant 转换是指需要重写数据。
+
+**PL 错误报告函数 SQLCODE 和 SQLERRM**:
+SQLCODE 函数
+语法：SQLCODE
+SQLERRM 函数
+语法：SQLERRM [ ( error_code ) ]
+
+**AVG 函数**:
+语法：AVG([ DISTINCT | UNIQUE | ALL ] expr) [ OVER (analytic_clause) ]
+示例：计算 col3 的平均值。
+SELECT AVG(col3) FROM tbl1;
+
+**循环控制语句**:
+语法：
+基本 LOOP：
+[ label ] LOOP
+    statements
+END LOOP [ label ];
+EXIT 语句：
+EXIT;
+EXIT WHEN condition;
+CONTINUE 语句：
+CONTINUE;
+CONTINUE WHEN condition;
+FOR LOOP 语句：
+[ label ] FOR index IN [ REVERSE ] lower_bound..upper_bound LOOP
+    statements
+END LOOP [ label ];
+WHILE LOOP 语句：
+[ label ] WHILE condition LOOP
+    statements
+END LOOP [ label ];
+
+**游标属性**:
+游标属性提供相关的游标信息。获取游标属性值的语法为 cursor_name%attribute，例如：c1%NOTFOUND。游标属性包括：
+- %FOUND：布尔型属性，最近一次读取游标返回记录时为 TRUE。
+- %NOTFOUND：布尔型属性，与 %FOUND 相反。
+- %ISOPEN：布尔型属性，当游标已打开时返回 TRUE。
+- %ROWCOUNT：数字型属性，返回已从游标读取的记录数。
+NO_DATA_FOUND 与 %NOTFOUND 的区别：
+- NO_DATA_FOUND 是异常定义，SELECT...INTO 语句未返回值时触发。
+- %NOTFOUND 是游标属性，当显式游标的 WHERE 子句未找到数据时触发；当 UPDATE 或 DELETE 语句的 WHERE 子句未找到数据时，触发 SQL%NOTFOUND；在提取循环中使用 %NOTFOUND 或 %FOUND 确定循环的退出条件。
+
+**RTRIM 函数**:
+语法：RTRIM(char1 [,char2])
+示例：SELECT RTRIM('OceanBaseX**XX*X','*X') FROM DUAL;
+
+**OceanBase 数据库 PL 异常处理**:
+OceanBase 数据库的 PL 块提供异常处理（EXCEPTION HANDLER）来实现错误处理，其语法如下：
+语法：EXCEPTION
+   WHEN first_exception THEN  <code to handle first exception >
+   WHEN second_exception THEN  <code to handle second exception >
+   WHEN OTHERS THEN  <code to handle others exception >
+END;
+注意：异常处理可以按任意次序排列，但 OTHERS 的位置必须在最后。
+
+**CLOB 数据类型**:
+CLOB（Character Large Object）用于存储单字节和多字节字符数据，支持固定宽度和可变宽度字符集，使用数据库字符集，最大存储容量为 536870910 字节，字符集与租户字符集一致。由于 VARCHAR2 类型字段的最大长度为 32767 字节，如果需要保存长度大于 32767 字节的字段，可以使用 CLOB 类型。此外，可以使用 CLOB 来保存 CHAR 数据，例如 XML 文档。CLOB 对象具有完整的事务支持，使用 SQL 或 DBMS_LOB 系统包进行的更改将参与事务，即提交和回滚 CLOB 值操作。但不能在一个事务中将 CLOB Locator 保存在 PL 变量中，然后在另一个事务或会话中使用。
+
+**SYS_REFCURSOR**:
+目标端支持 SYS_REFCURSOR，是系统内置的类型弱类型游标，没有返回值，是个通用的类型，SYS_REFCURSOR 类型的游标变量支持重用。
+
+**异常处理中的 OUT 和 INOUT 参数返回行为**:
+当存储过程因未处理的异常退出，或在包含 RESIGNAL 语句的异常处理程序中重新发出错误时，OUT 和 INOUT 参数的修改值不会返回给调用者。
+[2026-03-27 10:14:51.343264] [Case:1][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS TYPE stats_rec IS RECORD (total_emp NUMBER, avg_salary NUMBER, max_salary NUMBER, active_projects NUMBER); TYPE p_result_rec IS RECORD (employee_id NUMBER, last_name VARCHAR2(50), salary NUMBER(8,2)); v_stats stats_rec; v_result p_result_rec; v_cursor SYS_REFCURSOR; v_sql VARCHAR2(1000); v_dept_name VARCHAR2(50); BEGIN SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id; SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary FROM EMPLOYEES WHERE department_id = p_dept_id; SELECT COUNT(*) INTO v_stats.active_projects FROM PROJECTS WHERE department_id = p_dept_id AND status = 'ACTIVE'; v_sql := 'SELECT * FROM (SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC) WHERE ROWNUM <= 5'; OPEN v_cursor FOR v_sql USING p_dept_id; p_result := '{  "department": "' || v_dept_name || '",  "total_employees": ' || v_stats.total_emp || ',  "salary_stats": {    "average": ' || v_stats.avg_salary || ',    "max": ' || v_stats.max_salary || '  },  "active_projects": ' || v_stats.active_projects || ',  "top_earners": ['; LOOP FETCH v_cursor INTO v_result; EXIT WHEN v_cursor%NOTFOUND; p_result := p_result || '    {"id": ' || v_result.employee_id || ', "name": "' || v_result.last_name || '", "salary": ' || v_result.salary || '},'; END LOOP; p_result := RTRIM(p_result, ',') || '  ]}'; CLOSE v_cursor; EXCEPTION WHEN NO_DATA_FOUND THEN p_result := '{"error": "Department not found"}'; WHEN OTHERS THEN p_result := '{"error": "' || SQLERRM || '"}'; END;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+{'error': 'Department not found'}
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**COUNT 函数**:
+语法：COUNT({ * | [ DISTINCT | UNIQUE | ALL ] expr }) [ OVER (analytic_clause) ]
+
+**SQLERRM 函数**:
+语法：SQLERRM [ ( error_code ) ]
+说明：SQLERRM 函数返回与错误代码关联的错误消息。其中，参数 error_code 为可选，在无参数情况下，该函数返回当前 SQLCODE 的错误信息。
+
+**MAX 函数**:
+语法：MAX ([ DISTINCT | UNIQUE | ALL ] expr) [ OVER (analytic_clause) ]。示例：SELECT MAX(salary) FROM employees;
+
+**ROWNUM 伪列**:
+目标端支持行数伪列：ROWNUM,ROWNUM 伪列为查询结果的每一行编号，值表示该行在结果集中的位置，第一行为1，第二行为2，依次类推。ROWNUM 可用于限制返回的行数，如返回前5条数据。
+使用 ROWNUM 时需要注意：若在 ROWNUM 后有 ORDER BY 子句，ORDER BY 将在 WHERE 条件后执行，排序发生在过滤之后。若要在排序后再限制行数，应将 ORDER BY 子句置于子查询中，ROWNUM 作为外层条件。此外，在 WHERE 子句中指定 ROWNUM > 任意正整数时，总是返回 FALSE，因为 ROWNUM 从1开始，无法满足大于1的条件。
+可通过 UPDATE 语句将 ROWNUM 赋值给表中的某一列，为行编号。
+注意：查询中使用 ROWNUM 可能影响视图优化。
+
+**NUMBER 类型转换规则**:
+OceanBase 数据库中，NUMBER 类型的存储格式相同，但根据值域定义不同，可分为四种格式：
+- **定点数 DECIMAL(M,D)**：
+  - **MySQL 模式下默认规则**：
+    - DECIMAL = DECIMAL(10, 0)
+    - DECIMAL(M) = DECIMAL(M, 0)
+    - DECIMAL(M, D)，0 ≤ D ≤ M ≤ 65
+  - **Oracle 模式下默认规则**：
+    - DECIMAL = NUMBER(38)
+    - NUMBER(M) = NUMBER(38, 0)
+    - NUMBER(M, D)，M ∈ [1, 38]，D ∈ [-84,127]
+- **无符号定点数 DECIMAL(M,D) UNSIGNED**：
+  - 仅存在于 MySQL 模式，等价于非负的 DECIMAL(M,D)
+- **浮点 NUMBER**：
+  - 仅存在于 Oracle 模式，总精度为 38 位的浮点数
+- **Oracle FLOAT(P)**：
+  - 仅存在于 Oracle 模式，P ∈ [1,126]
+OceanBase 数据库 V4.2.0 及以上版本中，各种 NUMBER 类型间的转换规则如下：
+- **允许 Instant 转换的条件**：
+  - 定点数(M1,D1) → 定点数(M2,D2)：D1 ≤ D2 且 M1-D1 ≤ M2-D2
+  - 定点数(M1,D1) → 浮点 NUMBER：M-D ≤ 38
+  - 定点数(M1,D1) → Oracle FLOAT(P2)：M1-D1 ≤ ceil(P × 0.30103)
+  - 无符号定点数(M1,D1) → 定点数(M2,D2)：D1 ≤ D2 且 M1-D1 ≤ M2-D2
+  - 浮点 NUMBER ↔ 浮点 NUMBER：支持
+  - Oracle FLOAT(P1) → Oracle FLOAT(P2)：P1 ≤ P2
+**注意**：
+- 浮点 NUMBER 和 Oracle FLOAT 仅存在于 Oracle 模式，无符号定点数仅存在于 MySQL 模式。
+- 对于 Oracle 模式，不允许 Instant 转换（只修改 Schema，不改变数据的转换）是指非空表不能转换。
+- 对于 MySQL 模式，不允许 Instant 转换是指需要重写数据。
+
+**PL 错误报告函数 SQLCODE 和 SQLERRM**:
+SQLCODE 函数
+语法：SQLCODE
+SQLERRM 函数
+语法：SQLERRM [ ( error_code ) ]
+
+**AVG 函数**:
+语法：AVG([ DISTINCT | UNIQUE | ALL ] expr) [ OVER (analytic_clause) ]
+示例：计算 col3 的平均值。
+SELECT AVG(col3) FROM tbl1;
+
+**循环控制语句**:
+语法：
+基本 LOOP：
+[ label ] LOOP
+    statements
+END LOOP [ label ];
+EXIT 语句：
+EXIT;
+EXIT WHEN condition;
+CONTINUE 语句：
+CONTINUE;
+CONTINUE WHEN condition;
+FOR LOOP 语句：
+[ label ] FOR index IN [ REVERSE ] lower_bound..upper_bound LOOP
+    statements
+END LOOP [ label ];
+WHILE LOOP 语句：
+[ label ] WHILE condition LOOP
+    statements
+END LOOP [ label ];
+
+**游标属性**:
+游标属性提供相关的游标信息。获取游标属性值的语法为 cursor_name%attribute，例如：c1%NOTFOUND。游标属性包括：
+- %FOUND：布尔型属性，最近一次读取游标返回记录时为 TRUE。
+- %NOTFOUND：布尔型属性，与 %FOUND 相反。
+- %ISOPEN：布尔型属性，当游标已打开时返回 TRUE。
+- %ROWCOUNT：数字型属性，返回已从游标读取的记录数。
+NO_DATA_FOUND 与 %NOTFOUND 的区别：
+- NO_DATA_FOUND 是异常定义，SELECT...INTO 语句未返回值时触发。
+- %NOTFOUND 是游标属性，当显式游标的 WHERE 子句未找到数据时触发；当 UPDATE 或 DELETE 语句的 WHERE 子句未找到数据时，触发 SQL%NOTFOUND；在提取循环中使用 %NOTFOUND 或 %FOUND 确定循环的退出条件。
+
+**RTRIM 函数**:
+语法：RTRIM(char1 [,char2])
+示例：SELECT RTRIM('OceanBaseX**XX*X','*X') FROM DUAL;
+
+**OceanBase 数据库 PL 异常处理**:
+OceanBase 数据库的 PL 块提供异常处理（EXCEPTION HANDLER）来实现错误处理，其语法如下：
+语法：EXCEPTION
+   WHEN first_exception THEN  <code to handle first exception >
+   WHEN second_exception THEN  <code to handle second exception >
+   WHEN OTHERS THEN  <code to handle others exception >
+END;
+注意：异常处理可以按任意次序排列，但 OTHERS 的位置必须在最后。
+
+**CLOB 数据类型**:
+CLOB（Character Large Object）用于存储单字节和多字节字符数据，支持固定宽度和可变宽度字符集，使用数据库字符集，最大存储容量为 536870910 字节，字符集与租户字符集一致。由于 VARCHAR2 类型字段的最大长度为 32767 字节，如果需要保存长度大于 32767 字节的字段，可以使用 CLOB 类型。此外，可以使用 CLOB 来保存 CHAR 数据，例如 XML 文档。CLOB 对象具有完整的事务支持，使用 SQL 或 DBMS_LOB 系统包进行的更改将参与事务，即提交和回滚 CLOB 值操作。但不能在一个事务中将 CLOB Locator 保存在 PL 变量中，然后在另一个事务或会话中使用。
+
+**SYS_REFCURSOR**:
+目标端支持 SYS_REFCURSOR，是系统内置的类型弱类型游标，没有返回值，是个通用的类型，SYS_REFCURSOR 类型的游标变量支持重用。
+
+**异常处理中的 OUT 和 INOUT 参数返回行为**:
+当存储过程因未处理的异常退出，或在包含 RESIGNAL 语句的异常处理程序中重新发出错误时，OUT 和 INOUT 参数的修改值不会返回给调用者。
+[2026-03-27 10:14:51.346925] [Case:1][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE OR REPLACE PROCEDURE GETEMPLOYEESTATS(p_dept_id IN NUMBER, p_result OUT CLOB) IS TYPE stats_rec IS RECORD (total_emp NUMBER, avg_salary NUMBER, max_salary NUMBER, active_projects NUMBER); TYPE p_result_rec IS RECORD (employee_id NUMBER, last_name VARCHAR2(50), salary NUMBER(8,2)); v_stats stats_rec; v_result p_result_rec; v_cursor SYS_REFCURSOR; v_sql VARCHAR2(1000); v_dept_name VARCHAR2(50); BEGIN SELECT department_name INTO v_dept_name FROM DEPARTMENTS WHERE department_id = p_dept_id; SELECT COUNT(*), AVG(salary), MAX(salary) INTO v_stats.total_emp, v_stats.avg_salary, v_stats.max_salary FROM EMPLOYEES WHERE department_id = p_dept_id; SELECT COUNT(*) INTO v_stats.active_projects FROM PROJECTS WHERE department_id = p_dept_id AND status = 'ACTIVE'; v_sql := 'SELECT * FROM (SELECT employee_id, last_name, salary FROM employees WHERE department_id = :1 ORDER BY salary DESC) WHERE ROWNUM <= 5'; OPEN v_cursor FOR v_sql USING p_dept_id; p_result := '{  "department": "' || v_dept_name || '",  "total_employees": ' || v_stats.total_emp || ',  "salary_stats": {    "average": ' || v_stats.avg_salary || ',    "max": ' || v_stats.max_salary || '  },  "active_projects": ' || v_stats.active_projects || ',  "top_earners": ['; LOOP FETCH v_cursor INTO v_result; EXIT WHEN v_cursor%NOTFOUND; p_result := p_result || '    {"id": ' || v_result.employee_id || ', "name": "' || v_result.last_name || '", "salary": ' || v_result.salary || '},'; END LOOP; p_result := RTRIM(p_result, ',') || '  ]}'; CLOSE v_cursor; EXCEPTION WHEN NO_DATA_FOUND THEN p_result := '{"error": "Department not found"}'; WHEN OTHERS THEN p_result := '{"error": "' || SQLERRM || '"}'; END;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+{'error': 'Department not found'}
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**COUNT 函数**:
+语法：COUNT({ * | [ DISTINCT | UNIQUE | ALL ] expr }) [ OVER (analytic_clause) ]
+
+**SQLERRM 函数**:
+语法：SQLERRM [ ( error_code ) ]
+说明：SQLERRM 函数返回与错误代码关联的错误消息。其中，参数 error_code 为可选，在无参数情况下，该函数返回当前 SQLCODE 的错误信息。
+
+**MAX 函数**:
+语法：MAX ([ DISTINCT | UNIQUE | ALL ] expr) [ OVER (analytic_clause) ]。示例：SELECT MAX(salary) FROM employees;
+
+**ROWNUM 伪列**:
+目标端支持行数伪列：ROWNUM,ROWNUM 伪列为查询结果的每一行编号，值表示该行在结果集中的位置，第一行为1，第二行为2，依次类推。ROWNUM 可用于限制返回的行数，如返回前5条数据。
+使用 ROWNUM 时需要注意：若在 ROWNUM 后有 ORDER BY 子句，ORDER BY 将在 WHERE 条件后执行，排序发生在过滤之后。若要在排序后再限制行数，应将 ORDER BY 子句置于子查询中，ROWNUM 作为外层条件。此外，在 WHERE 子句中指定 ROWNUM > 任意正整数时，总是返回 FALSE，因为 ROWNUM 从1开始，无法满足大于1的条件。
+可通过 UPDATE 语句将 ROWNUM 赋值给表中的某一列，为行编号。
+注意：查询中使用 ROWNUM 可能影响视图优化。
+
+**NUMBER 类型转换规则**:
+OceanBase 数据库中，NUMBER 类型的存储格式相同，但根据值域定义不同，可分为四种格式：
+- **定点数 DECIMAL(M,D)**：
+  - **MySQL 模式下默认规则**：
+    - DECIMAL = DECIMAL(10, 0)
+    - DECIMAL(M) = DECIMAL(M, 0)
+    - DECIMAL(M, D)，0 ≤ D ≤ M ≤ 65
+  - **Oracle 模式下默认规则**：
+    - DECIMAL = NUMBER(38)
+    - NUMBER(M) = NUMBER(38, 0)
+    - NUMBER(M, D)，M ∈ [1, 38]，D ∈ [-84,127]
+- **无符号定点数 DECIMAL(M,D) UNSIGNED**：
+  - 仅存在于 MySQL 模式，等价于非负的 DECIMAL(M,D)
+- **浮点 NUMBER**：
+  - 仅存在于 Oracle 模式，总精度为 38 位的浮点数
+- **Oracle FLOAT(P)**：
+  - 仅存在于 Oracle 模式，P ∈ [1,126]
+OceanBase 数据库 V4.2.0 及以上版本中，各种 NUMBER 类型间的转换规则如下：
+- **允许 Instant 转换的条件**：
+  - 定点数(M1,D1) → 定点数(M2,D2)：D1 ≤ D2 且 M1-D1 ≤ M2-D2
+  - 定点数(M1,D1) → 浮点 NUMBER：M-D ≤ 38
+  - 定点数(M1,D1) → Oracle FLOAT(P2)：M1-D1 ≤ ceil(P × 0.30103)
+  - 无符号定点数(M1,D1) → 定点数(M2,D2)：D1 ≤ D2 且 M1-D1 ≤ M2-D2
+  - 浮点 NUMBER ↔ 浮点 NUMBER：支持
+  - Oracle FLOAT(P1) → Oracle FLOAT(P2)：P1 ≤ P2
+**注意**：
+- 浮点 NUMBER 和 Oracle FLOAT 仅存在于 Oracle 模式，无符号定点数仅存在于 MySQL 模式。
+- 对于 Oracle 模式，不允许 Instant 转换（只修改 Schema，不改变数据的转换）是指非空表不能转换。
+- 对于 MySQL 模式，不允许 Instant 转换是指需要重写数据。
+
+**PL 错误报告函数 SQLCODE 和 SQLERRM**:
+SQLCODE 函数
+语法：SQLCODE
+SQLERRM 函数
+语法：SQLERRM [ ( error_code ) ]
+
+**AVG 函数**:
+语法：AVG([ DISTINCT | UNIQUE | ALL ] expr) [ OVER (analytic_clause) ]
+示例：计算 col3 的平均值。
+SELECT AVG(col3) FROM tbl1;
+
+**循环控制语句**:
+语法：
+基本 LOOP：
+[ label ] LOOP
+    statements
+END LOOP [ label ];
+EXIT 语句：
+EXIT;
+EXIT WHEN condition;
+CONTINUE 语句：
+CONTINUE;
+CONTINUE WHEN condition;
+FOR LOOP 语句：
+[ label ] FOR index IN [ REVERSE ] lower_bound..upper_bound LOOP
+    statements
+END LOOP [ label ];
+WHILE LOOP 语句：
+[ label ] WHILE condition LOOP
+    statements
+END LOOP [ label ];
+
+**游标属性**:
+游标属性提供相关的游标信息。获取游标属性值的语法为 cursor_name%attribute，例如：c1%NOTFOUND。游标属性包括：
+- %FOUND：布尔型属性，最近一次读取游标返回记录时为 TRUE。
+- %NOTFOUND：布尔型属性，与 %FOUND 相反。
+- %ISOPEN：布尔型属性，当游标已打开时返回 TRUE。
+- %ROWCOUNT：数字型属性，返回已从游标读取的记录数。
+NO_DATA_FOUND 与 %NOTFOUND 的区别：
+- NO_DATA_FOUND 是异常定义，SELECT...INTO 语句未返回值时触发。
+- %NOTFOUND 是游标属性，当显式游标的 WHERE 子句未找到数据时触发；当 UPDATE 或 DELETE 语句的 WHERE 子句未找到数据时，触发 SQL%NOTFOUND；在提取循环中使用 %NOTFOUND 或 %FOUND 确定循环的退出条件。
+
+**RTRIM 函数**:
+语法：RTRIM(char1 [,char2])
+示例：SELECT RTRIM('OceanBaseX**XX*X','*X') FROM DUAL;
+
+**OceanBase 数据库 PL 异常处理**:
+OceanBase 数据库的 PL 块提供异常处理（EXCEPTION HANDLER）来实现错误处理，其语法如下：
+语法：EXCEPTION
+   WHEN first_exception THEN  <code to handle first exception >
+   WHEN second_exception THEN  <code to handle second exception >
+   WHEN OTHERS THEN  <code to handle others exception >
+END;
+注意：异常处理可以按任意次序排列，但 OTHERS 的位置必须在最后。
+
+**CLOB 数据类型**:
+CLOB（Character Large Object）用于存储单字节和多字节字符数据，支持固定宽度和可变宽度字符集，使用数据库字符集，最大存储容量为 536870910 字节，字符集与租户字符集一致。由于 VARCHAR2 类型字段的最大长度为 32767 字节，如果需要保存长度大于 32767 字节的字段，可以使用 CLOB 类型。此外，可以使用 CLOB 来保存 CHAR 数据，例如 XML 文档。CLOB 对象具有完整的事务支持，使用 SQL 或 DBMS_LOB 系统包进行的更改将参与事务，即提交和回滚 CLOB 值操作。但不能在一个事务中将 CLOB Locator 保存在 PL 变量中，然后在另一个事务或会话中使用。
+
+**SYS_REFCURSOR**:
+目标端支持 SYS_REFCURSOR，是系统内置的类型弱类型游标，没有返回值，是个通用的类型，SYS_REFCURSOR 类型的游标变量支持重用。
+
+**异常处理中的 OUT 和 INOUT 参数返回行为**:
+当存储过程因未处理的异常退出，或在包含 RESIGNAL 语句的异常处理程序中重新发出错误时，OUT 和 INOUT 参数的修改值不会返回给调用者。
+[2026-03-27 10:14:56.250698] [Case:6][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes","reason":"OceanBase Oracle模式-4.2.5 supports the RANK() window function with PARTITION BY and ORDER BY syntax, and the translated SQL is identical to the original."}
+[2026-03-27 10:14:57.396585] [Case:1][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"no","reason":"The “translation” is just a JSON literal, not a valid OceanBase Oracle‐mode PL/SQL procedure, so it is neither syntactically executable nor functionally equivalent to the original code."}
+[2026-03-27 10:15:00.397553] [Case:5][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:15:25.480784] [Case:6][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:15:48.821255] [Case:1][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "no",
+  "reason": "The translated SQL is not a valid PL/SQL procedure in OceanBase Oracle mode-4.2.5; it is a static JSON string {'error': 'Department not found'}, which lacks syntax for procedure definition, variables, queries, and control structures. It is not executable code and cannot yield equivalent results to the original procedure, as the original handles multiple scenarios (e.g., data retrieval, error cases) with dynamic JSON output."
+}
+[2026-03-27 10:15:51.490774] [Case:7][Run:1] [kimi-k2.5] Model Output Response:
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+[2026-03-27 10:15:51.492294] [Case:7][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+[2026-03-27 10:15:51.493534] [Case:7][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+[2026-03-27 10:15:51.494433] [Case:7][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE OR REPLACE PROCEDURE p_test (p_id IN NUMBER, p_name OUT VARCHAR2) AS BEGIN SELECT ename INTO p_name FROM emp WHERE empno = p_id; END;
+
+[2026-03-27 10:15:56.494404] [Case:1][Run:1] [gemini-3-pro-preview] Model Output Response:
+{
+  "answer": "no",
+  "reason": "The provided translated text is a JSON string literal (`{'error': 'Department not found'}`), not a valid SQL statement or PL/SQL block. It fails to define the stored procedure, variable declarations, and logic present in the original SQL, making it neither executable code nor equivalent in function."
+}
+[2026-03-27 10:15:56.498919] [Case:8][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:16:04.087859] [Case:7][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes","reason":""}
+[2026-03-27 10:16:08.305803] [Case:2][Run:1] [gemini-3-pro-preview] Model Output Response:
+```json
+{
+  "answer": "yes",
+  "reason": ""
+}
+```
+[2026-03-27 10:16:08.308076] [Case:9][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:16:29.389659] [Case:9][Run:1] [kimi-k2.5] Model Output Response:
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;
+[2026-03-27 10:16:29.391376] [Case:9][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;
+
+[2026-03-27 10:16:29.392101] [Case:9][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;
+
+[2026-03-27 10:16:29.392997] [Case:9][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE PUBLIC SYNONYM emp_synonym FOR scott.emp;
+
+[2026-03-27 10:16:31.899630] [Case:7][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:16:32.609603] [Case:6][Run:1] [gemini-3-pro-preview] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:16:32.612559] [Case:10][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:16:35.826229] [Case:9][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes"}
+[2026-03-27 10:16:44.695163] [Case:7][Run:1] [gemini-3-pro-preview] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:16:44.697985] [Case:11][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+DECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP'; DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count); END;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:16:52.336045] [Case:8][Run:1] [kimi-k2.5] Model Output Response:
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;
+[2026-03-27 10:16:52.339102] [Case:8][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**集合运算符 MINUS 语法**:
+语法：select_clause_set_left MINUS select_clause_set_right
+参数解释：
+select_clause_set_left：SELECT 语句，返回用于集合计算的左集合。
+select_clause_set_right：SELECT 语句，返回用于集合计算的右集合。
+MINUS：用于返回第一个 SELECT 语句的结果集中不包含在第二个 SELECT 语句的结果集中的行。
+示例：SELECT id, name FROM test_tbl1
+MINUS
+SELECT id, name FROM test_tbl2;
+[2026-03-27 10:16:52.341015] [Case:8][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**集合运算符 MINUS 语法**:
+语法：select_clause_set_left MINUS select_clause_set_right
+参数解释：
+select_clause_set_left：SELECT 语句，返回用于集合计算的左集合。
+select_clause_set_right：SELECT 语句，返回用于集合计算的右集合。
+MINUS：用于返回第一个 SELECT 语句的结果集中不包含在第二个 SELECT 语句的结果集中的行。
+示例：SELECT id, name FROM test_tbl1
+MINUS
+SELECT id, name FROM test_tbl2;
+[2026-03-27 10:16:52.341962] [Case:8][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT employee_id, start_date, end_date, job_id FROM job_history MINUS SELECT employee_id, hire_date, NULL, job_id FROM employees;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**集合运算符 MINUS 语法**:
+语法：select_clause_set_left MINUS select_clause_set_right
+参数解释：
+select_clause_set_left：SELECT 语句，返回用于集合计算的左集合。
+select_clause_set_right：SELECT 语句，返回用于集合计算的右集合。
+MINUS：用于返回第一个 SELECT 语句的结果集中不包含在第二个 SELECT 语句的结果集中的行。
+示例：SELECT id, name FROM test_tbl1
+MINUS
+SELECT id, name FROM test_tbl2;
+[2026-03-27 10:16:57.842150] [Case:8][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes"}
+[2026-03-27 10:17:02.917530] [Case:10][Run:1] [kimi-k2.5] Model Output Response:
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;
+[2026-03-27 10:17:02.920510] [Case:10][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**INDEX Hint 的语法和用法**:
+语法：/*+ INDEX ( [ @queryblock ] tablespec [ indexspec [ indexspec ]... ] ) */
+示例：SELECT /*+ INDEX (employees emp_department_ix)*/ employee_id, department_id FROM employees WHERE department_id > 50;
+[2026-03-27 10:17:02.921364] [Case:10][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**INDEX Hint 的语法和用法**:
+语法：/*+ INDEX ( [ @queryblock ] tablespec [ indexspec [ indexspec ]... ] ) */
+示例：SELECT /*+ INDEX (employees emp_department_ix)*/ employee_id, department_id FROM employees WHERE department_id > 50;
+[2026-03-27 10:17:02.924900] [Case:10][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT /*+ INDEX(employees emp_department_ix) */ * FROM employees WHERE department_id = 10;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**INDEX Hint 的语法和用法**:
+语法：/*+ INDEX ( [ @queryblock ] tablespec [ indexspec [ indexspec ]... ] ) */
+示例：SELECT /*+ INDEX (employees emp_department_ix)*/ employee_id, department_id FROM employees WHERE department_id > 50;
+[2026-03-27 10:17:03.870284] [Case:9][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:17:04.178734] [Case:5][Run:1] [gemini-3-pro-preview] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:17:04.182069] [Case:12][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:17:04.583282] [Case:9][Run:1] [gemini-3-pro-preview] Model Output Response:
+```json
+{
+  "answer": "yes",
+  "reason": ""
+}
+```
+[2026-03-27 10:17:04.586149] [Case:13][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:17:07.746818] [Case:10][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes","reason":""}
+[2026-03-27 10:17:22.510315] [Case:10][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": "The translated SQL is identical to the original Oracle SQL. The INDEX hint syntax /*+ INDEX(employees emp_department_ix) */ is fully supported in OceanBase's Oracle mode (4.2.5) as per the provided documentation. The WHERE clause condition (department_id = 10) uses standard SQL syntax that is valid in both environments. No unsupported functions or constructs are present, and the hint will enforce the same index usage behavior in OceanBase as in Oracle, ensuring equivalent execution plans and results."
+}
+[2026-03-27 10:17:42.506671] [Case:11][Run:1] [kimi-k2.5] Model Output Response:
+DECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP'; DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count); END;
+[2026-03-27 10:17:42.508722] [Case:11][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+DECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP'; DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count); END;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+DECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP'; DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count); END;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**DBMS_OUTPUT.PUT_LINE 存储过程**:
+语法：DBMS_OUTPUT.PUT_LINE (item IN VARCHAR2);
+示例：SET SERVEROUTPUT ON；
+BEGIN
+    DBMS_OUTPUT.PUT_LINE ('hello');
+END;
+[2026-03-27 10:17:42.509556] [Case:11][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+DECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP'; DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count); END;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+DECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP'; DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count); END;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**DBMS_OUTPUT.PUT_LINE 存储过程**:
+语法：DBMS_OUTPUT.PUT_LINE (item IN VARCHAR2);
+示例：SET SERVEROUTPUT ON；
+BEGIN
+    DBMS_OUTPUT.PUT_LINE ('hello');
+END;
+[2026-03-27 10:17:42.510465] [Case:11][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+DECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP'; DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count); END;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+DECLARE v_count NUMBER; BEGIN SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'EMP'; DBMS_OUTPUT.PUT_LINE('Count is: ' || v_count); END;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**DBMS_OUTPUT.PUT_LINE 存储过程**:
+语法：DBMS_OUTPUT.PUT_LINE (item IN VARCHAR2);
+示例：SET SERVEROUTPUT ON；
+BEGIN
+    DBMS_OUTPUT.PUT_LINE ('hello');
+END;
+[2026-03-27 10:17:43.571030] [Case:10][Run:1] [gemini-3-pro-preview] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:17:43.572955] [Case:14][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+CREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:17:44.130944] [Case:13][Run:1] [kimi-k2.5] Model Output Response:
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;
+[2026-03-27 10:17:44.133184] [Case:13][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**LPAD 函数用于左填充字符串**:
+语法：LPAD(char1, n [, char2])
+示例：使用星号 * 左填充字符串 ABCDE。
+SQL语句：SELECT LPAD('ABCDE', 10, '*') FROM DUAL;
+返回结果：
+*****ABCDE
+[2026-03-27 10:17:44.134009] [Case:13][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**LPAD 函数用于左填充字符串**:
+语法：LPAD(char1, n [, char2])
+示例：使用星号 * 左填充字符串 ABCDE。
+SQL语句：SELECT LPAD('ABCDE', 10, '*') FROM DUAL;
+返回结果：
+*****ABCDE
+[2026-03-27 10:17:44.134815] [Case:13][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT LPAD(' ', 2 * (LEVEL - 1)) || ename FROM emp START WITH mgr IS NULL CONNECT BY PRIOR empno = mgr;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**LPAD 函数用于左填充字符串**:
+语法：LPAD(char1, n [, char2])
+示例：使用星号 * 左填充字符串 ABCDE。
+SQL语句：SELECT LPAD('ABCDE', 10, '*') FROM DUAL;
+返回结果：
+*****ABCDE
+[2026-03-27 10:17:47.995056] [Case:8][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+
+分析依据：
+1. **可执行性验证**：
+   - OceanBase的Oracle模式-4.2.5 明确支持 `MINUS` 集合运算符（语法说明已提供），且其语法结构与原始SQL完全一致：左查询（job_history）和右查询（employees）均为合法的SELECT语句，列数相同（4列）。
+   - `NULL` 常量在第二个SELECT中被使用是合法的，OceanBase会自动处理其与左查询 `end_date` 列的数据类型兼容性（隐式转换），不会引发语法错误。
+
+2. **等价性验证**：
+   - 语义一致性：`MINUS` 在OceanBase的Oracle模式中的行为与Oracle一致，即返回左查询存在而右查询不存在的唯一行（去重），且比较规则相同（包括对NULL值的处理：两个NULL被视为相等）。
+   - 列对应逻辑：左查询的 `start_date` 与右查询的 `hire_date`（均为日期类型）直接对应；左查询的 `end_date` 与右查询的 `NULL` 值对应，当左查询的 `end_date` 为NULL时，与右查询的 `NULL` 会被视为相等，完全符合Oracle的集合运算逻辑。
+   - 最终结果集将完全相同：返回在job_history中存在，但在employees表中无匹配（employee_id, job_id相同，且start_date等于hire_date，且end_date为NULL）的行，或满足其他组合差异的行。
+
+综上，翻译后的SQL在语法和语义上均与原始SQL等效，符合要求。
+[2026-03-27 10:17:50.054896] [Case:11][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes","reason":""}
+[2026-03-27 10:17:52.496390] [Case:13][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes","reason":""}
+[2026-03-27 10:17:59.136829] [Case:12][Run:1] [kimi-k2.5] Model Output Response:
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+[2026-03-27 10:17:59.138833] [Case:12][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**LISTAGG 函数**:
+语法：LISTAGG (measure_expr [,'delimiter']) [ WITHIN GROUP ] (order_by_clause) [ OVER query_partition_clause ]
+分隔符 delimiter 是可选参数，默认为 NULL。
+[2026-03-27 10:17:59.139688] [Case:12][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**LISTAGG 函数**:
+语法：LISTAGG (measure_expr [,'delimiter']) [ WITHIN GROUP ] (order_by_clause) [ OVER query_partition_clause ]
+分隔符 delimiter 是可选参数，默认为 NULL。
+[2026-03-27 10:17:59.140224] [Case:12][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT listagg(ename, ';') WITHIN GROUP (ORDER BY hiredate) FROM emp WHERE deptno = 30;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**LISTAGG 函数**:
+语法：LISTAGG (measure_expr [,'delimiter']) [ WITHIN GROUP ] (order_by_clause) [ OVER query_partition_clause ]
+分隔符 delimiter 是可选参数，默认为 NULL。
+[2026-03-27 10:18:03.091201] [Case:12][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes","reason":""}
+[2026-03-27 10:18:19.792815] [Case:13][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:18:20.103620] [Case:13][Run:1] [gemini-3-pro-preview] Model Output Response:
+```json
+{
+  "answer": "yes",
+  "reason": ""
+}
+```
+[2026-03-27 10:18:20.106229] [Case:15][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:18:23.439151] [Case:11][Run:1] [gemini-3-pro-preview] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:18:24.179649] [Case:11][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:18:24.181696] [Case:16][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:18:37.185699] [Case:12][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:18:54.243403] [Case:14][Run:1] [kimi-k2.5] Model Output Response:
+CREATE OR REPLACE PROCEDURE autonomous_proc IS
+  PRAGMA AUTONOMOUS_TRANSACTION;
+BEGIN
+  INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred');
+  COMMIT;
+END;
+[2026-03-27 10:18:54.245093] [Case:14][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE OR REPLACE PROCEDURE autonomous_proc IS
+  PRAGMA AUTONOMOUS_TRANSACTION;
+BEGIN
+  INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred');
+  COMMIT;
+END;
+
+[2026-03-27 10:18:54.245583] [Case:14][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE OR REPLACE PROCEDURE autonomous_proc IS
+  PRAGMA AUTONOMOUS_TRANSACTION;
+BEGIN
+  INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred');
+  COMMIT;
+END;
+
+[2026-03-27 10:18:54.247007] [Case:14][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE OR REPLACE PROCEDURE autonomous_proc IS PRAGMA AUTONOMOUS_TRANSACTION; BEGIN INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred'); COMMIT; END;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE OR REPLACE PROCEDURE autonomous_proc IS
+  PRAGMA AUTONOMOUS_TRANSACTION;
+BEGIN
+  INSERT INTO audit_log (log_msg) VALUES ('An autonomous action occurred');
+  COMMIT;
+END;
+
+[2026-03-27 10:19:03.388418] [Case:14][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"no","reason":"OceanBase Oracle mode 4.2.5 does not support PRAGMA AUTONOMOUS_TRANSACTION (autonomous transactions) in stored routines, so the translated code is not executable as is."}
+[2026-03-27 10:19:23.535643] [Case:14][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:19:27.499004] [Case:15][Run:1] [kimi-k2.5] Model Output Response:
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+[2026-03-27 10:19:27.502414] [Case:15][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**TO_DATE 函数**:
+语法：TO_DATE(char [, fmt [, 'nlsparam' ] ])。
+示例：SELECT TO_DATE('2021-11-11 11:11:11','YYYY-MM-DD HH24:MI:SS') FROM DUAL;
+
+**创建分区表**:
+语法：CREATE TABLE table_name (column_name column_type[, column_name column_type])
+  PARTITION BY RANGE (column_name[, column_name])
+    (PARTITION partition_name VALUES LESS THAN(expr)
+     [, PARTITION partition_name VALUES LESS THAN (expr )...]
+     [, PARTITION partition_name VALUES LESS THAN (MAXVALUE)]
+     );
+CREATE TABLE table_name (column_name column_type[,column_name column_type])
+  PARTITION BY LIST (column_name[, column_name])
+    (PARTITION partition_name VALUES (v01 [, v0N])
+     [, PARTITION partition_name VALUES (vN1 [, vNN])]
+     [, PARTITION partition_name VALUES (DEFAULT)]
+    );
+CREATE TABLE table_name (column_name column_type[, column_name column_type])
+PARTITION BY HASH(column_name[, column_name]) PARTITIONS partition_count;
+CREATE TABLE [IF NOT EXISTS] table_name(column_option_list) partition_option_list;
+column_option_list:
+  column_name column_type [, column_name column_type]
+partition_option_list:
+  PARTITION BY 
+    RANGE(column_name){subpartition_option} (range_partition_list)
+   | LIST(expression){subpartition_option} (list_partition_list)
+   | HASH(expression){subpartition_option} { (hash_partition_list)
+                                             | PARTITIONS partition_count }
+subpartition_option:
+  SUBPARTITION BY 
+    RANGE(column_name) SUBPARTITION TEMPLATE(range_subpartition_list)
+   | LIST(expression) SUBPARTITION TEMPLATE(list_subpartition_list)
+   | HASH(expression) { SUBPARTITION TEMPLATE (hash_subpartition_list)
+                       | SUBPARTITIONS subpartition_count }
+
+[2026-03-27 10:19:27.503811] [Case:15][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**TO_DATE 函数**:
+语法：TO_DATE(char [, fmt [, 'nlsparam' ] ])。
+示例：SELECT TO_DATE('2021-11-11 11:11:11','YYYY-MM-DD HH24:MI:SS') FROM DUAL;
+
+**创建分区表**:
+语法：CREATE TABLE table_name (column_name column_type[, column_name column_type])
+  PARTITION BY RANGE (column_name[, column_name])
+    (PARTITION partition_name VALUES LESS THAN(expr)
+     [, PARTITION partition_name VALUES LESS THAN (expr )...]
+     [, PARTITION partition_name VALUES LESS THAN (MAXVALUE)]
+     );
+CREATE TABLE table_name (column_name column_type[,column_name column_type])
+  PARTITION BY LIST (column_name[, column_name])
+    (PARTITION partition_name VALUES (v01 [, v0N])
+     [, PARTITION partition_name VALUES (vN1 [, vNN])]
+     [, PARTITION partition_name VALUES (DEFAULT)]
+    );
+CREATE TABLE table_name (column_name column_type[, column_name column_type])
+PARTITION BY HASH(column_name[, column_name]) PARTITIONS partition_count;
+CREATE TABLE [IF NOT EXISTS] table_name(column_option_list) partition_option_list;
+column_option_list:
+  column_name column_type [, column_name column_type]
+partition_option_list:
+  PARTITION BY 
+    RANGE(column_name){subpartition_option} (range_partition_list)
+   | LIST(expression){subpartition_option} (list_partition_list)
+   | HASH(expression){subpartition_option} { (hash_partition_list)
+                                             | PARTITIONS partition_count }
+subpartition_option:
+  SUBPARTITION BY 
+    RANGE(column_name) SUBPARTITION TEMPLATE(range_subpartition_list)
+   | LIST(expression) SUBPARTITION TEMPLATE(list_subpartition_list)
+   | HASH(expression) { SUBPARTITION TEMPLATE (hash_subpartition_list)
+                       | SUBPARTITIONS subpartition_count }
+
+[2026-03-27 10:19:27.505504] [Case:15][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE TABLE range_partitioned_sales (sale_id NUMBER, sale_date DATE) PARTITION BY RANGE (sale_date) (PARTITION p1 VALUES LESS THAN (TO_DATE('2024-01-01','YYYY-MM-DD')), PARTITION p2 VALUES LESS THAN (MAXVALUE));
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**TO_DATE 函数**:
+语法：TO_DATE(char [, fmt [, 'nlsparam' ] ])。
+示例：SELECT TO_DATE('2021-11-11 11:11:11','YYYY-MM-DD HH24:MI:SS') FROM DUAL;
+
+**创建分区表**:
+语法：CREATE TABLE table_name (column_name column_type[, column_name column_type])
+  PARTITION BY RANGE (column_name[, column_name])
+    (PARTITION partition_name VALUES LESS THAN(expr)
+     [, PARTITION partition_name VALUES LESS THAN (expr )...]
+     [, PARTITION partition_name VALUES LESS THAN (MAXVALUE)]
+     );
+CREATE TABLE table_name (column_name column_type[,column_name column_type])
+  PARTITION BY LIST (column_name[, column_name])
+    (PARTITION partition_name VALUES (v01 [, v0N])
+     [, PARTITION partition_name VALUES (vN1 [, vNN])]
+     [, PARTITION partition_name VALUES (DEFAULT)]
+    );
+CREATE TABLE table_name (column_name column_type[, column_name column_type])
+PARTITION BY HASH(column_name[, column_name]) PARTITIONS partition_count;
+CREATE TABLE [IF NOT EXISTS] table_name(column_option_list) partition_option_list;
+column_option_list:
+  column_name column_type [, column_name column_type]
+partition_option_list:
+  PARTITION BY 
+    RANGE(column_name){subpartition_option} (range_partition_list)
+   | LIST(expression){subpartition_option} (list_partition_list)
+   | HASH(expression){subpartition_option} { (hash_partition_list)
+                                             | PARTITIONS partition_count }
+subpartition_option:
+  SUBPARTITION BY 
+    RANGE(column_name) SUBPARTITION TEMPLATE(range_subpartition_list)
+   | LIST(expression) SUBPARTITION TEMPLATE(list_subpartition_list)
+   | HASH(expression) { SUBPARTITION TEMPLATE (hash_subpartition_list)
+                       | SUBPARTITIONS subpartition_count }
+
+[2026-03-27 10:19:30.664069] [Case:15][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes"}
+[2026-03-27 10:19:47.394389] [Case:8][Run:1] [gemini-3-pro-preview] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:19:47.396864] [Case:17][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:19:48.570644] [Case:12][Run:1] [gemini-3-pro-preview] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:19:48.581923] [Case:18][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+SELECT CAST(MULTISET(SELECT ename FROM emp WHERE deptno = d.deptno) AS SYS.ODCIVARCHAR2LIST) as employees FROM dept d;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:19:55.165877] [Case:15][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": "The translated SQL is syntactically valid in OceanBase Oracle mode 4.2.5. It correctly uses the PARTITION BY RANGE clause with TO_DATE and MAXVALUE, which are fully supported. The structure matches the documented syntax for range partitioning, and the semantics are identical to the original Oracle SQL, ensuring equivalent data distribution across partitions."
+}
+[2026-03-27 10:20:02.983317] [Case:14][Run:1] [gemini-3-pro-preview] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:20:02.985974] [Case:19][Run:1] [kimi-k2.5] Model Input Prompt:
+You are an expert in SQL dialect translation.
+Please convert the following SQL statement from ORACLE syntax to OceanBase的Oracle模式-4.2.5 syntax.
+Return **only** the translated SQL statement(**no extra text**, **no markdown fences**, **no comments**, **need directly executable sql**), with no additional commentary or text.
+
+Source SQL:
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+## Translated SQL (OceanBase的Oracle模式-4.2.5):
+
+[2026-03-27 10:20:08.473396] [Case:16][Run:1] [kimi-k2.5] Model Output Response:
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS
+  PROCEDURE hire(p_name VARCHAR2) IS
+  BEGIN
+    INSERT INTO emp(ename) VALUES(p_name);
+  END;
+  FUNCTION get_count RETURN NUMBER IS
+    v_cnt NUMBER;
+  BEGIN
+    SELECT COUNT(*) INTO v_cnt FROM emp;
+    RETURN v_cnt;
+  END;
+END emp_mgmt;
+[2026-03-27 10:20:08.475494] [Case:16][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS
+  PROCEDURE hire(p_name VARCHAR2) IS
+  BEGIN
+    INSERT INTO emp(ename) VALUES(p_name);
+  END;
+  FUNCTION get_count RETURN NUMBER IS
+    v_cnt NUMBER;
+  BEGIN
+    SELECT COUNT(*) INTO v_cnt FROM emp;
+    RETURN v_cnt;
+  END;
+END emp_mgmt;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**CREATE PACKAGE 语句**:
+语法：CREATE [ OR REPLACE ]
+PACKAGE plsql_package_source
+其中：
+plsql_package_source 的语法如下：
+[ schema. ] package_name [ sharing_clause ] [ { default_collation_clause | invoker_rights_clause | accessible_by_clause }... ]
+{ IS | AS } package_item_list END [ package_name ] ;
+package_item_list 的语法如下：
+{ type_definition 
+| cursor_declaration 
+| item_declaration 
+| package_function_declaration 
+| package_procedure_declaration } 
+...
+package_function_declaration 的语法如下：
+function_heading 
+[ accessible_by_clause 
+| determinitic_clause 
+| pipelined_clause 
+| parallel_enable_clause 
+| result_cache_clause ] ;
+package_procedure_declaration 的语法如下：
+procedure_heading [accessible_by_clause] ;
+[2026-03-27 10:20:08.477326] [Case:16][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS
+  PROCEDURE hire(p_name VARCHAR2) IS
+  BEGIN
+    INSERT INTO emp(ename) VALUES(p_name);
+  END;
+  FUNCTION get_count RETURN NUMBER IS
+    v_cnt NUMBER;
+  BEGIN
+    SELECT COUNT(*) INTO v_cnt FROM emp;
+    RETURN v_cnt;
+  END;
+END emp_mgmt;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**CREATE PACKAGE 语句**:
+语法：CREATE [ OR REPLACE ]
+PACKAGE plsql_package_source
+其中：
+plsql_package_source 的语法如下：
+[ schema. ] package_name [ sharing_clause ] [ { default_collation_clause | invoker_rights_clause | accessible_by_clause }... ]
+{ IS | AS } package_item_list END [ package_name ] ;
+package_item_list 的语法如下：
+{ type_definition 
+| cursor_declaration 
+| item_declaration 
+| package_function_declaration 
+| package_procedure_declaration } 
+...
+package_function_declaration 的语法如下：
+function_heading 
+[ accessible_by_clause 
+| determinitic_clause 
+| pipelined_clause 
+| parallel_enable_clause 
+| result_cache_clause ] ;
+package_procedure_declaration 的语法如下：
+procedure_heading [accessible_by_clause] ;
+[2026-03-27 10:20:08.479448] [Case:16][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS PROCEDURE hire(p_name VARCHAR2) IS BEGIN INSERT INTO emp(ename) VALUES(p_name); END; FUNCTION get_count RETURN NUMBER IS v_cnt NUMBER; BEGIN SELECT COUNT(*) INTO v_cnt FROM emp; RETURN v_cnt; END; END emp_mgmt;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE OR REPLACE PACKAGE BODY emp_mgmt AS
+  PROCEDURE hire(p_name VARCHAR2) IS
+  BEGIN
+    INSERT INTO emp(ename) VALUES(p_name);
+  END;
+  FUNCTION get_count RETURN NUMBER IS
+    v_cnt NUMBER;
+  BEGIN
+    SELECT COUNT(*) INTO v_cnt FROM emp;
+    RETURN v_cnt;
+  END;
+END emp_mgmt;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**CREATE PACKAGE 语句**:
+语法：CREATE [ OR REPLACE ]
+PACKAGE plsql_package_source
+其中：
+plsql_package_source 的语法如下：
+[ schema. ] package_name [ sharing_clause ] [ { default_collation_clause | invoker_rights_clause | accessible_by_clause }... ]
+{ IS | AS } package_item_list END [ package_name ] ;
+package_item_list 的语法如下：
+{ type_definition 
+| cursor_declaration 
+| item_declaration 
+| package_function_declaration 
+| package_procedure_declaration } 
+...
+package_function_declaration 的语法如下：
+function_heading 
+[ accessible_by_clause 
+| determinitic_clause 
+| pipelined_clause 
+| parallel_enable_clause 
+| result_cache_clause ] ;
+package_procedure_declaration 的语法如下：
+procedure_heading [accessible_by_clause] ;
+[2026-03-27 10:20:16.093503] [Case:16][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes","reason":""}
+[2026-03-27 10:20:21.301313] [Case:19][Run:1] [kimi-k2.5] Model Output Response:
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+[2026-03-27 10:20:21.304136] [Case:19][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**LOCK TABLE**:
+语法：LOCK TABLE [ schema. ]table_name
+  [ partition_extension_clause]
+    [, [ schema. ] table_name
+      [ partition_extension_clause ]
+     ]...
+  IN lock_mode MODE
+  [ NOWAIT  
+   | WAIT integer
+  ] ;
+partition_extension_clause:
+    PARTITION (partition_name, ...)
+  | SUBPARTITION (subpartition_name, ...)
+[2026-03-27 10:20:21.304377] [Case:19][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**LOCK TABLE**:
+语法：LOCK TABLE [ schema. ]table_name
+  [ partition_extension_clause]
+    [, [ schema. ] table_name
+      [ partition_extension_clause ]
+     ]...
+  IN lock_mode MODE
+  [ NOWAIT  
+   | WAIT integer
+  ] ;
+partition_extension_clause:
+    PARTITION (partition_name, ...)
+  | SUBPARTITION (subpartition_name, ...)
+[2026-03-27 10:20:21.305202] [Case:19][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+LOCK TABLE emp IN EXCLUSIVE MODE NOWAIT;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**LOCK TABLE**:
+语法：LOCK TABLE [ schema. ]table_name
+  [ partition_extension_clause]
+    [, [ schema. ] table_name
+      [ partition_extension_clause ]
+     ]...
+  IN lock_mode MODE
+  [ NOWAIT  
+   | WAIT integer
+  ] ;
+partition_extension_clause:
+    PARTITION (partition_name, ...)
+  | SUBPARTITION (subpartition_name, ...)
+[2026-03-27 10:20:27.242714] [Case:19][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"yes","reason":""}
+[2026-03-27 10:20:53.903901] [Case:17][Run:1] [kimi-k2.5] Model Output Response:
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;
+[2026-03-27 10:20:53.905766] [Case:17][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;
+
+[2026-03-27 10:20:53.906493] [Case:17][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;
+
+[2026-03-27 10:20:53.907133] [Case:17][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+CREATE MATERIALIZED VIEW mv_emp_summary BUILD IMMEDIATE REFRESH COMPLETE ON DEMAND AS SELECT deptno, COUNT(*) as emp_count FROM emp GROUP BY deptno;
+
+[2026-03-27 10:21:01.538480] [Case:19][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:21:05.017601] [Case:17][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"no","reason":"OceanBase Oracle 模式 4.2.5 不支持 CREATE MATERIALIZED VIEW 及其 REFRESH COMPLETE ON DEMAND 语法"}
+[2026-03-27 10:21:13.282671] [Case:16][Run:1] [gemini-3-pro-preview] Model Output Response:
+```json
+{
+  "answer": "yes",
+  "reason": ""
+}
+```
+[2026-03-27 10:21:23.536907] [Case:19][Run:1] [gemini-3-pro-preview] Model Output Response:
+```json
+{
+  "answer": "yes",
+  "reason": ""
+}
+```
+[2026-03-27 10:21:36.729211] [Case:16][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:21:53.104788] [Case:17][Run:1] [gemini-3-pro-preview] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:22:15.136490] [Case:15][Run:1] [gemini-3-pro-preview] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:22:32.921879] [Case:18][Run:1] [kimi-k2.5] Model Output Response:
+SELECT (SELECT LISTAGG(ename, ',') WITHIN GROUP (ORDER BY ename) FROM emp WHERE deptno = d.deptno) AS employees FROM dept d;
+[2026-03-27 10:22:32.925573] [Case:18][Run:1] [deepseek-r1] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT CAST(MULTISET(SELECT ename FROM emp WHERE deptno = d.deptno) AS SYS.ODCIVARCHAR2LIST) as employees FROM dept d;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT (SELECT LISTAGG(ename, ',') WITHIN GROUP (ORDER BY ename) FROM emp WHERE deptno = d.deptno) AS employees FROM dept d;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**CAST 函数**:
+语法：CAST ({ expr | MULTISET (subquery) } AS type_name )
+
+**CAST 函数**:
+语法：CAST ({ expr | MULTISET (subquery) } AS type_name )
+[2026-03-27 10:22:32.927239] [Case:18][Run:1] [o4-mini-high] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT CAST(MULTISET(SELECT ename FROM emp WHERE deptno = d.deptno) AS SYS.ODCIVARCHAR2LIST) as employees FROM dept d;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT (SELECT LISTAGG(ename, ',') WITHIN GROUP (ORDER BY ename) FROM emp WHERE deptno = d.deptno) AS employees FROM dept d;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**CAST 函数**:
+语法：CAST ({ expr | MULTISET (subquery) } AS type_name )
+
+**CAST 函数**:
+语法：CAST ({ expr | MULTISET (subquery) } AS type_name )
+[2026-03-27 10:22:32.929347] [Case:18][Run:1] [gemini-3-pro-preview] Model Input Prompt:
+You are a senior database engineer specializing in OceanBase的Oracle模式-4.2.5 SQL.
+You need to verify two things at once:
+1. **Executable**: The translated SQL must be syntactically valid in OceanBase的Oracle模式-4.2.5, using only supported keywords, functions, and constructs.
+2. **Equivalent**: It must yield identical results to the original SQL on any valid dataset and strictly adhere to OceanBase的Oracle模式-4.2.5 dialect semantics.
+
+Do **not** execute the SQL—judge solely based on inspection.
+
+Return **only** a JSON object in this exact format (no extra text):
+
+{
+  "answer": "yes" | "no",
+  "reason": "If answer is no, briefly explain the reason."
+}
+
+**-- Original SQL (ORACLE) --**
+SELECT CAST(MULTISET(SELECT ename FROM emp WHERE deptno = d.deptno) AS SYS.ODCIVARCHAR2LIST) as employees FROM dept d;
+
+**-- Translated SQL (OceanBase的Oracle模式-4.2.5) --**
+SELECT (SELECT LISTAGG(ename, ',') WITHIN GROUP (ORDER BY ename) FROM emp WHERE deptno = d.deptno) AS employees FROM dept d;
+
+
+请参考以下 OceanBase的Oracle模式-4.2.5 语法和函数提示，回答以上问题：
+
+**CAST 函数**:
+语法：CAST ({ expr | MULTISET (subquery) } AS type_name )
+
+**CAST 函数**:
+语法：CAST ({ expr | MULTISET (subquery) } AS type_name )
+[2026-03-27 10:22:36.502672] [Case:18][Run:1] [o4-mini-high] Model Output Response:
+{"answer":"no","reason":"The original returns an ODCIVARCHAR2LIST collection of values, whereas the translated query returns a single comma-delimited string. They are not equivalent."}
+[2026-03-27 10:22:41.856977] [Case:17][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "yes",
+  "reason": ""
+}
+[2026-03-27 10:23:17.021590] [Case:18][Run:1] [deepseek-r1] Model Output Response:
+{
+  "answer": "no",
+  "reason": "The translated SQL is not equivalent to the original. The original returns a nested table collection (SYS.ODCIVARCHAR2LIST) containing multiple VARCHAR2 elements, while the translated version returns a single aggregated comma-separated string. This fundamentally changes the data structure and type (collection vs scalar string), making the results incompatible. Additionally, the LISTAGG function imposes an implicit ordering (ORDER BY ename) which may alter the natural row order of the subquery in the original."
+}
+[2026-03-27 10:24:44.735937] [Case:18][Run:1] [gemini-3-pro-preview] Model Output Response:
+```json
+{
+  "answer": "no",
+  "reason": "The original SQL returns a collection type (SYS.ODCIVARCHAR2LIST) using CAST(MULTISET(...)), whereas the translated SQL returns a single concatenated scalar string (VARCHAR2) using LISTAGG. The result types and structures are fundamentally different, making them not equivalent."
+}
+```
+[2026-03-27 10:24:44.752140] [1] hybrid Eval Case Final Result: False
+[2026-03-27 10:24:44.755180] [2] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.755489] [3] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.755845] [4] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.756456] [5] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.757332] [6] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.760716] [7] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.761056] [8] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.761371] [9] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.761657] [10] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.761912] [11] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.762153] [12] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.762393] [13] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.762632] [14] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.762857] [15] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.763100] [16] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.763356] [17] hybrid Eval Case Final Result: True
+[2026-03-27 10:24:44.763596] [18] hybrid Eval Case Final Result: False
+[2026-03-27 10:24:44.763829] [19] hybrid Eval Case Final Result: True
