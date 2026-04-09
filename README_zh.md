@@ -1,5 +1,9 @@
 简体中文 | [English](./README.md)
 
+<p align="center">
+  <img src="./leaderboard/public/scale_logo/logo.png" alt="SCALE" width="420" />
+</p>
+
 # SCALE: 大模型 SQL 能力排行
 
 ## 简介

@@ -1,5 +1,9 @@
 English | [简体中文](./README_zh.md)
 
+<p align="center">
+  <img src="./leaderboard/public/scale_logo/logo.png" alt="SCALE" width="420" />
+</p>
+
 # SCALE: SQL Capability Leaderboard for LLMs
 
 ## Introduction
