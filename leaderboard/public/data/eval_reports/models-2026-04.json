@@ -1448,6 +1448,79 @@
             }
         },
         {
+            "id": "gpt-5.5",
+            "name": "gpt-5.5",
+            "real_model_namne": "GPT-5.5",
+            "type": "Chat(Thinking)",
+            "parameters": 894279,
+            "website": "https://openai.com/zh-Hans-CN/index/introducing-gpt-5-5/",
+            "description": "We are launching GPT-5.5, the smartest and most intuitive model available, bringing new advancements to the way we work on computers.",
+            "organization": "OpenAI",
+            "releaseDate": "2026/04/23",
+            "new_model": true,
+            "scores": {
+                "dialect_conversion": {
+                    "ability_score": 71.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 45.2,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 97.4,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.0,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 73.8,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 63.5,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 56.7,
+                            "indicator_name": "index_advice.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 79.4,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 49.6,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 80.4,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_understanding": {
+                    "ability_score": 84.2,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 87.1,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.4,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.9,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "id": "gpt-5.2-2025-12-11",
             "name": "gpt-5.2-2025-12-11",
             "real_model_namne": "GPT-5.2",
