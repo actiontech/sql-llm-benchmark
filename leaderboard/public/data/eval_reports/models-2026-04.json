@@ -576,6 +576,79 @@
             }
         },
         {
+            "id": "deepseek-v4-pro",
+            "name": "deepseek-v4-pro",
+            "real_model_namne": "DeepSeek-V4-Pro",
+            "type": "Chat(Thinking)",
+            "parameters": 894279,
+            "website": "https://api-docs.deepseek.com/news/news260424",
+            "description": "DeepSeek-V4-Pro: 1.6T total / 49B active params. Performance rivaling the world's top closed-source models.",
+            "organization": "DeepSeek",
+            "releaseDate": "2026/04/24",
+            "new_model": true,
+            "scores": {
+                "dialect_conversion": {
+                    "ability_score": 66.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 35.5,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 89.5,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 80.6,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 59.5,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 60.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 58.6,
+                            "indicator_name": "index_advice.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 71.1,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 42.1,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.5,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_understanding": {
+                    "ability_score": 57.6,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 55.7,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 46.4,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 74.3,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "id": "deepseek-v4-flash",
             "name": "deepseek-v4-flash",
             "real_model_namne": "DeepSeek-V4-Flash",
