@@ -1156,6 +1156,79 @@
             }
         },
         {
+            "id": "claude-opus-4-7",
+            "name": "claude-opus-4-7",
+            "real_model_namne": "Claude Opus 4.7",
+            "type": "Chat(Thinking)",
+            "parameters": 894279,
+            "website": "https://www.anthropic.com/news/claude-opus-4-7",
+            "description": "Claude Opus 4.7 supports the 1M token context window, 128k max output tokens, adaptive thinking, and the same set of tools and platform features as Claude Opus 4.6.",
+            "organization": "Anthropic",
+            "releaseDate": "2026/04/16",
+            "new_model": true,
+            "scores": {
+                "dialect_conversion": {
+                    "ability_score": 74.4,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 64.5,
+                            "indicator_name": "big_sql_conversion.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 100.0,
+                            "indicator_name": "China-made_database.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 64.5,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 69.0,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_optimization": {
+                    "ability_score": 64.1,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 68.1,
+                            "indicator_name": "index_advice.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 68.0,
+                            "indicator_name": "logical_equivalence.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 43.3,
+                            "indicator_name": "optimization_depth.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 88.7,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                },
+                "sql_understanding": {
+                    "ability_score": 81.8,
+                    "indicator_score": [
+                        {
+                            "indicator_actual_score": 84.3,
+                            "indicator_name": "execution_accuracy.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 67.9,
+                            "indicator_name": "explain_detection.jsonl"
+                        },
+                        {
+                            "indicator_actual_score": 82.9,
+                            "indicator_name": "syntax_error_detection.jsonl"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "id": "claude-sonnet-4-6-thinking",
             "name": "claude-sonnet-4-6-thinking",
             "real_model_namne": "Claude Sonnet 4.6",
