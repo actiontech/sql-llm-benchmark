@@ -1,6 +1,6 @@
 ---
 category: monthly
-date: 2025-09-01T00:00:00.000Z
+date: 2025-09-30T00:00:00.000Z
 author: simple
 excerpt: >-
   1. 摘要 2025 年 9 月，SCALE 评测基准持续聚焦 AI 在 SQL 领域的应用前沿。 本月，榜单新增了 Moonshot

@@ -7,7 +7,6 @@ excerpt: >-
   critical high-frequency needs that have remained underserved.
 slug: model-evaluation-lab
 title: 'New Feature: Model Evaluation Lab'
-top: true
 ---
 
 ## 👋 Voices from the SCALE Community

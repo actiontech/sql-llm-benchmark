@@ -1,6 +1,6 @@
 ---
 category: monthly
-date: 2026-01-01T00:00:00.000Z
+date: 2026-01-31T00:00:00.000Z
 author: simple
 excerpt: >-
   2026 年伊始，SCALE 评测框架迎来了重要进化。本月我们迎来了智谱 GLM-4.7 与字节跳动

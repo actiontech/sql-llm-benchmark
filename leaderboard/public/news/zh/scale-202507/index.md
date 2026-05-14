@@ -1,6 +1,6 @@
 ---
 category: monthly
-date: 2025-07-01T00:00:00.000Z
+date: 2025-07-31T00:00:00.000Z
 author: simple
 excerpt: >-
   1. 摘要 2025 年 7 月，AI 大模型在代码生成与理解领域，特别是数据库 SQL 能力上的竞争日趋白热化。 本期 SCALE
