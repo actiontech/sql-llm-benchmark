@@ -1,6 +1,6 @@
 ---
 category: monthly
-date: 2025-12-01T00:00:00.000Z
+date: 2025-12-31T00:00:00.000Z
 author: simple
 excerpt: >-
   1. Monthly Leaderboard Overview In December 2025, SCALE completed

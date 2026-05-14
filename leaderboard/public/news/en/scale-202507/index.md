@@ -1,6 +1,6 @@
 ---
 category: monthly
-date: 2025-07-01T00:00:00.000Z
+date: 2025-07-31T00:00:00.000Z
 author: simple
 excerpt: >-
   1. Executive Summary In July 2025, competition in the field of AI large

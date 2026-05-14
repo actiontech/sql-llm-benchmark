@@ -1,6 +1,6 @@
 ---
 category: monthly
-date: 2025-11-01T00:00:00.000Z
+date: 2025-11-30T00:00:00.000Z
 author: simple
 excerpt: >-
   1. 摘要 本期 SCALE 评测聚焦于新一代专业级大语言模型在数据库 SQL 领域的表现边界。 本月内容为 Gemini 3 Pro 和

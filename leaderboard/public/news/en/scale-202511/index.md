@@ -1,6 +1,6 @@
 ---
 category: monthly
-date: 2025-11-01T00:00:00.000Z
+date: 2025-11-30T00:00:00.000Z
 author: simple
 excerpt: >-
   1. Executive Summary This edition of the SCALE evaluation focuses on the

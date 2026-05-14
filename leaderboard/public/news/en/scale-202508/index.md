@@ -1,6 +1,6 @@
 ---
 category: monthly
-date: 2025-08-01T00:00:00.000Z
+date: 2025-08-31T00:00:00.000Z
 author: simple
 excerpt: >-
   1. Executive Summary In August 2025, the SCALE evaluation benchmark

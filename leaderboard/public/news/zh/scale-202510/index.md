@@ -1,6 +1,6 @@
 ---
 category: monthly
-date: 2025-10-01T00:00:00.000Z
+date: 2025-10-31T00:00:00.000Z
 author: simple
 excerpt: >-
   1. 摘要 2025 年 10 月，SCALE 评测基准持续追踪 AI 在专业 SQL 领域的最新进展。 本月，榜单迎来了蚂蚁百灵大模型团队发布的两大

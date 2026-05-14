@@ -1,6 +1,6 @@
 ---
 category: monthly
-date: 2026-01-01T00:00:00.000Z
+date: 2026-01-31T00:00:00.000Z
 author: simple
 excerpt: >-
   The benchmark evaluates the SQL capabilities of two new large language models.
