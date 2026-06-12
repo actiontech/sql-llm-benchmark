@@ -8,7 +8,6 @@ excerpt: >-
 slug: scale-202604
 title: 大模型 SQL 能力排行榜 2026 年 4 月
 coverImage: /news/images/monthly-eval.png
-top: true
 ---
 
 ## 一、发版摘要与核心价值
