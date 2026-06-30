@@ -9,7 +9,6 @@ excerpt: >-
 slug: scale-202604
 title: 'SCALE: Large Model SQL Capability Ranking April 2026'
 coverImage: /news/images/monthly-eval.png
-top: true
 ---
 
 ## I. Release Summary and Core Value
